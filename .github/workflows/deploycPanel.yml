@@ -14,3 +14,9 @@ jobs:
         server: ${{ secrets.server }}
         username: ${{ secrets.username }}
         password: ${{ secrets.password }}
+        protocol: ftps
+        port: 3000
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
