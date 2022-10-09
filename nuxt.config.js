@@ -56,31 +56,24 @@ export default {
   // Axios
   publicRuntimeConfig: {
     axios: {
-      baseURL: 'http://localhost:1337/api'
+      baseURL: 'https://nsightapi.vip/api'
     }
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/apollo'
+    '@nuxtjs/axios'
   ],
 
     // Apollo/GraphQL
-  apollo: {
-    clientConfigs: {
-      default: {
-        httpEndpoint:  "http://localhost:1337/graphql"
-      }
-    }
-  },
+
   env: {
-    storeUrl: "http://localhost:1337/api"
+    storeUrl: "https://nsightapi.vip/api"
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
 
   },
-  target: 'static'
+ 
 }
