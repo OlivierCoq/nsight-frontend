@@ -1,10 +1,79 @@
 <template>
-  <div></div>
+  <div id="login_screen" class="bg-dark w-100 h-100">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-6 offset-md-3">
+          <div class="d-flex flex-column justify-content-center align-items-center p-3 p-md-5 h-100">
+            <h1 class="text-light m-3">nSight</h1><hr/>
+            <form class="w-100">
+              <div class="mb-3">
+                <input type="email" class="form-control " v-model="email" placeholder="Email">
+              </div>
+              <div class="mb-3">
+                <input type="password" class="form-control " v-model="password" placeholder="Passsword">
+              </div>
+              <div class="mb-3">
+                <input type="password" class="form-control" v-model="nsight_id" placeholder="nSight ID">
+              </div>
+              <div class="mb-3">
+                <button class="btn btn-primary btn-block w-100" @click.prevent="sign_in">Let's get it</button>
+              </div>
+              <div class="my-4">
+                <div class="w-100 px-3 py-4">
+                  <client-only>
+                    <figure>
+                      <blockquote class="blockquote">
+                        <p  class="text-light">{{quote.attributes.quote_body}}</p>
+                      </blockquote>
+                      <figcaption class="blockquote-footer">
+                        <a :href="quote.attributes.link ? quote.attributes.link : 'javascript:(0)' " :target="quote.attributes.link ? '_blank' : '_self'">
+                          {{ quote.attributes.author }}
+                        </a>
+                      </figcaption>
+                    </figure>
+                  </client-only>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'IndexPage'
+  name: 'IndexPage',
+  async asyncData({ $axios}) {
+      const quotes = await $axios.$get('https://nsightapi.vip/api/quotes?populate=*')
+      return { quotes }
+  },
+  data() {
+    return {
+      email: '',
+      password: '',
+      nsight_id: '',
+      quotes: false,
+      quote: false
+    }
+  },
+  created() {
+    this.pull_quote()
+  },
+  methods: {
+    pull_quote() {
+      let random = Math.floor(Math.random() * this.quotes.data.length)
+        this.quote = this.quotes.data[random]
+    },
+    sign_in() {
+      console.log('signing in!!!')
+    }
+  }
 }
 </script>
-<style lang="scss"></style> 
+<style lang="scss">
+  #login_screen {
+    height: 100vh !important;
+   }
+</style> 
