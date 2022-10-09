@@ -40,8 +40,16 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    '@nuxtjs/axios'
   ],
+
+   // Axios
+   publicRuntimeConfig: {
+    axios: {
+      baseURL: 'https://nsightapi.vip/api'
+    }
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -56,9 +64,5 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-    analyze: {
-      analyzerMode: 'server'
-    }
-  }
+  build: {}
 }
