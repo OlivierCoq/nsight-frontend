@@ -20,8 +20,7 @@
     "sass-loader": "10.1.1",
     "vue": "2.7.10",
     "vue-server-renderer": "^2.7.10",
-    "vue-template-compiler": "^2.7.10",
-    "webpack": "5.0.0"
+    "vue-template-compiler": "^2.7.10"
   },
   "devDependencies": {
     "sass": "^1.55.0",
