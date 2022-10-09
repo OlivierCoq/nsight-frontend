@@ -60,7 +60,7 @@
             },
         },
         created() {
-            this.$axios.$get(`https://nsightapi.vip/api/products/${this.$route.params.id}?populate=*`)
+            this.$axios.$get(`http://localhost:1337/api/products/${this.$route.params.id}?populate=*`)
                 .then((data) => { this.product = data })
         }
     }

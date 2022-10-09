@@ -19,7 +19,7 @@ export default {
     ],
     script: [
       { src: 'https://cdn.snipcart.com/themes/v3.2.1/default/snipcart.js'},
-      
+      { src: '/bootstrap.bundle.min.js' }
     ],
   },
 
@@ -28,14 +28,9 @@ export default {
     { src: '~/assets/scss/main.scss', lang: 'sass'}
   ],
 
-  script: [
-    { src: '~/plugins/bootstrap.js' }
-  ],
-
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
   ],
-
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -62,21 +57,8 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/apollo'
+    '@nuxtjs/axios'
   ],
-
-    // Apollo/GraphQL
-  apollo: {
-    clientConfigs: {
-      default: {
-        httpEndpoint:  "http://localhost:1337/graphql"
-      }
-    }
-  },
-  env: {
-    storeUrl: "http://localhost:1337/api"
-  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

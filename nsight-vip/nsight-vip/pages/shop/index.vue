@@ -27,7 +27,7 @@
 export default {
     name: 'Shop',
     async asyncData({ $axios}) {
-        const products = await $axios.$get('https://nsightapi.vip/api/products?populate=*')
+        const products = await $axios.$get('http://localhost:1337/api/products?populate=*')
         return { products }
     },
     data(){
