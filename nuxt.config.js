@@ -24,7 +24,8 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    { src: '~/assets/scss/main.scss', lang: 'sass'}
+    { src: '~/assets/scss/main.scss', lang: 'sass'},
+    // { src: '~/snipcart/customize.css' }
   ],
 
   script: [
@@ -41,7 +42,9 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     '@nuxtjs/style-resources',
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/snipcart',
+    '@nuxtjs/strapi'
   ],
 
    // Axios
@@ -54,6 +57,21 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
   ],
+
+  snipcart: {
+      // Options available
+      key: 'ZjU5ZDBjNmEtYzBlYi00YjVhLWFlNzYtNDE2ZjhlMGI2MjkxNjM3OTcwNzY0NzA1MjM5NTcz', 
+      attributes: []
+  },
+
+  strapi: {
+    url: process.env.STRAPI_URL || 'http://localhost:1337',
+    prefix: '/api',
+    version: 'v4',
+    cookie: {},
+    cookieName: 'strapi_jwt'
+  },
+  
 
   styleResources: {
     scss: [

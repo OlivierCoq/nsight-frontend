@@ -1416,6 +1416,11 @@
   dependencies:
     http-proxy-middleware "^1.0.6"
 
+"@nuxtjs/snipcart@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/snipcart/-/snipcart-1.3.1.tgz#476ab28e803fddc24621f419b08e0d9d83bdf9d0"
+  integrity sha512-YyBlIPH1A0OsX6HLrA7+FRkbpsqrvXx3CZ61442ggKXqvtiLrC2RUChp3WJyefdVTPr1NUleVzuD17zBXztDIw==
+
 "@nuxtjs/strapi@^1.6.1":
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/@nuxtjs/strapi/-/strapi-1.6.1.tgz#32b236e7a359c6d6b68b1e6d81422721e4eb2e0c"

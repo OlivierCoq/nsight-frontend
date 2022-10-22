@@ -7,13 +7,13 @@
             <h1 class="text-light m-3">nSight</h1><hr/>
             <form class="w-100">
               <div class="mb-3">
-                <input type="email" class="form-control " v-model="email" placeholder="Email">
+                <input type="email" class="form-control " v-model="input.email" placeholder="Email">
               </div>
               <div class="mb-3">
-                <input type="password" class="form-control " v-model="password" placeholder="Passsword">
+                <input type="password" class="form-control " v-model="input.password" placeholder="Password">
               </div>
               <div class="mb-3">
-                <input type="password" class="form-control" v-model="nsight_id" placeholder="nSight ID">
+                <input type="password" class="form-control" v-model="input.nsight_id" placeholder="nSight ID">
               </div>
               <div class="mb-3">
                 <button class="btn btn-primary btn-block w-100" @click.prevent="sign_in">Let's get it</button>
@@ -45,17 +45,21 @@
 <script>
 export default {
   name: 'IndexPage',
-  async asyncData({ $axios}) {
+  async asyncData({ $axios }) {
       const quotes = await $axios.$get('https://nsightapi.vip/api/quotes?populate=*')
       return { quotes }
   },
   data() {
     return {
-      email: '',
-      password: '',
-      nsight_id: '',
+      input: {
+        email: '',
+        password: '',
+        nsight_id: '',
+        strapi_data: false
+      },
       quotes: false,
-      quote: false
+      quote: false,
+      nsight_ids: false
     }
   },
   created() {
@@ -66,8 +70,16 @@ export default {
       let random = Math.floor(Math.random() * this.quotes.data.length)
         this.quote = this.quotes.data[random]
     },
-    sign_in() {
+    async sign_in({ $axios }) {
       console.log('signing in!!!')
+      const thisObj = this,
+            postObj = {
+              identifier: this.input.email,
+              password: this.input.password
+            }
+      this.input.strapi_data = await thisObj.$axios.$post('http://localhost:1337/api/auth/local', postObj)
+      this.$axios.setHeader(`Authorization`, `Bearer ${thisObj.input.strapi_data.jwt}`)
+      this.nsight_ids = await this.$axios.$get('http://localhost:1337/api/nsight-ids?populate=*')
     }
   }
 }
