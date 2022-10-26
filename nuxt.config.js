@@ -50,12 +50,14 @@ export default {
    // Axios
    publicRuntimeConfig: {
     axios: {
-      baseURL: 'https://nsightapi.vip/api'
+      // baseURL: 'https://nsightapi.vip/api'
+      baseURL:  process.env.STRAPI_URL || 'http://localhost:1337'
     }
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/auth'
   ],
 
   snipcart: {
@@ -72,6 +74,25 @@ export default {
     cookieName: 'strapi_jwt'
   },
   
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: 'api/auth/local',
+            method: 'post',
+            propertyName: 'jwt'
+          },
+          user: {
+            url: 'api/users/me',
+            method: 'get',
+            propertyName: false
+          },
+          logout: false
+        }
+      }
+    }
+  },
 
   styleResources: {
     scss: [

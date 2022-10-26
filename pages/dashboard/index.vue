@@ -9,7 +9,7 @@
 <script>
 export default {
     name: 'Dashboard',
-    
+    layout: 'inner_page',
     data(){
         return {
            

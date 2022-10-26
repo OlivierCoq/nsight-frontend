@@ -59,7 +59,8 @@ export default {
       },
       quotes: false,
       quote: false,
-      nsight_ids: false
+      nsight_ids: false,
+      error: false
     }
   },
   created() {
@@ -72,14 +73,28 @@ export default {
     },
     async sign_in({ $axios }) {
       console.log('signing in!!!')
-      const thisObj = this,
-            postObj = {
-              identifier: this.input.email,
-              password: this.input.password
-            }
-      this.input.strapi_data = await thisObj.$axios.$post('http://localhost:1337/api/auth/local', postObj)
-      this.$axios.setHeader(`Authorization`, `Bearer ${thisObj.input.strapi_data.jwt}`)
-      this.nsight_ids = await this.$axios.$get('http://localhost:1337/api/nsight-ids?populate=*')
+
+      this.error = null;
+      try {
+        await this.$auth.loginWith("local", {
+          data: {
+            identifier: this.input.email,
+            password: this.input.password,
+          },
+        });
+        this.$router.push("/dashboard");
+      } catch (e) {
+        this.error = e.response.data.message[0].messages[0].message;
+      }
+
+      // const thisObj = this,
+      //       postObj = {
+      //         identifier: this.input.email,
+      //         password: this.input.password
+      //       }
+      // this.input.strapi_data = await thisObj.$axios.$post('http://localhost:1337/api/auth/local', postObj)
+      // this.$axios.setHeader(`Authorization`, `Bearer ${thisObj.input.strapi_data.jwt}`)
+      // this.nsight_ids = await this.$axios.$get('http://localhost:1337/api/nsight-ids?populate=*')
     }
   }
 }
