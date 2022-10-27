@@ -18,6 +18,11 @@
               <div class="mb-3">
                 <button class="btn btn-primary btn-block w-100" @click.prevent="sign_in">Let's get it</button>
               </div>
+              <div class="mb-3">
+                <small class="text-light">Forgot Password? 
+                  <NuxtLink to="/forgot-password" class="text-info fw-bolder text-decoration-none">Let's fix that.</NuxtLink>
+                </small>
+              </div>
               <div class="my-4">
                 <div class="w-100 px-3 py-4">
                   <client-only>
@@ -85,7 +90,7 @@ export default {
         });
         this.$router.push("/dashboard");
       } catch (e) {
-        this.error = e.response.data.message[0].messages[0].message;
+        this.error = e
       }
 
       // const thisObj = this,

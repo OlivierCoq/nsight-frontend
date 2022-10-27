@@ -42,15 +42,17 @@ export default {
   buildModules: [
     '@nuxtjs/style-resources',
     '@nuxtjs/axios',
-    '@nuxtjs/snipcart',
-    '@nuxtjs/strapi'
+    '@nuxtjs/snipcart'
   ],
 
    // Axios
    publicRuntimeConfig: {
     axios: {
       // baseURL: 'https://nsightapi.vip/api'
-      baseURL:  process.env.STRAPI_URL || 'http://localhost:1337'
+      baseURL:  process.env.STRAPI_URL || 'http://localhost:1337',
+      headers: {
+        'Accept': 'application/json'
+      }
     }
   },
 
@@ -65,13 +67,13 @@ export default {
       attributes: []
   },
 
-  strapi: {
-    url: process.env.STRAPI_URL || 'http://localhost:1337',
-    prefix: '/api',
-    version: 'v4',
-    cookie: {},
-    cookieName: 'strapi_jwt'
-  },
+  // strapi: {
+  //   url: process.env.STRAPI_URL || 'http://localhost:1337',
+  //   prefix: '/api',
+  //   version: 'v4',
+  //   cookie: {},
+  //   cookieName: 'strapi_jwt'
+  // },
   
   auth: {
     strategies: {

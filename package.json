@@ -25,7 +25,5 @@
     "vue-template-compiler": "^2.7.10",
     "webpack": "4.46.0"
   },
-  "devDependencies": {
-    "@nuxtjs/strapi": "^1.6.1"
-  }
+  "devDependencies": {}
 }
