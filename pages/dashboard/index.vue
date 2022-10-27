@@ -7,9 +7,14 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 export default {
     name: 'Dashboard',
+    middleware: 'auth',
     layout: 'inner_page',
+    computed: {
+        ...mapGetters(["loggedInUser"]),
+    },
     data(){
         return {
            

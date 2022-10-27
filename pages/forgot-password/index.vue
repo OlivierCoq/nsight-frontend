@@ -5,8 +5,8 @@
                 <div class="col-sm-12 col-md-6 offset-md-3">
                     <div class="d-flex flex-column justify-content-center align-items-center p-3 p-md-5 h-100">
                         <h1 class="text-light m-3">forgot password?</h1><hr/>
-                        <p class="text-light">Send me a reset link</p>
-                        <form class="w-100">
+                        <p v-if="!success" class="text-light">Send me a reset link</p>
+                        <form v-if="!success" class="w-100">
                             <div class="mb-3">
                                 <input type="email" class="form-control " v-model="email" placeholder="your email">
                             </div>
@@ -16,6 +16,8 @@
                         </form>
                         <div v-if="success" class="my-3 alert alert-success">
                             <p v-html="success"></p>
+                            <p v-if="!resent">Didn't get it? <span class="fw-bolder is-hoverable" @click="resend">Send again</span></p>
+                            <p v-else class="fw-bolder">Resent.</p>
                         </div>
                         <div v-if="error" class="my-3 alert alert-danger">
                             <p v-html="error"></p>
@@ -35,7 +37,8 @@
                 email: "",
                 success: false,
                 error: false,
-                post: false
+                post: false,
+                resent: false
             }
         },
         methods: {
@@ -65,6 +68,10 @@
                 //     console.log('error: ', e)
                 // }
             },
+            resend() {
+                this.forgotPassword()
+                this.resent = true
+            }
         }
     }
 </script>
