@@ -19,6 +19,8 @@ export default {
     ],
     script: [
       { src: 'https://cdn.snipcart.com/themes/v3.2.1/default/snipcart.js'},
+      { src: '~/assets/js/bootstrap.bundle.min.js', type: 'text/javascript' }
+      // { src: '~/plugins/bootstrap.js'}
     ]
   },
 
@@ -28,12 +30,9 @@ export default {
     // { src: '~/snipcart/customize.css' }
   ],
 
-  script: [
-    { src: '~/plugins/bootstrap.js' }
-  ],
-
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    // { src: '~/plugins/bootstrap.js'}
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -49,6 +49,7 @@ export default {
       const quotes = await $axios.$get('https://nsightapi.vip/api/quotes?populate=*')
       return { quotes }
   },
+  middleware: 'guest',
   data() {
     return {
       input: {
