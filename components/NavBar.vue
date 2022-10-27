@@ -3,7 +3,8 @@
       <div class="row">
         <div class="col-3">
           <div class="p-3 py-md-2 px-md-4">
-            <span class="fw-bold text-light mx-3">nSight</span>
+            <NuxtLink to="/dashboard" class="text-light text-decoration-none fw-bolder mx-2 fs-5">nSight</NuxtLink>
+            <NuxtLink to="/shop" class="text-light text-decoration-none mx-2">Shop</NuxtLink>
           </div>
         </div>
         <div class="col-6"></div>

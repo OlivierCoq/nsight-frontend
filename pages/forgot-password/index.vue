@@ -43,30 +43,24 @@
         },
         methods: {
             async forgotPassword() {
+
+                /*
+                    Note to self: create robust client-side validation so the server isn't responsible for
+                    user feedback.
+                */
                 const configObj = {
                             headers: { 'content-type': 'application/json' }
                         }
                 this.post = await this.$axios.post("api/auth/forgot-password", {
                         email: this.email,
                     }, configObj).then((data) => {
-                        console.log(data)
+                        // console.log(data)
                         this.error = false
                         this.success = `A reset password link has been sent to your email account. <br/>
                              Please click on the link to complete the password reset.`
                     }).catch((err) => {
                         this.error = err
                     })
-                // try {
-                //     await this.$axios.post("api/auth/forgot-password", {
-                //         email: this.email,
-                //     });
-                //     this.error = null;
-                //     this.success = `A reset password link has been sent to your email account. <br/>
-                //         Please click on the link to complete the password reset.`;
-                // } catch (e) {
-                //     this.error = e
-                //     console.log('error: ', e)
-                // }
             },
             resend() {
                 this.forgotPassword()

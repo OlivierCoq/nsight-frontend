@@ -33,8 +33,11 @@
     </div>
 </template>
 <script>
+    import { mapGetters } from 'vuex'
     export default {
         name: 'Product',
+        middleware: 'auth',
+        layout: 'inner_page',
         data(){
             return {
                 product: null,
@@ -42,6 +45,7 @@
             }
         },
         computed: {
+            ...mapGetters(["loggedInUser"]),
             customFields() {
                 return this.product.data.attributes.custom_field
                     .map(({ title, required, options }) => ({
