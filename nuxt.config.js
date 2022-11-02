@@ -19,7 +19,8 @@ export default {
     ],
     script: [
       { src: 'https://cdn.snipcart.com/themes/v3.2.1/default/snipcart.js'},
-      { src: '~/assets/js/bootstrap.bundle.min.js', type: 'text/javascript' }
+      { src: '~/assets/js/bootstrap.bundle.min.js', type: 'text/javascript' },
+      { src: 'https://kit.fontawesome.com/f76cb178ad.js' }
       // { src: '~/plugins/bootstrap.js'}
     ]
   },
