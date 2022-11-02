@@ -60,7 +60,7 @@ export default {
     methods: {
         fetch_current_user() {
             const thisObj = this
-            this.$axios.$get(`http://localhost:1337/api/users/${this.loggedInUser.id}?populate=*`)
+            this.$axios.$get(`https://nsightapi.vip/api/users/${this.loggedInUser.id}?populate=*`)
                 .then((data) => {  thisObj.current_user = data })
                 .catch((err) => { console.log('user_data_error:', err) })
         },
