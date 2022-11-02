@@ -55,7 +55,7 @@
       ...mapMutations('auth', ['updateUserPreferences']),
       fetch_current_user() {
             const thisObj = this
-            this.$axios.$get(`http://localhost:1337/api/users/${this.loggedInUser.id}?populate=*`)
+            this.$axios.$get(`https://nsightapi.vip/api/users/${this.loggedInUser.id}?populate=*`)
                 .then((data) => {  
                   thisObj.current_user = data; console.log('adfa', data) 
                   thisObj.loggedInUser['preferences'] = data.preferences
@@ -66,7 +66,7 @@
           const thisObj = this
           this.current_user.preferences.dark_mode = !this.current_user.preferences.dark_mode
           // this.$store.commit('updateUserPreferences', !this.current_user.preferences.dark_mode, {root: true} )
-          this.$axios.$put(`http://localhost:1337/api/users/${this.loggedInUser.id}`, this.current_user)
+          this.$axios.$put(`https://nsightapi.vip/api/users/${this.loggedInUser.id}`, this.current_user)
             .then(() => { thisObj.updateUserPreferences(thisObj.current_user.preferences) })
             .catch((err) => { console.log('user_data_error:', err) })
         }
