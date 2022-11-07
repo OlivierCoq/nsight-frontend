@@ -1,5 +1,5 @@
 <template>
-    <div v-if="current_user" class="container-fluid" :class="current_user.preferences.dark_mode ? 'bg-dark' : 'bg-light'">
+    <div v-if="current_user" id="navbar" class="container-fluid fixed-top" :class="current_user.preferences.dark_mode ? 'bg-dark' : 'bg-light'">
       <div class="row">
         <div class="col-3">
           <div class="p-3 py-md-2 px-md-4">
@@ -13,7 +13,7 @@
             <div class="w-100 h-100 d-flex flex-row justify-content-end align-items-center">
               <div class="w-25 h-100"></div>
               <div class="w-25 h-100 d-flex flex-row align-items-start justify-content-end">
-                <i class="fa-solid is-hoverable" :class="current_user.preferences.dark_mode ? 'text-light fa-sun' : 'text-dark fa-moon'" @click="toggle_light_mode"></i>
+                <!-- <i class="fa-solid is-hoverable" :class="current_user.preferences.dark_mode ? 'text-light fa-sun' : 'text-dark fa-moon'" @click="toggle_light_mode"></i> -->
               </div>
               <div class="w-50 h-100">
                 <p class="mx-3 text-end" :class="current_user.preferences.dark_mode ? 'text-light' : 'text-dark'">
