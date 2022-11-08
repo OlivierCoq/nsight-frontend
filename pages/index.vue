@@ -23,6 +23,11 @@
                   <NuxtLink to="/forgot-password" class="text-info fw-bolder text-decoration-none">Let's fix that.</NuxtLink>
                 </small>
               </div>
+              <div v-if="errors" class="mb-3 alert alert-danger">
+                <li class="list-group">
+                  <li v-for="error, a in errors" :key="a" class="list-group-item">{{error}}</li>
+                </li>
+              </div>
               <div class="my-4">
                 <div class="w-100 px-3 py-4">
                   <client-only>
@@ -66,7 +71,7 @@ export default {
       quotes: false,
       quote: false,
       nsight_ids: false,
-      error: false
+      errors: false,
     }
   },
   created() {
@@ -90,7 +95,11 @@ export default {
         });
         this.$router.push("/dashboard");
       } catch (e) {
-        this.error = e
+        this.errors = []
+
+        e.response.data.error.details.errors.forEach((err) => {
+          this.errors.push(err.message)
+        })
       }
 
       // const thisObj = this,
@@ -107,6 +116,6 @@ export default {
 </script>
 <style lang="scss">
   #login_screen {
-    height: 100vh !important;
+    min-height: 100vh !important;
    }
 </style> 

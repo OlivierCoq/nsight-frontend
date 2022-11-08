@@ -122,7 +122,14 @@ export default {
         },
         post_new_member() {
             this.current_tab.data.posting_new = true
-            /* */
+            /*
+                - define new member object
+                - create a new_nsight_id. Example: `nsight-${0da19e70-59ba-41f0-a2d6-bcdb35781929}`
+                - search for all nsight_ids (GET /api/nsight-ids?populate=*)
+                    - make sure new_nsight_id !== any of the nsight_ids
+                    - Make new_nsight_id.authentic = true
+                    - make new user
+            */
         }
     }
 }

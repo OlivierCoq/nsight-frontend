@@ -38,7 +38,8 @@
                 success: false,
                 error: false,
                 post: false,
-                resent: false
+                resent: false,
+                send: false
             }
         },
         methods: {
@@ -49,18 +50,20 @@
                     user feedback.
                 */
                 const configObj = {
-                            headers: { 'content-type': 'application/json' }
+                            headers: { 'accept': 'application/json' }
                         }
                 this.post = await this.$axios.post("api/auth/forgot-password", {
                         email: this.email,
                     }, configObj).then((data) => {
+
+
                         // console.log(data)
                         this.error = false
                         this.success = `A reset password link has been sent to your email account. <br/>
                              Please click on the link to complete the password reset.`
-                    }).catch((err) => {
-                        this.error = err
-                    })
+                    }).catch((err) => { this.error = err.response.data.error.message })
+
+                // this.send = await
             },
             resend() {
                 this.forgotPassword()
@@ -71,7 +74,7 @@
 </script>
 <style lang="scss">
   #forgot_password {
-    height: 100vh !important;
+    min-height: 100vh !important;
    }
 </style> 
 
