@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-sm-12 col-md-6 offset-md-3">
           <div class="d-flex flex-column justify-content-center align-items-center p-3 p-md-5 h-100">
-            <h1 class="text-light m-3">nSight</h1><hr/>
+            <img src="https://res.cloudinary.com/nsight/image/upload/v1668144672/ps_nsight_logo_0362f44f69.png" class="w-100 mb-4" alt="PS/nSight Logo">
             <form class="w-100">
               <div class="mb-3">
                 <input type="email" class="form-control " v-model="input.email" placeholder="Email">
@@ -16,7 +16,7 @@
                 <input type="password" class="form-control" v-model="input.nsight_id" placeholder="nSight ID">
               </div>
               <div class="mb-3">
-                <button class="btn btn-primary btn-block w-100" @click.prevent="sign_in">Let's get it</button>
+                <button class="btn btn-danger btn-block w-100" @click.prevent="sign_in">Let's get it</button>
               </div>
               <div class="mb-3">
                 <small class="text-light">Forgot Password? 
@@ -24,9 +24,9 @@
                 </small>
               </div>
               <div v-if="errors" class="mb-3 alert alert-danger">
-                <li class="list-group">
+                <ul class="list-group">
                   <li v-for="error, a in errors" :key="a" class="list-group-item">{{error}}</li>
-                </li>
+                </ul>
               </div>
               <div class="my-4">
                 <div class="w-100 px-3 py-4">
