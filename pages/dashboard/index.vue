@@ -33,7 +33,7 @@
 
                                 </div>
                                 <div v-else>
-                                    <div v-if="current_tab.data.posting_new">
+                                    <div v-if="current_tab.data.posting_new" class="m-4">
                                         <div class="spinner-border text-primary" role="status">
                                             <span class="visually-hidden">Loading...</span>
                                         </div>
