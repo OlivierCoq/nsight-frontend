@@ -219,7 +219,8 @@ export default {
                                         dark_mode: true
                                     },
                                     username: thisObj.current_tab.data.new_user.email,
-                                    password: thisObj.generate_random_password()
+                                    // password: thisObj.generate_random_password()
+                                    password: 'P@ssW3rd9756'
                             }
                             this.$axios.$post('https://nsightapi.vip/api/users', new_nsight_member)
                                 .then((data) => { 

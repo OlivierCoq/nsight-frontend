@@ -12,9 +12,9 @@
               <div class="mb-3">
                 <input type="password" class="form-control " v-model="input.password" placeholder="Password">
               </div>
-              <div class="mb-3">
+              <!-- <div class="mb-3">
                 <input type="password" class="form-control" v-model="input.nsight_id" placeholder="nSight ID">
-              </div>
+              </div> -->
               <div class="mb-3">
                 <button class="btn btn-danger btn-block w-100" @click.prevent="sign_in">Let's get it</button>
               </div>
@@ -24,8 +24,9 @@
                 </small>
               </div>
               <div v-if="errors" class="mb-3 alert alert-danger">
-                <ul class="list-group">
-                  <li v-for="error, a in errors" :key="a" class="list-group-item">{{error}}</li>
+                <p class="mb-2 fw-bold">Oh man! Something went wrong: </p>
+                <ul class="list-group-danger p-0">
+                  <li v-for="error, a in errors" :key="a" class="list-group-item">{{error}}.</li>
                 </ul>
               </div>
               <div class="my-4">
@@ -33,7 +34,7 @@
                   <client-only>
                     <figure>
                       <blockquote class="blockquote">
-                        <p  class="text-light">{{quote.attributes.quote_body}}</p>
+                        <p class="text-light">{{quote.attributes.quote_body}}</p>
                       </blockquote>
                       <figcaption class="blockquote-footer">
                         <a :href="quote.attributes.link ? quote.attributes.link : 'javascript:(0)' " :target="quote.attributes.link ? '_blank' : '_self'">
@@ -96,20 +97,15 @@ export default {
         this.$router.push("/dashboard");
       } catch (e) {
         this.errors = []
-
-        e.response.data.error.details.errors.forEach((err) => {
-          this.errors.push(err.message)
-        })
+        console.log('errors', e.response)
+        if(e.response.data.error.message) { this.errors.push(e.response.data.error.message)}
+        else {
+            e.response.data.error.details.errors.forEach((err) => {
+            this.errors.push(err.message)
+          })
+        }
       }
-
-      // const thisObj = this,
-      //       postObj = {
-      //         identifier: this.input.email,
-      //         password: this.input.password
-      //       }
-      // this.input.strapi_data = await thisObj.$axios.$post('http://localhost:1337/api/auth/local', postObj)
-      // this.$axios.setHeader(`Authorization`, `Bearer ${thisObj.input.strapi_data.jwt}`)
-      // this.nsight_ids = await this.$axios.$get('http://localhost:1337/api/nsight-ids?populate=*')
+      
     }
   }
 }
@@ -117,5 +113,6 @@ export default {
 <style lang="scss">
   #login_screen {
     min-height: 100vh !important;
+    background-color: black !important;
    }
 </style> 

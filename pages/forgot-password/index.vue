@@ -11,7 +11,7 @@
                                 <input type="email" class="form-control " v-model="email" placeholder="your email">
                             </div>
                             <div class="mb-3">
-                                <button class="btn btn-primary btn-block w-100" @click.prevent="forgotPassword" :disabled="email.length < 1">send link</button>
+                                <button class="btn btn-danger btn-block w-100" @click.prevent="forgotPassword" :disabled="email.length < 1">send link</button>
                             </div>
                         </form>
                         <div v-if="success" class="my-3 alert alert-success">
@@ -52,16 +52,22 @@
                 const configObj = {
                             headers: { 'accept': 'application/json' }
                         }
-                this.post = await this.$axios.post("api/auth/forgot-password", {
+                const mailformat = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+                if(!this.email.match(mailformat)) {
+                    this.error = `Please enter email in "name@example.com" format.`
+                } else {
+                    this.error = false
+                    this.post = await this.$axios.post("api/auth/forgot-password", {
                         email: this.email,
                     }, configObj).then((data) => {
-
 
                         // console.log(data)
                         this.error = false
                         this.success = `A reset password link has been sent to your email account. <br/>
                              Please click on the link to complete the password reset.`
                     }).catch((err) => { this.error = err.response.data.error.message })
+                }
+                
 
                 // this.send = await
             },

@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-sm-12 col-md-6">
                     <div class="ctr-main w-100 h-100 d-flex flex-column justify-content-center align-items-start p-5">
-                        <h2 class="text-danger fw-bold text-uppercase mb-1">Welcome.</h2>
+                        <h2 class="text-danger fw-bold text-uppercase mb-1">Welcome!</h2>
                         <p class="text-light mb-4">You've confirmed your email.</p>
                         <NuxtLink to="/" class="btn btn-danger w-75 btn-block">Log In</NuxtLink> 
                     </div> 
