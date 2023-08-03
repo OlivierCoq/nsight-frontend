@@ -1,31 +1,31 @@
 {
-  "name": "nsight-vip",
-  "version": "1.0.0",
+  "name": "nsight-frontend",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
     "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate"
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-brands-svg-icons": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@nuxt/devtools": "^0.7.0",
+    "@nuxtjs/axios": "^5.13.6",
+    "@types/node": "^18.16.19",
+    "axios": "^1.4.0",
+    "nuxt": "^3.6.5",
+    "sass": "^1.64.0",
+    "sass-loader": "^13.3.2"
   },
   "dependencies": {
-    "@nuxtjs/auth": "^4.9.1",
-    "@nuxtjs/axios": "^5.13.6",
-    "@nuxtjs/snipcart": "^1.3.1",
-    "@nuxtjs/style-resources": "^1.2.1",
-    "bootstrap": "^5.2.2",
-    "cookie-universal-nuxt": "^2.2.2",
-    "core-js": "^3.25.3",
-    "node-sass": "^7.0.3",
-    "nuxt": "^2.15.8",
-    "sass": "^1.55.0",
-    "sass-loader": "10.1.1",
-    "style-loader": "^3.3.1",
-    "vue": "^2.7.10",
-    "vue-server-renderer": "^2.7.10",
-    "vue-template-compiler": "^2.7.10",
-    "vue-uuid": "^3.0.0",
-    "webpack": "4.46.0"
-  },
-  "devDependencies": {}
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
+    "@pinia/nuxt": "^0.4.11",
+    "pinia": "^2.1.4",
+    "vuetify": "^3.3.6"
+  }
 }
