@@ -39,7 +39,7 @@
               <div v-if="state.errors" class="mb-3 alert alert-danger">
                 <p class="mb-2 fw-bold">Oh man! Something went wrong: </p>
                 <ul class="list-group-danger p-0">
-                  <li v-for="error, a in state.errors" :key="a" class="list-group-item">{{error}}.</li>
+                  <li v-for="(error, a) in state.errors" :key="a" class="list-group-item">{{error}}.</li>
                 </ul>
               </div>
               <div class="my-4">

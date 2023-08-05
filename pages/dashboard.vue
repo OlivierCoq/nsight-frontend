@@ -1,9 +1,8 @@
 <template>
 
 </template>
-<script lang="ts">
+<script>
 import { useAsyncData } from 'nuxt/app';
-import { definePageMeta } from 'nuxt/dist/pages/runtime';
 import { reactive } from 'vue';
 
   export default {
@@ -12,6 +11,10 @@ import { reactive } from 'vue';
       definePageMeta({
         middleware: ['auth']
       })
+
+      return {
+        definePageMeta
+      }
     }
   }
 </script>
