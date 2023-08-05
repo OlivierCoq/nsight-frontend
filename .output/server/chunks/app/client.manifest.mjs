@@ -1,4 +1,4 @@
-export default {
+const client_manifest = {
   "_auth.c5e7cdb2.js": {
     "resourceType": "script",
     "module": true,
@@ -158,4 +158,7 @@ export default {
     "file": "index.38b4f9da.css",
     "resourceType": "style"
   }
-}
+};
+
+export { client_manifest as default };
+//# sourceMappingURL=client.manifest.mjs.map

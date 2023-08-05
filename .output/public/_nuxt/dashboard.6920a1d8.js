@@ -1,1 +1,0 @@
-import{d as e}from"./composables.6d0b3fce.js";import{_ as r}from"./entry.b3a8e211.js";const t={name:"dashboard",setup(){return{definePageMeta:e}}};function a(o,s,n,d,c,p){return null}const u=r(t,[["render",a]]);export{u as default};

@@ -25,5 +25,8 @@
     "pinia": "^2.1.6",
     "sass": "^1.64.2",
     "sass-loader": "^13.3.2"
+  },
+  "dependencies": {
+    "vuetify": "^3.3.11"
   }
 }
