@@ -1,0 +1,1 @@
+import{_ as s,i as n,j as r,w as o,o as l,b as t,H as p}from"./entry.b3a8e211.js";const u={};function m(f,i){const e=p,_=n("v-container"),a=n("v-main"),c=n("v-app");return l(),r(c,null,{default:o(()=>[t(a,null,{default:o(()=>[t(_,null,{default:o(()=>[t(e)]),_:1})]),_:1})]),_:1})}const v=s(u,[["render",m]]);export{v as default};

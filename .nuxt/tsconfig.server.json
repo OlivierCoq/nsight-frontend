@@ -1,0 +1,67 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+    "paths": {
+      "#imports": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/.nuxt/types/nitro-imports"
+      ],
+      "#paths": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/nuxt/dist/core/runtime/nitro/paths"
+      ],
+      "~": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend"
+      ],
+      "~/*": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/*"
+      ],
+      "@": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend"
+      ],
+      "@/*": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/*"
+      ],
+      "~~": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend"
+      ],
+      "~~/*": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/*"
+      ],
+      "@@": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend"
+      ],
+      "@@/*": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/*"
+      ],
+      "assets": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/assets"
+      ],
+      "assets/*": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/assets/*"
+      ],
+      "public": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/public"
+      ],
+      "public/*": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/public/*"
+      ],
+      "pinia": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/pinia/dist/pinia"
+      ]
+    }
+  },
+  "include": [
+    "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/.nuxt/types/nitro-nuxt.d.ts",
+    "./types/nitro.d.ts",
+    "../**/*",
+    "../server/**/*"
+  ]
+}
