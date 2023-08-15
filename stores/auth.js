@@ -19,8 +19,8 @@ export const authStore = defineStore({
     async login(payload) {
 
         // Uncomment for production
-    //const res = await $fetch(`${process.env.STRAPI_URL}/api/auth/local`, {
-      const res = await $fetch('http://localhost:1337/api/auth/local', {
+    const res = await $fetch(`${process.env.STRAPI_URL}/api/auth/local`, {
+      // const res = await $fetch('http://localhost:1337/api/auth/local', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -49,6 +49,13 @@ export const authStore = defineStore({
         }
       })
       navigateTo('/dashboard')
+    },
+    async logout() {
+      this.token = null
+      this.loggedIn = false
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      navigateTo('/')
     }
   },
   getters: {},
