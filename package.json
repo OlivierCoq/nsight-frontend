@@ -27,6 +27,7 @@
     "sass-loader": "^13.3.2"
   },
   "dependencies": {
+    "uuid": "^9.0.0",
     "vuetify": "^3.3.11"
   }
 }

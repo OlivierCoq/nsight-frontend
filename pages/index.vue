@@ -39,7 +39,7 @@
               <div v-if="state.errors" class="mb-3 alert alert-danger">
                 <p class="mb-2 fw-bold">Oh man! Something went wrong: </p>
                 <ul class="list-group-danger p-0">
-                  <li v-for="(error, a) in state.errors" :key="a" class="list-group-item">{{error}}.</li>
+                  <li v-for="error, a in state.errors" :key="a" class="list-group-item">{{error}}.</li>
                 </ul>
               </div>
               <div class="my-4">
@@ -66,6 +66,8 @@
 </template>
 <script>
   import { reactive } from 'vue'
+  import { authStore } from '~/stores/auth'
+
   export default {
     name: 'IndexPage',
     setup() {
@@ -85,6 +87,7 @@
         nsight_ids: false,
         errors: false,
       })
+      const auth = authStore()
 
         // Methods
       const pull_quote = () => {
@@ -102,8 +105,15 @@
           .catch((err) => { console.log(err) })
       } 
       const sign_in = async () => {
-        console.log('signing in')
-      }
+        console.log('signing in!')
+        try {
+          await auth.login({ identifier: state.input.email, password: state.input.password })
+            .then((res) => {
+              // console.log(res)
+              
+            })
+      } catch (err) { console.log('front end login error:', err) }
+    }
 
       // Created:
       quotes()
