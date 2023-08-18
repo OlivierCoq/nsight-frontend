@@ -102,5 +102,10 @@ export default {
 <style lang="scss">
   #forgot_password {
     min-height: 100vh !important;
+    background-color: black !important;
+    background-image: url('https://res.cloudinary.com/nsight/image/upload/v1668144020/Doubt_KTM_a780155ada.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 20rem -3rem;
    }
 </style> 
