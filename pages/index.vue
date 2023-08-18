@@ -5,60 +5,60 @@
         <div class="d-flex flex-column justify-center align-center p-3 pmd-5 h-100vh">
           <img src="https://res.cloudinary.com/nsight/image/upload/v1668144672/ps_nsight_logo_0362f44f69.png" class="w-100 mt-5 mb-4" alt="PS/nSight Logo">     
           <form class="w-100">
-              <div class="mb-3">
-                <v-text-field
-                  v-model="state.input.email"
-                  type="email"
-                  placeholder="Email"
-                />
+            <div class="mb-3">
+              <v-text-field
+                v-model="state.input.email"
+                type="email"
+                placeholder="Email"
+              />
+            </div>
+            <div class="mb-3">
+              <v-text-field
+                v-model="state.input.password"
+                type="password"
+                placeholder="Password"
+              />
+            </div>
+            <!-- <div class="mb-3">
+              <v-text-field
+                v-model="state.input.nsight_id"
+                type="password"
+                placeholder="nSight ID"
+              />
+            </div> -->
+            <div class="mb-3">
+              <v-btn block color="primary" @click.prevent="sign_in">
+                Let's get it
+              </v-btn>
+            </div>
+            <div class="mb-3">
+              <small class="text-light">Forgot Password? 
+                <NuxtLink to="/forgot-password" class="text-info fw-bolder text-decoration-none">Let's fix that.</NuxtLink>
+              </small>
+            </div>
+            <div v-if="state.errors" class="mb-3 alert alert-danger">
+              <p class="mb-2 fw-bold">Oh man! Something went wrong: </p>
+              <ul class="list-group-danger p-0">
+                <li v-for="error, a in state.errors" :key="a" class="list-group-item">{{error}}.</li>
+              </ul>
+            </div>
+            <div class="my-4">
+              <div class="w-100 px-3 py-4">
+                <client-only>
+                  <figure v-if="state.quote">
+                    <blockquote class="blockquote">
+                      <p class="text-light">{{state.quote.attributes.quote_body}}</p>
+                    </blockquote>
+                    <figcaption class="blockquote-footer">
+                      <a :href="state.quote.attributes.link ? state.quote.attributes.link : 'javascript:(0)' " :target="state.quote.attributes.link ? '_blank' : '_self'" class="text-decoration-none text-info">
+                      -  {{ state.quote.attributes.author }}
+                      </a>
+                    </figcaption>
+                  </figure> 
+                </client-only>
               </div>
-              <div class="mb-3">
-                <v-text-field
-                  v-model="state.input.password"
-                  type="password"
-                  placeholder="Password"
-                />
-              </div>
-              <!-- <div class="mb-3">
-                <v-text-field
-                  v-model="state.input.nsight_id"
-                  type="password"
-                  placeholder="nSight ID"
-                />
-              </div> -->
-              <div class="mb-3">
-                <v-btn block color="primary" @click.prevent="sign_in">
-                  Let's get it
-                </v-btn>
-              </div>
-              <div class="mb-3">
-                <small class="text-light">Forgot Password? 
-                  <NuxtLink to="/forgot-password" class="text-info fw-bolder text-decoration-none">Let's fix that.</NuxtLink>
-                </small>
-              </div>
-              <div v-if="state.errors" class="mb-3 alert alert-danger">
-                <p class="mb-2 fw-bold">Oh man! Something went wrong: </p>
-                <ul class="list-group-danger p-0">
-                  <li v-for="error, a in state.errors" :key="a" class="list-group-item">{{error}}.</li>
-                </ul>
-              </div>
-              <div class="my-4">
-                <div class="w-100 px-3 py-4">
-                  <client-only>
-                    <figure v-if="state.quote">
-                      <blockquote class="blockquote">
-                        <p class="text-light">{{state.quote.attributes.quote_body}}</p>
-                      </blockquote>
-                      <figcaption class="blockquote-footer">
-                        <a :href="state.quote.attributes.link ? state.quote.attributes.link : 'javascript:(0)' " :target="state.quote.attributes.link ? '_blank' : '_self'" class="text-decoration-none text-info">
-                        -  {{ state.quote.attributes.author }}
-                        </a>
-                      </figcaption>
-                    </figure> 
-                  </client-only>
-                </div>
-              </div>
-            </form>
+            </div>
+          </form>
         </div>
       </v-col>
     </v-row>
