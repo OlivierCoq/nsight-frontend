@@ -67,14 +67,15 @@
   </v-container>
 </template>
 <script>
-  import { reactive } from 'vue'
+  import { reactive, nextTick } from 'vue'
   import { authStore } from '~/stores/auth'
 
   export default {
     name: 'IndexPage',
     setup() {
       definePageMeta({
-        middleware: ['guest'] 
+        middleware: ['guest'],
+        layout: 'default'
       })
         // State
       const state = reactive({
@@ -113,7 +114,9 @@
             .then((res) => {
               console.log('res', JSON.parse(res))
             }).catch((err) => {
-              state.errors.push("Incorrect email, username, or password.")      
+              nextTick(() => {
+                state.errors.push("Incorrect email, username, or password.")   
+              })    
             })
         } catch (err) {
           state.errors.push("Incorrect email, username, or password.")   

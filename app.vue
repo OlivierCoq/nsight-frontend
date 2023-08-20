@@ -1,5 +1,7 @@
 <template>
-  <NuxtPage />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 <script>
   import { ofetch } from 'ofetch'

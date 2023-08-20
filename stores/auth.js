@@ -18,9 +18,9 @@ export const authStore = defineStore({
   actions: {
     async login(payload) {
 
-        // Uncomment for production
-    // const res = await $fetch(`${process.env.STRAPI_URL}/api/auth/local`, {
-      const res = await $fetch('http://localhost:1337/api/auth/local', {
+        // production API:
+    const res = await $fetch(`${process.env.STRAPI_URL}/api/auth/local`, {
+      // const res = await $fetch('http://localhost:1337/api/auth/local', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

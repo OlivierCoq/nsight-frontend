@@ -1,6 +1,10 @@
 <template>
-  <v-container fluid>
-
+  <v-container fluid id="dashboard">
+    <v-row>
+      <v-col>
+        
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -12,7 +16,8 @@
     name: 'Dashboard',
     setup() {
       definePageMeta({
-        middleware: ['auth'] 
+        middleware: ['auth'],
+        layout: 'inner'
       })
 
       const state = reactive({
@@ -53,3 +58,9 @@
     }
   }
 </script>
+<style scoped>
+  #dashboard {
+    padding-top: 50px;
+    height: 100vh;
+  }
+</style>
