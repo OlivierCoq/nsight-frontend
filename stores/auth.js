@@ -23,7 +23,8 @@ export const authStore = defineStore({
       const res = await $fetch('http://localhost:1337/api/auth/local', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'accept': 'application/json'
         },
         body: JSON.stringify(payload)
       })
@@ -33,6 +34,7 @@ export const authStore = defineStore({
         this.errors = false
         this.setUserToken(res.jwt, res.user)
         localStorage.setItem('user', JSON.stringify(res.user))
+        return res
       }
                 
     },

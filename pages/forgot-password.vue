@@ -64,8 +64,8 @@ export default {
             state.input.error = `Please enter email in "name@example.com" format.`
         } else {
             state.input.error = false
-            // state.post = await $fetch(`${process.env.STRAPI_URL}/api/auth/forgot-password`, {
-            state.input.post = await $fetch("http://localhost:1337/api/auth/forgot-password", {
+            state.post = await $fetch(`${process.env.STRAPI_URL}/api/auth/forgot-password`, {
+            // state.input.post = await $fetch("http://localhost:1337/api/auth/forgot-password", {
               method: 'POST',
               headers: { 
                 'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default {
 
                 // console.log(data)
                 state.input.error = false
-                state.input.success = `A reset password link has been sent to your email account. <br/>
+                state.input.success = `A reset link has been sent to your email account. <br/>
                       Please click on the link to complete the password reset.`
             }).catch((err) => { state.input.error = err.response.data.error.message })
         }
