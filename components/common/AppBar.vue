@@ -1,5 +1,5 @@
 <template>
-  <div id="appBar">
+  <div v-if="authData.user" id="appBar">
     <v-app-bar :class="authData.user.preferences.dark_mode ? 'dark' : ''">
       <v-app-bar-nav-icon @click="state.drawer = !state.drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>nSight</v-toolbar-title>
