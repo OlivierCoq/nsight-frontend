@@ -3,8 +3,9 @@
     <NuxtPage />
   </NuxtLayout>
 </template>
-<script>
+<script setup>
   import { ofetch } from 'ofetch'
+  const runtimeConfig = useRuntimeConfig()
 
   globalThis.$fetch = ofetch.create({
     headers: { 'Content-Type': 'application/json' }

@@ -3,7 +3,6 @@
     <v-main>
       <AppBar />
       <slot />
-      <NuxtPage></NuxtPage>
     </v-main>
   </v-app>
 </template>

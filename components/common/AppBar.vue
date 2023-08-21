@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <v-app-bar>
+  <div id="appBar">
+    <v-app-bar :class="authData.user.preferences.dark_mode ? 'dark' : ''">
       <v-app-bar-nav-icon @click="state.drawer = !state.drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>nSight</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="loggedIn" text @click="sign_out">Sign Out</v-btn>
+      <v-btn v-if="authData.loggedIn" text @click="sign_out">Sign Out</v-btn>
     </v-app-bar>
   </div>
 </template>
@@ -17,22 +17,36 @@ export default {
   setup() {
     const auth = authStore()
     const state = reactive({
-      drawer: false,
-      loggedIn: false
+      drawer: false
     })
-    const loggedIn = computed(() => auth.loggedIn)
+    // computed
+    const authData = computed(() => authStore())
 
     // methods
     const sign_out = async () => {
       await auth.logout()
     }
+
     return {
       // state/data
-      state, 
-      loggedIn,
+      state,
+      // computed
+      authData,
       // methods,
       sign_out
     }
   }
 }
 </script>
+<style scoped lang="scss">
+  #appBar {
+    .v-app-bar {
+      background-color: #fff;
+      color: #000;
+    }
+    .v-app-bar.dark {
+      background-color: #191818;
+      color: #fff;
+    }
+  }
+</style>

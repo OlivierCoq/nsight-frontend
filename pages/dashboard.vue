@@ -2,7 +2,7 @@
   <v-container fluid id="dashboard">
     <v-row>
       <v-col>
-        
+        Dashboard
       </v-col>
     </v-row>
   </v-container>
@@ -60,7 +60,6 @@
 </script>
 <style scoped>
   #dashboard {
-    padding-top: 50px;
     height: 100vh;
   }
 </style>

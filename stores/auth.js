@@ -50,7 +50,28 @@ export const authStore = defineStore({
           'Authorization': `Bearer ${token}`
         }
       })
+      this.current_user()
       navigateTo('/dashboard')
+    },
+    async current_user() {
+
+   // production API:
+    const res = await $fetch(`${process.env.STRAPI_URL}/api/users/${this.user.id}?populate=*`, { 
+      // const res = await $fetch(`http://localhost:1337/api/users/${this.user.id}?populate=*`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+          'Authorization': `Bearer ${this.token}`
+        }
+      })
+      if(res.statusCode === 400) {
+        this.errors = res.data.message[0].messages[0].message
+      } else {
+        this.errors = false
+        this.user = res
+      }
+
     },
     async logout() {
       this.token = null
