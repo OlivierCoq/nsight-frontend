@@ -54,7 +54,7 @@ export const authStore = defineStore({
       navigateTo('/dashboard')
     },
     async current_user() {
-
+ 
    // production API:
     const res = await $fetch(`${process.env.STRAPI_URL}/api/users/${this.user.id}?populate=*`, { 
       // const res = await $fetch(`http://localhost:1337/api/users/${this.user.id}?populate=*`, {
