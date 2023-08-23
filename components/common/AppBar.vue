@@ -1,7 +1,7 @@
 <template>
   <div id="appBar">  
     <!-- <v-app-bar :class="dark_mode ? 'dark' : ''"> -->
-    <v-app-bar>
+    <v-app-bar :class="authData.user.preferences.dark_mode ? 'dark' : ''">
       <v-app-bar-nav-icon @click="state.drawer = !state.drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>nSight</v-toolbar-title>
       <pre>
@@ -25,11 +25,6 @@ export default {
     })
     // computed
     const authData = computed(() => authStore())
-    // const dark_mode = computed(() => {
-    //   if(authStore().user.preferences.dark_mode === null) {
-    //     authStore().user.preferences.dark_mode = false
-    //   }
-    // })
 
     // methods
     const sign_out = async () => {
