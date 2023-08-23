@@ -20,7 +20,6 @@ export const authStore = defineStore({
 
         // production API:
       const res = await $fetch(`https://nsightapi.vip/api/auth/local`, {
-    // const res = await $fetch(`${process.env.STRAPI_URL}/api/auth/local`, {
       // const res = await $fetch('http://localhost:1337/api/auth/local', {
         method: 'POST',
         headers: {

@@ -1,12 +1,8 @@
 <template>
   <div id="appBar">  
-    <!-- <v-app-bar :class="dark_mode ? 'dark' : ''"> -->
     <v-app-bar :class="authData.user.preferences.dark_mode ? 'dark' : ''">
       <v-app-bar-nav-icon @click="state.drawer = !state.drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>nSight</v-toolbar-title>
-      <pre>
-        {{authData.user.preferences.dark_mode }}
-      </pre>
       <v-spacer></v-spacer>
       <v-btn v-if="authData.loggedIn" text @click="sign_out">Sign Out</v-btn>
     </v-app-bar>
@@ -51,6 +47,6 @@ export default {
     .v-app-bar.dark {
       background-color: #191818;
       color: #fff;
-    }
+    } 
   }
 </style>
