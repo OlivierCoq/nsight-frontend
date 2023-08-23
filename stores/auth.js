@@ -32,25 +32,39 @@ export const authStore = defineStore({
         this.errors = res.data.message[0].messages[0].message
       } else {
         this.errors = false
-        this.setUserToken(res.jwt, res.user)
-        localStorage.setItem('user', JSON.stringify(res.user))
-        return res
+
+        // ofetch:
+        globalThis.$fetch = ofetch.create({ 
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${res.jwt}`
+          }
+        })
+
+        const custom_data = await $fetch(`${process.env.STRAPI_URL}/api/users/${res.user.id}?populate=*`, {
+          // const custom_data = await $fetch(`http://localhost:1337/api/users/${res.user.id}?populate=*`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'accept': 'application/json',
+              'Authorization': `Bearer ${res.jwt}`
+            }
+          })
+          if(custom_data.statusCode === 400) {
+            this.errors = custom_data.data.message[0].messages[0].message
+          } else {
+            console.log('custom_data: ', custom_data)
+            this.errors = false
+            this.user = custom_data
+            this.token = res.jwt
+            this.loggedIn = true
+            localStorage.setItem('token', res.jwt)
+            localStorage.setItem('user', JSON.stringify(custom_data))
+            navigateTo('/dashboard')
+          }
+        // return res
       }
                 
-    },
-    async setUserToken(token, user) {
-      this.token = token
-      this.loggedIn = true
-      localStorage.setItem('token', token)
-      this.user = user
-
-      globalThis.$fetch = ofetch.create({ 
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      await this.current_user()   
     },
     async current_user() {
  
