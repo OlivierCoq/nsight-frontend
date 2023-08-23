@@ -53,7 +53,7 @@ export const authStore = defineStore({
           if(custom_data.statusCode === 400) {
             this.errors = custom_data.data.message[0].messages[0].message
           } else {
-            console.log('custom_data: ', custom_data)
+            // console.log('custom_data: ', custom_data)
             this.errors = false
             this.user = custom_data
             this.token = res.jwt

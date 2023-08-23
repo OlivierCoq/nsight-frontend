@@ -8,7 +8,7 @@
   </v-container>
 </template>
 <script>
-  import { reactive, computed } from 'vue'
+  import { reactive } from 'vue'
   import { authStore } from '@/stores/auth'
   import { v4 as uuidv4 } from 'uuid'
 
