@@ -38,7 +38,7 @@ export const authStore = defineStore({
       }
                 
     },
-    setUserToken(token, user) {
+    async setUserToken(token, user) {
       this.token = token
       this.loggedIn = true
       localStorage.setItem('token', token)
@@ -50,7 +50,7 @@ export const authStore = defineStore({
           'Authorization': `Bearer ${token}`
         }
       })
-      this.current_user()   
+      await this.current_user()   
     },
     async current_user() {
  
@@ -69,9 +69,7 @@ export const authStore = defineStore({
       } else {
         this.errors = false
         this.user = res
-        if (this.user) {
-          navigateTo('/dashboard')
-        }
+        navigateTo('/dashboard')
       }
 
     },
