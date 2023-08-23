@@ -50,8 +50,7 @@ export const authStore = defineStore({
           'Authorization': `Bearer ${token}`
         }
       })
-      this.current_user()
-      navigateTo('/dashboard')
+      this.current_user()   
     },
     async current_user() {
  
@@ -70,6 +69,9 @@ export const authStore = defineStore({
       } else {
         this.errors = false
         this.user = res
+        if (this.user) {
+          navigateTo('/dashboard')
+        }
       }
 
     },
