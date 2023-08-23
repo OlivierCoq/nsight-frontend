@@ -36,10 +36,6 @@ export default {
       await auth.logout()
     }
 
-    onBeforeMount(() => {
-      authStore().current_user()
-    })
-
     return {
       // state/data
       state,
