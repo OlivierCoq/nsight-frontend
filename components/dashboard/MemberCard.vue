@@ -24,7 +24,7 @@
 </script>
 <style lang="scss">
   .member-card {
-    height: 350px !important;
+    min-height: 350px !important;
 
     .w-100 { width: 100% !important; }
   }

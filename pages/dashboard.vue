@@ -14,12 +14,12 @@
         <v-window v-model="state.current_tab">
           <div v-if="state.current_tab == 1">
             <v-row class="my-3">
-              <v-col v-for="(user, b) in auth.user.users" :key="b" cols="12" md="2" lg="2">
+              <v-col v-for="(user, b) in auth.user.users" :key="b" cols="12" sm="6" md="3" lg="2">
                 <MemberCard :member="user" />
               </v-col>
-              <v-col cols="12" md="2" lg="2">
+              <v-col cols="12" sm="6" md="3" lg="2">
                 <v-card variant="tonal">
-                  <v-card-text style="height: 350px;">
+                  <v-card-text style="min-height: 350px;">
                     <div class="d-flex w-100 h-100 justify-center align-center p-3">
                       <v-btn @click="state.tabs[1].data.adding_new = true" flat>
                         <strong style="font-size: 200%">+</strong>

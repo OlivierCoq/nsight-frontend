@@ -19,8 +19,8 @@ export const authStore = defineStore({
     async login(payload) {
 
         // production API:
-      // const res = await $fetch(`https://nsightapi.vip/api/auth/local`, {
-      const res = await $fetch('http://localhost:1337/api/auth/local', {
+      const res = await $fetch(`https://nsightapi.vip/api/auth/local`, {
+      // const res = await $fetch('http://localhost:1337/api/auth/local', {
         method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
@@ -41,8 +41,8 @@ export const authStore = defineStore({
           }
         })
 
-        // const custom_data = await $fetch(`https://nsightapi.vip/api/users/${res.user.id}?populate=*`, {
-          const custom_data = await $fetch(`http://localhost:1337/api/users/${res.user.id}?populate=*`, {
+        const custom_data = await $fetch(`https://nsightapi.vip/api/users/${res.user.id}?populate=*`, {
+          // const custom_data = await $fetch(`http://localhost:1337/api/users/${res.user.id}?populate=*`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
