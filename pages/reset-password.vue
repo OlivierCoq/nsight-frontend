@@ -57,7 +57,7 @@
               state.errors = []
               state.errors.push('Passwords do not match.')
         }
-        state.post = await state.$axios.post('api/auth/reset-password',{
+        state.post = await $fetch('https://nsightapi.vip/api/auth/reset-password',{
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',

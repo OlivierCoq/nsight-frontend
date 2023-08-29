@@ -1,8 +1,17 @@
 <template>
   <div id="appBar">  
     <v-app-bar :class="authData.user.preferences.dark_mode ? 'dark' : ''">
-      <v-app-bar-nav-icon @click="state.drawer = !state.drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>nSight</v-toolbar-title>
+      <!-- <v-app-bar-nav-icon @click="state.drawer = !state.drawer">
+        <v-icon>mdi-menu</v-icon>
+      </v-app-bar-nav-icon> -->
+      <v-toolbar-title>
+        <NuxtLink to="/dashboard" class="text-decoration-none" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
+          <span class="fw-bold me-4">nSight</span>
+        </NuxtLink>
+        <NuxtLink to="/Shop" class="text-decoration-none" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
+          <span class="fw-bold">Shop</span>
+        </NuxtLink>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn v-if="authData.loggedIn" text @click="sign_out">Sign Out</v-btn>
     </v-app-bar>
@@ -10,8 +19,8 @@
 </template>
 <script>
 import { reactive, computed, onBeforeMount } from 'vue'
-import { mapState, mapActions } from 'pinia'
 import { authStore } from '~/stores/auth'
+
 export default {
   name: 'AppBar',
   setup() {
@@ -21,7 +30,7 @@ export default {
     })
     // computed
     const authData = computed(() => authStore())
-
+    
     // methods
     const sign_out = async () => {
       await auth.logout()

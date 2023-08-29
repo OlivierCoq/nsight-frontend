@@ -27,6 +27,9 @@
     "sass-loader": "^13.3.2"
   },
   "dependencies": {
+    "@chec/commerce.js": "^2.8.0",
+    "@types/chec__commerce.js": "^2.8.6",
+    "moment": "^2.29.4",
     "uuid": "^9.0.0",
     "vuetify": "^3.3.11"
   }

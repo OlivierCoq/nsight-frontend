@@ -56,7 +56,7 @@ export default {
       const forgot_password = async () => { 
         /*
             Note to self: create robust client-side validation so the server isn't responsible for
-            user feedback.
+            user feedback. Especially since it's all being done by Strapi.
         */
 
         const mailformat = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -64,7 +64,7 @@ export default {
             state.input.error = `Please enter email in "name@example.com" format.`
         } else {
             state.input.error = false
-            state.post = await $fetch(`${process.env.STRAPI_URL}/api/auth/forgot-password`, {
+            state.post = await $fetch(`https://nsightapi.vip/api/auth/forgot-password`, {
             // state.input.post = await $fetch("http://localhost:1337/api/auth/forgot-password", {
               method: 'POST',
               headers: { 
