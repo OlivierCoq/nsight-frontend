@@ -21,8 +21,8 @@
                 <v-card variant="tonal">
                   <v-card-text style="height: 350px;">
                     <div class="d-flex w-100 h-100 justify-center align-center p-3">
-                      <v-btn @click="state.tabs[1].data.adding_new = true" color="info">
-                        <strong>+</strong>
+                      <v-btn @click="state.tabs[1].data.adding_new = true" flat>
+                        <strong style="font-size: 200%">+</strong>
                         <v-tooltip activator="parent" location="top" open-delay="500">Invite new member</v-tooltip>
                         <v-dialog v-model="state.tabs[1].data.adding_new" width="500">
 
