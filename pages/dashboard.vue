@@ -141,7 +141,14 @@
                     - Make new_nsight_id.authentic = true -> insert into DB
                     - make new user with new_nsight_id
             */
-          active_tab.post = await $fetch('https://nsightapi.vip/api/nsight-ids?populate=*', { method: 'GET' })
+          active_tab.post = await $fetch('https://nsightapi.vip/api/nsight-ids?populate=*', 
+          { 
+            method: 'GET',
+            headers: { 
+                  'Content-Type': 'application/json',
+                  'accept': 'application/json'
+              } 
+            })
             .then((data) => {
                 const n_ids = data
                 console.log('nids', n_ids)
@@ -196,6 +203,7 @@
 
                                 // Add user to your Friends list:
                             auth.user.users.push(data)
+                            state.tabs[1].data.adding_new = false
                             
                                     // Send Email Confirmation
                             $fetch('https://nsightapi.vip/api/auth/send-email-confirmation', {
@@ -225,18 +233,18 @@
                                         // thisObj.fetch_current_user()
                                         active_tab.data.posting_new = false
                                         active_tab.data.adding_new = false
-                                        state.tabs[1].data.adding_new = false
+                                        
                                     })
-                                    .catch((err) => { this.error = err.response.data.error.message })
+                                    .catch((err) => { state.error = err })
                               })
-                              .catch((err) => { this.error = err.response.data.error.message })
+                              .catch((err) => { state.error = err })
                             })
-                            .catch((err) => { this.error = err.response.data.error.message })
+                            .catch((err) => { state.error = err })
                     })
-                    .catch((err) => { this.error = err.response.data.error.message })
+                    .catch((err) => { state.error = err })
                 }
             })
-            .catch((err) => { this.error = err.response.data.error.message })
+            .catch((err) => { state.error = err })
       }
 
        // Watch
