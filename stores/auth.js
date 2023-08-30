@@ -22,7 +22,7 @@ export const authStore = defineStore({
       const res = await $fetch(`https://nsightapi.vip/api/auth/local`, {
       // const res = await $fetch('http://localhost:1337/api/auth/local', {
         method: 'POST', 
-        headers: {
+        headers: { 
           'Content-Type': 'application/json',
           'accept': 'application/json'
         },
