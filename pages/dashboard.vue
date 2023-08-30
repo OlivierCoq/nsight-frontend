@@ -1,7 +1,7 @@
 <template>
 <v-row id="dashboard" :class="auth.user.preferences.dark_mode ? 'bg-dark' : 'bg-light'">
   <v-col class="h-100">
-    <v-card :theme="auth.user.preferences.dark_mode ? 'dark' : 'light'" class="mx-3 my-3 h-100">
+    <v-card :theme="auth.user.preferences.dark_mode ? 'dark' : 'light'" class="mx-3 my-3 h-100 overflow-auto">
       <v-card-title>let's get it</v-card-title>
       <v-card-text>
         <v-tabs
@@ -14,21 +14,46 @@
         <v-window v-model="state.current_tab">
           <div v-if="state.current_tab == 1">
             <v-row class="my-3">
-              <v-col v-for="(user, b) in auth.user.users" :key="b" cols="12" sm="6" md="3" lg="2">
+              <v-col v-for="(user, b) in auth.user.users" :key="b" cols="12" sm="6" md="3" lg="2" xl="1">
                 <MemberCard :member="user" />
               </v-col>
-              <v-col cols="12" sm="6" md="3" lg="2">
-                <v-card variant="tonal">
-                  <v-card-text style="min-height: 350px;">
-                    <div class="d-flex w-100 h-100 justify-center align-center p-3">
-                      <v-btn @click="state.tabs[1].data.adding_new = true" flat>
-                        <strong style="font-size: 200%">+</strong>
-                        <v-tooltip activator="parent" location="top" open-delay="500">Invite new member</v-tooltip>
-                        <v-dialog v-model="state.tabs[1].data.adding_new" width="500">
-
-                        </v-dialog>
-                      </v-btn>
-                    </div>
+              <v-col cols="12" sm="6" md="3" lg="2" xl="1">
+                <v-card variant="tonal" class="w-100 h-100">
+                  <v-card-text class="d-flex w-100 h-100 justify-center align-center">
+                    <v-btn @click="state.tabs[1].data.adding_new = true" flat>
+                      <strong style="font-size: 200%">+</strong>
+                      <v-tooltip activator="parent" location="top" open-delay="500">Invite new member</v-tooltip>
+                      <v-dialog v-model="state.tabs[1].data.adding_new" width="600">
+                        <v-row>
+                          <v-col>
+                            <v-card flat variant="flat">
+                              <v-card-title>
+                                <span class="headline">invite new member</span>
+                              </v-card-title>
+                              <v-card-text>
+                                <v-form>
+                                  <v-text-field
+                                    v-model="state.tabs[1].data.new_member.email"
+                                    label="Email"
+                                    required
+                                  ></v-text-field>
+                                  <v-text-field
+                                    v-model="state.tabs[1].data.new_member.first_name"
+                                    label="First Name"
+                                    required
+                                  ></v-text-field>
+                                </v-form>
+                              </v-card-text>
+                              <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="state.tabs[1].data.adding_new = false">Cancel</v-btn>
+                                <v-btn :disabled="!state.validate" color="blue darken-1" text @click="post_new_member">Invite</v-btn>
+                              </v-card-actions>
+                            </v-card>
+                          </v-col>
+                        </v-row>
+                      </v-dialog>
+                    </v-btn>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -61,44 +86,48 @@
       const state = reactive({
         current_user: authStore.user,
         current_tab: null,
-          dark_mode: false,
-          error: false,
-          use_the_force: false,
-          tabs: [
-              {
-                  name: 'My Profile',
-                  data: {}
-              },
-              { 
-                name: 'My Members', 
-                data: {
-                    adding_new: false,
-                    posting_new: false,
-                    post: null,
-                    new_member: {
-                        email: '',
-                        first_name: '',
-                        n_id: `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`
-                    }
-                }
+        dark_mode: false,
+        error: false,
+        use_the_force: false,
+        tabs: [
+          {
+              name: 'My Profile',
+              data: {}
+          },
+          { 
+            name: 'My Members', 
+            data: {
+              adding_new: false,
+              posting_new: false,
+              post: null,
+              new_member: {
+                  email: '',
+                  first_name: '',
+                  n_id: `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`
               }
-            ]
+            }
+          }
+        ],
+        validate: false
       })
-      
-      console.log(`Let's get it`, state.tabs[1].data.new_member.n_id)
-
-      
+       
        // Methods
       const generate_random_password = () => {
-            let pass = ``,
-                str = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$`
-            for (let i = 1; i <= 8; i++) {
-                var char = Math.floor(Math.random()
-                            * str.length + 1);
-                pass += str.charAt(char)
-            }
-            return pass;
+        let pass = ``,
+            str = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$`
+        for (let i = 1; i <= 8; i++) {
+            var char = Math.floor(Math.random()
+                        * str.length + 1);
+            pass += str.charAt(char)
         }
+        return pass;
+      }
+      const validateEmail = (email) => {
+        return email.toString().toLowerCase()
+          .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          );
+      }
       const post_new_member = async () => {
 
         // Horrible, terrible way of doing this. I'm sorry. I'll fix it later. 
@@ -196,6 +225,7 @@
                                         // thisObj.fetch_current_user()
                                         active_tab.data.posting_new = false
                                         active_tab.data.adding_new = false
+                                        state.tabs[1].data.adding_new = false
                                     })
                                     .catch((err) => { this.error = err.response.data.error.message })
                               })
@@ -207,7 +237,18 @@
                 }
             })
             .catch((err) => { this.error = err.response.data.error.message })
-        }
+      }
+
+       // Watch
+
+        // email: 
+      watch(() => state.tabs[1].data.new_member.email, (val) => {
+        state.validate = (val.length > 0) && (validateEmail(val))
+      })
+        // first_name:
+      watch(() => state.tabs[1].data.new_member.first_name, (val) => {
+        state.validate = val.length > 0
+      })
 
       return {
           // meta
@@ -217,7 +258,8 @@
         auth,
           // methods
         generate_random_password,
-        post_new_member
+        post_new_member,
+        validateEmail
       }
     }
   }
@@ -225,7 +267,5 @@
 <style lang="scss" scoped>
   #dashboard {
     height: 100vh;
-    .h-100 { height: 100%; }
-    .w-100 { width: 100%; }
   }
 </style>
