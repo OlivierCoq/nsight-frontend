@@ -66,7 +66,7 @@
 </v-row>
 </template>
 <script>
-  import { reactive } from 'vue'
+  import { reactive, onMounted } from 'vue'
   import { authStore } from '@/stores/auth'
   import { v4 as uuidv4 } from 'uuid'
   import MemberCard from '@/components/dashboard/MemberCard.vue'
@@ -110,7 +110,8 @@
         ],
         validate: false
       })
-       
+      const runtimeConfig = useRuntimeConfig()
+
        // Methods
       const generate_random_password = () => {
         let pass = ``,
@@ -141,7 +142,7 @@
                     - Make new_nsight_id.authentic = true -> insert into DB
                     - make new user with new_nsight_id
             */
-          active_tab.post = await $fetch('https://nsightapi.vip/api/nsight-ids?populate=*', 
+          active_tab.post = await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids?populate=*`, 
           { 
             method: 'GET',
             headers: { 
@@ -165,7 +166,7 @@
                             nsight_id: active_tab.data.new_member.n_id
                         }
                     }
-                    $fetch('https://nsightapi.vip/api/nsight-ids', {
+                    $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids`, {
                         method: 'POST',
                         headers: { 
                             'Content-Type': 'application/json',
@@ -190,7 +191,7 @@
                             password: 'P@ssW3rd9756',
                             users: [auth.user]
                         }
-                        $fetch('https://nsightapi.vip/api/users', {
+                        $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users`, {
                             method: 'POST',
                             headers: { 
                                 'Content-Type': 'application/json',
@@ -206,7 +207,7 @@
                             state.tabs[1].data.adding_new = false
                             
                                     // Send Email Confirmation
-                            $fetch('https://nsightapi.vip/api/auth/send-email-confirmation', {
+                            $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/send-email-confirmation`, {
                                 method: 'POST',
                                 headers: { 
                                     'Content-Type': 'application/json',
@@ -218,7 +219,7 @@
                                 // console.log('sent new member confirmation email: ', data)
 
                                     // Update friend list in DB
-                                $fetch(`https://nsightapi.vip/api/users/${auth.user.id}`, {
+                                $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${auth.user.id}`, {
                                     method: 'PUT',
                                     headers: { 
                                         'Content-Type': 'application/json',

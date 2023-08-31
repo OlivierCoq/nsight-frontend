@@ -8,7 +8,9 @@ pinia.use(piniaPluginPersistedstate)
 export const productsStore = defineStore({
   id: 'productsStore',
   state: () => {
-    return {}
+    return {
+      all_products: [],
+    }
   },
   actions: {},
   getters: {},

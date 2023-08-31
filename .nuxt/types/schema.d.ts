@@ -15,8 +15,12 @@ declare module 'nuxt/schema' {
 
       cdnURL: string,
    },
+
+   apiSecret: string,
   }
   interface PublicRuntimeConfig {
+   NUXT_STRAPI_URL: string,
+
    persistedState: {
       storage: string,
 

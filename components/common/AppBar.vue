@@ -16,7 +16,7 @@
       <v-text-field
         v-if="state.search.searching"
         v-model="state.search.query"
-        class="ctr-search" height="20px" width="300px" flat density="compact" hide-details
+        class="ctr-search " flat density="compact" hide-details
         :loading="state.search.loading"
         :disabled="state.search.loading"
         :placeholder="state.search.loading ? 'Searching...' : 'Search...'"
@@ -66,7 +66,7 @@ export default {
       state.search.searching = !state.search.searching
     }
     const doSearch = () => {
-      console.log('searching', state.search)
+      // console.log('searching', state.search)
     }
 
     return {

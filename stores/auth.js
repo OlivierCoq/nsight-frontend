@@ -4,6 +4,7 @@ import { ofetch } from 'ofetch'
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
+const runtimeConfig = useRuntimeConfig()
 
 export const authStore = defineStore({
   id: 'authStore',
@@ -18,9 +19,7 @@ export const authStore = defineStore({
   actions: {
     async login(payload) {
 
-        // production API:
-      const res = await $fetch(`https://nsightapi.vip/api/auth/local`, {
-      // const res = await $fetch('http://localhost:1337/api/auth/local', {
+      const res = await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/local`, {
         method: 'POST', 
         headers: { 
           'Content-Type': 'application/json',
@@ -41,8 +40,7 @@ export const authStore = defineStore({
           }
         })
 
-        const custom_data = await $fetch(`https://nsightapi.vip/api/users/${res.user.id}?populate=*`, {
-          // const custom_data = await $fetch(`http://localhost:1337/api/users/${res.user.id}?populate=*`, {
+        const custom_data = await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${res.user.id}?populate=*`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
