@@ -8,7 +8,7 @@
         <NuxtLink to="/dashboard" class="text-decoration-none" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
           <span class="fw-bold me-4">nSight</span>
         </NuxtLink>
-        <NuxtLink to="/shop" class="text-decoration-none" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
+        <NuxtLink to="/shop/products" class="text-decoration-none" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
           <span class="fw-bold">Shop</span>
         </NuxtLink>
       </v-toolbar-title>

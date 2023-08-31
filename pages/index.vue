@@ -91,6 +91,7 @@
         errors: [],
       })
       const auth = authStore()
+      const runtimeConfig = useRuntimeConfig()
 
         // Methods
       const pull_quote = () => {
@@ -100,7 +101,7 @@
         }
       }
       const quotes = async () => {
-        const res = await $fetch('https://nsightapi.vip/api/quotes?populate=*', { method: 'GET' })
+        const res = await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/quotes?populate=*`, { method: 'GET' })
           .then((res) => { 
             state.quotes = res
             pull_quote()

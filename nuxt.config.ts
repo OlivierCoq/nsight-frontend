@@ -35,7 +35,8 @@ export default defineNuxtConfig({
     apiSecret: '123',
     // Keys within public are also exposed client-side
     public: {
-      NUXT_STRAPI_URL: process.env.STRAPI_URL || 'http://localhost:1337'
+      NUXT_STRAPI_URL: process.env.STRAPI_URL || 'http://localhost:1337',
+      NUXT_ENV_CHEC_PUBLIC_API_KEY: process.env.NUXT_ENV_CHEC_PUBLIC_API_KEY
     }
   },
   build: {

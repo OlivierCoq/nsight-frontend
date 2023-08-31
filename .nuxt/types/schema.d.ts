@@ -21,6 +21,8 @@ declare module 'nuxt/schema' {
   interface PublicRuntimeConfig {
    NUXT_STRAPI_URL: string,
 
+   NUXT_ENV_CHEC_PUBLIC_API_KEY: string,
+
    persistedState: {
       storage: string,
 
