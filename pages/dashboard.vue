@@ -178,7 +178,7 @@
                             // Create new user object and insert new member in to DB:
                         let new_nsight_member = {
                             blocked: false,
-                            confirmed: false,
+                            confirmed: true,
                             email: active_tab.data.new_member.email,
                             first_name: active_tab.data.new_member.first_name,
                             nsight_id: data.data,

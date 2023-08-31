@@ -6,14 +6,18 @@
     >
       <v-card-title class="text-white">{{ member.first_name }}</v-card-title>
     </v-img>
-    <v-card-actions>
-      <v-btn text>Button</v-btn>
-      <v-btn text @click="visit_profile">profile</v-btn>
+    <v-card-actions class="d-flex flex-row align-center justify-end">
+      <v-btn text @click="visit_profile">
+        <font-awesome-icon :icon="['fas', 'user']" />
+        <v-tooltip bottom open-delay="500">
+          <span>View Profile</span>
+        </v-tooltip>
+      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 <script setup>
-  import { defineProps, reactive } from 'vue'
+  import { reactive } from 'vue'
   const props = defineProps(['member'])
   const state = reactive({
     member: props.member

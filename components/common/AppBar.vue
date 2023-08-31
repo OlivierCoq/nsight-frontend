@@ -8,11 +8,29 @@
         <NuxtLink to="/dashboard" class="text-decoration-none" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
           <span class="fw-bold me-4">nSight</span>
         </NuxtLink>
-        <NuxtLink to="/Shop" class="text-decoration-none" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
+        <NuxtLink to="/shop" class="text-decoration-none" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
           <span class="fw-bold">Shop</span>
         </NuxtLink>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer v-if="!state.search.searching" />
+      <v-text-field
+        v-if="state.search.searching"
+        v-model="state.search.query"
+        class="ctr-search" height="20px" width="300px" flat density="compact" hide-details
+        :loading="state.search.loading"
+        :disabled="state.search.loading"
+        :placeholder="state.search.loading ? 'Searching...' : 'Search...'"
+        @input="doSearch"
+        @focusout="toggleSearch"
+      />
+      <font-awesome-icon :icon="['fas', 'magnifying-glass']" class="mx-4 btn-search" @click="toggleSearch">
+        <v-tooltip activator="parent" location="bottom" open-delay="500">Search products, users, and more</v-tooltip>
+      </font-awesome-icon>
+      <NuxtLink to="/dashboard" class="text-decoration-none username" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
+        <span class="fw-bold">{{ authData.user.first_name }}</span>
+        <v-tooltip activator="parent" location="bottom" open-delay="500">{{ authData.user.email }}</v-tooltip>
+      </NuxtLink>
+      <font-awesome-icon :icon="['fas', 'cart-shopping']" class="me-4 btn-cart" @click="goToCart" />
       <v-btn v-if="authData.loggedIn" text @click="sign_out">Sign Out</v-btn>
     </v-app-bar>
   </div>
@@ -26,7 +44,13 @@ export default {
   setup() {
     const auth = authStore()
     const state = reactive({
-      drawer: false
+      drawer: false,
+      search: {
+        query: '',
+        results: [],
+        searching: false,
+        loading: false
+      }
     })
     // computed
     const authData = computed(() => authStore())
@@ -35,6 +59,15 @@ export default {
     const sign_out = async () => {
       await auth.logout()
     }
+    const goToCart = () => {
+      navigateTo('/cart')
+    }
+    const toggleSearch = () => {
+      state.search.searching = !state.search.searching
+    }
+    const doSearch = () => {
+      console.log('searching', state.search)
+    }
 
     return {
       // state/data
@@ -42,7 +75,10 @@ export default {
       // computed
       authData,
       // methods,
-      sign_out
+      sign_out,
+      goToCart,
+      doSearch,
+      toggleSearch
     }
   }
 }
@@ -57,5 +93,15 @@ export default {
       background-color: #191818;
       color: #fff;
     } 
+
+    .username {
+      margin-right: 1rem;
+      text-transform: lowercase;
+    }
+
+    .btn-search,
+    .btn-cart {
+      cursor: pointer;
+    }
   }
 </style>

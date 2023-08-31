@@ -7,7 +7,7 @@ Front end of the eCommerce powerhouse nSight
 ```bash
 
 - Nuxt 3
-- Vuetify
+- Vuetify 3
 - Pinia
 - Commerce.Js
 
