@@ -10,19 +10,26 @@
           </v-col>
         </v-row>
         <hr class="my-5"/>
-        <v-row v-if="state.products">
-          <v-col v-for="product in state.products.data" :key="product.id" cols="12" md="6" lg="3" xl="2">
+        <v-row v-if="prodStore.products">
+          <v-col v-for="product in prodStore.products.data" :key="product.id" cols="12" md="6" lg="3" xl="2">
             <product-card :product="product" />
           </v-col>
         </v-row>
+        <v-row v-else>
+          <v-col>
+            <div class="p-5">
+              <v-progress-circular indeterminate color="primary" />            
+            </div>
+          </v-col>
+        </v-row>
       </v-container>
-    </v-col>
+    </v-col> 
   </v-row>
 </template>
 <script>
   import { reactive, onBeforeMount } from 'vue'
-  import commerce from '~/common/commerce.js'
   import ProductCard from '~/components/products/ProductCard.vue'
+  import { productsStore } from '~/stores/products'
   export default {
     name: 'Products',
     components: {
@@ -33,27 +40,13 @@
         middleware: ['auth'],
         layout: 'inner'
       })
-
+      const prodStore = productsStore()
       const state = reactive({
-        merchant: null,
-        categories: null,
-        products: null,
-      })  
 
-      const getCommerceData = async () => {
+      })
 
-        const [merch, cat, prods ] = await Promise.all([
-          commerce.merchants.about(),
-          commerce.categories.list(),
-          commerce.products.list()
-        ])
-
-        state.merchant = merch
-        state.categories = cat
-        state.products = prods
-      }
       onBeforeMount(() => {
-        getCommerceData()
+        prodStore.getCommerceData()
       })
 
       return {
@@ -61,8 +54,9 @@
         definePageMeta,
         // state
         state,
+        prodStore,
         // methods:
-        getCommerceData
+
       }
     },
   }

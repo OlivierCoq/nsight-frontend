@@ -24,6 +24,10 @@
 </script>
 <style lang="scss">
 
+  .product_name {
+    text-shadow: 1px 1px 9px rgb(20 1 1 / 56%);
+  }
+
   .btn-like,
   .btn-add_to_cart {
     cursor: pointer;

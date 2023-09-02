@@ -125,7 +125,7 @@ const _inlineRuntimeConfig = {
   },
   "public": {
     "NUXT_STRAPI_URL": "http://localhost:1337",
-    "NUXT_ENV_CHEC_PUBLIC_API_KEY": "pk_53544a0c9ad996346c510b4c4eb26414c2337c1b6f2b5",
+    "NUXT_ENV_CHEC_PUBLIC_API_KEY": "pk_5394939a67c7f246ff724b03653dedefb4d58ca6834bd",
     "persistedState": {
       "storage": "cookies",
       "debug": false,
