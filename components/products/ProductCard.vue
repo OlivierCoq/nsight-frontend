@@ -5,10 +5,11 @@
         class="white--text align-end w-100"
         :src="product.image.url"
       >
-        <v-card-title class="text-white product_name">{{ product.name }}: {{ product.price.formatted_with_symbol }}</v-card-title>
+        <v-card-title class="text-white product_name text-wrap" style="line-height: 1.2rem;">{{ product.name }}</v-card-title>
       </v-img>
     </NuxtLink>
     <v-card-actions>
+      <span>{{ product.price.formatted_with_symbol }}</span>
       <v-spacer />
       <font-awesome-icon :icon="['fas', 'heart']" class="mx-2 btn-like" />
       <font-awesome-icon :icon="['fas', 'cart-shopping']" class="mx-2 btn-add_to_cart" />

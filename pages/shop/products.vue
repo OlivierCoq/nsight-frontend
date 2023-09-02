@@ -1,5 +1,5 @@
 <template>
-  <v-row id="products">
+  <v-row id="products" class="overflow-auto">
     <v-col>
       <v-container >
         <v-row>
@@ -61,3 +61,8 @@
     },
   }
 </script>
+<style lang="scss">
+  #products {
+    height: 100vh;
+  }
+</style>
