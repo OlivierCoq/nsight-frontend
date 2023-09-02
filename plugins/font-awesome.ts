@@ -14,5 +14,5 @@ library.add(fas);
 library.add(fasCircleUser);
 
 export default defineNuxtPlugin(({vueApp}) => {
-  vueApp.component('FontAwesomeIcon', FontAwesomeIcon)
+  vueApp.component('FontAwesomeIcon', FontAwesomeIcon)
 })

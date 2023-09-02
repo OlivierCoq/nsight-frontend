@@ -1,6 +1,6 @@
 <template>
   <v-card class="product-card w-100 h-100" variant="tonal">
-    <NuxtLink :to="`/shop/products/${product.id}`" class="text-decoration-none">
+    <NuxtLink :to="`/shop/products/${product.permalink}`" class="text-decoration-none">
       <v-img
         class="white--text align-end w-100"
         :src="product.image.url"

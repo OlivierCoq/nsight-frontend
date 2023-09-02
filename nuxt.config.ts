@@ -18,7 +18,8 @@ export default defineNuxtConfig({
     "~/assets/style/main.scss"
   ],
   plugins: [
-    { src: "~/plugins/font-awesome.ts" }
+    { src: "~/plugins/font-awesome.ts" },
+    { src: "~/plugins/commerce.ts" },
   ],
   modules: [
     '@pinia/nuxt',

@@ -1,11 +1,25 @@
 <template>
-  <div>
-    <h1></h1>
-  </div>
+  <v-container fluid>
+    <v-row v-if="state.product">
+      <v-col>
+        <h1>{{ state.product.name }}</h1>
+        <p>{{ state.product.price.formatted_with_symbol }}</p>
+      </v-col>
+    </v-row>
+    <v-row v-else>
+      <v-col>
+        <div class="p-5">
+          <v-progress-circular indeterminate color="primary" />            
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 <script>
   import { reactive } from 'vue'
   import { productsStore } from '~/stores/products'
+  import commerce from '~/common/commerce'
+
   export default {
     name: 'Product',
     setup() {
@@ -14,12 +28,20 @@
         layout: 'inner'
       })
 
-      const prodStore = productsStore()
-      const state = reactive({
+        // Data
+      const prodStore = productsStore(), 
+            route = useRoute(),
+            state = reactive({ product: null })
 
-      })
+        // Methods
+      const get_product = async () => {
+        const product = await commerce.products.retrieve(route.params.id, { type: 'permalink' })
+        state.product = product
+      }
+        // Lifecycle
       onBeforeMount(() => {
         prodStore.getCommerceData()
+        get_product()
       })
 
       return {
@@ -29,6 +51,7 @@
         prodStore,
         state,
         // methods
+        get_product
       }
     },
   }

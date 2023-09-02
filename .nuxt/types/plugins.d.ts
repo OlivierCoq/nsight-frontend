@@ -16,6 +16,7 @@ type NuxtAppInjections =
   InjectionType<typeof import("../../node_modules/@nuxt/devtools/dist/runtime/plugins/devtools.client").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/chunk-reload.client").default> &
   InjectionType<typeof import("../../plugins/font-awesome").default> &
+  InjectionType<typeof import("../../plugins/commerce").default> &
   InjectionType<typeof import("../../node_modules/@pinia-plugin-persistedstate/nuxt/dist/runtime/plugin").default> &
   InjectionType<typeof import("../../plugins/vuetify").default>
 
