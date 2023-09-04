@@ -33,7 +33,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     // The private keys which are only available server-side
-    apiSecret: '123',
+    apiSecret: process.env.NUXT_ENV_CHEC_SECRET_API_KEY,
     // Keys within public are also exposed client-side
     public: {
       NUXT_STRAPI_URL: process.env.STRAPI_URL || 'http://localhost:1337',

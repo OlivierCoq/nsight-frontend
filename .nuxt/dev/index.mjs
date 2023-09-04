@@ -125,14 +125,14 @@ const _inlineRuntimeConfig = {
   },
   "public": {
     "NUXT_STRAPI_URL": "http://localhost:1337",
-    "NUXT_ENV_CHEC_PUBLIC_API_KEY": "pk_5394939a67c7f246ff724b03653dedefb4d58ca6834bd",
+    "NUXT_ENV_CHEC_PUBLIC_API_KEY": "pk_test_53949d043496fd8bce0eb17986aa07d64253a1723f5ab",
     "persistedState": {
       "storage": "cookies",
       "debug": false,
       "cookieOptions": {}
     }
   },
-  "apiSecret": "123"
+  "apiSecret": "sk_test_53949e2053c7983c599e829afdc4fc519decfcdacb52e"
 };
 const ENV_PREFIX = "NITRO_";
 const ENV_PREFIX_ALT = _inlineRuntimeConfig.nitro.envPrefix ?? process.env.NITRO_ENV_PREFIX ?? "_";
