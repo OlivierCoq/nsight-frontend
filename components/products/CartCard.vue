@@ -18,8 +18,7 @@
             <v-row>
               <v-col style="height: 10px;" class="my-3">
                 <div class="d-flex flex-row w-100 h-100">
-                  <v-text-field v-model="state.num_select" style="width: 100px !important;" label="Qty" density="compact" type="number" :disabled="state.loading" />
-                  <!-- Indefinite circular progress -->
+                  <v-text-field v-model="state.product.quantity" style="width: 100px !important;" label="Qty" density="compact" type="number" :disabled="state.loading" />
                   <v-progress-circular
                     v-if="state.loading"
                     indeterminate
@@ -27,18 +26,18 @@
                     size="50"
                     class="mx-5" 
                     style="margin-top: -3em;"/>
-                    <v-snackbar
-                      v-model="state.snackbar"
-                      :timeout="3000"
-                      :top="true"
-                      :right="true"
-                      location="top"
-                      :multi-line="true"
-                      :vertical="true"
-                      color="success"
-                    >
-                      {{ state.snackbar_text }}
-                    </v-snackbar>
+                  <v-snackbar
+                    v-model="state.snackbar"
+                    :timeout="3000"
+                    :top="true"
+                    :right="true"
+                    location="top"
+                    :multi-line="true"
+                    :vertical="true"
+                    color="success"
+                  >
+                    {{ state.snackbar_text }}
+                  </v-snackbar>
                 </div>
               </v-col>
             </v-row>
