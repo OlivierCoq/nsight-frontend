@@ -6,6 +6,8 @@ const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 const runtimeConfig = useRuntimeConfig()
 
+import { productsStore } from './products'
+
 export const authStore = defineStore({
   id: 'authStore',
   state: () => {
@@ -18,6 +20,8 @@ export const authStore = defineStore({
   },
   actions: {
     async login(payload) {
+
+      const prodStore = productsStore()
 
       const res = await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/local`, {
         method: 'POST', 
@@ -58,7 +62,13 @@ export const authStore = defineStore({
             this.loggedIn = true
             localStorage.setItem('token', res.jwt)
             localStorage.setItem('user', JSON.stringify(custom_data))
-            navigateTo('/dashboard')
+
+            // Take care of user cart
+            prodStore.getCommerceData()
+
+            setTimeout(() => {
+              navigateTo('/dashboard')
+            }, 1000)
           }
         return res
       }
@@ -69,6 +79,7 @@ export const authStore = defineStore({
       this.loggedIn = false
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+      document.cookie = 'commercejs_cart_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       navigateTo('/')
     }
   },

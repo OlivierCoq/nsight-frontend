@@ -110,19 +110,13 @@
       } 
       const sign_in = async () => {
         console.log('signing in!')
-        try {
-          await auth.login({ identifier: state.input.email, password: state.input.password })
-            .then((res) => {
-              console.log('res', JSON.parse(res))
-            }).catch((err) => {
-              nextTick(() => {
-                state.errors.push("Incorrect email, username, or password.")   
-              })    
-            })
-        } catch (err) {
-          state.errors.push("Incorrect email, username, or password.")   
-        }
-    }
+        await auth.login({ identifier: state.input.email, password: state.input.password })
+          .catch((err) => {
+            console.log('err', err)
+            state.errors.push("Incorrect email, username, or password.")   
+          })
+      }
+    
 
       // Created:
       quotes()
