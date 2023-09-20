@@ -32,6 +32,33 @@
               <v-container v-if="prodStore.cart.total_items">
                 <v-row>
                   <v-col>
+                    <div class="w-100 d-flex flex-column align-end justify-end mb-5">
+                      <p class="text-uppercase fw-bold curser-pointer" @click="empty_cart">
+                        Empty cart &nbsp; <font-awesome-icon :icon="['fas', 'x']" cursor="pointer" /> 
+                      </p>
+                      <v-progress-circular
+                        v-if="state.emptying"
+                        indeterminate
+                        color="red"
+                        size="90"
+                        class="my-5 mx-5 position-absolute float-left" style="top: 20em; left: 45%; z-index: 999"/>
+                        <v-snackbar
+                          v-model="state.snackbar"
+                          :timeout="3000"
+                          :top="true"
+                          :right="true"
+                          location="top"
+                          :multi-line="true"
+                          :vertical="true"
+                          color="success"
+                        >
+                          {{ state.snackbar_text }}
+                        </v-snackbar>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
                     <div class="d-flex flex-row align-center justify-start">
                       <h2>subtotal: {{ prodStore.cart.subtotal.formatted_with_symbol }}</h2>
                     </div>
@@ -39,11 +66,11 @@
                 </v-row>
                 <v-row>
                   <v-col>
-                    <div class="d-flex flex-row align-center justify-center">
-                      <v-btn color="info" block @click="checkout" :disabled="!prodStore.cart.total_items">
+                    <div class="d-flex flex-column align-center justify-center">
+                      <v-btn color="info" block @click="checkout" :disabled="state.checking_out">
                         checkout
                         <v-progress-circular
-                          v-if="state.loading"
+                          v-if="state.checking_out"
                           indeterminate
                           color="white"
                           size="15"
@@ -61,6 +88,7 @@
   </div>
 </template>
 <script>
+  import commerce from '~/common/commerce.js'
   import { reactive } from 'vue'
   import { authStore } from '@/stores/auth'
   import { productsStore } from '@/stores/products'
@@ -78,14 +106,34 @@
       })
 
       const state = reactive({
-        loading: false
+        loading: false,
+        emptying: false,
+        checking_out: false,
+        snackbar: false,
+        snackbar_text: '',
       })
       const auth = authStore()
       const prodStore = productsStore()
 
       // methods
-      const checkout = () => {
+      const empty_cart = () => {
+        state.emptying = true
 
+        commerce.cart.empty()
+          .then((res) => {
+            state.snackbar = true
+            state.snackbar_text = 'Emptied cart.'
+            state.emptying = false
+            prodStore.initCart()
+          })
+      }
+      const checkout = () => {
+        
+        commerce.checkout.generateTokenFrom('cart', prodStore.cart.id)
+          .then((res) => {
+            
+            console.log('result', res)
+          })
       }
 
       return {
@@ -96,8 +144,17 @@
         auth,
         prodStore,
         // methods
-        checkout
+        checkout,
+        empty_cart
       }
     },
   }
 </script>
+<style lang="scss">
+
+  .curser-pointer {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+</style>

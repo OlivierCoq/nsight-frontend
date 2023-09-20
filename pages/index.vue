@@ -10,7 +10,7 @@
                   v-model="state.input.email"
                   type="email"
                   placeholder="Email"
-                  @keydown="state.errors = []"
+                  @change="state.errors = []"
                 />
               </div>
               <div class="mb-3">
@@ -18,7 +18,7 @@
                   v-model="state.input.password"
                   type="password"
                   placeholder="Password"
-                  @keydown="state.errors = []"
+                  @change="state.errors = []"
                 />
               </div>
               <!-- <div class="mb-3">
@@ -121,7 +121,8 @@
         await auth.login({ identifier: state.input.email, password: state.input.password })
           .catch((err) => {
             console.log('err', err)
-            state.errors.push("Incorrect email, username, or password.")   
+            state.errors.push("Incorrect email, username, or password.")  
+            state.loading = false 
           })
       }
     
