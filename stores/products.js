@@ -43,7 +43,7 @@ export const productsStore = defineStore({
         const cart = await commerce.cart.retrieve(auth.user.cart).then((cart) => cart)
         this.cart = cart
       } else {
-        const cart = await commerce.cart.create().then((cart) => cart)
+        const cart = await commerce.cart.retrieve().then((cart) => cart)
         this.cart = cart
         auth.user.cart = cart.id
       }
