@@ -28,7 +28,32 @@
                 <p>Looks like your cart's empty. Head over to our shop to see what we've got!</p>
               </div>
             </v-col>
-            <v-col cols="12" sm="12" md="6" lg="6" xl="6"></v-col>
+            <v-col cols="12" sm="12" md="6" lg="6" xl="6">
+              <v-container v-if="prodStore.cart.total_items">
+                <v-row>
+                  <v-col>
+                    <div class="d-flex flex-row align-center justify-start">
+                      <h2>subtotal: {{ prodStore.cart.subtotal.formatted_with_symbol }}</h2>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <div class="d-flex flex-row align-center justify-center">
+                      <v-btn color="info" block @click="checkout" :disabled="!prodStore.cart.total_items">
+                        checkout
+                        <v-progress-circular
+                          v-if="state.loading"
+                          indeterminate
+                          color="white"
+                          size="15"
+                          class="mx-2"/>
+                      </v-btn>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-col>
           </v-row>
         </v-container>
       </v-card-text>
@@ -53,10 +78,15 @@
       })
 
       const state = reactive({
-
+        loading: false
       })
       const auth = authStore()
       const prodStore = productsStore()
+
+      // methods
+      const checkout = () => {
+
+      }
 
       return {
         // meta
@@ -64,8 +94,9 @@
         // state
         state,
         auth,
-        prodStore
+        prodStore,
         // methods
+        checkout
       }
     },
   }

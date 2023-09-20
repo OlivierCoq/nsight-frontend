@@ -75,10 +75,14 @@ export const authStore = defineStore({
                 
     },
     async logout() {
+      const prodStore = productsStore()
+
       this.token = null
       this.loggedIn = false
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+
+      prodStore.cart = null
 
         // take care of user cart
       document.cookie = 'commercejs_cart_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'

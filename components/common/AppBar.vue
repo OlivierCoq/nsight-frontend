@@ -31,7 +31,7 @@
         <v-tooltip activator="parent" location="bottom" open-delay="500">{{ authData.user.email }}</v-tooltip>
       </NuxtLink>
       <font-awesome-icon :icon="['fas', 'cart-shopping']" class="me-4 btn-cart" @click="goToCart" />
-      <div v-if="authData.user && authData.user.cart && prodStore.cart.total_items" class="num_count d-flex flex-row justify-center align-center">
+      <div v-if="authData.user && authData.user.cart && prodStore.cart && prodStore.cart.total_items" class="num_count d-flex flex-row justify-center align-center">
         {{ prodStore.cart.total_items }}
       </div>
       <v-btn v-if="authData.loggedIn" text @click="sign_out">Sign Out</v-btn>
