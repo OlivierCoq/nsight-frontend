@@ -29,8 +29,14 @@
                 />
               </div> -->
               <div class="mb-3">
-                <v-btn block color="primary" @click.prevent="sign_in">
+                <v-btn block color="primary" @click.prevent="sign_in" :disabled="state.loading">
                   Let's get it
+                  <v-progress-circular
+                    v-if="state.loading"
+                    indeterminate
+                    color="white"
+                    size="15"
+                    class="mx-2"/>
                 </v-btn>
               </div>
               <div class="mb-3">
@@ -89,6 +95,7 @@
         quote: false,
         nsight_ids: false,
         errors: [],
+        loading: false
       })
       const auth = authStore()
       const runtimeConfig = useRuntimeConfig()
@@ -110,6 +117,7 @@
       } 
       const sign_in = async () => {
         console.log('signing in!')
+        state.loading = true
         await auth.login({ identifier: state.input.email, password: state.input.password })
           .catch((err) => {
             console.log('err', err)
