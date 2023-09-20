@@ -79,7 +79,15 @@ export const authStore = defineStore({
       this.loggedIn = false
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+
+        // take care of user cart
       document.cookie = 'commercejs_cart_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+      // remove X-Authorization header:
+      globalThis.$fetch = ofetch.create({ 
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
       navigateTo('/')
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <v-row class="h-100">
+  <v-row class="h-100 mb-5"> 
     <v-col cols="6" md="3" lg="3" xl="3" class="h-100">
       <v-img :src="state.product.image.url"  />
     </v-col>
@@ -16,9 +16,29 @@
             <span class="my-2">{{ state.product.price.formatted_with_symbol }}</span>
             <v-spacer />
             <v-row>
-              <v-col cols="6">
-                <div class="d-flex flex-row w-100">
-                  <v-text-field v-model="state.num_select" label="Qty" density="compact" type="number" />
+              <v-col style="height: 10px;" class="my-3">
+                <div class="d-flex flex-row w-100 h-100">
+                  <v-text-field v-model="state.num_select" style="width: 100px !important;" label="Qty" density="compact" type="number" :disabled="state.loading" />
+                  <!-- Indefinite circular progress -->
+                  <v-progress-circular
+                    v-if="state.loading"
+                    indeterminate
+                    color="error"
+                    size="50"
+                    class="mx-5" 
+                    style="margin-top: -3em;"/>
+                    <v-snackbar
+                      v-model="state.snackbar"
+                      :timeout="3000"
+                      :top="true"
+                      :right="true"
+                      location="top"
+                      :multi-line="true"
+                      :vertical="true"
+                      color="success"
+                    >
+                      {{ state.snackbar_text }}
+                    </v-snackbar>
                 </div>
               </v-col>
             </v-row>
@@ -54,29 +74,19 @@ import { ofetch } from 'ofetch'
     product: props.product,
     snackbar: false,
     snackbar_text: '',
-    num_select: 1
+    num_select: 1,
+    loading: false
   })
   const prodStore = productsStore()
   const remove_from_cart = () => {
-    let target_cart 
-    // remove from cart:
-    commerce.cart.remove(state.product.id).then((resp) => {
-      console.log(resp)
-      // prodStore.getCart()
-    }).catch((err) => {
-      console.log(err)
-    })
-
-
-    // commerce.js wasn't cooperating with me here, so I had to do this
-    // $fetch(`https://api.chec.io/v1/carts/${prodStore.cart.id}/items/${state.product.id}`, {
-    //   method: 'DELETE',
-    //   headers: {
-    //     "X-Authorization": "sk_53949a5c411dc56df0ca99f9244ee7dda728fb43df7b9",
-    //     "Accept": "application/json",
-    //     "Content-Type": "application/json",
-    //   }
-    // })
     
+    state.loading = true
+    commerce.cart.remove(state.product.id).then((resp) => { prodStore.initCart()})
+      .then(() => {
+        state.snackbar = true
+        state.snackbar_text = `${ state.product.name } removed from cart!`
+        state.loading = false
+      })
+      .catch((err) => { console.log(err) })
   } 
 </script>
