@@ -31,6 +31,9 @@
         <v-tooltip activator="parent" location="bottom" open-delay="500">{{ authData.user.email }}</v-tooltip>
       </NuxtLink>
       <font-awesome-icon :icon="['fas', 'cart-shopping']" class="me-4 btn-cart" @click="goToCart" />
+      <div v-if="authData.user && authData.user.cart && prodStore.cart.total_items" class="num_count d-flex flex-row justify-center align-center">
+        {{ prodStore.cart.total_items }}
+      </div>
       <v-btn v-if="authData.loggedIn" text @click="sign_out">Sign Out</v-btn>
     </v-app-bar>
   </div>
@@ -38,6 +41,7 @@
 <script>
 import { reactive, computed, onBeforeMount } from 'vue'
 import { authStore } from '~/stores/auth'
+import { productsStore } from '~/stores/products'
 
 export default {
   name: 'AppBar',
@@ -54,6 +58,7 @@ export default {
     })
     // computed
     const authData = computed(() => authStore())
+    const prodStore = productsStore()
     
     // methods
     const sign_out = async () => {
@@ -74,6 +79,7 @@ export default {
       state,
       // computed
       authData,
+      prodStore,
       // methods,
       sign_out,
       goToCart,
@@ -102,6 +108,15 @@ export default {
     .btn-search,
     .btn-cart {
       cursor: pointer;
+    }
+    .num_count {
+      height: 20px;
+      width: 20px;
+      background: red;
+      margin-left: -24px;
+      margin-bottom: -18px;
+      border-radius: 14px;
+      font-size: 12px;
     }
   }
 </style>

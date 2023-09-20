@@ -97,27 +97,22 @@
   const add_to_cart = () => {
     // add product to cart
     state.loading = true
-    // commerce.cart.add(state.product.id, 1, state.product.selected_option.id)
-    //   .then((res) => {
-    //    // console.log(res)
-    //     // update cart
-    //     commerce.cart.retrieve()
-    //       .then((res) => {
-    //        // console.log(res)
-    //         // update cart store
-    //         prodStore.cart = res
-    //         state.snackbar_text = `"${state.product.name}" - (${state.product.selected_option.description}) added to cart!`
-    //         state.snackbar = true
-    //         state.loading = false
-    //       })
-    //       .catch((err) => {
-    //         console.log(err)
-    //       })
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
-
+    commerce.cart.add(state.product.id, 1, state.product.selected_option.id)
+      .then((res) => {
+      //  console.log(res)
+        // update cart
+        commerce.cart.retrieve()
+          .then((res) => {
+          //  console.log(res)
+            // update cart store
+            prodStore.cart = res
+            state.snackbar_text = `"${state.product.name}" - (${state.product.selected_option.description}) added to cart!`
+            state.snackbar = true
+            state.loading = false
+          })
+          .catch((err) => { console.log(err) })
+      })
+      .catch((err) => { console.log(err) })
   }
 </script>
 <style lang="scss">
