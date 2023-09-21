@@ -32,14 +32,25 @@
                               </v-card-title>
                               <v-card-text>
                                 <v-form>
+                                  <v-row>
+                                    <v-col>
+                                      <v-text-field
+                                        v-model="state.tabs[1].data.new_member.first_name"
+                                        label="First Name"
+                                        required
+                                      />
+                                    </v-col>
+                                    <v-col>
+                                      <v-text-field
+                                        v-model="state.tabs[1].data.new_member.last_name"
+                                        label="Last Name"
+                                        required
+                                      />
+                                    </v-col>
+                                  </v-row>
                                   <v-text-field
                                     v-model="state.tabs[1].data.new_member.email"
                                     label="Email"
-                                    required
-                                  ></v-text-field>
-                                  <v-text-field
-                                    v-model="state.tabs[1].data.new_member.first_name"
-                                    label="First Name"
                                     required
                                   ></v-text-field>
                                 </v-form>
@@ -103,6 +114,7 @@
               new_member: {
                   email: '',
                   first_name: '',
+                  last_name: '',
                   n_id: `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`
               }
             }
@@ -182,6 +194,7 @@
                             confirmed: true,
                             email: active_tab.data.new_member.email,
                             first_name: active_tab.data.new_member.first_name,
+                            last_name: active_tab.data.new_member.last_name,
                             nsight_id: data.data,
                             preferences: {
                                 dark_mode: true

@@ -124,15 +124,62 @@
             state.snackbar = true
             state.snackbar_text = 'Emptied cart.'
             state.emptying = false
-            prodStore.initCart()
+            auth.user.cart = null
           })
+          .then(() => { prodStore.initCart() }) 
       }
-      const checkout = () => {
-        
+      const checkout = async () => {
+
+        state.checking_out = true
         commerce.checkout.generateTokenFrom('cart', prodStore.cart.id)
-          .then((res) => {
+          .then((token_obj) => {
+
+            console.log('token_obj', token_obj)
+    
             
-            console.log('result', res)
+            commerce.checkout.getShippingOptions(token_obj.id, {
+              country: auth.user.selected_address.country,
+              region: auth.user.selected_address.state_province
+            }).then((shipping_obj) => {
+                
+              commerce.checkout.capture(token_obj.id, {
+                line_items: prodStore.cart.line_items,
+                customer: {
+                  firstname: auth.user.firstname,
+                  lastname: auth.user.lastname,
+                  email: auth.user.email
+                },
+                customer: {
+                  firstname: auth.user.first_name,
+                  lastname: auth.user.last_name,
+                  email: auth.user.email
+                },
+                shipping: auth.user.selected_address,
+                billing: auth.user.selected_address,
+                fulfillment: {
+                  shipping_method: shipping_obj[0].id
+                },
+                payment: {
+                  gateway: 'test_gateway',
+                  card: {
+                    number: '4242 4242 4242 4242',
+                    expiry_month: '01',
+                    expiry_year: '2023',
+                    cvc: '123',
+                    postal_zip_code: '94103',
+                  },
+                }
+
+              })
+                .then((resp) => {
+                  console.log('resp', resp)
+                  state.snackbar = true
+                  state.snackbar_text = 'Order placed!'
+                  prodStore.initCart()
+                  state.checking_out = false
+                })
+
+            })         
           })
       }
 
