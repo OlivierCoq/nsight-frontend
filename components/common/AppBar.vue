@@ -26,7 +26,7 @@
       <font-awesome-icon :icon="['fas', 'magnifying-glass']" class="mx-4 btn-search" @click="toggleSearch">
         <v-tooltip activator="parent" location="bottom" open-delay="500">Search products, users, and more</v-tooltip>
       </font-awesome-icon>
-      <NuxtLink to="/dashboard" class="text-decoration-none username" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
+      <NuxtLink to="/account" class="text-decoration-none username" :class="authData.user.preferences.dark_mode ? 'text-white' : 'text-dark'">
         <span class="fw-bold">{{ authData.user.first_name }}</span>
         <v-tooltip activator="parent" location="bottom" open-delay="500">{{ authData.user.email }}</v-tooltip>
       </NuxtLink>

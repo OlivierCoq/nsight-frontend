@@ -134,9 +134,7 @@
         commerce.checkout.generateTokenFrom('cart', prodStore.cart.id)
           .then((token_obj) => {
 
-            console.log('token_obj', token_obj)
-    
-            
+            // console.log('token_obj', token_obj)
             commerce.checkout.getShippingOptions(token_obj.id, {
               country: auth.user.selected_address.country,
               region: auth.user.selected_address.state_province
@@ -144,11 +142,6 @@
                 
               commerce.checkout.capture(token_obj.id, {
                 line_items: prodStore.cart.line_items,
-                customer: {
-                  firstname: auth.user.firstname,
-                  lastname: auth.user.lastname,
-                  email: auth.user.email
-                },
                 customer: {
                   firstname: auth.user.first_name,
                   lastname: auth.user.last_name,
@@ -169,7 +162,6 @@
                     postal_zip_code: '94103',
                   },
                 }
-
               })
                 .then((resp) => {
                   console.log('resp', resp)
