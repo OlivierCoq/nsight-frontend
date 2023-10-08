@@ -76,7 +76,7 @@
         </v-dialog>
       </v-btn>
     </v-card-title>
-    <v-card-text :key="state.address.comp">
+    <v-card-text>
       <v-container>
         <v-row>
           <v-col v-if="!auth.user.addresses.data.length">
@@ -111,7 +111,7 @@
                             <v-row>
                               <v-col cols="12" sm="12" md="12" lg="12" xl="12">
                                 <v-text-field
-                                  v-model="state.address.editsaddress.name"
+                                  v-model="state.address.edit_address.name"
                                   label="Name"
                                   outlined
                                   dense
@@ -230,8 +230,7 @@
           edit_address: false,
           edit_modal: false,
           delete_address: false,
-          set_default: false,
-          comp: 0
+          set_default: false
         }
       })
       const auth = authStore()
@@ -261,10 +260,7 @@
       const set_address_default = async (address) => {
 
         auth.user.selected_address = address
-        await auth.updateUser()
-        nextTick(() => {
-          state.address.comp++
-        })  
+        await auth.updateUser() 
       }
       const add_address = async () => {
         const address = {

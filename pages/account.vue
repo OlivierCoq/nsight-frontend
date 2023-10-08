@@ -11,28 +11,8 @@
                 <edit-address />
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6" xl="6">
-                <v-card variant="tonal" class="mb-4">
-                  <v-card-title>
-                    Orders
-                  </v-card-title>
-                  <v-card-text>
-                    <div class="ctr-orders overflow-auto">
-
-                    </div>
-                  </v-card-text>
-                </v-card>
-                <v-card variant="tonal" class="mb-4">
-                  <v-card-title class="d-flex flex-row justify-space-between">
-                    Payment Methods
-                    <v-spacer/>
-                    <v-btn color="info" size="small">
-                      + Add
-                    </v-btn>
-                  </v-card-title>
-                  <v-card-text>
-
-                  </v-card-text>
-                </v-card>
+                <orders />
+                <payment-methods />
               </v-col>
             </v-row>
           </v-container>
@@ -44,18 +24,22 @@
 <script>
   import { reactive, nextTick } from 'vue'
   import { authStore } from '@/stores/auth'
-  import { v4 as uuidv4 } from 'uuid'
-  const runtimeConfig = useRuntimeConfig()
+  // import { v4 as uuidv4 } from 'uuid'
+  // const runtimeConfig = useRuntimeConfig()
 
   // Components
   import EditAddress from '~/components/account/EditAddress.vue'
   import EditPersonal from '~/components/account/EditPersonal.vue'
+  import Orders from '~/components/account/Orders.vue'
+  import PaymentMethods from '~/components/account/PaymentMethods.vue'
 
   export default {
     name: 'Account',
     components: {
       EditAddress,
-      EditPersonal
+      EditPersonal,
+      Orders,
+      PaymentMethods
     },
     setup() {
       definePageMeta({
