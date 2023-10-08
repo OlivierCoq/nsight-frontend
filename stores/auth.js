@@ -93,6 +93,15 @@ export const authStore = defineStore({
         }
       })
       navigateTo('/')
+    },
+    async updateUser() {
+      $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${this.user.id}`,{
+        'method': 'PUT',
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+        'accept': 'application/json',
+        'body': JSON.stringify(this.user)
+      })
     }
   },
   getters: {},
