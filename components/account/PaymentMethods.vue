@@ -1,8 +1,10 @@
 
+import { userInfo } from 'os';
+
 import { env } from 'process';
 <template>
   <v-card variant="tonal" class="mb-4">
-    <v-card-title class="d-flex flex-row justify-space-between">
+    <v-card-title class="d-flex flex-row justify-space-between mb-3">
       Payment Methods
       <v-spacer/>
       <v-btn color="info" size="small" @click="state.dialog = true">
@@ -89,7 +91,72 @@ import { env } from 'process';
       </v-btn>
     </v-card-title>
     <v-card-text>
+      <v-row>
+        <v-col cols="12" md="6" v-for="(payment_method, a) in auth.user.payment_methods.data" :key="a">
+          <v-card :variant="auth.user.selected_payment_method.id === payment_method.id ? 'tonal' : ''" class="mb-4">
+            <v-card-title>
+              <font-awesome-icon :icon="['fab', `cc-${payment_method.card.brand}`]" />
+            </v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col>
+                  <p class="text--white">
+                    <span class="text-uppercase">
+                      {{ payment_method.billing_details.name }}
+                    </span> | 
+                    <span class="text-uppercase">
+                      {{ payment_method.card.brand }} ...{{ payment_method.card.last4 }}
+                    </span>
+                  </p>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-actions >
+              <v-btn color="info" size="small" text @click="state.edit_method_dialog = true">
+                Edit
 
+                <v-dialog v-model="state.edit_method_dialog" width="500">
+                  <v-card>
+                    <v-card-title>
+                      Edit Payment Method
+                    </v-card-title>
+                  </v-card>
+                </v-dialog>
+
+              </v-btn>
+              <v-btn v-if="auth.user.selected_payment_method.id !== payment_method.id" color="primary" size="small" text @click="set_default(payment_method)">
+                Set as Default
+              </v-btn>
+              <v-btn color="error" size="small"  text @click="state.delete_method_dialog = true">
+                Delete
+
+                <v-dialog v-model="state.delete_method_dialog" width="500">
+                  <v-card>
+                    <v-card-title>
+                      Delete Payment Method
+                    </v-card-title>
+                    <v-card-text>
+                      <p class="text--white">
+                        Are you sure you want to delete this payment method?
+                      </p>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer/>
+                      <v-btn color="primary" text @click="state.delete_method_dialog = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn color="error" text @click="delete_method(payment_method)">
+                        Delete
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-btn>  
+              <v-spacer />
+            </v-card-actions> 
+          </v-card> 
+        </v-col> 
+      </v-row>
     </v-card-text>
   </v-card>
 </template>
@@ -127,6 +194,8 @@ import { env } from 'process';
           //   component: 'GooglePay'
           // }
         ],
+        edit_method_dialog: false,
+        delete_method_dialog: false,
         new_card: {
           name: '',
           address: {
@@ -180,8 +249,12 @@ import { env } from 'process';
       })
 
       // methods
-      const setDefault = (id) => {
-        console.log('setDefault', id)
+      const set_default = (method) => {
+        
+        auth.user.selected_payment_method = method
+        nextTick(() => {
+          auth.updateUser()
+        })
       }
 
       const add_new = async () => {
@@ -197,11 +270,18 @@ import { env } from 'process';
           .then((res) => {
             console.log('stripe res', res)
             auth.user.payment_methods.data.push(res.paymentMethod)
+            if(!auth.user.selected_payment_method) {
+              auth.user.selected_payment_method = res.paymentMethod
+            }
             nextTick(() => {
               auth.updateUser()
               state.dialog = false
             })
           })
+      }
+
+      const delete_method = (method) => {
+        console.log('delete', method.id)
       }
     
       return {
@@ -209,8 +289,9 @@ import { env } from 'process';
         auth,
         // stripe,
         // methods
-        setDefault,
-        add_new
+        set_default,
+        add_new,
+        delete_method
       }
     }
   }
@@ -226,5 +307,8 @@ import { env } from 'process';
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     border-bottom: 1px solid #949494;
+  }
+  .ctr-payment_method {
+
   }
 </style>

@@ -97,8 +97,8 @@
                 <p class="fw-bold"><strong>Zip:</strong> {{ address.postal_zip_code }} </p>
               </div>
               <div class="w-100 d-flex flex-row justify-start align-start">
-                <v-btn color="info" size="x-small" class="mt-3" @click="state.address.edit_address = address; state.edit_modal = true">
-                  Edit
+                <v-btn color="info" size="x-small" text class="mt-3" @click="state.address.edit_address = address; state.edit_modal = true">
+                  Edit 
 
                   <v-dialog v-model="state.edit_modal" max-width="500">
                     <v-card>
@@ -172,7 +172,7 @@
                   </v-dialog>
 
                 </v-btn>
-                <v-btn color="error" size="x-small" class="mt-3 ms-3" @click="state.address.delete_address = true">
+                <v-btn color="error" size="x-small" class="mt-3 ms-3" text @click="state.address.delete_address = true">
                   Delete
 
                   <v-dialog v-model="state.address.delete_address" max-width="500">
@@ -195,7 +195,7 @@
                   </v-dialog>
 
                 </v-btn>
-                <v-btn v-if="address.street !== auth.user.selected_address.street" color="primary" size="x-small" class="mt-3 ms-3" @click="set_address_default(address)">
+                <v-btn v-if="address.street !== auth.user.selected_address.street" color="primary" size="x-small" class="mt-3 ms-3" text @click="set_address_default(address)">
                   Default
                 </v-btn>
               </div>

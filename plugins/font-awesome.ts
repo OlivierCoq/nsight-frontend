@@ -4,6 +4,7 @@ import { defineNuxtPlugin } from '#app'; // remove if 'vue3' is recognised and g
 import {library, config} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons'
 
 
 import { faCircleUser as fasCircleUser } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +12,7 @@ import { faCircleUser as fasCircleUser } from '@fortawesome/free-solid-svg-icons
 config.autoAddCss = false;
 
 library.add(fas);
+library.add(fab);
 library.add(fasCircleUser);
 
 export default defineNuxtPlugin(({vueApp}) => {
