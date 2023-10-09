@@ -126,13 +126,25 @@ const _inlineRuntimeConfig = {
   "public": {
     "NUXT_STRAPI_URL": "http://localhost:1337",
     "NUXT_ENV_CHEC_PUBLIC_API_KEY": "pk_test_53949d043496fd8bce0eb17986aa07d64253a1723f5ab",
+    "NUXT_ENV_STRIPE_PUBLISHABLE_KEY": "pk_test_51NyoiUAA6gMfhiWCxzsX0xfuDziPmPjcevVqatfBQui4xjFHF3itptBeNHgoGro8T9zDMdx9yzE5KxuPKXgmc1HS00nWbg25z1",
     "persistedState": {
       "storage": "cookies",
       "debug": false,
       "cookieOptions": {}
+    },
+    "stripe": {
+      "key": "pk_test_51NyoiUAA6gMfhiWCxzsX0xfuDziPmPjcevVqatfBQui4xjFHF3itptBeNHgoGro8T9zDMdx9yzE5KxuPKXgmc1HS00nWbg25z1",
+      "options": {}
     }
   },
-  "apiSecret": "sk_test_53949e2053c7983c599e829afdc4fc519decfcdacb52e"
+  "apiSecret": "sk_test_53949e2053c7983c599e829afdc4fc519decfcdacb52e",
+  "stripeSecretKey": "sk_test_51NyoiUAA6gMfhiWCDFXWPPYQB4fS7WkMzXR8sHcJdnyNW3XjgQgxZ6aOJmPD5Mj3SkNOdxfnHTmno8bxfrs4f7MB00RjFOUa9X",
+  "stripe": {
+    "key": "sk_test_51NyoiUAA6gMfhiWCDFXWPPYQB4fS7WkMzXR8sHcJdnyNW3XjgQgxZ6aOJmPD5Mj3SkNOdxfnHTmno8bxfrs4f7MB00RjFOUa9X",
+    "options": {
+      "apiVersion": "2022-11-15"
+    }
+  }
 };
 const ENV_PREFIX = "NITRO_";
 const ENV_PREFIX_ALT = _inlineRuntimeConfig.nitro.envPrefix ?? process.env.NITRO_ENV_PREFIX ?? "_";

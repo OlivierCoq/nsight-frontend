@@ -55,6 +55,12 @@
       ],
       "pinia": [
         "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/pinia/dist/pinia"
+      ],
+      "#stripe/server": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@unlok-co/nuxt-stripe/dist/runtime/server/services"
+      ],
+      "#stripe/server/*": [
+        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@unlok-co/nuxt-stripe/dist/runtime/server/services/*"
       ]
     }
   },

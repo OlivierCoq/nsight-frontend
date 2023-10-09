@@ -23,7 +23,8 @@ export default defineNuxtConfig({
   ],
   modules: [
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt'
+    '@pinia-plugin-persistedstate/nuxt',
+    '@unlok-co/nuxt-stripe'
   ],
   pinia: {
     autoImports: [
@@ -31,13 +32,23 @@ export default defineNuxtConfig({
       ['defineStore', 'definePiniaStore']
     ]
   },
+  stripe: {
+    server: {
+      key: process.env.NUXT_ENV_STRIPE_SECRET_KEY,
+    },
+    client: {
+      key: process.env.NUXT_ENV_STRIPE_PUBLISHABLE_KEY,
+    }
+  },
   runtimeConfig: {
     // The private keys which are only available server-side
     apiSecret: process.env.NUXT_ENV_CHEC_SECRET_API_KEY,
+    stripeSecretKey: process.env.NUXT_ENV_STRIPE_SECRET_KEY,
     // Keys within public are also exposed client-side
     public: {
       NUXT_STRAPI_URL: process.env.STRAPI_URL || 'http://localhost:1337',
-      NUXT_ENV_CHEC_PUBLIC_API_KEY: process.env.NUXT_ENV_CHEC_PUBLIC_API_KEY
+      NUXT_ENV_CHEC_PUBLIC_API_KEY: process.env.NUXT_ENV_CHEC_PUBLIC_API_KEY,
+      NUXT_ENV_STRIPE_PUBLISHABLE_KEY: process.env.NUXT_ENV_STRIPE_PUBLISHABLE_KEY,
     }
   },
   build: {

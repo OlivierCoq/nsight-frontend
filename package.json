@@ -21,6 +21,7 @@
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@pinia/nuxt": "^0.4.11",
     "@types/node": "^18.17.1",
+    "@unlok-co/nuxt-stripe": "^2.0.0",
     "nuxt": "^3.6.5",
     "pinia": "^2.1.6",
     "sass": "^1.64.2",
@@ -28,6 +29,7 @@
   },
   "dependencies": {
     "@chec/commerce.js": "^2.8.0",
+    "@stripe/stripe-js": "^2.1.7",
     "@types/chec__commerce.js": "^2.8.6",
     "moment": "^2.29.4",
     "uuid": "^9.0.0",

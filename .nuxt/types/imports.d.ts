@@ -93,6 +93,8 @@ declare global {
   const useAppConfig: typeof import('../../node_modules/nuxt/dist/app')['useAppConfig']
   const useAsyncData: typeof import('../../node_modules/nuxt/dist/app')['useAsyncData']
   const useAttrs: typeof import('vue')['useAttrs']
+  const useClientStripe: typeof import('../../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe')['default']
+  const useClientStripeD: typeof import('../../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe.d')['default']
   const useCookie: typeof import('../../node_modules/nuxt/dist/app')['useCookie']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
@@ -233,6 +235,8 @@ declare module 'vue' {
     readonly useAppConfig: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app')['useAppConfig']>
     readonly useAsyncData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app')['useAsyncData']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
+    readonly useClientStripe: UnwrapRef<typeof import('../../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe')['default']>
+    readonly useClientStripeD: UnwrapRef<typeof import('../../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe.d')['default']>
     readonly useCookie: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app')['useCookie']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
@@ -367,6 +371,8 @@ declare module '@vue/runtime-core' {
     readonly useAppConfig: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app')['useAppConfig']>
     readonly useAsyncData: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app')['useAsyncData']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
+    readonly useClientStripe: UnwrapRef<typeof import('../../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe')['default']>
+    readonly useClientStripeD: UnwrapRef<typeof import('../../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe.d')['default']>
     readonly useCookie: UnwrapRef<typeof import('../../node_modules/nuxt/dist/app')['useCookie']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
