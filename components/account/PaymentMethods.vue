@@ -1,4 +1,6 @@
 
+import auth from 'middleware/auth';
+
 import { userInfo } from 'os';
 
 import { env } from 'process';
@@ -61,8 +63,8 @@ import { env } from 'process';
                         </v-row>
                       </v-form>
                       <div class="ctr-card">
-                              <div id="card-element"></div>
-                            </div>
+                        <div id="card-element"></div>
+                      </div>
                     </v-card-text>
                   </v-card>
                 </div>
@@ -92,10 +94,16 @@ import { env } from 'process';
     </v-card-title>
     <v-card-text>
       <v-row>
+        <v-col v-if="!auth.user.payment_methods.data.length">
+          <p class="text--white">
+            Add a payment method to use for your next order.
+          </p>
+        </v-col>
         <v-col cols="12" md="6" v-for="(payment_method, a) in auth.user.payment_methods.data" :key="a">
-          <v-card :variant="auth.user.selected_payment_method.id === payment_method.id ? 'tonal' : ''" class="mb-4">
+          <v-card :variant="auth.user.selected_payment_method.id == payment_method.id ? 'tonal' : ''" class="mb-4">
             <v-card-title>
-              <font-awesome-icon :icon="['fab', `cc-${payment_method.card.brand}`]" />
+              <font-awesome-icon :icon="['fab', `cc-${payment_method.card.brand}`]" /> 
+              <small v-if="auth.user.selected_payment_method.id == payment_method.id" class="text-uppercase"> | Default</small>
             </v-card-title>
             <v-card-text>
               <v-row>
@@ -112,7 +120,7 @@ import { env } from 'process';
               </v-row>
             </v-card-text>
             <v-card-actions >
-              <v-btn color="info" size="small" text @click="state.edit_method_dialog = true">
+              <!-- <v-btn color="info" size="small" text @click="state.edit_method_dialog = true">
                 Edit
 
                 <v-dialog v-model="state.edit_method_dialog" width="500">
@@ -123,7 +131,7 @@ import { env } from 'process';
                   </v-card>
                 </v-dialog>
 
-              </v-btn>
+              </v-btn> -->
               <v-btn v-if="auth.user.selected_payment_method.id !== payment_method.id" color="primary" size="small" text @click="set_default(payment_method)">
                 Set as Default
               </v-btn>
@@ -281,13 +289,19 @@ import { env } from 'process';
       }
 
       const delete_method = (method) => {
-        console.log('delete', method.id)
+        
+        auth.user.payment_methods.data = auth.user.payment_methods.data.filter((m) => {
+          return m.id !== method.id
+        })
+        nextTick(() => {
+          auth.updateUser()
+          state.delete_method_dialog = false
+        })
       }
     
       return {
         state,
         auth,
-        // stripe,
         // methods
         set_default,
         add_new,
