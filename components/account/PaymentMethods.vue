@@ -1,9 +1,4 @@
 
-import auth from 'middleware/auth';
-
-import { userInfo } from 'os';
-
-import { env } from 'process';
 <template>
   <v-card variant="tonal" class="mb-4">
     <v-card-title class="d-flex flex-row justify-space-between mb-3">
@@ -25,7 +20,7 @@ import { env } from 'process';
                 </v-tab>
               </v-tabs>
               <v-window v-model="state.current_tab">
-                <div v-if="state.current_tab == 0" class="tab_window">
+                <div v-show="state.current_tab == 0" class="tab_window">
                   <!-- Credit card form: -->
                   <v-card variant="tonal" class="mt-5">
                     <v-card-title>Card Details</v-card-title>
@@ -100,7 +95,7 @@ import { env } from 'process';
           </p>
         </v-col>
         <v-col cols="12" md="6" v-for="(payment_method, a) in auth.user.payment_methods.data" :key="a">
-          <v-card :variant="auth.user.selected_payment_method.id == payment_method.id ? 'tonal' : ''" class="mb-4">
+          <v-card :variant="auth.user.selected_payment_method.id == payment_method.id ? 'tonal' : 'flat'" class="mb-4">
             <v-card-title>
               <font-awesome-icon :icon="['fab', `cc-${payment_method.card.brand}`]" /> 
               <small v-if="auth.user.selected_payment_method.id == payment_method.id" class="text-uppercase"> | Default</small>
