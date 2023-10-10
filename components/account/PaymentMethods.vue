@@ -95,7 +95,7 @@
           </p>
         </v-col>
         <v-col cols="12" md="6" v-for="(payment_method, a) in auth.user.payment_methods.data" :key="a">
-          <v-card :variant="auth.user.selected_payment_method.id == payment_method.id ? 'tonal' : 'flat'" class="mb-4">
+          <v-card :variant="auth.user.selected_payment_method.id == payment_method.id ? 'tonal' : 'plain'" class="mb-0">
             <v-card-title>
               <font-awesome-icon :icon="['fab', `cc-${payment_method.card.brand}`]" /> 
               <small v-if="auth.user.selected_payment_method.id == payment_method.id" class="text-uppercase"> | Default</small>
@@ -294,7 +294,7 @@
         })
       }
     
-      return {
+      return { 
         state,
         auth,
         // methods
