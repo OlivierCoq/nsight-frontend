@@ -49,7 +49,9 @@
         post: false,
         send: false
       })
+      const runtimeConfig = useRuntimeConfig()
 
+      // Methods
       const reset_password = async () => {
 
         state.error = false
@@ -57,7 +59,7 @@
               state.errors = []
               state.errors.push('Passwords do not match.')
         }
-        state.post = await $fetch('https://nsightapi.vip/api/auth/reset-password',{
+        state.post = await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/reset-password`,{
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
