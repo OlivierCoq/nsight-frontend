@@ -45,7 +45,7 @@
                 </small>
               </div>
               <v-alert v-if="state.errors.length" color="error">
-                <p class="mb-2 fw-bold">Oh man! Something went wrong: </p>
+                <p class="mb-2 fw-bold">Oh no! Something went wrong: </p>
                 <ul class="list-group-danger p-0">
                   <li v-for="(error, a) in state.errors" :key="a" >{{error}}.</li>
                 </ul>

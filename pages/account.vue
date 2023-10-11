@@ -7,12 +7,12 @@
           <v-container fluid>
             <v-row>
               <v-col cols="12" sm="12" md="6" lg="6" xl="6">
-                <edit-personal/>
-                <edit-address />
+                <AccountEditPersonal />
+                <AccountEditAddress />
               </v-col>
               <v-col cols="12" sm="12" md="6" lg="6" xl="6">
-                <orders />
-                <payment-methods />
+                <AccountOrders />
+                <AccountPaymentMethods />
               </v-col>
             </v-row>
           </v-container>
@@ -27,20 +27,8 @@
   // import { v4 as uuidv4 } from 'uuid'
   // const runtimeConfig = useRuntimeConfig()
 
-  // Components
-  import EditAddress from '~/components/account/EditAddress.vue'
-  import EditPersonal from '~/components/account/EditPersonal.vue'
-  import Orders from '~/components/account/Orders.vue'
-  import PaymentMethods from '~/components/account/PaymentMethods.vue'
-
   export default {
     name: 'Account',
-    components: {
-      EditAddress,
-      EditPersonal,
-      Orders,
-      PaymentMethods
-    },
     setup() {
       definePageMeta({
         middleware: ['auth'],

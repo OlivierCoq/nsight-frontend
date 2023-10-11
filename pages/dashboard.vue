@@ -15,7 +15,7 @@
           <div v-if="state.current_tab == 1">
             <v-row class="my-3">
               <v-col v-for="(user, b) in auth.user.users" :key="b" cols="12" sm="6" md="3" lg="2" xl="1">
-                <MemberCard :member="user" />
+                <DashboardMemberCard :member="user" />
               </v-col>
               <v-col cols="12" sm="6" md="3" lg="2" xl="1">
                 <v-card variant="tonal" class="w-100 h-100">
@@ -80,14 +80,10 @@
   import { reactive, onMounted } from 'vue'
   import { authStore } from '@/stores/auth'
   import { v4 as uuidv4 } from 'uuid'
-  import MemberCard from '@/components/dashboard/MemberCard.vue'
   import moment from 'moment'
 
   export default {
     name: 'Dashboard',
-    components: {
-      MemberCard
-    },
     setup() {
       definePageMeta({
         middleware: ['auth'],
@@ -214,6 +210,8 @@
                         })
                           .then((data) => { 
                             console.log('created new member: ', data) 
+
+
 
                                 // Add user to your Friends list:
                             auth.user.users.push(data)

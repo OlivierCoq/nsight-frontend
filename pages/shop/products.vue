@@ -12,7 +12,7 @@
         <hr class="my-5"/>
         <v-row v-if="prodStore.products">
           <v-col v-for="product in prodStore.products.data" :key="product.id" cols="12" md="6" lg="3" xl="2">
-            <product-card :product="product" />
+            <ProductsProductCard :product="product" />
           </v-col>
         </v-row>
         <v-row v-else>
@@ -28,13 +28,9 @@
 </template>
 <script>
   import { reactive, onBeforeMount } from 'vue'
-  import ProductCard from '~/components/products/ProductCard.vue'
   import { productsStore } from '~/stores/products'
   export default {
     name: 'Products',
-    components: {
-      ProductCard
-    },
     setup() {
       definePageMeta({
         middleware: ['auth'],

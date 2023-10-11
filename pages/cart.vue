@@ -20,7 +20,7 @@
           <v-row>
             <v-col v-if="prodStore.cart.total_items" cols="12" sm="12" md="6" lg="6" xl="6">
               <v-container>
-                <cart-card v-for="product in prodStore.cart.line_items" :key="product.id" :product="product" /> 
+                <ProductsCartCard v-for="product in prodStore.cart.line_items" :key="product.id" :product="product" /> 
               </v-container>
             </v-col>
             <v-col v-else cols="12" sm="12" md="6" lg="6" xl="6">
@@ -92,13 +92,9 @@
   import { reactive } from 'vue'
   import { authStore } from '@/stores/auth'
   import { productsStore } from '@/stores/products'
-  import CartCard from '@/components/products/CartCard.vue'
 
   export default {
     name: 'Cart',
-    components: {
-      CartCard
-    },
     setup() {
       definePageMeta({
         middleware: ['auth'],
