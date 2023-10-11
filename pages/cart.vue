@@ -89,9 +89,6 @@
 </template>
 <script>
   import commerce from '~/common/commerce.js'
-  import { reactive } from 'vue'
-  import { authStore } from '@/stores/auth'
-  import { productsStore } from '@/stores/products'
 
   export default {
     name: 'Cart',

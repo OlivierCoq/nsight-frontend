@@ -55,8 +55,6 @@
 <script setup>
   import commerce from '~/common/commerce.js'
   import { reactive } from 'vue'
-  import { productsStore } from '@/stores/products'
-
 
 // Lord have mercy upon my soul for this:
 import { ofetch } from 'ofetch'

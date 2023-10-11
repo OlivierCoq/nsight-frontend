@@ -164,9 +164,6 @@
   </v-card>
 </template>
 <script>
-  import { reactive, nextTick } from 'vue'
-  import { authStore } from '@/stores/auth'
-  import { loadStripe } from '@stripe/stripe-js'
 
   export default {
     name: 'PaymentMethods',
@@ -316,8 +313,5 @@
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     border-bottom: 1px solid #949494;
-  }
-  .ctr-payment_method {
-
   }
 </style>

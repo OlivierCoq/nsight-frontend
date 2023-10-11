@@ -24,7 +24,7 @@
   </v-card>
 </template>
 <script setup>
-  import { reactive } from 'vue'
+  // import { reactive } from 'vue'
   const props = defineProps(['member'])
   const state = reactive({
     member: props.member

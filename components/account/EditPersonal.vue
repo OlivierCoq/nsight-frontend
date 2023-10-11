@@ -58,7 +58,6 @@
 </template> 
 <script>
   import { reactive, nextTick } from 'vue'
-  import { authStore } from '@/stores/auth'
 
   export default {
     name: 'EditPersonal',

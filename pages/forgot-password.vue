@@ -31,7 +31,7 @@
   </div>
 </template> 
 <script>
-import { reactive } from 'vue'
+
 export default {
   name: 'ForgotPassword',
   setup() {

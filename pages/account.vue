@@ -22,10 +22,6 @@
   </v-row>
 </template>
 <script>
-  import { reactive, nextTick } from 'vue'
-  import { authStore } from '@/stores/auth'
-  // import { v4 as uuidv4 } from 'uuid'
-  // const runtimeConfig = useRuntimeConfig()
 
   export default {
     name: 'Account',

@@ -7,8 +7,8 @@
   </div>
 </template>
 <script>
-  import { reactive } from 'vue'
-  export default {
+
+export default {
     name: 'Members',
     setup() {
       definePageMeta({

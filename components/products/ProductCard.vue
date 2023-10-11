@@ -62,7 +62,8 @@
 <script setup>
   import commerce from '~/common/commerce.js'
   import { reactive } from 'vue'
-  import { productsStore } from '@/stores/products'
+
+  
   const props = defineProps(['product'])
   const state = reactive({
     product: props.product,

@@ -28,7 +28,7 @@
 </template>
 <script>
   import { reactive, onBeforeMount } from 'vue'
-  import { productsStore } from '~/stores/products'
+
   export default {
     name: 'Products',
     setup() {

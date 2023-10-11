@@ -26,6 +26,20 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
     '@unlok-co/nuxt-stripe'
   ],
+  imports:{
+    // import all stores from store directory
+    dirs: ['stores'],
+    presets: [
+      {
+        from: '@stripe/stripe-js',
+        imports: ['loadStripe']
+      },
+      {
+        from: 'moment',
+        imports: ['moment']
+      }
+    ]
+  },
   pinia: {
     autoImports: [
       'defineStore',

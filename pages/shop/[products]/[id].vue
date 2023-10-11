@@ -16,8 +16,7 @@
   </v-container>
 </template>
 <script>
-  import { reactive } from 'vue'
-  import { productsStore } from '~/stores/products'
+
   import commerce from '~/common/commerce'
 
   export default {

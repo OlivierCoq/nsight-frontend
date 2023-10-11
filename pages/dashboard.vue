@@ -77,9 +77,7 @@
 </v-row>
 </template>
 <script>
-  import { reactive, onMounted } from 'vue'
-  import { authStore } from '@/stores/auth'
-  import { v4 as uuidv4 } from 'uuid'
+
   import moment from 'moment'
 
   export default {

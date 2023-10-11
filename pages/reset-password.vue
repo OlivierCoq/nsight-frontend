@@ -30,8 +30,8 @@
     </div>
 </template>
 <script>
-  import { reactive } from 'vue'
-  export default {
+
+export default {
     name: 'ResetPassword',
     setup() {
       // Meta

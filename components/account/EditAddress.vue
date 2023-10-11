@@ -97,10 +97,10 @@
                 <p class="fw-bold"><strong>Zip:</strong> {{ address.postal_zip_code }} </p>
               </div>
               <div class="w-100 d-flex flex-row justify-start align-start">
-                <v-btn color="info" size="x-small" text class="mt-3" @click="state.address.edit_address = address; state.edit_modal = true">
+                <v-btn color="info" size="x-small" text class="mt-3" @click="state.address.edit_address = address; state.address.edit_modal = true">
                   Edit 
 
-                  <v-dialog v-model="state.edit_modal" max-width="500">
+                  <v-dialog v-model="state.address.edit_modal" max-width="500">
                     <v-card>
                       <v-card-title>
                         Edit Address
@@ -208,9 +208,8 @@
   </v-card> 
 </template>
 <script>
-  import { reactive, nextTick } from 'vue'
-  import { authStore } from '@/stores/auth'
-  import { v4 as uuidv4 } from 'uuid'
+
+import { v4 as uuidv4 } from 'uuid'
   const runtimeConfig = useRuntimeConfig()
 
   export default {
@@ -244,8 +243,10 @@
             auth.user.addresses.data[i] = address
           }
         })
-        await auth.updateUser()
+        state.address.edit_modal = false
         state.address.edit_address = false
+        await auth.updateUser()
+        
       }
       const delete_address = async (address) => {
 
