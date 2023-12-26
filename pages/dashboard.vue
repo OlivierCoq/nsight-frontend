@@ -214,7 +214,7 @@ export default {
                   .then((data) => {
                     console.log('created new member: ', data)
 
-                    // Add customer to Medusa
+                    // Add customer to MedusaJS
                     const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 
                     medusa.customers.create({
