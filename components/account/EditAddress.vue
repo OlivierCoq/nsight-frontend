@@ -239,7 +239,7 @@ import { v4 as uuidv4 } from 'uuid'
       const edit_address = async (address) => {
         
         auth.user.addresses.data.forEach((a, i) => {
-          if (a.id === address.id) {
+          if (a.n_id === address.n_id) {
             auth.user.addresses.data[i] = address
           }
         })
@@ -251,7 +251,7 @@ import { v4 as uuidv4 } from 'uuid'
       const delete_address = async (address) => {
 
         auth.user.addresses.data.forEach((a, i) => {
-          if (a.id === address.id) {
+          if (a.n_id === address.n_id) {
             auth.user.addresses.data.splice(i, 1)
           }
         })
@@ -265,7 +265,7 @@ import { v4 as uuidv4 } from 'uuid'
       }
       const add_address = async () => {
         const address = {
-          id: uuidv4(),
+          n_id: uuidv4(),
           name: state.address.new_address.name,
           street: state.address.new_address.street,
           town_city: state.address.new_address.town_city,

@@ -98,6 +98,11 @@
   const add_to_cart = () => {
     // add product to cart
     state.loading = true
+
+    state.snackbar_text = `"${state.product.name}" - (${state.product.selected_option.description}) added to cart!`
+    state.snackbar = true
+    state.loading = false
+
     commerce.cart.add(state.product.id, 1, state.product.selected_option.id)
       .then((res) => {
       //  console.log(res)
@@ -107,9 +112,15 @@
           //  console.log(res)
             // update cart store
             prodStore.cart = res
-            state.snackbar_text = `"${state.product.name}" - (${state.product.selected_option.description}) added to cart!`
-            state.snackbar = true
-            state.loading = false
+            
+      commerce.customer.getOrders(auth.user.chec_customer_id)
+        .then((orders) => {
+          state.orders = orders
+          state.loading = false
+
+          console.log('orders', orders)
+        })
+
           })
           .catch((err) => { console.log(err) })
       })

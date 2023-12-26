@@ -5,9 +5,11 @@ export { useAsyncData, useLazyAsyncData, useNuxtData, refreshNuxtData, clearNuxt
 export { onBeforeRouteLeave, onBeforeRouteUpdate, useLink } from '#vue-router';
 export { withCtx, withDirectives, withKeys, withMemo, withModifiers, withScopeId, onActivated, onBeforeMount, onBeforeUnmount, onBeforeUpdate, onDeactivated, onErrorCaptured, onMounted, onRenderTracked, onRenderTriggered, onServerPrefetch, onUnmounted, onUpdated, computed, customRef, isProxy, isReactive, isReadonly, isRef, markRaw, proxyRefs, reactive, readonly, ref, shallowReactive, shallowReadonly, shallowRef, toRaw, toRef, toRefs, triggerRef, unref, watch, watchEffect, watchPostEffect, watchSyncEffect, isShallow, effect, effectScope, getCurrentScope, onScopeDispose, defineComponent, defineAsyncComponent, resolveComponent, getCurrentInstance, h, inject, hasInjectionContext, nextTick, provide, defineModel, defineOptions, defineSlots, mergeModels, toValue, useModel, useAttrs, useCssModule, useCssVars, useSlots, useTransitionState, Component, ComponentPublicInstance, ComputedRef, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode } from 'vue';
 export { injectHead, useHead, useSeoMeta, useHeadSafe, useServerHead, useServerSeoMeta, useServerHeadSafe } from '@unhead/vue';
+export { customFetch } from '../composables/custom_fetch';
 export { default as Icons } from '../utils/Icons';
 export { authStore } from '../stores/auth';
 export { productsStore } from '../stores/products';
+export { settingsStore } from '../stores/settings';
 export { default as useClientStripeD } from '../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe.d';
 export { default as useClientStripe } from '../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe';
 export { usePinia, defineStore, defineStore as definePiniaStore } from '../node_modules/@pinia/nuxt/dist/runtime/composables';

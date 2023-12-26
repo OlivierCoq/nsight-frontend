@@ -158,6 +158,13 @@
               })
                 .then((resp) => {
                   console.log('resp', resp)
+
+                  auth.user.chec_customer_id = resp.customer.id
+                  auth.user.cart = null
+                  nextTick(()=> {
+                    auth.updateUser()
+                  })
+
                   state.snackbar = true
                   state.snackbar_text = 'Order placed!'
                   prodStore.initCart()

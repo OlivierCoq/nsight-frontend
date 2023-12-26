@@ -2,15 +2,15 @@
 
 // const path = require('path');
 
-export default defineNuxtConfig({ 
-  devtools: { 
+export default defineNuxtConfig({
+  devtools: {
     enabled: true,
     timeline: {
       enabled: true
-    } 
+    }
   },
   ssr: false,
-  typescript: { strict: true }, 
+  typescript: { strict: true },
   css: [
     "vuetify/styles",
     "@fortawesome/fontawesome-svg-core/styles.css",
@@ -18,15 +18,14 @@ export default defineNuxtConfig({
     "~/assets/style/main.scss"
   ],
   plugins: [
-    { src: "~/plugins/font-awesome.ts" },
-    { src: "~/plugins/commerce.ts" },
+    { src: "~/plugins/font-awesome.ts" }
   ],
   modules: [
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     '@unlok-co/nuxt-stripe'
   ],
-  imports:{
+  imports: {
     // import all stores from store directory
     dirs: ['stores'],
     presets: [
@@ -71,7 +70,7 @@ export default defineNuxtConfig({
       '@fortawesome/fontawesome-svg-core',
       '@fortawesome/free-solid-svg-icons',
       '@fortawesome/vue-fontawesome',
-//       process.env.NODE_ENV === "development" ? '' : 'element-plus',
-  ],
-},
+      //       process.env.NODE_ENV === "development" ? '' : 'element-plus',
+    ],
+  },
 })
