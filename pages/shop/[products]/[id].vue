@@ -9,7 +9,7 @@
     <v-row v-else>
       <v-col>
         <div class="p-5">
-          <v-progress-circular indeterminate color="primary" />            
+          <v-progress-circular indeterminate color="primary" />
         </div>
       </v-col>
     </v-row>
@@ -17,41 +17,40 @@
 </template>
 <script>
 
-  import commerce from '~/common/commerce'
 
-  export default {
-    name: 'Product',
-    setup() {
-      definePageMeta({
-        middleware: ['auth'],
-        layout: 'inner'
-      })
+export default {
+  name: 'Product',
+  setup() {
+    definePageMeta({
+      middleware: ['auth'],
+      layout: 'inner'
+    })
 
-        // Data
-      const prodStore = productsStore(), 
-            route = useRoute(),
-            state = reactive({ product: null })
+    // Data
+    const prodStore = productsStore(),
+      route = useRoute(),
+      state = reactive({ product: null })
 
-        // Methods
-      const get_product = async () => {
-        const product = await commerce.products.retrieve(route.params.id, { type: 'permalink' })
-        state.product = product
-      }
-        // Lifecycle
-      onBeforeMount(() => {
-        prodStore.getCommerceData()
-        get_product()
-      })
+    // Methods
+    const get_product = async () => {
 
-      return {
-        // meta
-        definePageMeta,
-        // state
-        prodStore,
-        state,
-        // methods
-        get_product
-      }
-    },
-  }
+
+    }
+    // Lifecycle
+    onBeforeMount(() => {
+
+      get_product()
+    })
+
+    return {
+      // meta
+      definePageMeta,
+      // state
+      prodStore,
+      state,
+      // methods
+      get_product
+    }
+  },
+}
 </script>

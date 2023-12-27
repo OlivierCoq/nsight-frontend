@@ -19,10 +19,7 @@ export const productsStore = defineStore({
     }
   },
   actions: {
-    async getCommerceData() {
 
-      // get merchant data:
-    },
     async initCart() {
 
       const auth = authStore()
