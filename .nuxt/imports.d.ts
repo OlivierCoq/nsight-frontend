@@ -32,5 +32,6 @@ export { productsStore } from '../stores/products';
 export { settingsStore } from '../stores/settings';
 export { default as useClientStripe } from '../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe';
 export { useMedusaClient } from '../node_modules/nuxt-medusa/dist/runtime/composables/useMedusaClient';
+export { defineStore, acceptHMRUpdate, usePinia, storeToRefs } from '../node_modules/@pinia/nuxt/dist/runtime/composables';
 export { persistedState } from '../node_modules/@pinia-plugin-persistedstate/nuxt/dist/runtime/storages';
 export { definePageMeta } from '../node_modules/nuxt/dist/pages/runtime/composables';
