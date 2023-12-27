@@ -65,9 +65,6 @@
       "vue-demi": [
         "../node_modules/nuxt/dist/app/compat/vue-demi"
       ],
-      "pinia": [
-        "../node_modules/pinia/dist/pinia"
-      ],
       "#vue-router": [
         "./vue-router-stub"
       ],
@@ -91,7 +88,6 @@
   "include": [
     "./nuxt.d.ts",
     "../**/*",
-    "../node_modules/@pinia/nuxt/runtime",
     "../node_modules/@pinia-plugin-persistedstate/nuxt/runtime",
     "../node_modules/@unlok-co/nuxt-stripe/runtime",
     "../node_modules/nuxt-medusa/runtime",
@@ -102,7 +98,6 @@
   "exclude": [
     "../node_modules",
     "../node_modules/nuxt/node_modules",
-    "../node_modules/@pinia/nuxt/runtime/server",
     "../node_modules/@pinia-plugin-persistedstate/nuxt/runtime/server",
     "../node_modules/@unlok-co/nuxt-stripe/runtime/server",
     "../node_modules/nuxt-medusa/runtime/server",

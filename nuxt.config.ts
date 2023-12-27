@@ -21,7 +21,6 @@ export default defineNuxtConfig({
     { src: "~/plugins/font-awesome.ts" }
   ],
   modules: [
-    '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
     '@unlok-co/nuxt-stripe',
     'nuxt-medusa'
