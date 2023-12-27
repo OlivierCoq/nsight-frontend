@@ -1,8 +1,20 @@
 
-import { defuFn } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/defu/dist/defu.mjs'
+import { updateAppConfig } from '#app/config'
+import { defuFn } from 'defu'
 
-const inlineConfig = {}
+const inlineConfig = {
+  "nuxt": {
+    "buildId": "dev"
+  }
+}
+
+// Vite - webpack is handled directly in #app/config
+if (import.meta.hot) {
+  import.meta.hot.accept((newModule) => {
+    updateAppConfig(newModule.default)
+  })
+}
 
 
 
-export default /* #__PURE__ */ defuFn(inlineConfig)
+export default /*@__PURE__*/ defuFn(inlineConfig)

@@ -71,11 +71,16 @@
 
 // necessary imports
 import moment from 'moment'
-import Medusa from "@medusajs/medusa-js"
-
 
 import { ofetch } from 'ofetch'
 const runtimeConfig = useRuntimeConfig()
+
+
+// Medusa
+// import Medusa from "@medusajs/medusa-js"
+// const medusa = new Medusa({ baseUrl: runtimeConfig.public.NUXT_MEDUSA_BACKEND_URL, maxRetries: 3 })
+
+const medusa_client = useMedusaClient();
 
 // globalThis.$fetch = ofetch.create({ 
 //   headers: {
@@ -215,14 +220,13 @@ export default {
                     console.log('created new member: ', data)
 
                     // Add customer to MedusaJS
-                    const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 
-                    medusa.customers.create({
+
+                    medusa_client.customers.create({
                       first_name: new_nsight_member.first_name,
                       last_name: new_nsight_member.last_name,
                       password: new_nsight_member.password,
-                      email: new_nsight_member.email,
-                      external_id: new_nsight_member.nsight_id
+                      email: new_nsight_member.email
                     })
                       .then((data) => {
                         console.log('added to Medusa: ', data)

@@ -1,9 +1,9 @@
 {
-  "_hash": "sdO2gc6c8A",
+  "_hash": "lWU6qjDHg8",
   "project": {
     "rootDir": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend"
   },
   "versions": {
-    "nuxt": "3.6.5"
+    "nuxt": "3.9.0"
   }
 }

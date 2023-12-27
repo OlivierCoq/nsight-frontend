@@ -9,6 +9,6 @@ Front end of the eCommerce powerhouse nSight
 - Nuxt 3
 - Vuetify 3
 - Pinia
-- Commerce.Js
+- Medusa.Js
 
 ```

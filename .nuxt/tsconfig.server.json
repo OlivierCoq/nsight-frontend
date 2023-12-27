@@ -8,66 +8,78 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
     "jsxFactory": "h",
     "jsxFragmentFactory": "Fragment",
     "paths": {
       "#imports": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/.nuxt/types/nitro-imports"
+        "./types/nitro-imports"
       ],
       "#paths": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/nuxt/dist/core/runtime/nitro/paths"
+        "../node_modules/nuxt/dist/core/runtime/nitro/paths"
       ],
       "~": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend"
+        "./.."
       ],
       "~/*": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/*"
+        "../*"
       ],
       "@": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend"
+        "./.."
       ],
       "@/*": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/*"
+        "../*"
       ],
       "~~": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend"
+        "./.."
       ],
       "~~/*": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/*"
+        "../*"
       ],
       "@@": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend"
+        "./.."
       ],
       "@@/*": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/*"
+        "../*"
       ],
       "assets": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/assets"
+        "../assets"
       ],
       "assets/*": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/assets/*"
+        "../assets/*"
       ],
       "public": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/public"
+        "../public"
       ],
       "public/*": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/public/*"
+        "../public/*"
       ],
       "pinia": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/pinia/dist/pinia"
+        "../node_modules/pinia/dist/pinia"
       ],
       "#stripe/server": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@unlok-co/nuxt-stripe/dist/runtime/server/services"
+        "../node_modules/@unlok-co/nuxt-stripe/dist/runtime/server/services"
       ],
       "#stripe/server/*": [
-        "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@unlok-co/nuxt-stripe/dist/runtime/server/services/*"
+        "../node_modules/@unlok-co/nuxt-stripe/dist/runtime/server/services/*"
       ]
     }
   },
   "include": [
-    "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/.nuxt/types/nitro-nuxt.d.ts",
+    "./types/nitro-nuxt.d.ts",
+    "../node_modules/@pinia/nuxt/runtime/server",
+    "../node_modules/@pinia-plugin-persistedstate/nuxt/runtime/server",
+    "../node_modules/@unlok-co/nuxt-stripe/runtime/server",
+    "../node_modules/nuxt-medusa/runtime/server",
+    "../node_modules/@nuxt/devtools/runtime/server",
+    "../node_modules/@nuxt/telemetry/runtime/server",
     "./types/nitro.d.ts",
     "../**/*",
     "../server/**/*"
+  ],
+  "exclude": [
+    "../node_modules",
+    "../node_modules/nuxt/node_modules",
+    "../dist"
   ]
 }
