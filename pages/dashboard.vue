@@ -230,6 +230,20 @@ export default {
                     })
                       .then((data) => {
                         console.log('added to Medusa: ', data)
+                        // Addd data.customer.id to strapi user:
+                        new_nsight_member.medusa_id = data.customer.id
+                        $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${data.customer.id}`, {
+                          method: 'PUT',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'accept': 'application/json'
+                          },
+                          body: JSON.stringify(new_nsight_member)
+                        })
+                          .then((data) => {
+                            console.log('added medusa_id to strapi user: ', data)
+                          })
+                          .catch((err) => { console.log('Medusa error', err) })
                       })
                       .catch((err) => { console.log('Medusa error', err) })
 
