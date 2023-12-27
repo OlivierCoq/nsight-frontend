@@ -72,15 +72,9 @@
 // necessary imports
 import moment from 'moment'
 
+// oFetch
 import { ofetch } from 'ofetch'
 const runtimeConfig = useRuntimeConfig()
-
-
-// Medusa
-// import Medusa from "@medusajs/medusa-js"
-// const medusa = new Medusa({ baseUrl: runtimeConfig.public.NUXT_MEDUSA_BACKEND_URL, maxRetries: 3 })
-
-const medusa_client = useMedusaClient();
 
 // globalThis.$fetch = ofetch.create({ 
 //   headers: {
@@ -88,6 +82,9 @@ const medusa_client = useMedusaClient();
 //     'X-Authorization': runtimeConfig.apiSecret
 //   }
 // })
+
+// Medusa
+const medusa_client = useMedusaClient();
 
 
 export default {
@@ -146,7 +143,9 @@ export default {
     }
     const post_new_member = async () => {
 
-      // Horrible, terrible way of doing this. I'm sorry. I'll fix it later. 
+      /* Horrible, terrible way of doing this. I'm sorry. I'll fix it later. 
+        Todo: use qs library to have a more direct query instead of looping through all nsight_ids
+      */
       let active_tab = state.tabs[1]
       active_tab.data.posting_new = true
       /*
@@ -218,7 +217,7 @@ export default {
                 })
                   .then((data) => {
                     console.log('created new member: ', data)
-
+                    const new_strapi_user = data
                     // Add customer to MedusaJS
 
 
@@ -232,7 +231,7 @@ export default {
                         console.log('added to Medusa: ', data)
                         // Addd data.customer.id to strapi user:
                         new_nsight_member.medusa_id = data.customer.id
-                        $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${data.customer.id}`, {
+                        $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${new_strapi_user.id}`, {
                           method: 'PUT',
                           headers: {
                             'Content-Type': 'application/json',
