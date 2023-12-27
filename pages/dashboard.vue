@@ -194,7 +194,7 @@ export default {
                 // Create new user object and insert new member in to DB:
                 let new_nsight_member = {
                   blocked: false,
-                  confirmed: true,
+                  confirmed: false,
                   email: active_tab.data.new_member.email,
                   first_name: active_tab.data.new_member.first_name,
                   last_name: active_tab.data.new_member.last_name,
@@ -239,13 +239,10 @@ export default {
                           },
                           body: JSON.stringify(new_nsight_member)
                         })
-                          .then((data) => {
-                            console.log('added medusa_id to strapi user: ', data)
-                          })
+                          .then((data) => { console.log('added medusa_id to strapi user: ', data) })
                           .catch((err) => { console.log('Medusa error', err) })
                       })
                       .catch((err) => { console.log('Medusa error', err) })
-
 
 
                     // Add user to your Friends list:
@@ -262,7 +259,7 @@ export default {
                       body: JSON.stringify({ email: active_tab.data.new_member.email })
                     })
                       .then((data) => {
-                        // console.log('sent new member confirmation email: ', data)
+                        console.log('sent new member confirmation email: ', data)
 
                         // Update friend list in DB
                         $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${auth.user.id}`, {
@@ -274,7 +271,7 @@ export default {
                           body: JSON.stringify(auth.user)
                         })
                           .then((data) => {
-                            // console.log('Added to your friends list: ', data)
+                            console.log('Added to your friends list: ', data)
 
                             // thisObj.current_user = false
                             // thisObj.fetch_current_user()
