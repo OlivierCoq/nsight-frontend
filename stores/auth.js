@@ -55,14 +55,13 @@ export const authStore = defineStore({
           headers: {
             'Content-Type': 'application/json',
             'accept': 'application/json',
-            'Authorization': `Bearer ${res.jwt}`,
-            'X-Authorization': 'sk_53949a5c411dc56df0ca99f9244ee7dda728fb43df7b9'
+            'Authorization': `Bearer ${res.jwt}`
           }
         })
         if (custom_data.statusCode === 400) {
           this.errors = custom_data.data.message[0].messages[0].message
         } else {
-          // console.log('custom_data: ', custom_data)
+          console.log('custom_data: ', custom_data)
           this.errors = false
           this.user = custom_data
           this.token = res.jwt
@@ -71,15 +70,64 @@ export const authStore = defineStore({
           localStorage.setItem('user', JSON.stringify(custom_data))
 
           // Really fucking messy right now, but I'll have to clean up later. I need to get this project done:
-          globalThis.$fetch = ofetch.create({
-            headers: {
-              'Content-Type': 'application/json',
-              'accept': 'application/json',
-              'Authorization': `Bearer ${res.jwt}`,
-              // .'X-Authorization' : 'sk_53949a5c411dc56df0ca99f9244ee7dda728fb43df7b9'
-              'X-Authorization': runtimeConfig.apiSecret
-            }
+          // globalThis.$fetch = ofetch.create({
+          //   headers: {
+          //     'Content-Type': 'application/json',
+          //     'accept': 'application/json',
+          //     'Authorization': `Bearer ${res.jwt}`,
+          //     // .'X-Authorization' : 'sk_53949a5c411dc56df0ca99f9244ee7dda728fb43df7b9'
+          //     'X-Authorization': runtimeConfig.apiSecret
+          //   }
+          // })
+
+          // Medusa
+          const medusa_client = useMedusaClient()
+
+          // Login to Medusa
+          medusa_client.auth.authenticate({
+            email: payload.identifier,
+            password: payload.password
           })
+            .then(({ customer }) => {
+              console.log('Medusa customer', customer.id)
+
+              let region
+
+              // Regions created in Medusa Dashboard. We need to update user to be able to have a preferred 
+              // region.
+              medusa_client.regions.list()
+                .then(({ regions }) => {
+                  console.log('regionssss', regions[0])
+                  // show customers available regions
+
+                  region = regions[0]
+                })
+
+              // create cart if cart doesn't exist
+              if (!this.user.cart) {
+                console.log('no cart.')
+                medusa_client.carts.create(region)
+                  .then((cart_res) => {
+                    console.log('Created new cart', cart_res)
+                    this.user.cart = cart_res.cart.id
+                    prodStore.cart_obj = cart_res.cart
+                    nextTick(() => {
+                      this.updateUser()
+                    })
+                  })
+                  .catch((err) => { console.log('Medusa cart', err) })
+              } else {
+                // get cart if cart exists
+                console.log('cart exists.')
+                medusa_client.carts.retrieve(this.user.cart)
+                  .then((cart_res) => {
+                    prodStore.cart_obj = cart_res
+                  })
+                  .catch((err) => { console.log('Medusa cart', err) })
+              }
+            })
+            .catch((err) => { console.log('Medusa err', err) })
+
 
           setTimeout(() => {
             navigateTo('/dashboard')
@@ -98,6 +146,7 @@ export const authStore = defineStore({
       localStorage.removeItem('user')
 
       prodStore.cart = null
+      user.cart = null
 
       // remove X-Authorization header:
       globalThis.$fetch = ofetch.create({
@@ -115,6 +164,10 @@ export const authStore = defineStore({
         'accept': 'application/json',
         'body': JSON.stringify(this.user)
       })
+        .then((res) => {
+          console.log('Updated user', res)
+        })
+        .catch((err) => { console.log('Medusa err', err) })
     }
   },
   getters: {},

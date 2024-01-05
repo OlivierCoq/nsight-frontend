@@ -166,7 +166,7 @@ export default {
         })
         .then((data) => {
           const n_ids = data
-          console.log('nids', n_ids)
+          // console.log('nids', n_ids)
           let match
           n_ids.data.forEach((n_id) => {
             if (active_tab.data.new_member.n_id === n_id.attributes.nsight_id) { match = true }
@@ -218,9 +218,8 @@ export default {
                   .then((data) => {
                     console.log('created new member: ', data)
                     const new_strapi_user = data
+
                     // Add customer to MedusaJS
-
-
                     medusa_client.customers.create({
                       first_name: new_nsight_member.first_name,
                       last_name: new_nsight_member.last_name,
@@ -231,6 +230,27 @@ export default {
                         console.log('added to Medusa: ', data)
                         // Addd data.customer.id to strapi user:
                         new_nsight_member.medusa_id = data.customer.id
+
+                        // Temporary
+                        // medusa_client.customers.create({
+                        //   first_name: auth.user.first_name,
+                        //   last_name: auth.user.last_name,
+                        //   password: 'W@rrior123321',
+                        //   email: auth.user.email
+                        // }).then((data) => {
+                        //   console.log('dataaaa', data)
+                        // })
+
+                        // medusa_client.customers.delete({
+                        //   id: auth.user.medusa_id
+                        // })
+                        //   .then((data) => {
+                        //     console.log('deleted old user from Medusa: ', data)
+                        //   })
+                        //   .catch((err) => { console.log('Medusa error', err) })
+
+
+
                         $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${new_strapi_user.id}`, {
                           method: 'PUT',
                           headers: {
@@ -239,8 +259,10 @@ export default {
                           },
                           body: JSON.stringify(new_nsight_member)
                         })
-                          .then((data) => { console.log('added medusa_id to strapi user: ', data) })
-                          .catch((err) => { console.log('Medusa error', err) })
+                          .then((data) => { //console.log('added medusa_id to strapi user: ', data)
+                          })
+                          .catch((err) => { // console.log('Medusa error', err)
+                          })
                       })
                       .catch((err) => { console.log('Medusa error', err) })
 
@@ -259,7 +281,7 @@ export default {
                       body: JSON.stringify({ email: active_tab.data.new_member.email })
                     })
                       .then((data) => {
-                        console.log('sent new member confirmation email: ', data)
+                        // console.log('sent new member confirmation email: ', data)
 
                         // Update friend list in DB
                         $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${auth.user.id}`, {
@@ -271,7 +293,7 @@ export default {
                           body: JSON.stringify(auth.user)
                         })
                           .then((data) => {
-                            console.log('Added to your friends list: ', data)
+                            // console.log('Added to your friends list: ', data)
 
                             // thisObj.current_user = false
                             // thisObj.fetch_current_user()

@@ -15,7 +15,8 @@ export const productsStore = defineStore({
       merchant: null,
       categories: null,
       products: null,
-      cart: null
+      cart: null,
+      cart_obj: null
     }
   },
   actions: {
