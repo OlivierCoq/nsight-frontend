@@ -8,45 +8,12 @@
         <v-row>
           <v-col>
             <v-form>
-              <v-text-field
-                v-model="auth.user.first_name"
-                label="First Name"
-                outlined
-                dense
-                hide-details
-                class="mb-3"
-              />
-              <v-text-field
-                v-model="auth.user.last_name"
-                label="Last Name"
-                outlined
-                dense
-                hide-details
-                class="mb-3"
-              />
-              <v-text-field
-                v-model="auth.user.email"
-                label="Email"
-                outlined
-                dense
-                hide-details
-                class="mb-3"
-              />
-              <v-text-field
-                v-model="auth.user.nsight_id.nsight_id"
-                label="nSight ID"
-                outlined
-                dense
-                hide-details
-                class="mb-3"
-                disabled
-              />
-              <v-btn
-                color="info"
-                hide-details
-                class="mt-3"
-                @click="auth.updateUser()"
-              >
+              <v-text-field v-model="auth.user.first_name" label="First Name" outlined dense hide-details class="mb-3" />
+              <v-text-field v-model="auth.user.last_name" label="Last Name" outlined dense hide-details class="mb-3" />
+              <v-text-field v-model="auth.user.email" label="Email" outlined dense hide-details class="mb-3" />
+              <v-text-field v-model="auth.user.nsight_id" label="nSight ID" outlined dense hide-details class="mb-3"
+                disabled />
+              <v-btn color="info" hide-details class="mt-3" @click="auth.updateUser()">
                 Update
               </v-btn>
             </v-form>
@@ -57,20 +24,20 @@
   </v-card>
 </template> 
 <script>
-  import { reactive, nextTick } from 'vue'
+import { reactive, nextTick } from 'vue'
 
-  export default {
-    name: 'EditPersonal',
-    setup() {
-      const state = reactive({
-        user: false,
-      })
-      const auth = authStore()
-    
-      return {
-        state,
-        auth
-      }
+export default {
+  name: 'EditPersonal',
+  setup() {
+    const state = reactive({
+      user: false,
+    })
+    const auth = authStore()
+
+    return {
+      state,
+      auth
     }
   }
+}
 </script>
