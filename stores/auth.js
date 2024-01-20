@@ -169,18 +169,17 @@ export const authStore = defineStore({
         .then((res) => {
           console.log('Updated user', res)
 
+          const medusa_client = useMedusaClient()
+
           let medusa_user_obj = {
-            id: this.medusa_user.id,
             email: this.user.email,
             first_name: this.user.first_name,
             last_name: this.user.last_name,
-            phone: this.user.phone,
-            password: this.user.password,
-            cart_id: this.user.cart
+            phone: this.user.phone
           }
 
           // Update Medusa
-          medusa_client.customers.update(this.medusa_user)
+          medusa_client.customers.update(medusa_user_obj)
             .then((res) => {
               console.log('Updated Medusa user', res)
             })
