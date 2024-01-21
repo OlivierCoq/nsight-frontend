@@ -3,7 +3,7 @@ services:
     name: nsight_frontend
     env: node
     plan: starter
-    buildCommand: npm install && npm run build
+    buildCommand: npm cache clean --force && npm install && npm install --save nuxt && npm run build
     startCommand: npm run start
     healthCheckPath: /
     autoDeploy: false
