@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VSlideGroup/VSlideGroup.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createVNode as _createVNode } from \"vue\";\n// Styles\nimport \"./VSlideGroup.css\";\n\n// Components\nimport { VFadeTransition } from \"../transitions/index.mjs\";\nimport { VIcon } from \"../VIcon/index.mjs\"; // Composables\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { makeDisplayProps, useDisplay } from \"../../composables/display.mjs\";\nimport { makeGroupProps, useGroup } from \"../../composables/group.mjs\";\nimport { IconValue } from \"../../composables/icons.mjs\";\nimport { useRtl } from \"../../composables/locale.mjs\";\nimport { useResizeObserver } from \"../../composables/resizeObserver.mjs\";\nimport { makeTagProps } from \"../../composables/tag.mjs\"; // Utilities\nimport { computed, shallowRef, watch } from 'vue';\nimport { bias, calculateCenteredOffset, calculateUpdatedOffset } from \"./helpers.mjs\";\nimport { clamp, focusableChildren, genericComponent, IN_BROWSER, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const VSlideGroupSymbol = Symbol.for('vuetify:v-slide-group');\nexport const makeVSlideGroupProps = propsFactory({\n  centerActive: Boolean,\n  direction: {\n    type: String,\n    default: 'horizontal'\n  },\n  symbol: {\n    type: null,\n    default: VSlideGroupSymbol\n  },\n  nextIcon: {\n    type: IconValue,\n    default: '$next'\n  },\n  prevIcon: {\n    type: IconValue,\n    default: '$prev'\n  },\n  showArrows: {\n    type: [Boolean, String],\n    validator: v => typeof v === 'boolean' || ['always', 'desktop', 'mobile'].includes(v)\n  },\n  ...makeComponentProps(),\n  ...makeDisplayProps(),\n  ...makeTagProps(),\n  ...makeGroupProps({\n    selectedClass: 'v-slide-group-item--active'\n  })\n}, 'VSlideGroup');\nexport const VSlideGroup = genericComponent()({\n  name: 'VSlideGroup',\n  props: makeVSlideGroupProps(),\n  emits: {\n    'update:modelValue': value => true\n  },\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const {\n      isRtl\n    } = useRtl();\n    const {\n      displayClasses,\n      mobile\n    } = useDisplay(props);\n    const group = useGroup(props, props.symbol);\n    const isOverflowing = shallowRef(false);\n    const scrollOffset = shallowRef(0);\n    const containerSize = shallowRef(0);\n    const contentSize = shallowRef(0);\n    const isHorizontal = computed(() => props.direction === 'horizontal');\n    const {\n      resizeRef: containerRef,\n      contentRect: containerRect\n    } = useResizeObserver();\n    const {\n      resizeRef: contentRef,\n      contentRect\n    } = useResizeObserver();\n    const firstSelectedIndex = computed(() => {\n      if (!group.selected.value.length) return -1;\n      return group.items.value.findIndex(item => item.id === group.selected.value[0]);\n    });\n    const lastSelectedIndex = computed(() => {\n      if (!group.selected.value.length) return -1;\n      return group.items.value.findIndex(item => item.id === group.selected.value[group.selected.value.length - 1]);\n    });\n    if (IN_BROWSER) {\n      let frame = -1;\n      watch(() => [group.selected.value, containerRect.value, contentRect.value, isHorizontal.value], () => {\n        cancelAnimationFrame(frame);\n        frame = requestAnimationFrame(() => {\n          if (containerRect.value && contentRect.value) {\n            const sizeProperty = isHorizontal.value ? 'width' : 'height';\n            containerSize.value = containerRect.value[sizeProperty];\n            contentSize.value = contentRect.value[sizeProperty];\n            isOverflowing.value = containerSize.value + 1 < contentSize.value;\n          }\n          if (firstSelectedIndex.value >= 0 && contentRef.value) {\n            // TODO: Is this too naive? Should we store element references in group composable?\n            const selectedElement = contentRef.value.children[lastSelectedIndex.value];\n            if (firstSelectedIndex.value === 0 || !isOverflowing.value) {\n              scrollOffset.value = 0;\n            } else if (props.centerActive) {\n              scrollOffset.value = calculateCenteredOffset({\n                selectedElement,\n                containerSize: containerSize.value,\n                contentSize: contentSize.value,\n                isRtl: isRtl.value,\n                isHorizontal: isHorizontal.value\n              });\n            } else if (isOverflowing.value) {\n              scrollOffset.value = calculateUpdatedOffset({\n                selectedElement,\n                containerSize: containerSize.value,\n                contentSize: contentSize.value,\n                isRtl: isRtl.value,\n                currentScrollOffset: scrollOffset.value,\n                isHorizontal: isHorizontal.value\n              });\n            }\n          }\n        });\n      });\n    }\n    const disableTransition = shallowRef(false);\n    let startTouch = 0;\n    let startOffset = 0;\n    function onTouchstart(e) {\n      const sizeProperty = isHorizontal.value ? 'clientX' : 'clientY';\n      const sign = isRtl.value && isHorizontal.value ? -1 : 1;\n      startOffset = sign * scrollOffset.value;\n      startTouch = e.touches[0][sizeProperty];\n      disableTransition.value = true;\n    }\n    function onTouchmove(e) {\n      if (!isOverflowing.value) return;\n      const sizeProperty = isHorizontal.value ? 'clientX' : 'clientY';\n      const sign = isRtl.value && isHorizontal.value ? -1 : 1;\n      scrollOffset.value = sign * (startOffset + startTouch - e.touches[0][sizeProperty]);\n    }\n    function onTouchend(e) {\n      const maxScrollOffset = contentSize.value - containerSize.value;\n      if (scrollOffset.value < 0 || !isOverflowing.value) {\n        scrollOffset.value = 0;\n      } else if (scrollOffset.value >= maxScrollOffset) {\n        scrollOffset.value = maxScrollOffset;\n      }\n      disableTransition.value = false;\n    }\n    function onScroll() {\n      if (!containerRef.value) return;\n      containerRef.value[isHorizontal.value ? 'scrollLeft' : 'scrollTop'] = 0;\n    }\n    const isFocused = shallowRef(false);\n    function onFocusin(e) {\n      isFocused.value = true;\n      if (!isOverflowing.value || !contentRef.value) return;\n\n      // Focused element is likely to be the root of an item, so a\n      // breadth-first search will probably find it in the first iteration\n      for (const el of e.composedPath()) {\n        for (const item of contentRef.value.children) {\n          if (item === el) {\n            scrollOffset.value = calculateUpdatedOffset({\n              selectedElement: item,\n              containerSize: containerSize.value,\n              contentSize: contentSize.value,\n              isRtl: isRtl.value,\n              currentScrollOffset: scrollOffset.value,\n              isHorizontal: isHorizontal.value\n            });\n            return;\n          }\n        }\n      }\n    }\n    function onFocusout(e) {\n      isFocused.value = false;\n    }\n    function onFocus(e) {\n      if (!isFocused.value && !(e.relatedTarget && contentRef.value?.contains(e.relatedTarget))) focus();\n    }\n    function onKeydown(e) {\n      if (!contentRef.value) return;\n      if (isHorizontal.value) {\n        if (e.key === 'ArrowRight') {\n          focus(isRtl.value ? 'prev' : 'next');\n        } else if (e.key === 'ArrowLeft') {\n          focus(isRtl.value ? 'next' : 'prev');\n        }\n      } else {\n        if (e.key === 'ArrowDown') {\n          focus('next');\n        } else if (e.key === 'ArrowUp') {\n          focus('prev');\n        }\n      }\n      if (e.key === 'Home') {\n        focus('first');\n      } else if (e.key === 'End') {\n        focus('last');\n      }\n    }\n    function focus(location) {\n      if (!contentRef.value) return;\n      if (!location) {\n        const focusable = focusableChildren(contentRef.value);\n        focusable[0]?.focus();\n      } else if (location === 'next') {\n        const el = contentRef.value.querySelector(':focus')?.nextElementSibling;\n        if (el) el.focus();else focus('first');\n      } else if (location === 'prev') {\n        const el = contentRef.value.querySelector(':focus')?.previousElementSibling;\n        if (el) el.focus();else focus('last');\n      } else if (location === 'first') {\n        contentRef.value.firstElementChild?.focus();\n      } else if (location === 'last') {\n        contentRef.value.lastElementChild?.focus();\n      }\n    }\n    function scrollTo(location) {\n      const newAbsoluteOffset = scrollOffset.value + (location === 'prev' ? -1 : 1) * containerSize.value;\n      scrollOffset.value = clamp(newAbsoluteOffset, 0, contentSize.value - containerSize.value);\n    }\n    const contentStyles = computed(() => {\n      // This adds friction when scrolling the 'wrong' way when at max offset\n      let scrollAmount = scrollOffset.value > contentSize.value - containerSize.value ? -(contentSize.value - containerSize.value) + bias(contentSize.value - containerSize.value - scrollOffset.value) : -scrollOffset.value;\n\n      // This adds friction when scrolling the 'wrong' way when at min offset\n      if (scrollOffset.value <= 0) {\n        scrollAmount = bias(-scrollOffset.value);\n      }\n      const sign = isRtl.value && isHorizontal.value ? -1 : 1;\n      return {\n        transform: `translate${isHorizontal.value ? 'X' : 'Y'}(${sign * scrollAmount}px)`,\n        transition: disableTransition.value ? 'none' : '',\n        willChange: disableTransition.value ? 'transform' : ''\n      };\n    });\n    const slotProps = computed(() => ({\n      next: group.next,\n      prev: group.prev,\n      select: group.select,\n      isSelected: group.isSelected\n    }));\n    const hasAffixes = computed(() => {\n      switch (props.showArrows) {\n        // Always show arrows on desktop & mobile\n        case 'always':\n          return true;\n\n        // Always show arrows on desktop\n        case 'desktop':\n          return !mobile.value;\n\n        // Show arrows on mobile when overflowing.\n        // This matches the default 2.2 behavior\n        case true:\n          return isOverflowing.value || Math.abs(scrollOffset.value) > 0;\n\n        // Always show on mobile\n        case 'mobile':\n          return mobile.value || isOverflowing.value || Math.abs(scrollOffset.value) > 0;\n\n        // https://material.io/components/tabs#scrollable-tabs\n        // Always show arrows when\n        // overflowed on desktop\n        default:\n          return !mobile.value && (isOverflowing.value || Math.abs(scrollOffset.value) > 0);\n      }\n    });\n    const hasPrev = computed(() => {\n      return Math.abs(scrollOffset.value) > 0;\n    });\n    const hasNext = computed(() => {\n      // Check one scroll ahead to know the width of right-most item\n      return contentSize.value > Math.abs(scrollOffset.value) + containerSize.value;\n    });\n    useRender(() => _createVNode(props.tag, {\n      \"class\": ['v-slide-group', {\n        'v-slide-group--vertical': !isHorizontal.value,\n        'v-slide-group--has-affixes': hasAffixes.value,\n        'v-slide-group--is-overflowing': isOverflowing.value\n      }, displayClasses.value, props.class],\n      \"style\": props.style,\n      \"tabindex\": isFocused.value || group.selected.value.length ? -1 : 0,\n      \"onFocus\": onFocus\n    }, {\n      default: () => [hasAffixes.value && _createVNode(\"div\", {\n        \"key\": \"prev\",\n        \"class\": ['v-slide-group__prev', {\n          'v-slide-group__prev--disabled': !hasPrev.value\n        }],\n        \"onClick\": () => hasPrev.value && scrollTo('prev')\n      }, [slots.prev?.(slotProps.value) ?? _createVNode(VFadeTransition, null, {\n        default: () => [_createVNode(VIcon, {\n          \"icon\": isRtl.value ? props.nextIcon : props.prevIcon\n        }, null)]\n      })]), _createVNode(\"div\", {\n        \"key\": \"container\",\n        \"ref\": containerRef,\n        \"class\": \"v-slide-group__container\",\n        \"onScroll\": onScroll\n      }, [_createVNode(\"div\", {\n        \"ref\": contentRef,\n        \"class\": \"v-slide-group__content\",\n        \"style\": contentStyles.value,\n        \"onTouchstartPassive\": onTouchstart,\n        \"onTouchmovePassive\": onTouchmove,\n        \"onTouchendPassive\": onTouchend,\n        \"onFocusin\": onFocusin,\n        \"onFocusout\": onFocusout,\n        \"onKeydown\": onKeydown\n      }, [slots.default?.(slotProps.value)])]), hasAffixes.value && _createVNode(\"div\", {\n        \"key\": \"next\",\n        \"class\": ['v-slide-group__next', {\n          'v-slide-group__next--disabled': !hasNext.value\n        }],\n        \"onClick\": () => hasNext.value && scrollTo('next')\n      }, [slots.next?.(slotProps.value) ?? _createVNode(VFadeTransition, null, {\n        default: () => [_createVNode(VIcon, {\n          \"icon\": isRtl.value ? props.prevIcon : props.nextIcon\n        }, null)]\n      })])]\n    }));\n    return {\n      selected: group.selected,\n      scrollTo,\n      scrollOffset,\n      focus\n    };\n  }\n});\n//# sourceMappingURL=VSlideGroup.mjs.map",
+      "start": 1705807631563,
+      "end": 1705807631635,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807631635,
+      "end": 1705807631635,
+      "order": "normal"
+    }
+  ]
+}

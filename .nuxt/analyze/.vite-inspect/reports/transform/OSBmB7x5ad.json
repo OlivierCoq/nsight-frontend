@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/goto.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Utilities\nimport { inject } from 'vue';\nimport { mergeDeep, refElement } from \"../util/index.mjs\"; // Types\nexport const GoToSymbol = Symbol.for('vuetify:goto');\nfunction genDefaults() {\n  return {\n    container: undefined,\n    duration: 300,\n    layout: false,\n    offset: 0,\n    easing: 'easeInOutCubic',\n    patterns: {\n      linear: t => t,\n      easeInQuad: t => t ** 2,\n      easeOutQuad: t => t * (2 - t),\n      easeInOutQuad: t => t < 0.5 ? 2 * t ** 2 : -1 + (4 - 2 * t) * t,\n      easeInCubic: t => t ** 3,\n      easeOutCubic: t => --t ** 3 + 1,\n      easeInOutCubic: t => t < 0.5 ? 4 * t ** 3 : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,\n      easeInQuart: t => t ** 4,\n      easeOutQuart: t => 1 - --t ** 4,\n      easeInOutQuart: t => t < 0.5 ? 8 * t ** 4 : 1 - 8 * --t ** 4,\n      easeInQuint: t => t ** 5,\n      easeOutQuint: t => 1 + --t ** 5,\n      easeInOutQuint: t => t < 0.5 ? 16 * t ** 5 : 1 + 16 * --t ** 5\n    }\n  };\n}\nfunction getContainer(el) {\n  return getTarget(el) ?? (document.scrollingElement || document.body);\n}\nfunction getTarget(el) {\n  return typeof el === 'string' ? document.querySelector(el) : refElement(el);\n}\nfunction getOffset(target, horizontal, rtl) {\n  if (typeof target === 'number') return horizontal && rtl ? -target : target;\n  let el = getTarget(target);\n  let totalOffset = 0;\n  while (el) {\n    totalOffset += horizontal ? el.offsetLeft : el.offsetTop;\n    el = el.offsetParent;\n  }\n  return totalOffset;\n}\nexport function createGoTo(options, locale) {\n  return {\n    rtl: locale.isRtl,\n    options: mergeDeep(genDefaults(), options)\n  };\n}\nasync function scrollTo(_target, _options, horizontal, goTo) {\n  const options = mergeDeep(goTo?.options, _options);\n  const rtl = goTo?.rtl.value;\n  const target = (typeof _target === 'number' ? _target : getTarget(_target)) ?? 0;\n  const container = options.container === 'parent' && target instanceof HTMLElement ? target.parentElement : getContainer(options.container);\n  const ease = typeof options.easing === 'function' ? options.easing : options.patterns[options.easing];\n  if (!ease) throw new TypeError(`Easing function \"${options.easing}\" not found.`);\n  let targetLocation;\n  if (typeof target === 'number') {\n    targetLocation = getOffset(target, horizontal, rtl);\n  } else {\n    targetLocation = getOffset(target, horizontal, rtl) - getOffset(container, horizontal, rtl);\n    if (options.layout) {\n      const styles = window.getComputedStyle(target);\n      const layoutOffset = styles.getPropertyValue('--v-layout-top');\n      if (layoutOffset) targetLocation -= parseInt(layoutOffset, 10);\n    }\n  }\n  targetLocation += options.offset;\n  const startLocation = (horizontal ? container.scrollLeft : container.scrollTop) ?? 0;\n  if (targetLocation === startLocation) return Promise.resolve(targetLocation);\n  const startTime = performance.now();\n  return new Promise(resolve => requestAnimationFrame(function step(currentTime) {\n    const timeElapsed = currentTime - startTime;\n    const progress = Math.abs(options.duration ? Math.min(timeElapsed / options.duration, 1) : 1);\n    const location = Math.floor(startLocation + (targetLocation - startLocation) * ease(progress));\n    container[horizontal ? 'scrollLeft' : 'scrollTop'] = location;\n    if (progress === 1) return resolve(targetLocation);\n    let clientSize;\n    let reachEnd;\n    if (!horizontal) {\n      clientSize = container === document.body ? document.documentElement.clientHeight : container.clientHeight;\n      reachEnd = clientSize + container.scrollTop >= container.scrollHeight;\n      if (targetLocation > container.scrollTop && reachEnd) return resolve(targetLocation);\n    } else {\n      clientSize = container === document.body ? document.documentElement.clientWidth : container.clientWidth;\n      reachEnd = clientSize + container.scrollLeft >= container.scrollWidth;\n      if (targetLocation > container.scrollLeft && reachEnd) return resolve(targetLocation);\n    }\n    requestAnimationFrame(step);\n  }));\n}\nexport function useGoTo() {\n  let _options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};\n  const goTo = inject(GoToSymbol);\n  if (!goTo) throw new Error('[Vuetify] Could not find injected goto instance');\n  async function go(target, options) {\n    return scrollTo(target, mergeDeep(_options, options), false, goTo);\n  }\n  go.horizontal = async (target, options) => {\n    return scrollTo(target, mergeDeep(_options, options), true, goTo);\n  };\n  return go;\n}\n//# sourceMappingURL=goto.mjs.map",
+      "start": 1705807632777,
+      "end": 1705807632841,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807632842,
+      "end": 1705807632842,
+      "order": "normal"
+    }
+  ]
+}

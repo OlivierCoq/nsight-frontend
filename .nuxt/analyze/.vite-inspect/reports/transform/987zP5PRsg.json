@@ -1,0 +1,218 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VBottomNavigation/VBottomNavigation.css",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": ".v-bottom-navigation {\n  display: flex;\n  max-width: 100%;\n  overflow: hidden;\n  position: absolute;\n  transition: transform, color 0.2s, 0.2s cubic-bezier(0.4, 0, 0.2, 1);\n  border-color: rgba(var(--v-border-color), var(--v-border-opacity));\n  border-style: solid;\n  border-width: 0;\n  border-radius: 0;\n  background: rgb(var(--v-theme-surface));\n  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));\n}\n.v-bottom-navigation--border {\n  border-width: thin;\n  box-shadow: none;\n}\n.v-bottom-navigation--active {\n  box-shadow: 0px 2px 4px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 4px 5px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 10px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));\n}\n\n.v-bottom-navigation__content {\n  display: flex;\n  flex: none;\n  font-size: 0.75rem;\n  justify-content: center;\n  transition: inherit;\n  width: 100%;\n}\n.v-bottom-navigation .v-bottom-navigation__content > .v-btn {\n  font-size: inherit;\n  height: 100%;\n  max-width: 168px;\n  min-width: 80px;\n  text-transform: none;\n  transition: inherit;\n  width: auto;\n  border-radius: 0;\n}\n.v-bottom-navigation .v-bottom-navigation__content > .v-btn .v-btn__content,\n.v-bottom-navigation .v-bottom-navigation__content > .v-btn .v-btn__icon {\n  transition: inherit;\n}\n.v-bottom-navigation .v-bottom-navigation__content > .v-btn .v-btn__icon {\n  font-size: 1.5rem;\n}\n.v-bottom-navigation--grow .v-bottom-navigation__content > .v-btn {\n  flex-grow: 1;\n}\n.v-bottom-navigation--shift .v-bottom-navigation__content .v-btn:not(.v-btn--selected) .v-btn__content > span {\n  transition: inherit;\n  opacity: 0;\n}\n.v-bottom-navigation--shift .v-bottom-navigation__content .v-btn:not(.v-btn--selected) .v-btn__content {\n  transform: translateY(0.5rem);\n}",
+      "start": 1705807631973,
+      "end": 1705807632043,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807632043,
+      "end": 1705807632043,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807632043,
+      "end": 1705807632043,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807632043,
+      "end": 1705807632043,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".v-bottom-navigation{background:rgb(var(--v-theme-surface));border-color:rgba(var(--v-border-color),var(--v-border-opacity));border-radius:0;border-style:solid;border-width:0;color:rgba(var(--v-theme-on-surface),var(--v-high-emphasis-opacity));display:flex;max-width:100%;overflow:hidden;position:absolute;transition:transform,color .2s,.2s cubic-bezier(.4,0,.2,1)}.v-bottom-navigation--border{border-width:thin;box-shadow:none}.v-bottom-navigation--active{box-shadow:0 2px 4px -1px var(--v-shadow-key-umbra-opacity,rgba(0,0,0,.2)),0 4px 5px 0 var(--v-shadow-key-penumbra-opacity,rgba(0,0,0,.14)),0 1px 10px 0 var(--v-shadow-key-ambient-opacity,rgba(0,0,0,.12))}.v-bottom-navigation__content{display:flex;flex:none;font-size:.75rem;justify-content:center;transition:inherit;width:100%}.v-bottom-navigation .v-bottom-navigation__content>.v-btn{border-radius:0;font-size:inherit;height:100%;max-width:168px;min-width:80px;text-transform:none;transition:inherit;width:auto}.v-bottom-navigation .v-bottom-navigation__content>.v-btn .v-btn__content,.v-bottom-navigation .v-bottom-navigation__content>.v-btn .v-btn__icon{transition:inherit}.v-bottom-navigation .v-bottom-navigation__content>.v-btn .v-btn__icon{font-size:1.5rem}.v-bottom-navigation--grow .v-bottom-navigation__content>.v-btn{flex-grow:1}.v-bottom-navigation--shift .v-bottom-navigation__content .v-btn:not(.v-btn--selected) .v-btn__content>span{opacity:0;transition:inherit}.v-bottom-navigation--shift .v-bottom-navigation__content .v-btn:not(.v-btn--selected) .v-btn__content{transform:translateY(.5rem)}",
+      "start": 1705807632043,
+      "end": 1705807632051,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807632051,
+      "end": 1705807632051,
+      "order": "normal"
+    }
+  ]
+}

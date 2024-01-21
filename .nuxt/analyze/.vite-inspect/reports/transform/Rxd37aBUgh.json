@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/util/colorUtils.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Utilities\nimport { APCAcontrast } from \"./color/APCA.mjs\";\nimport { consoleWarn } from \"./console.mjs\";\nimport { chunk, has, padEnd } from \"./helpers.mjs\";\nimport * as CIELAB from \"./color/transformCIELAB.mjs\";\nimport * as sRGB from \"./color/transformSRGB.mjs\"; // Types\nexport function isCssColor(color) {\n  return !!color && /^(#|var\\(--|(rgb|hsl)a?\\()/.test(color);\n}\nexport function isParsableColor(color) {\n  return isCssColor(color) && !/^((rgb|hsl)a?\\()?var\\(--/.test(color);\n}\nconst cssColorRe = /^(?<fn>(?:rgb|hsl)a?)\\((?<values>.+)\\)/;\nconst mappers = {\n  rgb: (r, g, b, a) => ({\n    r,\n    g,\n    b,\n    a\n  }),\n  rgba: (r, g, b, a) => ({\n    r,\n    g,\n    b,\n    a\n  }),\n  hsl: (h, s, l, a) => HSLtoRGB({\n    h,\n    s,\n    l,\n    a\n  }),\n  hsla: (h, s, l, a) => HSLtoRGB({\n    h,\n    s,\n    l,\n    a\n  }),\n  hsv: (h, s, v, a) => HSVtoRGB({\n    h,\n    s,\n    v,\n    a\n  }),\n  hsva: (h, s, v, a) => HSVtoRGB({\n    h,\n    s,\n    v,\n    a\n  })\n};\nexport function parseColor(color) {\n  if (typeof color === 'number') {\n    if (isNaN(color) || color < 0 || color > 0xFFFFFF) {\n      // int can't have opacity\n      consoleWarn(`'${color}' is not a valid hex color`);\n    }\n    return {\n      r: (color & 0xFF0000) >> 16,\n      g: (color & 0xFF00) >> 8,\n      b: color & 0xFF\n    };\n  } else if (typeof color === 'string' && cssColorRe.test(color)) {\n    const {\n      groups\n    } = color.match(cssColorRe);\n    const {\n      fn,\n      values\n    } = groups;\n    const realValues = values.split(/,\\s*/).map(v => {\n      if (v.endsWith('%') && ['hsl', 'hsla', 'hsv', 'hsva'].includes(fn)) {\n        return parseFloat(v) / 100;\n      } else {\n        return parseFloat(v);\n      }\n    });\n    return mappers[fn](...realValues);\n  } else if (typeof color === 'string') {\n    let hex = color.startsWith('#') ? color.slice(1) : color;\n    if ([3, 4].includes(hex.length)) {\n      hex = hex.split('').map(char => char + char).join('');\n    } else if (![6, 8].includes(hex.length)) {\n      consoleWarn(`'${color}' is not a valid hex(a) color`);\n    }\n    const int = parseInt(hex, 16);\n    if (isNaN(int) || int < 0 || int > 0xFFFFFFFF) {\n      consoleWarn(`'${color}' is not a valid hex(a) color`);\n    }\n    return HexToRGB(hex);\n  } else if (typeof color === 'object') {\n    if (has(color, ['r', 'g', 'b'])) {\n      return color;\n    } else if (has(color, ['h', 's', 'l'])) {\n      return HSVtoRGB(HSLtoHSV(color));\n    } else if (has(color, ['h', 's', 'v'])) {\n      return HSVtoRGB(color);\n    }\n  }\n  throw new TypeError(`Invalid color: ${color == null ? color : String(color) || color.constructor.name}\\nExpected #hex, #hexa, rgb(), rgba(), hsl(), hsla(), object or number`);\n}\nexport function RGBToInt(color) {\n  return (color.r << 16) + (color.g << 8) + color.b;\n}\nexport function classToHex(color, colors, currentTheme) {\n  const [colorName, colorModifier] = color.toString().trim().replace('-', '').split(' ', 2);\n  let hexColor = '';\n  if (colorName && colorName in colors) {\n    if (colorModifier && colorModifier in colors[colorName]) {\n      hexColor = colors[colorName][colorModifier];\n    } else if ('base' in colors[colorName]) {\n      hexColor = colors[colorName].base;\n    }\n  } else if (colorName && colorName in currentTheme) {\n    hexColor = currentTheme[colorName];\n  }\n  return hexColor;\n}\n\n/** Converts HSVA to RGBA. Based on formula from https://en.wikipedia.org/wiki/HSL_and_HSV */\nexport function HSVtoRGB(hsva) {\n  const {\n    h,\n    s,\n    v,\n    a\n  } = hsva;\n  const f = n => {\n    const k = (n + h / 60) % 6;\n    return v - v * s * Math.max(Math.min(k, 4 - k, 1), 0);\n  };\n  const rgb = [f(5), f(3), f(1)].map(v => Math.round(v * 255));\n  return {\n    r: rgb[0],\n    g: rgb[1],\n    b: rgb[2],\n    a\n  };\n}\nexport function HSLtoRGB(hsla) {\n  return HSVtoRGB(HSLtoHSV(hsla));\n}\n\n/** Converts RGBA to HSVA. Based on formula from https://en.wikipedia.org/wiki/HSL_and_HSV */\nexport function RGBtoHSV(rgba) {\n  if (!rgba) return {\n    h: 0,\n    s: 1,\n    v: 1,\n    a: 1\n  };\n  const r = rgba.r / 255;\n  const g = rgba.g / 255;\n  const b = rgba.b / 255;\n  const max = Math.max(r, g, b);\n  const min = Math.min(r, g, b);\n  let h = 0;\n  if (max !== min) {\n    if (max === r) {\n      h = 60 * (0 + (g - b) / (max - min));\n    } else if (max === g) {\n      h = 60 * (2 + (b - r) / (max - min));\n    } else if (max === b) {\n      h = 60 * (4 + (r - g) / (max - min));\n    }\n  }\n  if (h < 0) h = h + 360;\n  const s = max === 0 ? 0 : (max - min) / max;\n  const hsv = [h, s, max];\n  return {\n    h: hsv[0],\n    s: hsv[1],\n    v: hsv[2],\n    a: rgba.a\n  };\n}\nexport function HSVtoHSL(hsva) {\n  const {\n    h,\n    s,\n    v,\n    a\n  } = hsva;\n  const l = v - v * s / 2;\n  const sprime = l === 1 || l === 0 ? 0 : (v - l) / Math.min(l, 1 - l);\n  return {\n    h,\n    s: sprime,\n    l,\n    a\n  };\n}\nexport function HSLtoHSV(hsl) {\n  const {\n    h,\n    s,\n    l,\n    a\n  } = hsl;\n  const v = l + s * Math.min(l, 1 - l);\n  const sprime = v === 0 ? 0 : 2 - 2 * l / v;\n  return {\n    h,\n    s: sprime,\n    v,\n    a\n  };\n}\nexport function RGBtoCSS(_ref) {\n  let {\n    r,\n    g,\n    b,\n    a\n  } = _ref;\n  return a === undefined ? `rgb(${r}, ${g}, ${b})` : `rgba(${r}, ${g}, ${b}, ${a})`;\n}\nexport function HSVtoCSS(hsva) {\n  return RGBtoCSS(HSVtoRGB(hsva));\n}\nfunction toHex(v) {\n  const h = Math.round(v).toString(16);\n  return ('00'.substr(0, 2 - h.length) + h).toUpperCase();\n}\nexport function RGBtoHex(_ref2) {\n  let {\n    r,\n    g,\n    b,\n    a\n  } = _ref2;\n  return `#${[toHex(r), toHex(g), toHex(b), a !== undefined ? toHex(Math.round(a * 255)) : ''].join('')}`;\n}\nexport function HexToRGB(hex) {\n  hex = parseHex(hex);\n  let [r, g, b, a] = chunk(hex, 2).map(c => parseInt(c, 16));\n  a = a === undefined ? a : a / 255;\n  return {\n    r,\n    g,\n    b,\n    a\n  };\n}\nexport function HexToHSV(hex) {\n  const rgb = HexToRGB(hex);\n  return RGBtoHSV(rgb);\n}\nexport function HSVtoHex(hsva) {\n  return RGBtoHex(HSVtoRGB(hsva));\n}\nexport function parseHex(hex) {\n  if (hex.startsWith('#')) {\n    hex = hex.slice(1);\n  }\n  hex = hex.replace(/([^0-9a-f])/gi, 'F');\n  if (hex.length === 3 || hex.length === 4) {\n    hex = hex.split('').map(x => x + x).join('');\n  }\n  if (hex.length !== 6) {\n    hex = padEnd(padEnd(hex, 6), 8, 'F');\n  }\n  return hex;\n}\nexport function parseGradient(gradient, colors, currentTheme) {\n  return gradient.replace(/([a-z]+(\\s[a-z]+-[1-5])?)(?=$|,)/gi, x => {\n    return classToHex(x, colors, currentTheme) || x;\n  }).replace(/(rgba\\()#[0-9a-f]+(?=,)/gi, x => {\n    return 'rgba(' + Object.values(HexToRGB(parseHex(x.replace(/rgba\\(/, '')))).slice(0, 3).join(',');\n  });\n}\nexport function lighten(value, amount) {\n  const lab = CIELAB.fromXYZ(sRGB.toXYZ(value));\n  lab[0] = lab[0] + amount * 10;\n  return sRGB.fromXYZ(CIELAB.toXYZ(lab));\n}\nexport function darken(value, amount) {\n  const lab = CIELAB.fromXYZ(sRGB.toXYZ(value));\n  lab[0] = lab[0] - amount * 10;\n  return sRGB.fromXYZ(CIELAB.toXYZ(lab));\n}\n\n/**\n * Calculate the relative luminance of a given color\n * @see https://www.w3.org/TR/WCAG20/#relativeluminancedef\n */\nexport function getLuma(color) {\n  const rgb = parseColor(color);\n  return sRGB.toXYZ(rgb)[1];\n}\n\n/**\n * Returns the contrast ratio (1-21) between two colors.\n * @see https://www.w3.org/TR/WCAG20/#contrast-ratiodef\n */\nexport function getContrast(first, second) {\n  const l1 = getLuma(first);\n  const l2 = getLuma(second);\n  const light = Math.max(l1, l2);\n  const dark = Math.min(l1, l2);\n  return (light + 0.05) / (dark + 0.05);\n}\nexport function getForeground(color) {\n  const blackContrast = Math.abs(APCAcontrast(parseColor(0), parseColor(color)));\n  const whiteContrast = Math.abs(APCAcontrast(parseColor(0xffffff), parseColor(color)));\n\n  // TODO: warn about poor color selections\n  // const contrastAsText = Math.abs(APCAcontrast(colorVal, colorToInt(theme.colors.background)))\n  // const minContrast = Math.max(blackContrast, whiteContrast)\n  // if (minContrast < 60) {\n  //   consoleInfo(`${key} theme color ${color} has poor contrast (${minContrast.toFixed()}%)`)\n  // } else if (contrastAsText < 60 && !['background', 'surface'].includes(color)) {\n  //   consoleInfo(`${key} theme color ${color} has poor contrast as text (${contrastAsText.toFixed()}%)`)\n  // }\n\n  // Prefer white text if both have an acceptable contrast ratio\n  return whiteContrast > Math.min(blackContrast, 50) ? '#fff' : '#000';\n}\n//# sourceMappingURL=colorUtils.mjs.map",
+      "start": 1705807632106,
+      "end": 1705807632215,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807632215,
+      "end": 1705807632215,
+      "order": "normal"
+    }
+  ]
+}

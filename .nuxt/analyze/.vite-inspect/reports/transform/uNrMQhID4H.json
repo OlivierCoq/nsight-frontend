@@ -1,0 +1,218 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VChip/VChip.css",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": ".v-chip {\n  align-items: center;\n  cursor: default;\n  display: inline-flex;\n  font-weight: 400;\n  max-width: 100%;\n  min-width: 0;\n  overflow: hidden;\n  position: relative;\n  text-decoration: none;\n  white-space: nowrap;\n  vertical-align: middle;\n  border-color: rgba(var(--v-border-color), var(--v-border-opacity));\n  border-style: solid;\n  border-width: 0;\n  border-radius: 9999px;\n}\n.v-chip.v-chip--size-x-small {\n  --v-chip-size: 0.625rem;\n  --v-chip-height: 20px;\n  font-size: 0.625rem;\n  padding: 0 8px;\n}\n.v-chip.v-chip--size-x-small .v-avatar {\n  --v-avatar-height: 14px;\n}\n.v-chip--pill.v-chip.v-chip--size-x-small .v-avatar {\n  --v-avatar-height: 20px;\n}\n\n.v-chip.v-chip--size-x-small .v-avatar--start {\n  margin-inline-start: -5.6px;\n  margin-inline-end: 4px;\n}\n.v-chip--pill.v-chip.v-chip--size-x-small .v-avatar--start {\n  margin-inline-start: -8px;\n}\n\n.v-chip.v-chip--size-x-small .v-avatar--end {\n  margin-inline-start: 4px;\n  margin-inline-end: -5.6px;\n}\n.v-chip--pill.v-chip.v-chip--size-x-small .v-avatar--end {\n  margin-inline-end: -8px;\n}\n\n.v-chip--pill.v-chip.v-chip--size-x-small .v-avatar--end + .v-chip__close {\n  margin-inline-start: 12px;\n}\n\n.v-chip.v-chip--size-x-small .v-icon--start,\n.v-chip.v-chip--size-x-small .v-chip__filter {\n  margin-inline-start: -4px;\n  margin-inline-end: 4px;\n}\n.v-chip.v-chip--size-x-small .v-icon--end,\n.v-chip.v-chip--size-x-small .v-chip__close {\n  margin-inline-start: 4px;\n  margin-inline-end: -4px;\n}\n.v-chip.v-chip--size-x-small .v-icon--end + .v-chip__close,\n.v-chip.v-chip--size-x-small .v-avatar--end + .v-chip__close,\n.v-chip.v-chip--size-x-small .v-chip__append + .v-chip__close {\n  margin-inline-start: 8px;\n}\n\n.v-chip.v-chip--size-small {\n  --v-chip-size: 0.75rem;\n  --v-chip-height: 26px;\n  font-size: 0.75rem;\n  padding: 0 10px;\n}\n.v-chip.v-chip--size-small .v-avatar {\n  --v-avatar-height: 20px;\n}\n.v-chip--pill.v-chip.v-chip--size-small .v-avatar {\n  --v-avatar-height: 26px;\n}\n\n.v-chip.v-chip--size-small .v-avatar--start {\n  margin-inline-start: -7px;\n  margin-inline-end: 5px;\n}\n.v-chip--pill.v-chip.v-chip--size-small .v-avatar--start {\n  margin-inline-start: -10px;\n}\n\n.v-chip.v-chip--size-small .v-avatar--end {\n  margin-inline-start: 5px;\n  margin-inline-end: -7px;\n}\n.v-chip--pill.v-chip.v-chip--size-small .v-avatar--end {\n  margin-inline-end: -10px;\n}\n\n.v-chip--pill.v-chip.v-chip--size-small .v-avatar--end + .v-chip__close {\n  margin-inline-start: 15px;\n}\n\n.v-chip.v-chip--size-small .v-icon--start,\n.v-chip.v-chip--size-small .v-chip__filter {\n  margin-inline-start: -5px;\n  margin-inline-end: 5px;\n}\n.v-chip.v-chip--size-small .v-icon--end,\n.v-chip.v-chip--size-small .v-chip__close {\n  margin-inline-start: 5px;\n  margin-inline-end: -5px;\n}\n.v-chip.v-chip--size-small .v-icon--end + .v-chip__close,\n.v-chip.v-chip--size-small .v-avatar--end + .v-chip__close,\n.v-chip.v-chip--size-small .v-chip__append + .v-chip__close {\n  margin-inline-start: 10px;\n}\n\n.v-chip.v-chip--size-default {\n  --v-chip-size: 0.875rem;\n  --v-chip-height: 32px;\n  font-size: 0.875rem;\n  padding: 0 12px;\n}\n.v-chip.v-chip--size-default .v-avatar {\n  --v-avatar-height: 26px;\n}\n.v-chip--pill.v-chip.v-chip--size-default .v-avatar {\n  --v-avatar-height: 32px;\n}\n\n.v-chip.v-chip--size-default .v-avatar--start {\n  margin-inline-start: -8.4px;\n  margin-inline-end: 6px;\n}\n.v-chip--pill.v-chip.v-chip--size-default .v-avatar--start {\n  margin-inline-start: -12px;\n}\n\n.v-chip.v-chip--size-default .v-avatar--end {\n  margin-inline-start: 6px;\n  margin-inline-end: -8.4px;\n}\n.v-chip--pill.v-chip.v-chip--size-default .v-avatar--end {\n  margin-inline-end: -12px;\n}\n\n.v-chip--pill.v-chip.v-chip--size-default .v-avatar--end + .v-chip__close {\n  margin-inline-start: 18px;\n}\n\n.v-chip.v-chip--size-default .v-icon--start,\n.v-chip.v-chip--size-default .v-chip__filter {\n  margin-inline-start: -6px;\n  margin-inline-end: 6px;\n}\n.v-chip.v-chip--size-default .v-icon--end,\n.v-chip.v-chip--size-default .v-chip__close {\n  margin-inline-start: 6px;\n  margin-inline-end: -6px;\n}\n.v-chip.v-chip--size-default .v-icon--end + .v-chip__close,\n.v-chip.v-chip--size-default .v-avatar--end + .v-chip__close,\n.v-chip.v-chip--size-default .v-chip__append + .v-chip__close {\n  margin-inline-start: 12px;\n}\n\n.v-chip.v-chip--size-large {\n  --v-chip-size: 1rem;\n  --v-chip-height: 38px;\n  font-size: 1rem;\n  padding: 0 14px;\n}\n.v-chip.v-chip--size-large .v-avatar {\n  --v-avatar-height: 32px;\n}\n.v-chip--pill.v-chip.v-chip--size-large .v-avatar {\n  --v-avatar-height: 38px;\n}\n\n.v-chip.v-chip--size-large .v-avatar--start {\n  margin-inline-start: -9.8px;\n  margin-inline-end: 7px;\n}\n.v-chip--pill.v-chip.v-chip--size-large .v-avatar--start {\n  margin-inline-start: -14px;\n}\n\n.v-chip.v-chip--size-large .v-avatar--end {\n  margin-inline-start: 7px;\n  margin-inline-end: -9.8px;\n}\n.v-chip--pill.v-chip.v-chip--size-large .v-avatar--end {\n  margin-inline-end: -14px;\n}\n\n.v-chip--pill.v-chip.v-chip--size-large .v-avatar--end + .v-chip__close {\n  margin-inline-start: 21px;\n}\n\n.v-chip.v-chip--size-large .v-icon--start,\n.v-chip.v-chip--size-large .v-chip__filter {\n  margin-inline-start: -7px;\n  margin-inline-end: 7px;\n}\n.v-chip.v-chip--size-large .v-icon--end,\n.v-chip.v-chip--size-large .v-chip__close {\n  margin-inline-start: 7px;\n  margin-inline-end: -7px;\n}\n.v-chip.v-chip--size-large .v-icon--end + .v-chip__close,\n.v-chip.v-chip--size-large .v-avatar--end + .v-chip__close,\n.v-chip.v-chip--size-large .v-chip__append + .v-chip__close {\n  margin-inline-start: 14px;\n}\n\n.v-chip.v-chip--size-x-large {\n  --v-chip-size: 1.125rem;\n  --v-chip-height: 44px;\n  font-size: 1.125rem;\n  padding: 0 17px;\n}\n.v-chip.v-chip--size-x-large .v-avatar {\n  --v-avatar-height: 38px;\n}\n.v-chip--pill.v-chip.v-chip--size-x-large .v-avatar {\n  --v-avatar-height: 44px;\n}\n\n.v-chip.v-chip--size-x-large .v-avatar--start {\n  margin-inline-start: -11.9px;\n  margin-inline-end: 8.5px;\n}\n.v-chip--pill.v-chip.v-chip--size-x-large .v-avatar--start {\n  margin-inline-start: -17px;\n}\n\n.v-chip.v-chip--size-x-large .v-avatar--end {\n  margin-inline-start: 8.5px;\n  margin-inline-end: -11.9px;\n}\n.v-chip--pill.v-chip.v-chip--size-x-large .v-avatar--end {\n  margin-inline-end: -17px;\n}\n\n.v-chip--pill.v-chip.v-chip--size-x-large .v-avatar--end + .v-chip__close {\n  margin-inline-start: 25.5px;\n}\n\n.v-chip.v-chip--size-x-large .v-icon--start,\n.v-chip.v-chip--size-x-large .v-chip__filter {\n  margin-inline-start: -8.5px;\n  margin-inline-end: 8.5px;\n}\n.v-chip.v-chip--size-x-large .v-icon--end,\n.v-chip.v-chip--size-x-large .v-chip__close {\n  margin-inline-start: 8.5px;\n  margin-inline-end: -8.5px;\n}\n.v-chip.v-chip--size-x-large .v-icon--end + .v-chip__close,\n.v-chip.v-chip--size-x-large .v-avatar--end + .v-chip__close,\n.v-chip.v-chip--size-x-large .v-chip__append + .v-chip__close {\n  margin-inline-start: 17px;\n}\n\n.v-chip.v-chip--density-default {\n  height: calc(var(--v-chip-height) + 0px);\n}\n\n.v-chip.v-chip--density-comfortable {\n  height: calc(var(--v-chip-height) + -8px);\n}\n\n.v-chip.v-chip--density-compact {\n  height: calc(var(--v-chip-height) + -12px);\n}\n\n.v-chip:hover > .v-chip__overlay {\n  opacity: calc(var(--v-hover-opacity) * var(--v-theme-overlay-multiplier));\n}\n.v-chip:focus-visible > .v-chip__overlay {\n  opacity: calc(var(--v-focus-opacity) * var(--v-theme-overlay-multiplier));\n}\n@supports not selector(:focus-visible) {\n  .v-chip:focus > .v-chip__overlay {\n    opacity: calc(var(--v-focus-opacity) * var(--v-theme-overlay-multiplier));\n  }\n}\n.v-chip--active > .v-chip__overlay, .v-chip[aria-haspopup=menu][aria-expanded=true] > .v-chip__overlay {\n  opacity: calc(var(--v-activated-opacity) * var(--v-theme-overlay-multiplier));\n}\n.v-chip--active:hover > .v-chip__overlay, .v-chip[aria-haspopup=menu][aria-expanded=true]:hover > .v-chip__overlay {\n  opacity: calc((var(--v-activated-opacity) + var(--v-hover-opacity)) * var(--v-theme-overlay-multiplier));\n}\n.v-chip--active:focus-visible > .v-chip__overlay, .v-chip[aria-haspopup=menu][aria-expanded=true]:focus-visible > .v-chip__overlay {\n  opacity: calc((var(--v-activated-opacity) + var(--v-focus-opacity)) * var(--v-theme-overlay-multiplier));\n}\n@supports not selector(:focus-visible) {\n  .v-chip--active:focus > .v-chip__overlay, .v-chip[aria-haspopup=menu][aria-expanded=true]:focus > .v-chip__overlay {\n    opacity: calc((var(--v-activated-opacity) + var(--v-focus-opacity)) * var(--v-theme-overlay-multiplier));\n  }\n}\n.v-chip--variant-plain, .v-chip--variant-outlined, .v-chip--variant-text, .v-chip--variant-tonal {\n  background: transparent;\n  color: inherit;\n}\n.v-chip--variant-plain {\n  opacity: 0.26;\n}\n.v-chip--variant-plain:focus, .v-chip--variant-plain:hover {\n  opacity: 1;\n}\n.v-chip--variant-plain .v-chip__overlay {\n  display: none;\n}\n.v-chip--variant-elevated, .v-chip--variant-flat {\n  background: rgb(var(--v-theme-surface-variant));\n  color: rgb(var(--v-theme-on-surface-variant));\n}\n.v-chip--variant-elevated {\n  box-shadow: 0px 2px 1px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 1px 1px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 3px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));\n}\n.v-chip--variant-flat {\n  box-shadow: 0px 0px 0px 0px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 0px 0px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 0px 0px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));\n}\n.v-chip--variant-outlined {\n  border: thin solid currentColor;\n}\n.v-chip--variant-text .v-chip__overlay {\n  background: currentColor;\n}\n.v-chip--variant-tonal .v-chip__underlay {\n  background: currentColor;\n  opacity: var(--v-activated-opacity);\n  border-radius: inherit;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  pointer-events: none;\n}\n.v-chip--border {\n  border-width: thin;\n}\n.v-chip--link {\n  cursor: pointer;\n}\n.v-chip--filter {\n  user-select: none;\n}\n.v-chip--label {\n  border-radius: 4px;\n}\n\n.v-chip__content {\n  align-items: center;\n  display: inline-flex;\n}\n.v-autocomplete__selection .v-chip__content, .v-combobox__selection .v-chip__content, .v-select__selection .v-chip__content {\n  overflow: hidden;\n}\n\n.v-chip__filter,\n.v-chip__prepend,\n.v-chip__append,\n.v-chip__close {\n  align-items: center;\n  display: inline-flex;\n}\n\n.v-chip__close {\n  cursor: pointer;\n  flex: 0 1 auto;\n  font-size: 18px;\n  max-height: 18px;\n  max-width: 18px;\n  user-select: none;\n}\n.v-chip__close .v-icon {\n  font-size: inherit;\n}\n\n.v-chip__filter {\n  transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n.v-chip__overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: currentColor;\n  border-radius: inherit;\n  pointer-events: none;\n  opacity: 0;\n  transition: opacity 0.2s ease-in-out;\n}\n\n.v-chip--disabled {\n  opacity: 0.3;\n  pointer-events: none;\n  user-select: none;\n}\n\n.v-chip--label {\n  border-radius: 4px;\n}",
+      "start": 1705807632023,
+      "end": 1705807632164,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807632164,
+      "end": 1705807632164,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807632164,
+      "end": 1705807632164,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807632164,
+      "end": 1705807632164,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".v-chip{align-items:center;border-color:rgba(var(--v-border-color),var(--v-border-opacity));border-radius:9999px;border-style:solid;border-width:0;cursor:default;display:inline-flex;font-weight:400;max-width:100%;min-width:0;overflow:hidden;position:relative;text-decoration:none;vertical-align:middle;white-space:nowrap}.v-chip.v-chip--size-x-small{--v-chip-size:0.625rem;--v-chip-height:20px;font-size:.625rem;padding:0 8px}.v-chip.v-chip--size-x-small .v-avatar{--v-avatar-height:14px}.v-chip--pill.v-chip.v-chip--size-x-small .v-avatar{--v-avatar-height:20px}.v-chip.v-chip--size-x-small .v-avatar--start{margin-inline-end:4px;margin-inline-start:-5.6px}.v-chip--pill.v-chip.v-chip--size-x-small .v-avatar--start{margin-inline-start:-8px}.v-chip.v-chip--size-x-small .v-avatar--end{margin-inline-end:-5.6px;margin-inline-start:4px}.v-chip--pill.v-chip.v-chip--size-x-small .v-avatar--end{margin-inline-end:-8px}.v-chip--pill.v-chip.v-chip--size-x-small .v-avatar--end+.v-chip__close{margin-inline-start:12px}.v-chip.v-chip--size-x-small .v-chip__filter,.v-chip.v-chip--size-x-small .v-icon--start{margin-inline-end:4px;margin-inline-start:-4px}.v-chip.v-chip--size-x-small .v-chip__close,.v-chip.v-chip--size-x-small .v-icon--end{margin-inline-end:-4px;margin-inline-start:4px}.v-chip.v-chip--size-x-small .v-avatar--end+.v-chip__close,.v-chip.v-chip--size-x-small .v-chip__append+.v-chip__close,.v-chip.v-chip--size-x-small .v-icon--end+.v-chip__close{margin-inline-start:8px}.v-chip.v-chip--size-small{--v-chip-size:0.75rem;--v-chip-height:26px;font-size:.75rem;padding:0 10px}.v-chip.v-chip--size-small .v-avatar{--v-avatar-height:20px}.v-chip--pill.v-chip.v-chip--size-small .v-avatar{--v-avatar-height:26px}.v-chip.v-chip--size-small .v-avatar--start{margin-inline-end:5px;margin-inline-start:-7px}.v-chip--pill.v-chip.v-chip--size-small .v-avatar--start{margin-inline-start:-10px}.v-chip.v-chip--size-small .v-avatar--end{margin-inline-end:-7px;margin-inline-start:5px}.v-chip--pill.v-chip.v-chip--size-small .v-avatar--end{margin-inline-end:-10px}.v-chip--pill.v-chip.v-chip--size-small .v-avatar--end+.v-chip__close{margin-inline-start:15px}.v-chip.v-chip--size-small .v-chip__filter,.v-chip.v-chip--size-small .v-icon--start{margin-inline-end:5px;margin-inline-start:-5px}.v-chip.v-chip--size-small .v-chip__close,.v-chip.v-chip--size-small .v-icon--end{margin-inline-end:-5px;margin-inline-start:5px}.v-chip.v-chip--size-small .v-avatar--end+.v-chip__close,.v-chip.v-chip--size-small .v-chip__append+.v-chip__close,.v-chip.v-chip--size-small .v-icon--end+.v-chip__close{margin-inline-start:10px}.v-chip.v-chip--size-default{--v-chip-size:0.875rem;--v-chip-height:32px;font-size:.875rem;padding:0 12px}.v-chip.v-chip--size-default .v-avatar{--v-avatar-height:26px}.v-chip--pill.v-chip.v-chip--size-default .v-avatar{--v-avatar-height:32px}.v-chip.v-chip--size-default .v-avatar--start{margin-inline-end:6px;margin-inline-start:-8.4px}.v-chip--pill.v-chip.v-chip--size-default .v-avatar--start{margin-inline-start:-12px}.v-chip.v-chip--size-default .v-avatar--end{margin-inline-end:-8.4px;margin-inline-start:6px}.v-chip--pill.v-chip.v-chip--size-default .v-avatar--end{margin-inline-end:-12px}.v-chip--pill.v-chip.v-chip--size-default .v-avatar--end+.v-chip__close{margin-inline-start:18px}.v-chip.v-chip--size-default .v-chip__filter,.v-chip.v-chip--size-default .v-icon--start{margin-inline-end:6px;margin-inline-start:-6px}.v-chip.v-chip--size-default .v-chip__close,.v-chip.v-chip--size-default .v-icon--end{margin-inline-end:-6px;margin-inline-start:6px}.v-chip.v-chip--size-default .v-avatar--end+.v-chip__close,.v-chip.v-chip--size-default .v-chip__append+.v-chip__close,.v-chip.v-chip--size-default .v-icon--end+.v-chip__close{margin-inline-start:12px}.v-chip.v-chip--size-large{--v-chip-size:1rem;--v-chip-height:38px;font-size:1rem;padding:0 14px}.v-chip.v-chip--size-large .v-avatar{--v-avatar-height:32px}.v-chip--pill.v-chip.v-chip--size-large .v-avatar{--v-avatar-height:38px}.v-chip.v-chip--size-large .v-avatar--start{margin-inline-end:7px;margin-inline-start:-9.8px}.v-chip--pill.v-chip.v-chip--size-large .v-avatar--start{margin-inline-start:-14px}.v-chip.v-chip--size-large .v-avatar--end{margin-inline-end:-9.8px;margin-inline-start:7px}.v-chip--pill.v-chip.v-chip--size-large .v-avatar--end{margin-inline-end:-14px}.v-chip--pill.v-chip.v-chip--size-large .v-avatar--end+.v-chip__close{margin-inline-start:21px}.v-chip.v-chip--size-large .v-chip__filter,.v-chip.v-chip--size-large .v-icon--start{margin-inline-end:7px;margin-inline-start:-7px}.v-chip.v-chip--size-large .v-chip__close,.v-chip.v-chip--size-large .v-icon--end{margin-inline-end:-7px;margin-inline-start:7px}.v-chip.v-chip--size-large .v-avatar--end+.v-chip__close,.v-chip.v-chip--size-large .v-chip__append+.v-chip__close,.v-chip.v-chip--size-large .v-icon--end+.v-chip__close{margin-inline-start:14px}.v-chip.v-chip--size-x-large{--v-chip-size:1.125rem;--v-chip-height:44px;font-size:1.125rem;padding:0 17px}.v-chip.v-chip--size-x-large .v-avatar{--v-avatar-height:38px}.v-chip--pill.v-chip.v-chip--size-x-large .v-avatar{--v-avatar-height:44px}.v-chip.v-chip--size-x-large .v-avatar--start{margin-inline-end:8.5px;margin-inline-start:-11.9px}.v-chip--pill.v-chip.v-chip--size-x-large .v-avatar--start{margin-inline-start:-17px}.v-chip.v-chip--size-x-large .v-avatar--end{margin-inline-end:-11.9px;margin-inline-start:8.5px}.v-chip--pill.v-chip.v-chip--size-x-large .v-avatar--end{margin-inline-end:-17px}.v-chip--pill.v-chip.v-chip--size-x-large .v-avatar--end+.v-chip__close{margin-inline-start:25.5px}.v-chip.v-chip--size-x-large .v-chip__filter,.v-chip.v-chip--size-x-large .v-icon--start{margin-inline-end:8.5px;margin-inline-start:-8.5px}.v-chip.v-chip--size-x-large .v-chip__close,.v-chip.v-chip--size-x-large .v-icon--end{margin-inline-end:-8.5px;margin-inline-start:8.5px}.v-chip.v-chip--size-x-large .v-avatar--end+.v-chip__close,.v-chip.v-chip--size-x-large .v-chip__append+.v-chip__close,.v-chip.v-chip--size-x-large .v-icon--end+.v-chip__close{margin-inline-start:17px}.v-chip.v-chip--density-default{height:calc(var(--v-chip-height))}.v-chip.v-chip--density-comfortable{height:calc(var(--v-chip-height) - 8px)}.v-chip.v-chip--density-compact{height:calc(var(--v-chip-height) - 12px)}.v-chip:hover>.v-chip__overlay{opacity:calc(var(--v-hover-opacity)*var(--v-theme-overlay-multiplier))}.v-chip:focus-visible>.v-chip__overlay{opacity:calc(var(--v-focus-opacity)*var(--v-theme-overlay-multiplier))}@supports not selector(:focus-visible){.v-chip:focus>.v-chip__overlay{opacity:calc(var(--v-focus-opacity)*var(--v-theme-overlay-multiplier))}}.v-chip--active>.v-chip__overlay,.v-chip[aria-haspopup=menu][aria-expanded=true]>.v-chip__overlay{opacity:calc(var(--v-activated-opacity)*var(--v-theme-overlay-multiplier))}.v-chip--active:hover>.v-chip__overlay,.v-chip[aria-haspopup=menu][aria-expanded=true]:hover>.v-chip__overlay{opacity:calc((var(--v-activated-opacity) + var(--v-hover-opacity))*var(--v-theme-overlay-multiplier))}.v-chip--active:focus-visible>.v-chip__overlay,.v-chip[aria-haspopup=menu][aria-expanded=true]:focus-visible>.v-chip__overlay{opacity:calc((var(--v-activated-opacity) + var(--v-focus-opacity))*var(--v-theme-overlay-multiplier))}@supports not selector(:focus-visible){.v-chip--active:focus>.v-chip__overlay,.v-chip[aria-haspopup=menu][aria-expanded=true]:focus>.v-chip__overlay{opacity:calc((var(--v-activated-opacity) + var(--v-focus-opacity))*var(--v-theme-overlay-multiplier))}}.v-chip--variant-outlined,.v-chip--variant-plain,.v-chip--variant-text,.v-chip--variant-tonal{background:transparent;color:inherit}.v-chip--variant-plain{opacity:.26}.v-chip--variant-plain:focus,.v-chip--variant-plain:hover{opacity:1}.v-chip--variant-plain .v-chip__overlay{display:none}.v-chip--variant-elevated,.v-chip--variant-flat{background:rgb(var(--v-theme-surface-variant));color:rgb(var(--v-theme-on-surface-variant))}.v-chip--variant-elevated{box-shadow:0 2px 1px -1px var(--v-shadow-key-umbra-opacity,rgba(0,0,0,.2)),0 1px 1px 0 var(--v-shadow-key-penumbra-opacity,rgba(0,0,0,.14)),0 1px 3px 0 var(--v-shadow-key-ambient-opacity,rgba(0,0,0,.12))}.v-chip--variant-flat{box-shadow:0 0 0 0 var(--v-shadow-key-umbra-opacity,rgba(0,0,0,.2)),0 0 0 0 var(--v-shadow-key-penumbra-opacity,rgba(0,0,0,.14)),0 0 0 0 var(--v-shadow-key-ambient-opacity,rgba(0,0,0,.12))}.v-chip--variant-outlined{border:thin solid}.v-chip--variant-text .v-chip__overlay{background:currentColor}.v-chip--variant-tonal .v-chip__underlay{background:currentColor;border-radius:inherit;bottom:0;left:0;opacity:var(--v-activated-opacity);pointer-events:none;position:absolute;right:0;top:0}.v-chip--border{border-width:thin}.v-chip--link{cursor:pointer}.v-chip--filter{-webkit-user-select:none;-moz-user-select:none;user-select:none}.v-chip__content{align-items:center;display:inline-flex}.v-autocomplete__selection .v-chip__content,.v-combobox__selection .v-chip__content,.v-select__selection .v-chip__content{overflow:hidden}.v-chip__append,.v-chip__close,.v-chip__filter,.v-chip__prepend{align-items:center;display:inline-flex}.v-chip__close{cursor:pointer;flex:0 1 auto;font-size:18px;max-height:18px;max-width:18px;-webkit-user-select:none;-moz-user-select:none;user-select:none}.v-chip__close .v-icon{font-size:inherit}.v-chip__filter{transition:.15s cubic-bezier(.4,0,.2,1)}.v-chip__overlay{background-color:currentColor;border-radius:inherit;height:100%;left:0;opacity:0;pointer-events:none;position:absolute;top:0;transition:opacity .2s ease-in-out;width:100%}.v-chip--disabled{opacity:.3;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.v-chip--label{border-radius:4px}",
+      "start": 1705807632164,
+      "end": 1705807632191,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807632191,
+      "end": 1705807632191,
+      "order": "normal"
+    }
+  ]
+}

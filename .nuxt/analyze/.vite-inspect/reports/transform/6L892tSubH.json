@@ -1,0 +1,219 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/define-data-property/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "'use strict';\n\nvar hasPropertyDescriptors = require('has-property-descriptors')();\n\nvar GetIntrinsic = require('get-intrinsic');\n\nvar $defineProperty = hasPropertyDescriptors && GetIntrinsic('%Object.defineProperty%', true);\nif ($defineProperty) {\n\ttry {\n\t\t$defineProperty({}, 'a', { value: 1 });\n\t} catch (e) {\n\t\t// IE 8 has a broken defineProperty\n\t\t$defineProperty = false;\n\t}\n}\n\nvar $SyntaxError = GetIntrinsic('%SyntaxError%');\nvar $TypeError = GetIntrinsic('%TypeError%');\n\nvar gopd = require('gopd');\n\n/** @type {(obj: Record<PropertyKey, unknown>, property: PropertyKey, value: unknown, nonEnumerable?: boolean | null, nonWritable?: boolean | null, nonConfigurable?: boolean | null, loose?: boolean) => void} */\nmodule.exports = function defineDataProperty(\n\tobj,\n\tproperty,\n\tvalue\n) {\n\tif (!obj || (typeof obj !== 'object' && typeof obj !== 'function')) {\n\t\tthrow new $TypeError('`obj` must be an object or a function`');\n\t}\n\tif (typeof property !== 'string' && typeof property !== 'symbol') {\n\t\tthrow new $TypeError('`property` must be a string or a symbol`');\n\t}\n\tif (arguments.length > 3 && typeof arguments[3] !== 'boolean' && arguments[3] !== null) {\n\t\tthrow new $TypeError('`nonEnumerable`, if provided, must be a boolean or null');\n\t}\n\tif (arguments.length > 4 && typeof arguments[4] !== 'boolean' && arguments[4] !== null) {\n\t\tthrow new $TypeError('`nonWritable`, if provided, must be a boolean or null');\n\t}\n\tif (arguments.length > 5 && typeof arguments[5] !== 'boolean' && arguments[5] !== null) {\n\t\tthrow new $TypeError('`nonConfigurable`, if provided, must be a boolean or null');\n\t}\n\tif (arguments.length > 6 && typeof arguments[6] !== 'boolean') {\n\t\tthrow new $TypeError('`loose`, if provided, must be a boolean');\n\t}\n\n\tvar nonEnumerable = arguments.length > 3 ? arguments[3] : null;\n\tvar nonWritable = arguments.length > 4 ? arguments[4] : null;\n\tvar nonConfigurable = arguments.length > 5 ? arguments[5] : null;\n\tvar loose = arguments.length > 6 ? arguments[6] : false;\n\n\t/* @type {false | TypedPropertyDescriptor<unknown>} */\n\tvar desc = !!gopd && gopd(obj, property);\n\n\tif ($defineProperty) {\n\t\t$defineProperty(obj, property, {\n\t\t\tconfigurable: nonConfigurable === null && desc ? desc.configurable : !nonConfigurable,\n\t\t\tenumerable: nonEnumerable === null && desc ? desc.enumerable : !nonEnumerable,\n\t\t\tvalue: value,\n\t\t\twritable: nonWritable === null && desc ? desc.writable : !nonWritable\n\t\t});\n\t} else if (loose || (!nonEnumerable && !nonWritable && !nonConfigurable)) {\n\t\t// must fall back to [[Set]], and was not explicitly asked to make non-enumerable, non-writable, or non-configurable\n\t\tobj[property] = value; // eslint-disable-line no-param-reassign\n\t} else {\n\t\tthrow new $SyntaxError('This environment does not support defining a property as non-configurable, non-writable, or non-enumerable.');\n\t}\n};\n",
+      "start": 1705807632998,
+      "end": 1705807633038,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807633038,
+      "end": 1705807633038,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\nimport require$$0 from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/has-property-descriptors/index.js?commonjs-proxy\";\nimport require$$1 from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/get-intrinsic/index.js?commonjs-proxy\";\nimport require$$2 from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/gopd/index.js?commonjs-proxy\";\n\n'use strict';\n\nvar hasPropertyDescriptors = require$$0();\n\nvar GetIntrinsic = require$$1;\n\nvar $defineProperty = hasPropertyDescriptors && GetIntrinsic('%Object.defineProperty%', true);\nif ($defineProperty) {\n\ttry {\n\t\t$defineProperty({}, 'a', { value: 1 });\n\t} catch (e) {\n\t\t// IE 8 has a broken defineProperty\n\t\t$defineProperty = false;\n\t}\n}\n\nvar $SyntaxError = GetIntrinsic('%SyntaxError%');\nvar $TypeError = GetIntrinsic('%TypeError%');\n\nvar gopd = require$$2;\n\n/** @type {(obj: Record<PropertyKey, unknown>, property: PropertyKey, value: unknown, nonEnumerable?: boolean | null, nonWritable?: boolean | null, nonConfigurable?: boolean | null, loose?: boolean) => void} */\nvar defineDataProperty = function defineDataProperty(\n\tobj,\n\tproperty,\n\tvalue\n) {\n\tif (!obj || (typeof obj !== 'object' && typeof obj !== 'function')) {\n\t\tthrow new $TypeError('`obj` must be an object or a function`');\n\t}\n\tif (typeof property !== 'string' && typeof property !== 'symbol') {\n\t\tthrow new $TypeError('`property` must be a string or a symbol`');\n\t}\n\tif (arguments.length > 3 && typeof arguments[3] !== 'boolean' && arguments[3] !== null) {\n\t\tthrow new $TypeError('`nonEnumerable`, if provided, must be a boolean or null');\n\t}\n\tif (arguments.length > 4 && typeof arguments[4] !== 'boolean' && arguments[4] !== null) {\n\t\tthrow new $TypeError('`nonWritable`, if provided, must be a boolean or null');\n\t}\n\tif (arguments.length > 5 && typeof arguments[5] !== 'boolean' && arguments[5] !== null) {\n\t\tthrow new $TypeError('`nonConfigurable`, if provided, must be a boolean or null');\n\t}\n\tif (arguments.length > 6 && typeof arguments[6] !== 'boolean') {\n\t\tthrow new $TypeError('`loose`, if provided, must be a boolean');\n\t}\n\n\tvar nonEnumerable = arguments.length > 3 ? arguments[3] : null;\n\tvar nonWritable = arguments.length > 4 ? arguments[4] : null;\n\tvar nonConfigurable = arguments.length > 5 ? arguments[5] : null;\n\tvar loose = arguments.length > 6 ? arguments[6] : false;\n\n\t/* @type {false | TypedPropertyDescriptor<unknown>} */\n\tvar desc = !!gopd && gopd(obj, property);\n\n\tif ($defineProperty) {\n\t\t$defineProperty(obj, property, {\n\t\t\tconfigurable: nonConfigurable === null && desc ? desc.configurable : !nonConfigurable,\n\t\t\tenumerable: nonEnumerable === null && desc ? desc.enumerable : !nonEnumerable,\n\t\t\tvalue: value,\n\t\t\twritable: nonWritable === null && desc ? desc.writable : !nonWritable\n\t\t});\n\t} else if (loose || (!nonEnumerable && !nonWritable && !nonConfigurable)) {\n\t\t// must fall back to [[Set]], and was not explicitly asked to make non-enumerable, non-writable, or non-configurable\n\t\tobj[property] = value; // eslint-disable-line no-param-reassign\n\t} else {\n\t\tthrow new $SyntaxError('This environment does not support defining a property as non-configurable, non-writable, or non-enumerable.');\n\t}\n};\n\nexport default /*@__PURE__*/commonjsHelpers.getDefaultExportFromCjs(defineDataProperty);\nexport { defineDataProperty as __moduleExports };",
+      "start": 1705807633038,
+      "end": 1705807633048,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": "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"
+      }
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807633048,
+      "end": 1705807633048,
+      "order": "normal"
+    }
+  ]
+}

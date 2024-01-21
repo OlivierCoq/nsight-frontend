@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/calendar.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Composables\nimport { getWeek, useDate } from \"./date/date.mjs\";\nimport { useProxiedModel } from \"./proxiedModel.mjs\"; // Utilities\nimport { computed } from 'vue';\nimport { propsFactory, wrapInArray } from \"../util/index.mjs\"; // Types\n// Types\n// Composables\nexport const makeCalendarProps = propsFactory({\n  allowedDates: [Array, Function],\n  disabled: Boolean,\n  displayValue: null,\n  modelValue: Array,\n  month: [Number, String],\n  max: null,\n  min: null,\n  showAdjacentMonths: Boolean,\n  year: [Number, String],\n  weekdays: {\n    type: Array,\n    default: () => [0, 1, 2, 3, 4, 5, 6]\n  }\n}, 'calendar');\nexport function useCalendar(props) {\n  const adapter = useDate();\n  const model = useProxiedModel(props, 'modelValue', [], v => wrapInArray(v));\n  const displayValue = computed(() => {\n    if (props.displayValue) return adapter.date(props.displayValue);\n    if (model.value.length > 0) return adapter.date(model.value[0]);\n    if (props.min) return adapter.date(props.min);\n    if (Array.isArray(props.allowedDates)) return adapter.date(props.allowedDates[0]);\n    return adapter.date();\n  });\n  const year = useProxiedModel(props, 'year', undefined, v => {\n    const value = v != null ? Number(v) : adapter.getYear(displayValue.value);\n    return adapter.startOfYear(adapter.setYear(adapter.date(), value));\n  }, v => adapter.getYear(v));\n  const month = useProxiedModel(props, 'month', undefined, v => {\n    const value = v != null ? Number(v) : adapter.getMonth(displayValue.value);\n    const date = adapter.setYear(adapter.date(), adapter.getYear(year.value));\n    return adapter.setMonth(date, value);\n  }, v => adapter.getMonth(v));\n  const weeksInMonth = computed(() => {\n    const weeks = adapter.getWeekArray(month.value);\n    const days = weeks.flat();\n\n    // Make sure there's always 6 weeks in month (6 * 7 days)\n    // But only do it if we're not hiding adjacent months?\n    const daysInMonth = 6 * 7;\n    if (days.length < daysInMonth) {\n      const lastDay = days[days.length - 1];\n      let week = [];\n      for (let day = 1; day <= daysInMonth - days.length; day++) {\n        week.push(adapter.addDays(lastDay, day));\n        if (day % 7 === 0) {\n          weeks.push(week);\n          week = [];\n        }\n      }\n    }\n    return weeks;\n  });\n  function genDays(days, today) {\n    return days.filter(date => {\n      return props.weekdays.includes(adapter.toJsDate(date).getDay());\n    }).map((date, index) => {\n      const isoDate = adapter.toISO(date);\n      const isAdjacent = !adapter.isSameMonth(date, month.value);\n      const isStart = adapter.isSameDay(date, adapter.startOfMonth(month.value));\n      const isEnd = adapter.isSameDay(date, adapter.endOfMonth(month.value));\n      const isSame = adapter.isSameDay(date, month.value);\n      return {\n        date,\n        isoDate,\n        formatted: adapter.format(date, 'keyboardDate'),\n        year: adapter.getYear(date),\n        month: adapter.getMonth(date),\n        isDisabled: isDisabled(date),\n        isWeekStart: index % 7 === 0,\n        isWeekEnd: index % 7 === 6,\n        isToday: adapter.isSameDay(date, today),\n        isAdjacent,\n        isHidden: isAdjacent && !props.showAdjacentMonths,\n        isStart,\n        isSelected: model.value.some(value => adapter.isSameDay(date, value)),\n        isEnd,\n        isSame,\n        localized: adapter.format(date, 'dayOfMonth')\n      };\n    });\n  }\n  const daysInWeek = computed(() => {\n    const lastDay = adapter.startOfWeek(model.value);\n    const week = [];\n    for (let day = 0; day <= 6; day++) {\n      week.push(adapter.addDays(lastDay, day));\n    }\n    const days = week;\n    const today = adapter.date();\n    return genDays(days, today);\n  });\n  const daysInMonth = computed(() => {\n    const days = weeksInMonth.value.flat();\n    const today = adapter.date();\n    return genDays(days, today);\n  });\n  const weekNumbers = computed(() => {\n    return weeksInMonth.value.map(week => {\n      return week.length ? getWeek(adapter, week[0]) : null;\n    });\n  });\n  function isDisabled(value) {\n    if (props.disabled) return true;\n    const date = adapter.date(value);\n    if (props.min && adapter.isAfter(adapter.date(props.min), date)) return true;\n    if (props.max && adapter.isAfter(date, adapter.date(props.max))) return true;\n    if (Array.isArray(props.allowedDates) && props.allowedDates.length > 0) {\n      return !props.allowedDates.some(d => adapter.isSameDay(adapter.date(d), date));\n    }\n    if (typeof props.allowedDates === 'function') {\n      return !props.allowedDates(date);\n    }\n    return false;\n  }\n  return {\n    displayValue,\n    daysInMonth,\n    daysInWeek,\n    genDays,\n    model,\n    weeksInMonth,\n    weekNumbers\n  };\n}\n//# sourceMappingURL=calendar.mjs.map",
+      "start": 1705807632266,
+      "end": 1705807632374,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807632374,
+      "end": 1705807632374,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807632374,
+      "end": 1705807632375,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807632375,
+      "end": 1705807632375,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807632375,
+      "end": 1705807632375,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807632375,
+      "end": 1705807632375,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807632375,
+      "end": 1705807632375,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807632375,
+      "end": 1705807632375,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807632375,
+      "end": 1705807632375,
+      "order": "normal"
+    }
+  ]
+}

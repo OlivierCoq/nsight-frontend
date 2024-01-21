@@ -1,0 +1,1 @@
+import{_ as s,s as _,w as e,q as o,o as c,b as r,P as l}from"./entry.edFZpnpL.js";const p={};function f(t,d){const n=o("v-main"),a=o("v-app");return c(),_(a,null,{default:e(()=>[r(n,null,{default:e(()=>[l(t.$slots,"default")]),_:3})]),_:3})}const m=s(p,[["render",f]]);export{m as default};

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VDataIterator/VDataIterator.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createVNode as _createVNode } from \"vue\";\n// Components\nimport { makeDataTableExpandProps, provideExpanded } from \"../VDataTable/composables/expand.mjs\";\nimport { makeDataTableGroupProps, provideGroupBy, useGroupedItems } from \"../VDataTable/composables/group.mjs\";\nimport { useOptions } from \"../VDataTable/composables/options.mjs\";\nimport { createPagination, makeDataTablePaginateProps, providePagination, usePaginatedItems } from \"../VDataTable/composables/paginate.mjs\";\nimport { makeDataTableSelectProps, provideSelection } from \"../VDataTable/composables/select.mjs\";\nimport { createSort, makeDataTableSortProps, provideSort, useSortedItems } from \"../VDataTable/composables/sort.mjs\"; // Composables\nimport { makeDataIteratorItemsProps, useDataIteratorItems } from \"./composables/items.mjs\";\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { makeFilterProps, useFilter } from \"../../composables/filter.mjs\";\nimport { useProxiedModel } from \"../../composables/proxiedModel.mjs\";\nimport { makeTagProps } from \"../../composables/tag.mjs\"; // Utilities\nimport { computed, toRef } from 'vue';\nimport { genericComponent, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const makeVDataIteratorProps = propsFactory({\n  search: String,\n  loading: Boolean,\n  ...makeComponentProps(),\n  ...makeDataIteratorItemsProps(),\n  ...makeDataTableSelectProps(),\n  ...makeDataTableSortProps(),\n  ...makeDataTablePaginateProps({\n    itemsPerPage: 5\n  }),\n  ...makeDataTableExpandProps(),\n  ...makeDataTableGroupProps(),\n  ...makeFilterProps(),\n  ...makeTagProps()\n}, 'VDataIterator');\nexport const VDataIterator = genericComponent()({\n  name: 'VDataIterator',\n  props: makeVDataIteratorProps(),\n  emits: {\n    'update:modelValue': value => true,\n    'update:groupBy': value => true,\n    'update:page': value => true,\n    'update:itemsPerPage': value => true,\n    'update:sortBy': value => true,\n    'update:options': value => true,\n    'update:expanded': value => true,\n    'update:currentItems': value => true\n  },\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const groupBy = useProxiedModel(props, 'groupBy');\n    const search = toRef(props, 'search');\n    const {\n      items\n    } = useDataIteratorItems(props);\n    const {\n      filteredItems\n    } = useFilter(props, items, search, {\n      transform: item => item.raw\n    });\n    const {\n      sortBy,\n      multiSort,\n      mustSort\n    } = createSort(props);\n    const {\n      page,\n      itemsPerPage\n    } = createPagination(props);\n    const {\n      toggleSort\n    } = provideSort({\n      sortBy,\n      multiSort,\n      mustSort,\n      page\n    });\n    const {\n      sortByWithGroups,\n      opened,\n      extractRows,\n      isGroupOpen,\n      toggleGroup\n    } = provideGroupBy({\n      groupBy,\n      sortBy\n    });\n    const {\n      sortedItems\n    } = useSortedItems(props, filteredItems, sortByWithGroups);\n    const {\n      flatItems\n    } = useGroupedItems(sortedItems, groupBy, opened);\n    const itemsLength = computed(() => flatItems.value.length);\n    const {\n      startIndex,\n      stopIndex,\n      pageCount,\n      prevPage,\n      nextPage,\n      setItemsPerPage,\n      setPage\n    } = providePagination({\n      page,\n      itemsPerPage,\n      itemsLength\n    });\n    const {\n      paginatedItems\n    } = usePaginatedItems({\n      items: flatItems,\n      startIndex,\n      stopIndex,\n      itemsPerPage\n    });\n    const paginatedItemsWithoutGroups = computed(() => extractRows(paginatedItems.value));\n    const {\n      isSelected,\n      select,\n      selectAll,\n      toggleSelect\n    } = provideSelection(props, {\n      allItems: items,\n      currentPage: paginatedItemsWithoutGroups\n    });\n    const {\n      isExpanded,\n      toggleExpand\n    } = provideExpanded(props);\n    useOptions({\n      page,\n      itemsPerPage,\n      sortBy,\n      groupBy,\n      search\n    });\n    const slotProps = computed(() => ({\n      page: page.value,\n      itemsPerPage: itemsPerPage.value,\n      sortBy: sortBy.value,\n      pageCount: pageCount.value,\n      toggleSort,\n      prevPage,\n      nextPage,\n      setPage,\n      setItemsPerPage,\n      isSelected,\n      select,\n      selectAll,\n      toggleSelect,\n      isExpanded,\n      toggleExpand,\n      isGroupOpen,\n      toggleGroup,\n      items: paginatedItemsWithoutGroups.value,\n      groupedItems: paginatedItems.value\n    }));\n    useRender(() => _createVNode(props.tag, {\n      \"class\": ['v-data-iterator', props.class],\n      \"style\": props.style\n    }, {\n      default: () => [slots.header?.(slotProps.value), !paginatedItems.value.length ? slots['no-data']?.() : slots.default?.(slotProps.value), slots.footer?.(slotProps.value)]\n    }));\n    return {};\n  }\n});\n//# sourceMappingURL=VDataIterator.mjs.map",
+      "start": 1705807631278,
+      "end": 1705807631382,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807631382,
+      "end": 1705807631382,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807631383,
+      "end": 1705807631383,
+      "order": "normal"
+    }
+  ]
+}

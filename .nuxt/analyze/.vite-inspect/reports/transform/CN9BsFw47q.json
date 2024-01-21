@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VStepper/VStepperWindow.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createVNode as _createVNode, mergeProps as _mergeProps, resolveDirective as _resolveDirective } from \"vue\";\n// Components\nimport { makeVWindowProps, VWindow } from \"../VWindow/VWindow.mjs\"; // Composables\nimport { useProxiedModel } from \"../../composables/proxiedModel.mjs\"; // Utilities\nimport { computed, inject } from 'vue';\nimport { genericComponent, omit, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const VStepperSymbol = Symbol.for('vuetify:v-stepper');\nexport const makeVStepperWindowProps = propsFactory({\n  ...omit(makeVWindowProps(), ['continuous', 'nextIcon', 'prevIcon', 'showArrows', 'touch', 'mandatory'])\n}, 'VStepperWindow');\nexport const VStepperWindow = genericComponent()({\n  name: 'VStepperWindow',\n  props: makeVStepperWindowProps(),\n  emits: {\n    'update:modelValue': v => true\n  },\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const group = inject(VStepperSymbol, null);\n    const _model = useProxiedModel(props, 'modelValue');\n    const model = computed({\n      get() {\n        // Always return modelValue if defined\n        // or if not within a VStepper group\n        if (_model.value != null || !group) return _model.value;\n\n        // If inside of a VStepper, find the currently selected\n        // item by id. Item value may be assigned by its index\n        return group.items.value.find(item => group.selected.value.includes(item.id))?.value;\n      },\n      set(val) {\n        _model.value = val;\n      }\n    });\n    useRender(() => {\n      const windowProps = VWindow.filterProps(props);\n      return _createVNode(VWindow, _mergeProps({\n        \"_as\": \"VStepperWindow\"\n      }, windowProps, {\n        \"modelValue\": model.value,\n        \"onUpdate:modelValue\": $event => model.value = $event,\n        \"class\": \"v-stepper-window\",\n        \"mandatory\": false,\n        \"touch\": false\n      }), slots);\n    });\n    return {};\n  }\n});\n//# sourceMappingURL=VStepperWindow.mjs.map",
+      "start": 1705807631583,
+      "end": 1705807631667,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807631667,
+      "end": 1705807631667,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807631668,
+      "end": 1705807631668,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807631670,
+      "end": 1705807631670,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807631670,
+      "end": 1705807631670,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807631670,
+      "end": 1705807631670,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807631670,
+      "end": 1705807631670,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807631670,
+      "end": 1705807631670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807631670,
+      "end": 1705807631670,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VBottomNavigation/VBottomNavigation.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createVNode as _createVNode } from \"vue\";\n// Styles\nimport \"./VBottomNavigation.css\";\n\n// Components\nimport { VBtnToggleSymbol } from \"../VBtnToggle/VBtnToggle.mjs\"; // Composables\nimport { makeBorderProps, useBorder } from \"../../composables/border.mjs\";\nimport { useBackgroundColor } from \"../../composables/color.mjs\";\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { provideDefaults } from \"../../composables/defaults.mjs\";\nimport { makeDensityProps, useDensity } from \"../../composables/density.mjs\";\nimport { makeElevationProps, useElevation } from \"../../composables/elevation.mjs\";\nimport { makeGroupProps, useGroup } from \"../../composables/group.mjs\";\nimport { makeLayoutItemProps, useLayoutItem } from \"../../composables/layout.mjs\";\nimport { makeRoundedProps, useRounded } from \"../../composables/rounded.mjs\";\nimport { useSsrBoot } from \"../../composables/ssrBoot.mjs\";\nimport { makeTagProps } from \"../../composables/tag.mjs\";\nimport { makeThemeProps, useTheme } from \"../../composables/theme.mjs\"; // Utilities\nimport { computed, toRef } from 'vue';\nimport { convertToUnit, genericComponent, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const makeVBottomNavigationProps = propsFactory({\n  bgColor: String,\n  color: String,\n  grow: Boolean,\n  mode: {\n    type: String,\n    validator: v => !v || ['horizontal', 'shift'].includes(v)\n  },\n  height: {\n    type: [Number, String],\n    default: 56\n  },\n  active: {\n    type: Boolean,\n    default: true\n  },\n  ...makeBorderProps(),\n  ...makeComponentProps(),\n  ...makeDensityProps(),\n  ...makeElevationProps(),\n  ...makeRoundedProps(),\n  ...makeLayoutItemProps({\n    name: 'bottom-navigation'\n  }),\n  ...makeTagProps({\n    tag: 'header'\n  }),\n  ...makeGroupProps({\n    modelValue: true,\n    selectedClass: 'v-btn--selected'\n  }),\n  ...makeThemeProps()\n}, 'VBottomNavigation');\nexport const VBottomNavigation = genericComponent()({\n  name: 'VBottomNavigation',\n  props: makeVBottomNavigationProps(),\n  emits: {\n    'update:modelValue': value => true\n  },\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const {\n      themeClasses\n    } = useTheme();\n    const {\n      borderClasses\n    } = useBorder(props);\n    const {\n      backgroundColorClasses,\n      backgroundColorStyles\n    } = useBackgroundColor(toRef(props, 'bgColor'));\n    const {\n      densityClasses\n    } = useDensity(props);\n    const {\n      elevationClasses\n    } = useElevation(props);\n    const {\n      roundedClasses\n    } = useRounded(props);\n    const {\n      ssrBootStyles\n    } = useSsrBoot();\n    const height = computed(() => Number(props.height) - (props.density === 'comfortable' ? 8 : 0) - (props.density === 'compact' ? 16 : 0));\n    const isActive = toRef(props, 'active');\n    const {\n      layoutItemStyles\n    } = useLayoutItem({\n      id: props.name,\n      order: computed(() => parseInt(props.order, 10)),\n      position: computed(() => 'bottom'),\n      layoutSize: computed(() => isActive.value ? height.value : 0),\n      elementSize: height,\n      active: isActive,\n      absolute: toRef(props, 'absolute')\n    });\n    useGroup(props, VBtnToggleSymbol);\n    provideDefaults({\n      VBtn: {\n        color: toRef(props, 'color'),\n        density: toRef(props, 'density'),\n        stacked: computed(() => props.mode !== 'horizontal'),\n        variant: 'text'\n      }\n    }, {\n      scoped: true\n    });\n    useRender(() => {\n      return _createVNode(props.tag, {\n        \"class\": ['v-bottom-navigation', {\n          'v-bottom-navigation--active': isActive.value,\n          'v-bottom-navigation--grow': props.grow,\n          'v-bottom-navigation--shift': props.mode === 'shift'\n        }, themeClasses.value, backgroundColorClasses.value, borderClasses.value, densityClasses.value, elevationClasses.value, roundedClasses.value, props.class],\n        \"style\": [backgroundColorStyles.value, layoutItemStyles.value, {\n          height: convertToUnit(height.value),\n          transform: `translateY(${convertToUnit(!isActive.value ? 100 : 0, '%')})`\n        }, ssrBootStyles.value, props.style]\n      }, {\n        default: () => [slots.default && _createVNode(\"div\", {\n          \"class\": \"v-bottom-navigation__content\"\n        }, [slots.default()])]\n      });\n    });\n    return {};\n  }\n});\n//# sourceMappingURL=VBottomNavigation.mjs.map",
+      "start": 1705807631236,
+      "end": 1705807631275,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807631275,
+      "end": 1705807631275,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807631275,
+      "end": 1705807631275,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807631275,
+      "end": 1705807631275,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807631275,
+      "end": 1705807631275,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807631275,
+      "end": 1705807631275,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807631275,
+      "end": 1705807631275,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807631275,
+      "end": 1705807631275,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807631275,
+      "end": 1705807631275,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807631275,
+      "end": 1705807631275,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631275,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807631276,
+      "end": 1705807631276,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VDataTable/VDataTableGroupHeaderRow.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createTextVNode as _createTextVNode, createVNode as _createVNode } from \"vue\";\n// Components\nimport { VDataTableColumn } from \"./VDataTableColumn.mjs\";\nimport { VBtn } from \"../VBtn/index.mjs\";\nimport { VCheckboxBtn } from \"../VCheckbox/index.mjs\"; // Composables\nimport { useGroupBy } from \"./composables/group.mjs\";\nimport { useHeaders } from \"./composables/headers.mjs\";\nimport { useSelection } from \"./composables/select.mjs\"; // Utilities\nimport { computed } from 'vue';\nimport { genericComponent, propsFactory } from \"../../util/index.mjs\"; // Types\nexport const makeVDataTableGroupHeaderRowProps = propsFactory({\n  item: {\n    type: Object,\n    required: true\n  }\n}, 'VDataTableGroupHeaderRow');\nexport const VDataTableGroupHeaderRow = genericComponent()({\n  name: 'VDataTableGroupHeaderRow',\n  props: makeVDataTableGroupHeaderRowProps(),\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const {\n      isGroupOpen,\n      toggleGroup,\n      extractRows\n    } = useGroupBy();\n    const {\n      isSelected,\n      isSomeSelected,\n      select\n    } = useSelection();\n    const {\n      columns\n    } = useHeaders();\n    const rows = computed(() => {\n      return extractRows([props.item]);\n    });\n    return () => _createVNode(\"tr\", {\n      \"class\": \"v-data-table-group-header-row\",\n      \"style\": {\n        '--v-data-table-group-header-row-depth': props.item.depth\n      }\n    }, [columns.value.map(column => {\n      if (column.key === 'data-table-group') {\n        const icon = isGroupOpen(props.item) ? '$expand' : '$next';\n        const onClick = () => toggleGroup(props.item);\n        return slots['data-table-group']?.({\n          item: props.item,\n          count: rows.value.length,\n          props: {\n            icon,\n            onClick\n          }\n        }) ?? _createVNode(VDataTableColumn, {\n          \"class\": \"v-data-table-group-header-row__column\"\n        }, {\n          default: () => [_createVNode(VBtn, {\n            \"size\": \"small\",\n            \"variant\": \"text\",\n            \"icon\": icon,\n            \"onClick\": onClick\n          }, null), _createVNode(\"span\", null, [props.item.value]), _createVNode(\"span\", null, [_createTextVNode(\"(\"), rows.value.length, _createTextVNode(\")\")])]\n        });\n      }\n      if (column.key === 'data-table-select') {\n        const modelValue = isSelected(rows.value);\n        const indeterminate = isSomeSelected(rows.value) && !modelValue;\n        const selectGroup = v => select(rows.value, v);\n        return slots['data-table-select']?.({\n          props: {\n            modelValue,\n            indeterminate,\n            'onUpdate:modelValue': selectGroup\n          }\n        }) ?? _createVNode(\"td\", null, [_createVNode(VCheckboxBtn, {\n          \"modelValue\": modelValue,\n          \"indeterminate\": indeterminate,\n          \"onUpdate:modelValue\": selectGroup\n        }, null)]);\n      }\n      return _createVNode(\"td\", null, null);\n    })]);\n  }\n});\n//# sourceMappingURL=VDataTableGroupHeaderRow.mjs.map",
+      "start": 1705807632223,
+      "end": 1705807632300,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807632300,
+      "end": 1705807632300,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807632300,
+      "end": 1705807632300,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807632301,
+      "end": 1705807632301,
+      "order": "normal"
+    }
+  ]
+}

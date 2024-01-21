@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VDataTable/composables/sort.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Composables\nimport { useLocale } from \"../../../composables/index.mjs\";\nimport { useProxiedModel } from \"../../../composables/proxiedModel.mjs\"; // Utilities\nimport { computed, inject, provide, toRef } from 'vue';\nimport { getObjectValueByPath, isEmpty, propsFactory } from \"../../../util/index.mjs\"; // Types\nexport const makeDataTableSortProps = propsFactory({\n  sortBy: {\n    type: Array,\n    default: () => []\n  },\n  customKeySort: Object,\n  multiSort: Boolean,\n  mustSort: Boolean\n}, 'DataTable-sort');\nconst VDataTableSortSymbol = Symbol.for('vuetify:data-table-sort');\nexport function createSort(props) {\n  const sortBy = useProxiedModel(props, 'sortBy');\n  const mustSort = toRef(props, 'mustSort');\n  const multiSort = toRef(props, 'multiSort');\n  return {\n    sortBy,\n    mustSort,\n    multiSort\n  };\n}\nexport function provideSort(options) {\n  const {\n    sortBy,\n    mustSort,\n    multiSort,\n    page\n  } = options;\n  const toggleSort = column => {\n    if (column.key == null) return;\n    let newSortBy = sortBy.value.map(x => ({\n      ...x\n    })) ?? [];\n    const item = newSortBy.find(x => x.key === column.key);\n    if (!item) {\n      if (multiSort.value) newSortBy = [...newSortBy, {\n        key: column.key,\n        order: 'asc'\n      }];else newSortBy = [{\n        key: column.key,\n        order: 'asc'\n      }];\n    } else if (item.order === 'desc') {\n      if (mustSort.value) {\n        item.order = 'asc';\n      } else {\n        newSortBy = newSortBy.filter(x => x.key !== column.key);\n      }\n    } else {\n      item.order = 'desc';\n    }\n    sortBy.value = newSortBy;\n    if (page) page.value = 1;\n  };\n  function isSorted(column) {\n    return !!sortBy.value.find(item => item.key === column.key);\n  }\n  const data = {\n    sortBy,\n    toggleSort,\n    isSorted\n  };\n  provide(VDataTableSortSymbol, data);\n  return data;\n}\nexport function useSort() {\n  const data = inject(VDataTableSortSymbol);\n  if (!data) throw new Error('Missing sort!');\n  return data;\n}\n\n// TODO: abstract into project composable\nexport function useSortedItems(props, items, sortBy, sortFunctions, sortRawFunctions) {\n  const locale = useLocale();\n  const sortedItems = computed(() => {\n    if (!sortBy.value.length) return items.value;\n    return sortItems(items.value, sortBy.value, locale.current.value, {\n      ...props.customKeySort,\n      ...sortFunctions?.value\n    }, sortRawFunctions?.value);\n  });\n  return {\n    sortedItems\n  };\n}\nexport function sortItems(items, sortByItems, locale, customSorters, customRawSorters) {\n  const stringCollator = new Intl.Collator(locale, {\n    sensitivity: 'accent',\n    usage: 'sort'\n  });\n  return [...items].sort((a, b) => {\n    for (let i = 0; i < sortByItems.length; i++) {\n      const sortKey = sortByItems[i].key;\n      const sortOrder = sortByItems[i].order ?? 'asc';\n      if (sortOrder === false) continue;\n      let sortA = getObjectValueByPath(a.raw, sortKey);\n      let sortB = getObjectValueByPath(b.raw, sortKey);\n      let sortARaw = a.raw;\n      let sortBRaw = b.raw;\n      if (sortOrder === 'desc') {\n        [sortA, sortB] = [sortB, sortA];\n        [sortARaw, sortBRaw] = [sortBRaw, sortARaw];\n      }\n      if (customRawSorters?.[sortKey]) {\n        const customResult = customRawSorters[sortKey](sortARaw, sortBRaw);\n        if (!customResult) continue;\n        return customResult;\n      }\n      if (customSorters?.[sortKey]) {\n        const customResult = customSorters[sortKey](sortA, sortB);\n        if (!customResult) continue;\n        return customResult;\n      }\n\n      // Dates should be compared numerically\n      if (sortA instanceof Date && sortB instanceof Date) {\n        return sortA.getTime() - sortB.getTime();\n      }\n      [sortA, sortB] = [sortA, sortB].map(s => s != null ? s.toString().toLocaleLowerCase() : s);\n      if (sortA !== sortB) {\n        if (isEmpty(sortA) && isEmpty(sortB)) return 0;\n        if (isEmpty(sortA)) return -1;\n        if (isEmpty(sortB)) return 1;\n        if (!isNaN(sortA) && !isNaN(sortB)) return Number(sortA) - Number(sortB);\n        return stringCollator.compare(sortA, sortB);\n      }\n    }\n    return 0;\n  });\n}\n//# sourceMappingURL=sort.mjs.map",
+      "start": 1705807632057,
+      "end": 1705807632199,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807632199,
+      "end": 1705807632199,
+      "order": "normal"
+    }
+  ]
+}

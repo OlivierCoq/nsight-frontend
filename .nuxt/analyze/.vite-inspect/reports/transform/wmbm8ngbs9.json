@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VSelectionControl/VSelectionControl.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { withDirectives as _withDirectives, resolveDirective as _resolveDirective, Fragment as _Fragment, createVNode as _createVNode, mergeProps as _mergeProps } from \"vue\";\n// Styles\nimport \"./VSelectionControl.css\";\n\n// Components\nimport { VIcon } from \"../VIcon/index.mjs\";\nimport { VLabel } from \"../VLabel/index.mjs\";\nimport { makeSelectionControlGroupProps, VSelectionControlGroupSymbol } from \"../VSelectionControlGroup/VSelectionControlGroup.mjs\"; // Composables\nimport { useBackgroundColor, useTextColor } from \"../../composables/color.mjs\";\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { useDensity } from \"../../composables/density.mjs\";\nimport { useProxiedModel } from \"../../composables/proxiedModel.mjs\"; // Directives\nimport { Ripple } from \"../../directives/ripple/index.mjs\"; // Utilities\nimport { computed, inject, nextTick, ref, shallowRef } from 'vue';\nimport { filterInputAttrs, genericComponent, getUid, matchesSelector, propsFactory, useRender, wrapInArray } from \"../../util/index.mjs\"; // Types\nexport const makeVSelectionControlProps = propsFactory({\n  label: String,\n  baseColor: String,\n  trueValue: null,\n  falseValue: null,\n  value: null,\n  ...makeComponentProps(),\n  ...makeSelectionControlGroupProps()\n}, 'VSelectionControl');\nexport function useSelectionControl(props) {\n  const group = inject(VSelectionControlGroupSymbol, undefined);\n  const {\n    densityClasses\n  } = useDensity(props);\n  const modelValue = useProxiedModel(props, 'modelValue');\n  const trueValue = computed(() => props.trueValue !== undefined ? props.trueValue : props.value !== undefined ? props.value : true);\n  const falseValue = computed(() => props.falseValue !== undefined ? props.falseValue : false);\n  const isMultiple = computed(() => !!props.multiple || props.multiple == null && Array.isArray(modelValue.value));\n  const model = computed({\n    get() {\n      const val = group ? group.modelValue.value : modelValue.value;\n      return isMultiple.value ? wrapInArray(val).some(v => props.valueComparator(v, trueValue.value)) : props.valueComparator(val, trueValue.value);\n    },\n    set(val) {\n      if (props.readonly) return;\n      const currentValue = val ? trueValue.value : falseValue.value;\n      let newVal = currentValue;\n      if (isMultiple.value) {\n        newVal = val ? [...wrapInArray(modelValue.value), currentValue] : wrapInArray(modelValue.value).filter(item => !props.valueComparator(item, trueValue.value));\n      }\n      if (group) {\n        group.modelValue.value = newVal;\n      } else {\n        modelValue.value = newVal;\n      }\n    }\n  });\n  const {\n    textColorClasses,\n    textColorStyles\n  } = useTextColor(computed(() => {\n    if (props.error || props.disabled) return undefined;\n    return model.value ? props.color : props.baseColor;\n  }));\n  const {\n    backgroundColorClasses,\n    backgroundColorStyles\n  } = useBackgroundColor(computed(() => {\n    return model.value && !props.error && !props.disabled ? props.color : undefined;\n  }));\n  const icon = computed(() => model.value ? props.trueIcon : props.falseIcon);\n  return {\n    group,\n    densityClasses,\n    trueValue,\n    falseValue,\n    model,\n    textColorClasses,\n    textColorStyles,\n    backgroundColorClasses,\n    backgroundColorStyles,\n    icon\n  };\n}\nexport const VSelectionControl = genericComponent()({\n  name: 'VSelectionControl',\n  directives: {\n    Ripple\n  },\n  inheritAttrs: false,\n  props: makeVSelectionControlProps(),\n  emits: {\n    'update:modelValue': value => true\n  },\n  setup(props, _ref) {\n    let {\n      attrs,\n      slots\n    } = _ref;\n    const {\n      group,\n      densityClasses,\n      icon,\n      model,\n      textColorClasses,\n      textColorStyles,\n      backgroundColorClasses,\n      backgroundColorStyles,\n      trueValue\n    } = useSelectionControl(props);\n    const uid = getUid();\n    const isFocused = shallowRef(false);\n    const isFocusVisible = shallowRef(false);\n    const input = ref();\n    const id = computed(() => props.id || `input-${uid}`);\n    const isInteractive = computed(() => !props.disabled && !props.readonly);\n    group?.onForceUpdate(() => {\n      if (input.value) {\n        input.value.checked = model.value;\n      }\n    });\n    function onFocus(e) {\n      if (!isInteractive.value) return;\n      isFocused.value = true;\n      if (matchesSelector(e.target, ':focus-visible') !== false) {\n        isFocusVisible.value = true;\n      }\n    }\n    function onBlur() {\n      isFocused.value = false;\n      isFocusVisible.value = false;\n    }\n    function onInput(e) {\n      if (!isInteractive.value) return;\n      if (props.readonly && group) {\n        nextTick(() => group.forceUpdate());\n      }\n      model.value = e.target.checked;\n    }\n    useRender(() => {\n      const label = slots.label ? slots.label({\n        label: props.label,\n        props: {\n          for: id.value\n        }\n      }) : props.label;\n      const [rootAttrs, inputAttrs] = filterInputAttrs(attrs);\n      const inputNode = _createVNode(\"input\", _mergeProps({\n        \"ref\": input,\n        \"checked\": model.value,\n        \"disabled\": !!props.disabled,\n        \"id\": id.value,\n        \"onBlur\": onBlur,\n        \"onFocus\": onFocus,\n        \"onInput\": onInput,\n        \"aria-disabled\": !!props.disabled,\n        \"type\": props.type,\n        \"value\": trueValue.value,\n        \"name\": props.name,\n        \"aria-checked\": props.type === 'checkbox' ? model.value : undefined\n      }, inputAttrs), null);\n      return _createVNode(\"div\", _mergeProps({\n        \"class\": ['v-selection-control', {\n          'v-selection-control--dirty': model.value,\n          'v-selection-control--disabled': props.disabled,\n          'v-selection-control--error': props.error,\n          'v-selection-control--focused': isFocused.value,\n          'v-selection-control--focus-visible': isFocusVisible.value,\n          'v-selection-control--inline': props.inline\n        }, densityClasses.value, props.class]\n      }, rootAttrs, {\n        \"style\": props.style\n      }), [_createVNode(\"div\", {\n        \"class\": ['v-selection-control__wrapper', textColorClasses.value],\n        \"style\": textColorStyles.value\n      }, [slots.default?.({\n        backgroundColorClasses,\n        backgroundColorStyles\n      }), _withDirectives(_createVNode(\"div\", {\n        \"class\": ['v-selection-control__input']\n      }, [slots.input?.({\n        model,\n        textColorClasses,\n        textColorStyles,\n        backgroundColorClasses,\n        backgroundColorStyles,\n        inputNode,\n        icon: icon.value,\n        props: {\n          onFocus,\n          onBlur,\n          id: id.value\n        }\n      }) ?? _createVNode(_Fragment, null, [icon.value && _createVNode(VIcon, {\n        \"key\": \"icon\",\n        \"icon\": icon.value\n      }, null), inputNode])]), [[_resolveDirective(\"ripple\"), props.ripple && [!props.disabled && !props.readonly, null, ['center', 'circle']]]])]), label && _createVNode(VLabel, {\n        \"for\": id.value,\n        \"clickable\": true,\n        \"onClick\": e => e.stopPropagation()\n      }, {\n        default: () => [label]\n      })]);\n    });\n    return {\n      isFocused,\n      input\n    };\n  }\n});\n//# sourceMappingURL=VSelectionControl.mjs.map",
+      "start": 1705807631553,
+      "end": 1705807631619,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807631619,
+      "end": 1705807631619,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807631620,
+      "end": 1705807631620,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/nuxt/dist/app/types.js",
+  "transforms": [
+    {
+      "name": "__load__",
+      "result": "",
+      "start": 1705807630780,
+      "end": 1705807630780
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807630780,
+      "end": 1705807630780,
+      "order": "normal"
+    }
+  ]
+}

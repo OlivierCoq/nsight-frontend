@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VBanner/VBanner.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { resolveDirective as _resolveDirective, createVNode as _createVNode } from \"vue\";\n// Styles\nimport \"./VBanner.css\";\n\n// Components\nimport { VBannerActions } from \"./VBannerActions.mjs\";\nimport { VBannerText } from \"./VBannerText.mjs\";\nimport { VAvatar } from \"../VAvatar/index.mjs\";\nimport { VDefaultsProvider } from \"../VDefaultsProvider/index.mjs\"; // Composables\nimport { makeBorderProps, useBorder } from \"../../composables/border.mjs\";\nimport { useBackgroundColor } from \"../../composables/color.mjs\";\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { provideDefaults } from \"../../composables/defaults.mjs\";\nimport { makeDensityProps, useDensity } from \"../../composables/density.mjs\";\nimport { makeDimensionProps, useDimension } from \"../../composables/dimensions.mjs\";\nimport { makeDisplayProps, useDisplay } from \"../../composables/display.mjs\";\nimport { makeElevationProps, useElevation } from \"../../composables/elevation.mjs\";\nimport { IconValue } from \"../../composables/icons.mjs\";\nimport { makeLocationProps, useLocation } from \"../../composables/location.mjs\";\nimport { makePositionProps, usePosition } from \"../../composables/position.mjs\";\nimport { makeRoundedProps, useRounded } from \"../../composables/rounded.mjs\";\nimport { makeTagProps } from \"../../composables/tag.mjs\";\nimport { makeThemeProps, provideTheme } from \"../../composables/theme.mjs\"; // Utilities\nimport { toRef } from 'vue';\nimport { genericComponent, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const makeVBannerProps = propsFactory({\n  avatar: String,\n  bgColor: String,\n  color: String,\n  icon: IconValue,\n  lines: String,\n  stacked: Boolean,\n  sticky: Boolean,\n  text: String,\n  ...makeBorderProps(),\n  ...makeComponentProps(),\n  ...makeDensityProps(),\n  ...makeDimensionProps(),\n  ...makeDisplayProps(),\n  ...makeElevationProps(),\n  ...makeLocationProps(),\n  ...makePositionProps(),\n  ...makeRoundedProps(),\n  ...makeTagProps(),\n  ...makeThemeProps()\n}, 'VBanner');\nexport const VBanner = genericComponent()({\n  name: 'VBanner',\n  props: makeVBannerProps(),\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const {\n      backgroundColorClasses,\n      backgroundColorStyles\n    } = useBackgroundColor(props, 'bgColor');\n    const {\n      borderClasses\n    } = useBorder(props);\n    const {\n      densityClasses\n    } = useDensity(props);\n    const {\n      displayClasses,\n      mobile\n    } = useDisplay(props);\n    const {\n      dimensionStyles\n    } = useDimension(props);\n    const {\n      elevationClasses\n    } = useElevation(props);\n    const {\n      locationStyles\n    } = useLocation(props);\n    const {\n      positionClasses\n    } = usePosition(props);\n    const {\n      roundedClasses\n    } = useRounded(props);\n    const {\n      themeClasses\n    } = provideTheme(props);\n    const color = toRef(props, 'color');\n    const density = toRef(props, 'density');\n    provideDefaults({\n      VBannerActions: {\n        color,\n        density\n      }\n    });\n    useRender(() => {\n      const hasText = !!(props.text || slots.text);\n      const hasPrependMedia = !!(props.avatar || props.icon);\n      const hasPrepend = !!(hasPrependMedia || slots.prepend);\n      return _createVNode(props.tag, {\n        \"class\": ['v-banner', {\n          'v-banner--stacked': props.stacked || mobile.value,\n          'v-banner--sticky': props.sticky,\n          [`v-banner--${props.lines}-line`]: !!props.lines\n        }, themeClasses.value, backgroundColorClasses.value, borderClasses.value, densityClasses.value, displayClasses.value, elevationClasses.value, positionClasses.value, roundedClasses.value, props.class],\n        \"style\": [backgroundColorStyles.value, dimensionStyles.value, locationStyles.value, props.style],\n        \"role\": \"banner\"\n      }, {\n        default: () => [hasPrepend && _createVNode(\"div\", {\n          \"key\": \"prepend\",\n          \"class\": \"v-banner__prepend\"\n        }, [!slots.prepend ? _createVNode(VAvatar, {\n          \"key\": \"prepend-avatar\",\n          \"color\": color.value,\n          \"density\": density.value,\n          \"icon\": props.icon,\n          \"image\": props.avatar\n        }, null) : _createVNode(VDefaultsProvider, {\n          \"key\": \"prepend-defaults\",\n          \"disabled\": !hasPrependMedia,\n          \"defaults\": {\n            VAvatar: {\n              color: color.value,\n              density: density.value,\n              icon: props.icon,\n              image: props.avatar\n            }\n          }\n        }, slots.prepend)]), _createVNode(\"div\", {\n          \"class\": \"v-banner__content\"\n        }, [hasText && _createVNode(VBannerText, {\n          \"key\": \"text\"\n        }, {\n          default: () => [slots.text?.() ?? props.text]\n        }), slots.default?.()]), slots.actions && _createVNode(VBannerActions, {\n          \"key\": \"actions\"\n        }, slots.actions)]\n      });\n    });\n  }\n});\n//# sourceMappingURL=VBanner.mjs.map",
+      "start": 1705807631220,
+      "end": 1705807631258,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807631258,
+      "end": 1705807631258,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807631258,
+      "end": 1705807631259,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807631259,
+      "end": 1705807631259,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807631259,
+      "end": 1705807631259,
+      "order": "normal"
+    }
+  ]
+}

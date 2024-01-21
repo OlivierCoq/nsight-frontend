@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VSwitch/VSwitch.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { mergeProps as _mergeProps, Fragment as _Fragment, createVNode as _createVNode } from \"vue\";\n// Styles\nimport \"./VSwitch.css\";\n\n// Components\nimport { VScaleTransition } from \"../transitions/index.mjs\";\nimport { VDefaultsProvider } from \"../VDefaultsProvider/VDefaultsProvider.mjs\";\nimport { VIcon } from \"../VIcon/index.mjs\";\nimport { makeVInputProps, VInput } from \"../VInput/VInput.mjs\";\nimport { VProgressCircular } from \"../VProgressCircular/index.mjs\";\nimport { makeVSelectionControlProps, VSelectionControl } from \"../VSelectionControl/VSelectionControl.mjs\"; // Composables\nimport { useFocus } from \"../../composables/focus.mjs\";\nimport { LoaderSlot, useLoader } from \"../../composables/loader.mjs\";\nimport { useProxiedModel } from \"../../composables/proxiedModel.mjs\"; // Utilities\nimport { computed, ref } from 'vue';\nimport { filterInputAttrs, genericComponent, getUid, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const makeVSwitchProps = propsFactory({\n  indeterminate: Boolean,\n  inset: Boolean,\n  flat: Boolean,\n  loading: {\n    type: [Boolean, String],\n    default: false\n  },\n  ...makeVInputProps(),\n  ...makeVSelectionControlProps()\n}, 'VSwitch');\nexport const VSwitch = genericComponent()({\n  name: 'VSwitch',\n  inheritAttrs: false,\n  props: makeVSwitchProps(),\n  emits: {\n    'update:focused': focused => true,\n    'update:modelValue': value => true,\n    'update:indeterminate': value => true\n  },\n  setup(props, _ref) {\n    let {\n      attrs,\n      slots\n    } = _ref;\n    const indeterminate = useProxiedModel(props, 'indeterminate');\n    const model = useProxiedModel(props, 'modelValue');\n    const {\n      loaderClasses\n    } = useLoader(props);\n    const {\n      isFocused,\n      focus,\n      blur\n    } = useFocus(props);\n    const control = ref();\n    const loaderColor = computed(() => {\n      return typeof props.loading === 'string' && props.loading !== '' ? props.loading : props.color;\n    });\n    const uid = getUid();\n    const id = computed(() => props.id || `switch-${uid}`);\n    function onChange() {\n      if (indeterminate.value) {\n        indeterminate.value = false;\n      }\n    }\n    function onTrackClick(e) {\n      e.stopPropagation();\n      e.preventDefault();\n      control.value?.input?.click();\n    }\n    useRender(() => {\n      const [rootAttrs, controlAttrs] = filterInputAttrs(attrs);\n      const inputProps = VInput.filterProps(props);\n      const controlProps = VSelectionControl.filterProps(props);\n      return _createVNode(VInput, _mergeProps({\n        \"class\": ['v-switch', {\n          'v-switch--inset': props.inset\n        }, {\n          'v-switch--indeterminate': indeterminate.value\n        }, loaderClasses.value, props.class]\n      }, rootAttrs, inputProps, {\n        \"modelValue\": model.value,\n        \"onUpdate:modelValue\": $event => model.value = $event,\n        \"id\": id.value,\n        \"focused\": isFocused.value,\n        \"style\": props.style\n      }), {\n        ...slots,\n        default: _ref2 => {\n          let {\n            id,\n            messagesId,\n            isDisabled,\n            isReadonly,\n            isValid\n          } = _ref2;\n          const slotProps = {\n            model,\n            isValid\n          };\n          return _createVNode(VSelectionControl, _mergeProps({\n            \"ref\": control\n          }, controlProps, {\n            \"modelValue\": model.value,\n            \"onUpdate:modelValue\": [$event => model.value = $event, onChange],\n            \"id\": id.value,\n            \"aria-describedby\": messagesId.value,\n            \"type\": \"checkbox\",\n            \"aria-checked\": indeterminate.value ? 'mixed' : undefined,\n            \"disabled\": isDisabled.value,\n            \"readonly\": isReadonly.value,\n            \"onFocus\": focus,\n            \"onBlur\": blur\n          }, controlAttrs), {\n            ...slots,\n            default: _ref3 => {\n              let {\n                backgroundColorClasses,\n                backgroundColorStyles\n              } = _ref3;\n              return _createVNode(\"div\", {\n                \"class\": ['v-switch__track', ...backgroundColorClasses.value],\n                \"style\": backgroundColorStyles.value,\n                \"onClick\": onTrackClick\n              }, [slots['track-true'] && _createVNode(\"div\", {\n                \"key\": \"prepend\",\n                \"class\": \"v-switch__track-true\"\n              }, [slots['track-true'](slotProps)]), slots['track-false'] && _createVNode(\"div\", {\n                \"key\": \"append\",\n                \"class\": \"v-switch__track-false\"\n              }, [slots['track-false'](slotProps)])]);\n            },\n            input: _ref4 => {\n              let {\n                inputNode,\n                icon,\n                backgroundColorClasses,\n                backgroundColorStyles\n              } = _ref4;\n              return _createVNode(_Fragment, null, [inputNode, _createVNode(\"div\", {\n                \"class\": ['v-switch__thumb', {\n                  'v-switch__thumb--filled': icon || props.loading\n                }, props.inset ? undefined : backgroundColorClasses.value],\n                \"style\": props.inset ? undefined : backgroundColorStyles.value\n              }, [slots.thumb ? _createVNode(VDefaultsProvider, {\n                \"defaults\": {\n                  VIcon: {\n                    icon,\n                    size: 'x-small'\n                  }\n                }\n              }, {\n                default: () => [slots.thumb({\n                  ...slotProps,\n                  icon\n                })]\n              }) : _createVNode(VScaleTransition, null, {\n                default: () => [!props.loading ? icon && _createVNode(VIcon, {\n                  \"key\": String(icon),\n                  \"icon\": icon,\n                  \"size\": \"x-small\"\n                }, null) : _createVNode(LoaderSlot, {\n                  \"name\": \"v-switch\",\n                  \"active\": true,\n                  \"color\": isValid.value === false ? undefined : loaderColor.value\n                }, {\n                  default: slotProps => slots.loader ? slots.loader(slotProps) : _createVNode(VProgressCircular, {\n                    \"active\": slotProps.isActive,\n                    \"color\": slotProps.color,\n                    \"indeterminate\": true,\n                    \"size\": \"16\",\n                    \"width\": \"2\"\n                  }, null)\n                })]\n              })])]);\n            }\n          });\n        }\n      });\n    });\n    return {};\n  }\n});\n//# sourceMappingURL=VSwitch.mjs.map",
+      "start": 1705807631607,
+      "end": 1705807631681,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807631681,
+      "end": 1705807631681,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807631681,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807631682,
+      "end": 1705807631682,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VColorPicker/VColorPickerCanvas.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createVNode as _createVNode } from \"vue\";\n// Styles\nimport \"./VColorPickerCanvas.css\";\n\n// Composables\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { useResizeObserver } from \"../../composables/resizeObserver.mjs\"; // Utilities\nimport { computed, onMounted, ref, shallowRef, watch } from 'vue';\nimport { clamp, convertToUnit, defineComponent, getEventCoordinates, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const makeVColorPickerCanvasProps = propsFactory({\n  color: {\n    type: Object\n  },\n  disabled: Boolean,\n  dotSize: {\n    type: [Number, String],\n    default: 10\n  },\n  height: {\n    type: [Number, String],\n    default: 150\n  },\n  width: {\n    type: [Number, String],\n    default: 300\n  },\n  ...makeComponentProps()\n}, 'VColorPickerCanvas');\nexport const VColorPickerCanvas = defineComponent({\n  name: 'VColorPickerCanvas',\n  props: makeVColorPickerCanvasProps(),\n  emits: {\n    'update:color': color => true,\n    'update:position': hue => true\n  },\n  setup(props, _ref) {\n    let {\n      emit\n    } = _ref;\n    const isInteracting = shallowRef(false);\n    const canvasRef = ref();\n    const canvasWidth = shallowRef(parseFloat(props.width));\n    const canvasHeight = shallowRef(parseFloat(props.height));\n    const _dotPosition = ref({\n      x: 0,\n      y: 0\n    });\n    const dotPosition = computed({\n      get: () => _dotPosition.value,\n      set(val) {\n        if (!canvasRef.value) return;\n        const {\n          x,\n          y\n        } = val;\n        _dotPosition.value = val;\n        emit('update:color', {\n          h: props.color?.h ?? 0,\n          s: clamp(x, 0, canvasWidth.value) / canvasWidth.value,\n          v: 1 - clamp(y, 0, canvasHeight.value) / canvasHeight.value,\n          a: props.color?.a ?? 1\n        });\n      }\n    });\n    const dotStyles = computed(() => {\n      const {\n        x,\n        y\n      } = dotPosition.value;\n      const radius = parseInt(props.dotSize, 10) / 2;\n      return {\n        width: convertToUnit(props.dotSize),\n        height: convertToUnit(props.dotSize),\n        transform: `translate(${convertToUnit(x - radius)}, ${convertToUnit(y - radius)})`\n      };\n    });\n    const {\n      resizeRef\n    } = useResizeObserver(entries => {\n      if (!resizeRef.value?.offsetParent) return;\n      const {\n        width,\n        height\n      } = entries[0].contentRect;\n      canvasWidth.value = width;\n      canvasHeight.value = height;\n    });\n    function updateDotPosition(x, y, rect) {\n      const {\n        left,\n        top,\n        width,\n        height\n      } = rect;\n      dotPosition.value = {\n        x: clamp(x - left, 0, width),\n        y: clamp(y - top, 0, height)\n      };\n    }\n    function handleMouseDown(e) {\n      if (e.type === 'mousedown') {\n        // Prevent text selection while dragging\n        e.preventDefault();\n      }\n      if (props.disabled) return;\n      handleMouseMove(e);\n      window.addEventListener('mousemove', handleMouseMove);\n      window.addEventListener('mouseup', handleMouseUp);\n      window.addEventListener('touchmove', handleMouseMove);\n      window.addEventListener('touchend', handleMouseUp);\n    }\n    function handleMouseMove(e) {\n      if (props.disabled || !canvasRef.value) return;\n      isInteracting.value = true;\n      const coords = getEventCoordinates(e);\n      updateDotPosition(coords.clientX, coords.clientY, canvasRef.value.getBoundingClientRect());\n    }\n    function handleMouseUp() {\n      window.removeEventListener('mousemove', handleMouseMove);\n      window.removeEventListener('mouseup', handleMouseUp);\n      window.removeEventListener('touchmove', handleMouseMove);\n      window.removeEventListener('touchend', handleMouseUp);\n    }\n    function updateCanvas() {\n      if (!canvasRef.value) return;\n      const canvas = canvasRef.value;\n      const ctx = canvas.getContext('2d');\n      if (!ctx) return;\n      const saturationGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);\n      saturationGradient.addColorStop(0, 'hsla(0, 0%, 100%, 1)'); // white\n      saturationGradient.addColorStop(1, `hsla(${props.color?.h ?? 0}, 100%, 50%, 1)`);\n      ctx.fillStyle = saturationGradient;\n      ctx.fillRect(0, 0, canvas.width, canvas.height);\n      const valueGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);\n      valueGradient.addColorStop(0, 'hsla(0, 0%, 100%, 0)'); // transparent\n      valueGradient.addColorStop(1, 'hsla(0, 0%, 0%, 1)'); // black\n      ctx.fillStyle = valueGradient;\n      ctx.fillRect(0, 0, canvas.width, canvas.height);\n    }\n    watch(() => props.color?.h, updateCanvas, {\n      immediate: true\n    });\n    watch(() => [canvasWidth.value, canvasHeight.value], (newVal, oldVal) => {\n      updateCanvas();\n      _dotPosition.value = {\n        x: dotPosition.value.x * newVal[0] / oldVal[0],\n        y: dotPosition.value.y * newVal[1] / oldVal[1]\n      };\n    }, {\n      flush: 'post'\n    });\n    watch(() => props.color, () => {\n      if (isInteracting.value) {\n        isInteracting.value = false;\n        return;\n      }\n      _dotPosition.value = props.color ? {\n        x: props.color.s * canvasWidth.value,\n        y: (1 - props.color.v) * canvasHeight.value\n      } : {\n        x: 0,\n        y: 0\n      };\n    }, {\n      deep: true,\n      immediate: true\n    });\n    onMounted(() => updateCanvas());\n    useRender(() => _createVNode(\"div\", {\n      \"ref\": resizeRef,\n      \"class\": ['v-color-picker-canvas', props.class],\n      \"style\": props.style,\n      \"onMousedown\": handleMouseDown,\n      \"onTouchstartPassive\": handleMouseDown\n    }, [_createVNode(\"canvas\", {\n      \"ref\": canvasRef,\n      \"width\": canvasWidth.value,\n      \"height\": canvasHeight.value\n    }, null), props.color && _createVNode(\"div\", {\n      \"class\": ['v-color-picker-canvas__dot', {\n        'v-color-picker-canvas__dot--disabled': props.disabled\n      }],\n      \"style\": dotStyles.value\n    }, null)]));\n    return {};\n  }\n});\n//# sourceMappingURL=VColorPickerCanvas.mjs.map",
+      "start": 1705807632201,
+      "end": 1705807632257,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807632257,
+      "end": 1705807632257,
+      "order": "normal"
+    }
+  ]
+}

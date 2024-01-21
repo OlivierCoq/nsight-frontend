@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/list-items.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Utilities\nimport { computed } from 'vue';\nimport { deepEqual, getPropertyFromItem, omit, propsFactory } from \"../util/index.mjs\"; // Types\n// Composables\nexport const makeItemsProps = propsFactory({\n  items: {\n    type: Array,\n    default: () => []\n  },\n  itemTitle: {\n    type: [String, Array, Function],\n    default: 'title'\n  },\n  itemValue: {\n    type: [String, Array, Function],\n    default: 'value'\n  },\n  itemChildren: {\n    type: [Boolean, String, Array, Function],\n    default: 'children'\n  },\n  itemProps: {\n    type: [Boolean, String, Array, Function],\n    default: 'props'\n  },\n  returnObject: Boolean,\n  valueComparator: {\n    type: Function,\n    default: deepEqual\n  }\n}, 'list-items');\nexport function transformItem(props, item) {\n  const title = getPropertyFromItem(item, props.itemTitle, item);\n  const value = getPropertyFromItem(item, props.itemValue, title);\n  const children = getPropertyFromItem(item, props.itemChildren);\n  const itemProps = props.itemProps === true ? typeof item === 'object' && item != null && !Array.isArray(item) ? 'children' in item ? omit(item, ['children']) : item : undefined : getPropertyFromItem(item, props.itemProps);\n  const _props = {\n    title,\n    value,\n    ...itemProps\n  };\n  return {\n    title: String(_props.title ?? ''),\n    value: _props.value,\n    props: _props,\n    children: Array.isArray(children) ? transformItems(props, children) : undefined,\n    raw: item\n  };\n}\nexport function transformItems(props, items) {\n  const array = [];\n  for (const item of items) {\n    array.push(transformItem(props, item));\n  }\n  return array;\n}\nexport function useItems(props) {\n  const items = computed(() => transformItems(props, props.items));\n  const hasNullItem = computed(() => items.value.some(item => item.value === null));\n  function transformIn(value) {\n    if (!hasNullItem.value) {\n      // When the model value is null, return an InternalItem\n      // based on null only if null is one of the items\n      value = value.filter(v => v !== null);\n    }\n    return value.map(v => {\n      if (props.returnObject && typeof v === 'string') {\n        // String model value means value is a custom input value from combobox\n        // Don't look up existing items if the model value is a string\n        return transformItem(props, v);\n      }\n      return items.value.find(item => props.valueComparator(v, item.value)) || transformItem(props, v);\n    });\n  }\n  function transformOut(value) {\n    return props.returnObject ? value.map(_ref => {\n      let {\n        raw\n      } = _ref;\n      return raw;\n    }) : value.map(_ref2 => {\n      let {\n        value\n      } = _ref2;\n      return value;\n    });\n  }\n  return {\n    items,\n    transformIn,\n    transformOut\n  };\n}\n//# sourceMappingURL=list-items.mjs.map",
+      "start": 1705807631897,
+      "end": 1705807632019,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1705807632019,
+      "end": 1705807632019,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1705807632019,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1705807632020,
+      "end": 1705807632020,
+      "order": "normal"
+    }
+  ]
+}
