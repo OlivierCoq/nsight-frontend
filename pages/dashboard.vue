@@ -317,19 +317,20 @@ const post_new_member = async () => {
                               })
                                 .then((data) => {
                                   console.log('updated strapi user with new member: ', data)
+                                  active_tab.data.posting_new = false
 
 
-                                  // Send email confirmation to new member
-                                  $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/send-email-confirmation`, {
-                                    method: 'POST',
-                                    headers: headers_obj,
-                                    body: JSON.stringify({ email: active_tab.data.new_member.email })
-                                  })
-                                    .then((data) => {
-                                      console.log('email confirmation sent to new member: ', data)
-                                      active_tab.data.posting_new = false
-                                    })
-                                    .catch((err) => { console.log('error sending email confirmation to new member: ', err); state.error = err })
+                                  // Send email confirmation to new member. Let's refrain for now. SendGrid doesn't like it.
+                                  // $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/send-email-confirmation`, {
+                                  //   method: 'POST',
+                                  //   headers: headers_obj,
+                                  //   body: JSON.stringify({ email: active_tab.data.new_member.email })
+                                  // })
+                                  //   .then((data) => {
+                                  //     console.log('email confirmation sent to new member: ', data)
+                                  //     active_tab.data.posting_new = false
+                                  //   })
+                                  //   .catch((err) => { console.log('error sending email confirmation to new member: ', err); state.error = err })
                                 })
                                 .catch((err) => { console.log('error updating strapi user with new member: ', err); state.error = err })
                             })

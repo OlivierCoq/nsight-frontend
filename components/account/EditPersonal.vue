@@ -11,8 +11,8 @@
               <v-text-field v-model="auth.user.first_name" label="First Name" outlined dense hide-details class="mb-3" />
               <v-text-field v-model="auth.user.last_name" label="Last Name" outlined dense hide-details class="mb-3" />
               <v-text-field v-model="auth.user.email" label="Email" outlined dense hide-details class="mb-3" />
-              <v-text-field v-model="auth.user.nsight_id" label="nSight ID" outlined dense hide-details class="mb-3"
-                disabled />
+              <v-text-field v-model="auth.user.nsight_id.nsight_id" label="nSight ID" outlined dense hide-details
+                class="mb-3" disabled />
               <v-btn color="info" hide-details class="mt-3" @click="auth.updateUser()">
                 Update
               </v-btn>

@@ -60,7 +60,7 @@ export default defineNuxtConfig({
     stripeSecretKey: process.env.NUXT_ENV_STRIPE_SECRET_KEY,
     // Keys within public are also exposed client-side
     public: {
-      NUXT_STRAPI_URL: process.env.STRAPI_URL,
+      NUXT_STRAPI_URL: process.env.STRAPI_URL || 'http://localhost:1337',
       NUXT_ENV_STRIPE_PUBLISHABLE_KEY: process.env.NUXT_ENV_STRIPE_PUBLISHABLE_KEY,
       NUXT_MEDUSA_BACKEND_URL: process.env.MEDUSA_URL
     }
