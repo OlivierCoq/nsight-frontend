@@ -12,7 +12,10 @@ export const settingsStore = defineStore({
   id: 'settingsStore',
   state: () => {
     return {
-      dark_mode: false
+      dark_mode: false,
+      account: {
+
+      }
     }
   },
   actions: {

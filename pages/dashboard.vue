@@ -242,6 +242,18 @@ const post_new_member = async () => {
               password: 'P@ssW3rd9756',
               users: [auth.user],
               friends: [auth.user],
+              addresses: {
+                shipping: [],
+                billing: []
+              },
+              selected_addresses: {
+                shipping: null,
+                billing: null
+              },
+              selected_payment_method: null,
+              payment_methods: {
+                data: []
+              },
               role: {
                 id: 1,
                 name: 'Authenticated',
