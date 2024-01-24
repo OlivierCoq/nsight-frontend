@@ -32,6 +32,7 @@
     "@pinia/nuxt": "^0.5.1",
     "@stripe/stripe-js": "^2.1.7",
     "moment": "^2.29.4",
+    "nuxt-stripe-module": "^3.2.0",
     "pinia": "^2.1.7",
     "postcode-validator": "^3.8.20",
     "qs": "^6.11.2",

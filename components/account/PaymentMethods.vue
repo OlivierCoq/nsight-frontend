@@ -97,10 +97,14 @@
     <v-card-text>
       <v-row v-if="auth.user.payment_methods">
         <v-col cols="12" md="6" v-for="(payment_method, a) in auth.user.payment_methods.data" :key="a">
-          <v-card :variant="auth.user.selected_payment_method.id == payment_method.id ? 'tonal' : 'plain'" class="mb-0">
+          <v-card
+            :variant="(auth.user.selected_payment_method) && (auth.user.selected_payment_method.id == payment_method.id) ? 'tonal' : 'plain'"
+            class="mb-0">
             <v-card-title>
               <font-awesome-icon :icon="['fab', `cc-${payment_method.card.brand}`]" />
-              <small v-if="auth.user.selected_payment_method.id == payment_method.id" class="text-uppercase"> |
+              <small
+                v-if="(auth.user.selected_payment_method) && (auth.user.selected_payment_method.id == payment_method.id)"
+                class="text-uppercase"> |
                 Default</small>
             </v-card-title>
             <v-card-text>
@@ -173,6 +177,9 @@
   </v-card>
 </template>
 <script>
+
+// Medusa
+const medusa_client = useMedusaClient()
 
 export default {
   name: 'PaymentMethods',
@@ -283,6 +290,11 @@ export default {
             auth.user.selected_payment_method = res.paymentMethod
           }
           nextTick(() => {
+
+
+            // add payment method to Medusa
+
+
             auth.updateUser()
             state.dialog = false
           })
@@ -323,5 +335,4 @@ export default {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   border-bottom: 1px solid #949494;
-}
-</style>
+}</style>
