@@ -198,12 +198,12 @@ export default {
           name: 'PayPal',
           icon: 'mdi-paypal',
           component: 'PayPal'
-        }
-        // {
-        //   name: 'Apple Pay',
-        //   icon: 'mdi-apple',
-        //   component: 'ApplePay'
-        // },
+        },
+        {
+          name: 'Apple Pay',
+          icon: 'mdi-apple',
+          component: 'ApplePay'
+        },
         // {
         //   name: 'Google Pay',
         //   icon: 'mdi-google-wallet',
@@ -335,4 +335,5 @@ export default {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   border-bottom: 1px solid #949494;
-}</style>
+}
+</style>
