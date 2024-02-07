@@ -75,13 +75,13 @@ export const authStore = defineStore({
           // First authenticate api calls for medusa
           medusa_client.auth.getToken({
             email: payload.identifier,
-            password: payload.password
+            password: full_user_data.medusa_password
           })
             .then((token) => {
 
               medusa_client.auth.authenticate({
                 email: payload.identifier,
-                password: payload.password
+                password: full_user_data.medusa_password
               })
                 .then(({ customer }) => {
                   console.log('Medusa customer', customer.id)

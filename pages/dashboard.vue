@@ -150,15 +150,16 @@ const generate_random_password = () => {
   }
   return pass;
 }
+
 const validateEmail = (email) => {
   return email.toString().toLowerCase()
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 }
-const new_n_id = () => {
-  state.tabs[1].data.new_member.n_id = `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`
-}
+// const new_n_id = () => {
+//   state.tabs[1].data.new_member.n_id = `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`
+// }
 
 
 /*
@@ -239,6 +240,7 @@ const post_new_member = async () => {
               }],
               username: active_tab.data.new_member.email,
               // password: thisObj.generate_random_password()
+              medusa_password: generate_random_password(),
               password: 'P@ssW3rd9756',
               users: [auth.user],
               friends: [auth.user],
@@ -295,7 +297,7 @@ const post_new_member = async () => {
                     medusa_client.customers.create({
                       first_name: new_nsight_member.first_name,
                       last_name: new_nsight_member.last_name,
-                      password: new_nsight_member.password,
+                      password: new_nsight_member.medusa_password,
                       email: new_nsight_member.email
                     })
                       .then((data) => {
