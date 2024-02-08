@@ -5,3 +5,7 @@ services:
     plan: starter
     buildCommand: yarn; yarn build; yarn generate
     startCommand: yarn start
+redirects:
+  - source: /.well-known/(.*)
+    destination: /static/.well-known/$1
+    type: 200
