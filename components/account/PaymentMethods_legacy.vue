@@ -232,33 +232,37 @@ export default {
     const auth = authStore()
 
     // Mounted
-    // const doStripe = async () => {
-    //   state.stripe_data.stripe = await loadStripe(runtimeConfig.public.NUXT_ENV_STRIPE_PUBLISHABLE_KEY)
-    //   let elements = state.stripe_data.stripe.elements({
-    //     clientSecret: runtimeConfig.public.stripeSecretKey
-    //   })
-    //   state.stripe_data.cardElement = elements.create('card', {
-    //     style: {
-    //       base: {
-    //         color: 'white',
-    //         fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-    //         fontSmoothing: 'antialiased',
-    //         fontSize: '16px',
-    //         '::placeholder': {
-    //           color: '#9a9a9a'
-    //         },
-    //       },
-    //       invalid: {
-    //         color: '#fa755a',
-    //         iconColor: '#fa755a'
-    //       }
-    //     }
-    //   })
-    //   state.stripe_data.cardElement.mount('#card-element')
-    // }
+    const doStripe = async () => {
+      state.stripe_data.stripe = await loadStripe(runtimeConfig.public.NUXT_ENV_STRIPE_PUBLISHABLE_KEY)
+      let elements = state.stripe_data.stripe.elements({
+        clientSecret: runtimeConfig.public.stripeSecretKey
+      })
+      state.stripe_data.cardElement = elements.create('card', {
+        style: {
+          base: {
+            color: 'white',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+              color: '#9a9a9a'
+            },
+          },
+          invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+          }
+        }
+      })
+      state.stripe_data.cardElement.mount('#card-element')
+    }
 
     // Watchers
-
+    watch(() => state.dialog, async (val) => {
+      if (val) {
+        await doStripe()
+      }
+    })
 
     // methods
     const set_default = (method) => {
@@ -271,30 +275,30 @@ export default {
 
     const add_new = async () => {
 
-      // state.stripe_data.stripe.createPaymentMethod({
-      //   type: 'card',
-      //   card: state.stripe_data.cardElement,
-      //   billing_details: {
-      //     name: state.new_card.name,
-      //     address: state.new_card.address
-      //   }
-      // })
-      //   .then((res) => {
-      //     console.log('stripe res', res)
-      //     auth.user.payment_methods.data.push(res.paymentMethod)
-      //     if (!auth.user.selected_payment_method) {
-      //       auth.user.selected_payment_method = res.paymentMethod
-      //     }
-      //     nextTick(() => {
+      state.stripe_data.stripe.createPaymentMethod({
+        type: 'card',
+        card: state.stripe_data.cardElement,
+        billing_details: {
+          name: state.new_card.name,
+          address: state.new_card.address
+        }
+      })
+        .then((res) => {
+          console.log('stripe res', res)
+          auth.user.payment_methods.data.push(res.paymentMethod)
+          if (!auth.user.selected_payment_method) {
+            auth.user.selected_payment_method = res.paymentMethod
+          }
+          nextTick(() => {
 
 
-      //       // add payment method to Medusa
+            // add payment method to Medusa
 
 
-      //       auth.updateUser()
-      //       state.dialog = false
-      //     })
-      //   })
+            auth.updateUser()
+            state.dialog = false
+          })
+        })
     }
 
     const delete_method = (method) => {

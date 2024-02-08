@@ -61,16 +61,15 @@ const _inlineRuntimeConfig = {
   },
   "public": {
     "NUXT_STRAPI_URL": "http://localhost:1337",
-    "NUXT_ENV_STRIPE_PUBLISHABLE_KEY": "pk_test_51NyoiUAA6gMfhiWCxzsX0xfuDziPmPjcevVqatfBQui4xjFHF3itptBeNHgoGro8T9zDMdx9yzE5KxuPKXgmc1HS00nWbg25z1",
     "NUXT_MEDUSA_BACKEND_URL": "http://localhost:9000",
+    "SQUARE_APPLICATION_ID": "sandbox-sq0idb-VCYdx69D6rLhxiNTAUFV_Q",
+    "SQUARE_LOCATION_ID": "L56F5MJM7AFC7",
+    "SQUARE_ACCESS_TOKEN": "EAAAlzaGxomxKQFqliNDihMJ4I4l1CpMN90rVRBR1L44k8lr8mFgPq9-f9WP7nda",
+    "SQUARE_ENVIRONMENT": "sandbox",
     "persistedState": {
       "storage": "cookies",
       "debug": false,
       "cookieOptions": {}
-    },
-    "stripe": {
-      "key": "pk_test_51NyoiUAA6gMfhiWCxzsX0xfuDziPmPjcevVqatfBQui4xjFHF3itptBeNHgoGro8T9zDMdx9yzE5KxuPKXgmc1HS00nWbg25z1",
-      "options": {}
     },
     "medusa": {
       "baseUrl": "http://localhost:9000",
@@ -80,12 +79,11 @@ const _inlineRuntimeConfig = {
     }
   },
   "apiSecret": "",
-  "stripeSecretKey": "sk_test_51NyoiUAA6gMfhiWCDFXWPPYQB4fS7WkMzXR8sHcJdnyNW3XjgQgxZ6aOJmPD5Mj3SkNOdxfnHTmno8bxfrs4f7MB00RjFOUa9X",
-  "stripe": {
-    "key": "sk_test_51NyoiUAA6gMfhiWCDFXWPPYQB4fS7WkMzXR8sHcJdnyNW3XjgQgxZ6aOJmPD5Mj3SkNOdxfnHTmno8bxfrs4f7MB00RjFOUa9X",
-    "options": {
-      "apiVersion": "2022-11-15"
-    }
+  "square": {
+    "applicationId": "sandbox-sq0idb-VCYdx69D6rLhxiNTAUFV_Q",
+    "locationId": "L56F5MJM7AFC7",
+    "accessToken": "EAAAlzaGxomxKQFqliNDihMJ4I4l1CpMN90rVRBR1L44k8lr8mFgPq9-f9WP7nda",
+    "environment": "sandbox"
   },
   "private": {
     "apiKey": ""

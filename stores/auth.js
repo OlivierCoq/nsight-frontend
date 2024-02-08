@@ -84,7 +84,7 @@ export const authStore = defineStore({
                 password: full_user_data.medusa_password
               })
                 .then(({ customer }) => {
-                  console.log('Medusa customer', customer.id)
+                  console.log('Medusa customer successfully logged in.')
                   this.medusa_user = customer
 
                   let region
@@ -93,7 +93,7 @@ export const authStore = defineStore({
                   // region.
                   medusa_client.regions.list()
                     .then(({ regions }) => {
-                      console.log('regionssss', regions[0])
+                      console.log('Medusa regions: ', regions[0])
                       // show customers available regions
 
                       region = regions[0]
@@ -167,7 +167,7 @@ export const authStore = defineStore({
         body: JSON.stringify(this.user)
       })
         .then((res) => {
-          console.log('Updated user', res)
+          console.log('Updated nSight user.')
 
           const medusa_client = useMedusaClient()
 
@@ -181,7 +181,7 @@ export const authStore = defineStore({
           // Update Medusa
           medusa_client.customers.update(medusa_user_obj)
             .then((res) => {
-              console.log('Updated Medusa user', res)
+              console.log('Updated Medusa user')
             })
             .catch((err) => { console.log('Update Medusa user error', err) })
         })

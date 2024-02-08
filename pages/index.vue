@@ -103,7 +103,7 @@ export default {
         .catch((err) => { console.log(err) })
     }
     const sign_in = async () => {
-      console.log('signing in!')
+      console.log('Signing in nSight member!')
       state.loading = true
       await auth.login({ identifier: state.input.email, password: state.input.password })
         .catch((err) => {

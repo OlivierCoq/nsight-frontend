@@ -1,4 +1,3 @@
-export { loadStripe } from '@stripe/stripe-js';
 export { moment } from 'moment';
 export { isVue2, isVue3 } from 'vue-demi';
 export { defineNuxtLink } from '#app/components/nuxt-link';
@@ -30,7 +29,6 @@ export { default as Icons } from '../utils/Icons';
 export { authStore } from '../stores/auth';
 export { productsStore } from '../stores/products';
 export { settingsStore } from '../stores/settings';
-export { default as useClientStripe } from '../node_modules/@unlok-co/nuxt-stripe/dist/runtime/composables/useClientStripe';
 export { useMedusaClient } from '../node_modules/nuxt-medusa/dist/runtime/composables/useMedusaClient';
 export { defineStore, acceptHMRUpdate, usePinia, storeToRefs } from '../node_modules/@pinia/nuxt/dist/runtime/composables';
 export { persistedState } from '../node_modules/@pinia-plugin-persistedstate/nuxt/dist/runtime/storages';

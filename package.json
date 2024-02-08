@@ -20,7 +20,6 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@nuxt/devtools": "^0.7.4",
     "@types/node": "^18.17.1",
-    "@unlok-co/nuxt-stripe": "^2.0.0",
     "nuxt": "^3.6.5",
     "nuxt-medusa": "^0.5.0",
     "sass": "^1.64.2",
@@ -30,11 +29,11 @@
     "@medusajs/medusa-js": "^6.1.4",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@pinia/nuxt": "^0.5.1",
-    "@stripe/stripe-js": "^2.4.0",
     "moment": "^2.29.4",
     "pinia": "^2.1.7",
     "postcode-validator": "^3.8.20",
     "qs": "^6.11.2",
+    "square": "^34.0.1",
     "uuid": "^9.0.0",
     "vuetify": "^3.3.11"
   }

@@ -39,19 +39,28 @@
                                   <span class="headline">invite new member</span>
                                 </v-card-title>
                                 <v-card-text>
+                                  <!-- Make rows and columns thin: -->
                                   <v-form>
-                                    <v-row>
-                                      <v-col>
+                                    <v-row dense>
+                                      <v-col dense>
                                         <v-text-field v-model="state.tabs[1].data.new_member.first_name"
                                           label="First Name" required />
                                       </v-col>
-                                      <v-col>
+                                      <v-col dense>
                                         <v-text-field v-model="state.tabs[1].data.new_member.last_name" label="Last Name"
                                           required />
                                       </v-col>
                                     </v-row>
-                                    <v-text-field v-model="state.tabs[1].data.new_member.email" label="Email"
-                                      required></v-text-field>
+                                    <v-row dense>
+                                      <v-col cols="7" dense>
+                                        <v-text-field v-model="state.tabs[1].data.new_member.email" label="Email"
+                                          required></v-text-field>
+                                      </v-col>
+                                      <v-col cols="5" dense>
+                                        <v-text-field v-model="state.tabs[1].data.new_member.phone_number"
+                                          label="Phone Number" required pattern="[0-9\-]*"></v-text-field>
+                                      </v-col>
+                                    </v-row>
                                   </v-form>
                                 </v-card-text>
                                 <v-card-actions>
@@ -106,8 +115,10 @@ const runtimeConfig = useRuntimeConfig()
 // Medusa
 const medusa_client = useMedusaClient()
 
+
 // Stores
 const auth = authStore()
+const prodStore = productsStore()
 
 // State
 const state = reactive({
@@ -131,6 +142,7 @@ const state = reactive({
           email: '',
           first_name: '',
           last_name: '',
+          phone_number: '',
           n_id: `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`
         }
       }
@@ -151,11 +163,17 @@ const generate_random_password = () => {
   return pass;
 }
 
-const validateEmail = (email) => {
-  return email.toString().toLowerCase()
+const validateEmail = (email: string) => {
+  return email.length && email.toString().toLowerCase()
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
+}
+
+const validatePhone = (number: string) => {
+  // make sure is only numbers and dashes:
+  return number.length && number.toString().match(/^[0-9\-]*$/);
+
 }
 // const new_n_id = () => {
 //   state.tabs[1].data.new_member.n_id = `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`
@@ -234,6 +252,7 @@ const post_new_member = async () => {
               email: active_tab.data.new_member.email,
               first_name: active_tab.data.new_member.first_name,
               last_name: active_tab.data.new_member.last_name,
+              phone_number: active_tab.data.new_member.phone_number,
               nsight_id: new_strapi_nsight_id,
               preferences: [{
                 dark_mode: true
@@ -300,8 +319,23 @@ const post_new_member = async () => {
                       password: new_nsight_member.medusa_password,
                       email: new_nsight_member.email
                     })
-                      .then((data) => {
+                      .then(async (data) => {
                         console.log('created new medusa member: ', data)
+
+                        // Add customer to Square
+
+                        try {
+                          const { square_data_result } = await prodStore.square_client.customersApi.createCustomer({
+                            givenName: new_nsight_member.first_name,
+                            familyName: new_nsight_member.last_name,
+                            emailAddress: new_nsight_member.email,
+                            phoneNumber: new_nsight_member.phone_number
+                          })
+                        }
+                        catch (square_err) {
+                          console.log('error creating new square customer: ', square_err)
+                          state.error = square_err.result
+                        }
 
                         // Update Strapi with medusa_id
                         $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${new_strapi_user.id}`, {
@@ -373,15 +407,32 @@ const post_new_member = async () => {
 }
 
 // Watch
+// watch all attributes of new_member:
+watch(() => state.tabs[1].data.new_member, (val: object) => {
+  state.validate =
+    (val.email.length > 0) &&
+    (validateEmail(val.email)) &&
+    (val.first_name.length > 0) &&
+    (val.last_name.length > 0) &&
+    (validatePhone(val.phone_number))
+}, { deep: true })
 
 // email: 
-watch(() => state.tabs[1].data.new_member.email, (val) => {
-  state.validate = (val.length > 0) && (validateEmail(val))
-})
-// first_name:
-watch(() => state.tabs[1].data.new_member.first_name, (val) => {
-  state.validate = val.length > 0
-})
+// watch(() => state.tabs[1].data.new_member.email, (val) => {
+//   state.validate = (val.length > 0) && (validateEmail(val))
+// })
+// // first_name:
+// watch(() => state.tabs[1].data.new_member.first_name, (val) => {
+//   state.validate = val.length > 0
+// })
+// // last_name:
+// watch(() => state.tabs[1].data.new_member.last_name, (val) => {
+//   state.validate = val.length > 0
+// })
+// // phone_number:
+// watch(() => state.tabs[1].data.new_member.phone_number, (val) => {
+//   state.validate = val.length > 0
+// })
 </script>
 <style lang="scss" scoped>
 #dashboard {
