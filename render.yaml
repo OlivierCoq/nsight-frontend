@@ -3,5 +3,5 @@ services:
     name: nsight_frontend
     env: node
     plan: starter
-    buildCommand: yarn; yarn build
+    buildCommand: yarn; yarn build; yarn generate
     startCommand: yarn start

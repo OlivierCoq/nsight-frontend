@@ -79,9 +79,9 @@ export default defineNuxtConfig({
       environment: process.env.SQUARE_ENVIRONMENT
     }
   },
-  serverMiddleware: [
-    { path: '/.well-known/:path*', handler: '~/middleware/wellKnown.js' }
-  ],
+  // serverMiddleware: [
+  //   { path: '/.well-known/:path*', handler: '~/middleware/wellKnown.js' }
+  // ],
   build: {
     transpile: [
       'vuetify',
