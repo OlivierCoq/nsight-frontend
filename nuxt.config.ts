@@ -18,7 +18,6 @@ export default defineNuxtConfig({
     "~/assets/style/main.scss"
   ],
   script: [
-    // { src: 'https://js.stripe.com/v3' }
   ],
   plugins: [
     { src: "~/plugins/font-awesome.ts" }
