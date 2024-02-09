@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: nsight_frontend
+    name: nSight Frontend
     env: node
     plan: starter
     buildCommand: yarn; yarn build
