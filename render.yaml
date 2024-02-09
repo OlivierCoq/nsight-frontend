@@ -3,9 +3,5 @@ services:
     name: nsight_frontend
     env: node
     plan: starter
-    buildCommand: yarn; yarn build; yarn generate
+    buildCommand: yarn; yarn build
     startCommand: yarn start
-redirects:
-  - source: /.well-known/(.*)
-    destination: /static/.well-known/$1
-    type: 200
