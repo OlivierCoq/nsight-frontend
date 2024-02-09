@@ -1,0 +1,219 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/function-bind/implementation.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "'use strict';\n\n/* eslint no-invalid-this: 1 */\n\nvar ERROR_MESSAGE = 'Function.prototype.bind called on incompatible ';\nvar toStr = Object.prototype.toString;\nvar max = Math.max;\nvar funcType = '[object Function]';\n\nvar concatty = function concatty(a, b) {\n    var arr = [];\n\n    for (var i = 0; i < a.length; i += 1) {\n        arr[i] = a[i];\n    }\n    for (var j = 0; j < b.length; j += 1) {\n        arr[j + a.length] = b[j];\n    }\n\n    return arr;\n};\n\nvar slicy = function slicy(arrLike, offset) {\n    var arr = [];\n    for (var i = offset || 0, j = 0; i < arrLike.length; i += 1, j += 1) {\n        arr[j] = arrLike[i];\n    }\n    return arr;\n};\n\nvar joiny = function (arr, joiner) {\n    var str = '';\n    for (var i = 0; i < arr.length; i += 1) {\n        str += arr[i];\n        if (i + 1 < arr.length) {\n            str += joiner;\n        }\n    }\n    return str;\n};\n\nmodule.exports = function bind(that) {\n    var target = this;\n    if (typeof target !== 'function' || toStr.apply(target) !== funcType) {\n        throw new TypeError(ERROR_MESSAGE + target);\n    }\n    var args = slicy(arguments, 1);\n\n    var bound;\n    var binder = function () {\n        if (this instanceof bound) {\n            var result = target.apply(\n                this,\n                concatty(args, arguments)\n            );\n            if (Object(result) === result) {\n                return result;\n            }\n            return this;\n        }\n        return target.apply(\n            that,\n            concatty(args, arguments)\n        );\n\n    };\n\n    var boundLength = max(0, target.length - args.length);\n    var boundArgs = [];\n    for (var i = 0; i < boundLength; i++) {\n        boundArgs[i] = '$' + i;\n    }\n\n    bound = Function('binder', 'return function (' + joiny(boundArgs, ',') + '){ return binder.apply(this,arguments); }')(binder);\n\n    if (target.prototype) {\n        var Empty = function Empty() {};\n        Empty.prototype = target.prototype;\n        bound.prototype = new Empty();\n        Empty.prototype = null;\n    }\n\n    return bound;\n};\n",
+      "start": 1707436158951,
+      "end": 1707436158993,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436158993,
+      "end": 1707436158993,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\n\n'use strict';\n\n/* eslint no-invalid-this: 1 */\n\nvar ERROR_MESSAGE = 'Function.prototype.bind called on incompatible ';\nvar toStr = Object.prototype.toString;\nvar max = Math.max;\nvar funcType = '[object Function]';\n\nvar concatty = function concatty(a, b) {\n    var arr = [];\n\n    for (var i = 0; i < a.length; i += 1) {\n        arr[i] = a[i];\n    }\n    for (var j = 0; j < b.length; j += 1) {\n        arr[j + a.length] = b[j];\n    }\n\n    return arr;\n};\n\nvar slicy = function slicy(arrLike, offset) {\n    var arr = [];\n    for (var i = offset || 0, j = 0; i < arrLike.length; i += 1, j += 1) {\n        arr[j] = arrLike[i];\n    }\n    return arr;\n};\n\nvar joiny = function (arr, joiner) {\n    var str = '';\n    for (var i = 0; i < arr.length; i += 1) {\n        str += arr[i];\n        if (i + 1 < arr.length) {\n            str += joiner;\n        }\n    }\n    return str;\n};\n\nvar implementation = function bind(that) {\n    var target = this;\n    if (typeof target !== 'function' || toStr.apply(target) !== funcType) {\n        throw new TypeError(ERROR_MESSAGE + target);\n    }\n    var args = slicy(arguments, 1);\n\n    var bound;\n    var binder = function () {\n        if (this instanceof bound) {\n            var result = target.apply(\n                this,\n                concatty(args, arguments)\n            );\n            if (Object(result) === result) {\n                return result;\n            }\n            return this;\n        }\n        return target.apply(\n            that,\n            concatty(args, arguments)\n        );\n\n    };\n\n    var boundLength = max(0, target.length - args.length);\n    var boundArgs = [];\n    for (var i = 0; i < boundLength; i++) {\n        boundArgs[i] = '$' + i;\n    }\n\n    bound = Function('binder', 'return function (' + joiny(boundArgs, ',') + '){ return binder.apply(this,arguments); }')(binder);\n\n    if (target.prototype) {\n        var Empty = function Empty() {};\n        Empty.prototype = target.prototype;\n        bound.prototype = new Empty();\n        Empty.prototype = null;\n    }\n\n    return bound;\n};\n\nexport default /*@__PURE__*/commonjsHelpers.getDefaultExportFromCjs(implementation);\nexport { implementation as __moduleExports };",
+      "start": 1707436158993,
+      "end": 1707436158994,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": "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"
+      }
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436158994,
+      "end": 1707436158994,
+      "order": "normal"
+    }
+  ]
+}

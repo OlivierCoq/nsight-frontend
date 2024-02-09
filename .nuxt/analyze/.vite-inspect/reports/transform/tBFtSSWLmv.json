@@ -1,0 +1,222 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/plugins/font-awesome.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// https://stackoverflow.com/questions/72723309/how-do-you-get-font-awesome-setup-on-nuxt-3\nimport { defineNuxtPlugin } from '#app'; // remove if 'vue3' is recognised and global by default\n\nimport {library, config} from '@fortawesome/fontawesome-svg-core';\nimport {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';\nimport { fas } from '@fortawesome/free-solid-svg-icons';\nimport { fab } from '@fortawesome/free-brands-svg-icons'\n\n\nimport { faCircleUser as fasCircleUser } from '@fortawesome/free-solid-svg-icons';\n\nconfig.autoAddCss = false;\n\nlibrary.add(fas);\nlibrary.add(fab);\nlibrary.add(fasCircleUser);\n\nexport default defineNuxtPlugin(({vueApp}) => {\n  vueApp.component('FontAwesomeIcon', FontAwesomeIcon)\n})",
+      "start": 1707436150427,
+      "end": 1707436150725,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436150725,
+      "end": 1707436150725,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436150725,
+      "end": 1707436150725,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436150725,
+      "end": 1707436150725,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436150725,
+      "end": 1707436150725,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "import { defineNuxtPlugin } from \"#app\";\nimport { library, config } from \"@fortawesome/fontawesome-svg-core\";\nimport { FontAwesomeIcon } from \"@fortawesome/vue-fontawesome\";\nimport { fas } from \"@fortawesome/free-solid-svg-icons\";\nimport { fab } from \"@fortawesome/free-brands-svg-icons\";\nimport { faCircleUser as fasCircleUser } from \"@fortawesome/free-solid-svg-icons\";\nconfig.autoAddCss = false;\nlibrary.add(fas);\nlibrary.add(fab);\nlibrary.add(fasCircleUser);\nexport default defineNuxtPlugin(({ vueApp }) => {\n  vueApp.component(\"FontAwesomeIcon\", FontAwesomeIcon);\n});\n",
+      "start": 1707436150725,
+      "end": 1707436153392,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/plugins/font-awesome.ts"
+        ],
+        "sourcesContent": [
+          "// https://stackoverflow.com/questions/72723309/how-do-you-get-font-awesome-setup-on-nuxt-3\nimport { defineNuxtPlugin } from '#app'; // remove if 'vue3' is recognised and global by default\n\nimport {library, config} from '@fortawesome/fontawesome-svg-core';\nimport {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';\nimport { fas } from '@fortawesome/free-solid-svg-icons';\nimport { fab } from '@fortawesome/free-brands-svg-icons'\n\n\nimport { faCircleUser as fasCircleUser } from '@fortawesome/free-solid-svg-icons';\n\nconfig.autoAddCss = false;\n\nlibrary.add(fas);\nlibrary.add(fab);\nlibrary.add(fasCircleUser);\n\nexport default defineNuxtPlugin(({vueApp}) => {\n  vueApp.component('FontAwesomeIcon', FontAwesomeIcon)\n})"
+        ],
+        "mappings": "AACA,SAAS,wBAAwB;AAEjC,SAAQ,SAAS,cAAa;AAC9B,SAAQ,uBAAsB;AAC9B,SAAS,WAAW;AACpB,SAAS,WAAW;AAGpB,SAAS,gBAAgB,qBAAqB;AAE9C,OAAO,aAAa;AAEpB,QAAQ,IAAI,GAAG;AACf,QAAQ,IAAI,GAAG;AACf,QAAQ,IAAI,aAAa;AAEzB,eAAe,iBAAiB,CAAC,EAAC,OAAM,MAAM;AAC5C,SAAO,UAAU,mBAAmB,eAAe;AACrD,CAAC;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436153392,
+      "end": 1707436153392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436153392,
+      "end": 1707436153392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436153392,
+      "end": 1707436153392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436153392,
+      "end": 1707436153392,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436153392,
+      "end": 1707436153392,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436153392,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436153393,
+      "end": 1707436153393,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436153394,
+      "end": 1707436153394,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436153395,
+      "end": 1707436153395,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436153396,
+      "end": 1707436153396,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436153396,
+      "end": 1707436153396,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436153401,
+      "end": 1707436153401,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436153401,
+      "end": 1707436153401,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436153401,
+      "end": 1707436153401,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436153401,
+      "end": 1707436153402,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436153402,
+      "end": 1707436153402,
+      "order": "normal"
+    }
+  ]
+}

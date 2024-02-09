@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/group.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Composables\nimport { useProxiedModel } from \"./proxiedModel.mjs\"; // Utilities\nimport { computed, inject, onBeforeUnmount, onMounted, provide, reactive, toRef, watch } from 'vue';\nimport { consoleWarn, deepEqual, findChildrenWithProvide, getCurrentInstance, getUid, propsFactory, wrapInArray } from \"../util/index.mjs\"; // Types\nexport const makeGroupProps = propsFactory({\n  modelValue: {\n    type: null,\n    default: undefined\n  },\n  multiple: Boolean,\n  mandatory: [Boolean, String],\n  max: Number,\n  selectedClass: String,\n  disabled: Boolean\n}, 'group');\nexport const makeGroupItemProps = propsFactory({\n  value: null,\n  disabled: Boolean,\n  selectedClass: String\n}, 'group-item');\n\n// Composables\n\nexport function useGroupItem(props, injectKey) {\n  let required = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;\n  const vm = getCurrentInstance('useGroupItem');\n  if (!vm) {\n    throw new Error('[Vuetify] useGroupItem composable must be used inside a component setup function');\n  }\n  const id = getUid();\n  provide(Symbol.for(`${injectKey.description}:id`), id);\n  const group = inject(injectKey, null);\n  if (!group) {\n    if (!required) return group;\n    throw new Error(`[Vuetify] Could not find useGroup injection with symbol ${injectKey.description}`);\n  }\n  const value = toRef(props, 'value');\n  const disabled = computed(() => !!(group.disabled.value || props.disabled));\n  group.register({\n    id,\n    value,\n    disabled\n  }, vm);\n  onBeforeUnmount(() => {\n    group.unregister(id);\n  });\n  const isSelected = computed(() => {\n    return group.isSelected(id);\n  });\n  const selectedClass = computed(() => isSelected.value && [group.selectedClass.value, props.selectedClass]);\n  watch(isSelected, value => {\n    vm.emit('group:selected', {\n      value\n    });\n  });\n  return {\n    id,\n    isSelected,\n    toggle: () => group.select(id, !isSelected.value),\n    select: value => group.select(id, value),\n    selectedClass,\n    value,\n    disabled,\n    group\n  };\n}\nexport function useGroup(props, injectKey) {\n  let isUnmounted = false;\n  const items = reactive([]);\n  const selected = useProxiedModel(props, 'modelValue', [], v => {\n    if (v == null) return [];\n    return getIds(items, wrapInArray(v));\n  }, v => {\n    const arr = getValues(items, v);\n    return props.multiple ? arr : arr[0];\n  });\n  const groupVm = getCurrentInstance('useGroup');\n  function register(item, vm) {\n    // Is there a better way to fix this typing?\n    const unwrapped = item;\n    const key = Symbol.for(`${injectKey.description}:id`);\n    const children = findChildrenWithProvide(key, groupVm?.vnode);\n    const index = children.indexOf(vm);\n    if (index > -1) {\n      items.splice(index, 0, unwrapped);\n    } else {\n      items.push(unwrapped);\n    }\n  }\n  function unregister(id) {\n    if (isUnmounted) return;\n\n    // TODO: re-evaluate this line's importance in the future\n    // should we only modify the model if mandatory is set.\n    // selected.value = selected.value.filter(v => v !== id)\n\n    forceMandatoryValue();\n    const index = items.findIndex(item => item.id === id);\n    items.splice(index, 1);\n  }\n\n  // If mandatory and nothing is selected, then select first non-disabled item\n  function forceMandatoryValue() {\n    const item = items.find(item => !item.disabled);\n    if (item && props.mandatory === 'force' && !selected.value.length) {\n      selected.value = [item.id];\n    }\n  }\n  onMounted(() => {\n    forceMandatoryValue();\n  });\n  onBeforeUnmount(() => {\n    isUnmounted = true;\n  });\n  function select(id, value) {\n    const item = items.find(item => item.id === id);\n    if (value && item?.disabled) return;\n    if (props.multiple) {\n      const internalValue = selected.value.slice();\n      const index = internalValue.findIndex(v => v === id);\n      const isSelected = ~index;\n      value = value ?? !isSelected;\n\n      // We can't remove value if group is\n      // mandatory, value already exists,\n      // and it is the only value\n      if (isSelected && props.mandatory && internalValue.length <= 1) return;\n\n      // We can't add value if it would\n      // cause max limit to be exceeded\n      if (!isSelected && props.max != null && internalValue.length + 1 > props.max) return;\n      if (index < 0 && value) internalValue.push(id);else if (index >= 0 && !value) internalValue.splice(index, 1);\n      selected.value = internalValue;\n    } else {\n      const isSelected = selected.value.includes(id);\n      if (props.mandatory && isSelected) return;\n      selected.value = value ?? !isSelected ? [id] : [];\n    }\n  }\n  function step(offset) {\n    // getting an offset from selected value obviously won't work with multiple values\n    if (props.multiple) consoleWarn('This method is not supported when using \"multiple\" prop');\n    if (!selected.value.length) {\n      const item = items.find(item => !item.disabled);\n      item && (selected.value = [item.id]);\n    } else {\n      const currentId = selected.value[0];\n      const currentIndex = items.findIndex(i => i.id === currentId);\n      let newIndex = (currentIndex + offset) % items.length;\n      let newItem = items[newIndex];\n      while (newItem.disabled && newIndex !== currentIndex) {\n        newIndex = (newIndex + offset) % items.length;\n        newItem = items[newIndex];\n      }\n      if (newItem.disabled) return;\n      selected.value = [items[newIndex].id];\n    }\n  }\n  const state = {\n    register,\n    unregister,\n    selected,\n    select,\n    disabled: toRef(props, 'disabled'),\n    prev: () => step(items.length - 1),\n    next: () => step(1),\n    isSelected: id => selected.value.includes(id),\n    selectedClass: computed(() => props.selectedClass),\n    items: computed(() => items),\n    getItemIndex: value => getItemIndex(items, value)\n  };\n  provide(injectKey, state);\n  return state;\n}\nfunction getItemIndex(items, value) {\n  const ids = getIds(items, [value]);\n  if (!ids.length) return -1;\n  return items.findIndex(item => item.id === ids[0]);\n}\nfunction getIds(items, modelValue) {\n  const ids = [];\n  modelValue.forEach(value => {\n    const item = items.find(item => deepEqual(value, item.value));\n    const itemByIndex = items[value];\n    if (item?.value != null) {\n      ids.push(item.id);\n    } else if (itemByIndex != null) {\n      ids.push(itemByIndex.id);\n    }\n  });\n  return ids;\n}\nfunction getValues(items, ids) {\n  const values = [];\n  ids.forEach(id => {\n    const itemIndex = items.findIndex(item => item.id === id);\n    if (~itemIndex) {\n      const item = items[itemIndex];\n      values.push(item.value != null ? item.value : itemIndex);\n    }\n  });\n  return values;\n}\n//# sourceMappingURL=group.mjs.map",
+      "start": 1707436156891,
+      "end": 1707436156980,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156980,
+      "end": 1707436156980,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/ordersApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { batchRetrieveOrdersRequestSchema, } from '../models/batchRetrieveOrdersRequest';\nimport { batchRetrieveOrdersResponseSchema, } from '../models/batchRetrieveOrdersResponse';\nimport { calculateOrderRequestSchema, } from '../models/calculateOrderRequest';\nimport { calculateOrderResponseSchema, } from '../models/calculateOrderResponse';\nimport { cloneOrderRequestSchema, } from '../models/cloneOrderRequest';\nimport { cloneOrderResponseSchema, } from '../models/cloneOrderResponse';\nimport { createOrderRequestSchema, } from '../models/createOrderRequest';\nimport { createOrderResponseSchema, } from '../models/createOrderResponse';\nimport { payOrderRequestSchema, } from '../models/payOrderRequest';\nimport { payOrderResponseSchema, } from '../models/payOrderResponse';\nimport { retrieveOrderResponseSchema, } from '../models/retrieveOrderResponse';\nimport { searchOrdersRequestSchema, } from '../models/searchOrdersRequest';\nimport { searchOrdersResponseSchema, } from '../models/searchOrdersResponse';\nimport { updateOrderRequestSchema, } from '../models/updateOrderRequest';\nimport { updateOrderResponseSchema, } from '../models/updateOrderResponse';\nimport { string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class OrdersApi extends BaseApi {\n    /**\n     * Creates a new [order]($m/Order) that can include information about products for\n     * purchase and settings to apply to the purchase.\n     *\n     * To pay for a created order, see\n     * [Pay for Orders](https://developer.squareup.com/docs/orders-api/pay-for-orders).\n     *\n     * You can modify open orders using the [UpdateOrder]($e/Orders/UpdateOrder) endpoint.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                  the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createOrder(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/orders');\n        const mapped = req.prepareArgs({ body: [body, createOrderRequestSchema] });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createOrderResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a set of [orders]($m/Order) by their IDs.\n     *\n     * If a given order ID does not exist, the ID is ignored instead of generating an error.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                          See the corresponding object definition for field\n     *                                                          details.\n     * @return Response from the API call\n     */\n    async batchRetrieveOrders(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/orders/batch-retrieve');\n        const mapped = req.prepareArgs({\n            body: [body, batchRetrieveOrdersRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(batchRetrieveOrdersResponseSchema, requestOptions);\n    }\n    /**\n     * Enables applications to preview order pricing without creating an order.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                     the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async calculateOrder(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/orders/calculate');\n        const mapped = req.prepareArgs({\n            body: [body, calculateOrderRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(calculateOrderResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a new order, in the `DRAFT` state, by duplicating an existing order. The newly created order\n     * has\n     * only the core fields (such as line items, taxes, and discounts) copied from the original order.\n     *\n     * @param body         An object containing the fields to POST for the request.  See the\n     *                                                 corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async cloneOrder(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/orders/clone');\n        const mapped = req.prepareArgs({ body: [body, cloneOrderRequestSchema] });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(cloneOrderResponseSchema, requestOptions);\n    }\n    /**\n     * Search all orders for one or more locations. Orders include all sales,\n     * returns, and exchanges regardless of how or when they entered the Square\n     * ecosystem (such as Point of Sale, Invoices, and Connect APIs).\n     *\n     * `SearchOrders` requests need to specify which locations to search and define a\n     * [SearchOrdersQuery]($m/SearchOrdersQuery) object that controls\n     * how to sort or filter the results. Your `SearchOrdersQuery` can:\n     *\n     * Set filter criteria.\n     * Set the sort order.\n     * Determine whether to return results as complete `Order` objects or as\n     * [OrderEntry]($m/OrderEntry) objects.\n     *\n     * Note that details for orders processed with Square Point of Sale while in\n     * offline mode might not be transmitted to Square for up to 72 hours. Offline\n     * orders have a `created_at` value that reflects the time the order was created,\n     * not the time it was subsequently transmitted to Square.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                   the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async searchOrders(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/orders/search');\n        const mapped = req.prepareArgs({ body: [body, searchOrdersRequestSchema] });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchOrdersResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves an [Order]($m/Order) by ID.\n     *\n     * @param orderId  The ID of the order to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveOrder(orderId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ orderId: [orderId, string()] });\n        req.appendTemplatePath `/v2/orders/${mapped.orderId}`;\n        return req.callAsJson(retrieveOrderResponseSchema, requestOptions);\n    }\n    /**\n     * Updates an open [order]($m/Order) by adding, replacing, or deleting\n     * fields. Orders with a `COMPLETED` or `CANCELED` state cannot be updated.\n     *\n     * An `UpdateOrder` request requires the following:\n     *\n     * - The `order_id` in the endpoint path, identifying the order to update.\n     * - The latest `version` of the order to update.\n     * - The [sparse order](https://developer.squareup.com/docs/orders-api/manage-orders/update-\n     * orders#sparse-order-objects)\n     * containing only the fields to update and the version to which the update is\n     * being applied.\n     * - If deleting fields, the [dot notation paths](https://developer.squareup.com/docs/orders-api/manage-\n     * orders/update-orders#identifying-fields-to-delete)\n     * identifying the fields to clear.\n     *\n     * To pay for an order, see\n     * [Pay for Orders](https://developer.squareup.com/docs/orders-api/pay-for-orders).\n     *\n     * @param orderId      The ID of the order to update.\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                  the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async updateOrder(orderId, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            orderId: [orderId, string()],\n            body: [body, updateOrderRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/orders/${mapped.orderId}`;\n        return req.callAsJson(updateOrderResponseSchema, requestOptions);\n    }\n    /**\n     * Pay for an [order]($m/Order) using one or more approved [payments]($m/Payment)\n     * or settle an order with a total of `0`.\n     *\n     * The total of the `payment_ids` listed in the request must be equal to the order\n     * total. Orders with a total amount of `0` can be marked as paid by specifying an empty\n     * array of `payment_ids` in the request.\n     *\n     * To be used with `PayOrder`, a payment must:\n     *\n     * - Reference the order by specifying the `order_id` when [creating the\n     * payment]($e/Payments/CreatePayment).\n     * Any approved payments that reference the same `order_id` not specified in the\n     * `payment_ids` is canceled.\n     * - Be approved with [delayed capture](https://developer.squareup.com/docs/payments-api/take-\n     * payments/card-payments/delayed-capture).\n     * Using a delayed capture payment with `PayOrder` completes the approved payment.\n     *\n     * @param orderId      The ID of the order being paid.\n     * @param body         An object containing the fields to POST for the request.  See the\n     *                                               corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async payOrder(orderId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            orderId: [orderId, string()],\n            body: [body, payOrderRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/orders/${mapped.orderId}/pay`;\n        return req.callAsJson(payOrderResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=ordersApi.js.map",
+      "start": 1707436156565,
+      "end": 1707436156751,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156751,
+      "end": 1707436156751,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156751,
+      "end": 1707436156752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156752,
+      "end": 1707436156752,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/applePayApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { registerDomainRequestSchema, } from '../models/registerDomainRequest';\nimport { registerDomainResponseSchema, } from '../models/registerDomainResponse';\nimport { BaseApi } from './baseApi';\nexport class ApplePayApi extends BaseApi {\n    /**\n     * Activates a domain for use with Apple Pay on the Web and Square. A validation\n     * is performed on this domain by Apple to ensure that it is properly set up as\n     * an Apple Pay enabled domain.\n     *\n     * This endpoint provides an easy way for platform developers to bulk activate\n     * Apple Pay on the Web with Square for merchants using their platform.\n     *\n     * Note: The SqPaymentForm library is deprecated as of May 13, 2021, and will only receive critical\n     * security updates until it is retired on October 31, 2022.\n     * You must migrate your payment form code to the Web Payments SDK to continue using your domain for\n     * Apple Pay. For more information on migrating to the Web Payments SDK, see [Migrate to the Web\n     * Payments SDK](https://developer.squareup.com/docs/web-payments/migrate).\n     *\n     * To learn more about the Web Payments SDK and how to add Apple Pay, see [Take an Apple Pay\n     * Payment](https://developer.squareup.com/docs/web-payments/apple-pay).\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                     the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async registerDomain(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/apple-pay/domains');\n        const mapped = req.prepareArgs({\n            body: [body, registerDomainRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(registerDomainResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=applePayApi.js.map",
+      "start": 1707436156442,
+      "end": 1707436156494,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156494,
+      "end": 1707436156494,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156495,
+      "end": 1707436156495,
+      "order": "normal"
+    }
+  ]
+}

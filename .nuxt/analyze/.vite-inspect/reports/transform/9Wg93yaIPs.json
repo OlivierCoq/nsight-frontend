@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/nested/openStrategies.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export const singleOpenStrategy = {\n  open: _ref => {\n    let {\n      id,\n      value,\n      opened,\n      parents\n    } = _ref;\n    if (value) {\n      const newOpened = new Set();\n      newOpened.add(id);\n      let parent = parents.get(id);\n      while (parent != null) {\n        newOpened.add(parent);\n        parent = parents.get(parent);\n      }\n      return newOpened;\n    } else {\n      opened.delete(id);\n      return opened;\n    }\n  },\n  select: () => null\n};\nexport const multipleOpenStrategy = {\n  open: _ref2 => {\n    let {\n      id,\n      value,\n      opened,\n      parents\n    } = _ref2;\n    if (value) {\n      let parent = parents.get(id);\n      opened.add(id);\n      while (parent != null && parent !== id) {\n        opened.add(parent);\n        parent = parents.get(parent);\n      }\n      return opened;\n    } else {\n      opened.delete(id);\n    }\n    return opened;\n  },\n  select: () => null\n};\nexport const listOpenStrategy = {\n  open: multipleOpenStrategy.open,\n  select: _ref3 => {\n    let {\n      id,\n      value,\n      opened,\n      parents\n    } = _ref3;\n    if (!value) return opened;\n    const path = [];\n    let parent = parents.get(id);\n    while (parent != null) {\n      path.push(parent);\n      parent = parents.get(parent);\n    }\n    return new Set(path);\n  }\n};\n//# sourceMappingURL=openStrategies.mjs.map",
+      "start": 1707436158480,
+      "end": 1707436158540,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436158540,
+      "end": 1707436158540,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436158540,
+      "end": 1707436158540,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436158540,
+      "end": 1707436158540,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436158540,
+      "end": 1707436158540,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436158540,
+      "end": 1707436158540,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436158540,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436158541,
+      "end": 1707436158541,
+      "order": "normal"
+    }
+  ]
+}

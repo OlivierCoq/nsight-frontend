@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/color.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Utilities\nimport { computed, isRef } from 'vue';\nimport { destructComputed, getForeground, isCssColor, isParsableColor, parseColor } from \"../util/index.mjs\"; // Types\n// Composables\nexport function useColor(colors) {\n  return destructComputed(() => {\n    const classes = [];\n    const styles = {};\n    if (colors.value.background) {\n      if (isCssColor(colors.value.background)) {\n        styles.backgroundColor = colors.value.background;\n        if (!colors.value.text && isParsableColor(colors.value.background)) {\n          const backgroundColor = parseColor(colors.value.background);\n          if (backgroundColor.a == null || backgroundColor.a === 1) {\n            const textColor = getForeground(backgroundColor);\n            styles.color = textColor;\n            styles.caretColor = textColor;\n          }\n        }\n      } else {\n        classes.push(`bg-${colors.value.background}`);\n      }\n    }\n    if (colors.value.text) {\n      if (isCssColor(colors.value.text)) {\n        styles.color = colors.value.text;\n        styles.caretColor = colors.value.text;\n      } else {\n        classes.push(`text-${colors.value.text}`);\n      }\n    }\n    return {\n      colorClasses: classes,\n      colorStyles: styles\n    };\n  });\n}\nexport function useTextColor(props, name) {\n  const colors = computed(() => ({\n    text: isRef(props) ? props.value : name ? props[name] : null\n  }));\n  const {\n    colorClasses: textColorClasses,\n    colorStyles: textColorStyles\n  } = useColor(colors);\n  return {\n    textColorClasses,\n    textColorStyles\n  };\n}\nexport function useBackgroundColor(props, name) {\n  const colors = computed(() => ({\n    background: isRef(props) ? props.value : name ? props[name] : null\n  }));\n  const {\n    colorClasses: backgroundColorClasses,\n    colorStyles: backgroundColorStyles\n  } = useColor(colors);\n  return {\n    backgroundColorClasses,\n    backgroundColorStyles\n  };\n}\n//# sourceMappingURL=color.mjs.map",
+      "start": 1707436156769,
+      "end": 1707436156854,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156854,
+      "end": 1707436156854,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156855,
+      "end": 1707436156855,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156855,
+      "end": 1707436156855,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156855,
+      "end": 1707436156855,
+      "order": "normal"
+    }
+  ]
+}

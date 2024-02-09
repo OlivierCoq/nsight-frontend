@@ -1,0 +1,219 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/axios/lib/cancel/Cancel.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "'use strict';\n\n/**\n * A `Cancel` is an object that is thrown when an operation is canceled.\n *\n * @class\n * @param {string=} message The message.\n */\nfunction Cancel(message) {\n  this.message = message;\n}\n\nCancel.prototype.toString = function toString() {\n  return 'Cancel' + (this.message ? ': ' + this.message : '');\n};\n\nCancel.prototype.__CANCEL__ = true;\n\nmodule.exports = Cancel;\n",
+      "start": 1707436156357,
+      "end": 1707436156430,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156430,
+      "end": 1707436156430,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\n\nvar Cancel_1;\nvar hasRequiredCancel;\n\nfunction requireCancel () {\n\tif (hasRequiredCancel) return Cancel_1;\n\thasRequiredCancel = 1;\n\t'use strict';\n\n\t/**\n\t * A `Cancel` is an object that is thrown when an operation is canceled.\n\t *\n\t * @class\n\t * @param {string=} message The message.\n\t */\n\tfunction Cancel(message) {\n\t  this.message = message;\n\t}\n\n\tCancel.prototype.toString = function toString() {\n\t  return 'Cancel' + (this.message ? ': ' + this.message : '');\n\t};\n\n\tCancel.prototype.__CANCEL__ = true;\n\n\tCancel_1 = Cancel;\n\treturn Cancel_1;\n}\n\nexport { requireCancel as __require };",
+      "start": 1707436156430,
+      "end": 1707436156431,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": ";;;;;;;;CAAA,YAAY,CAAC;AACb;CACA;CACA;CACA;CACA;CACA;CACA;CACA,SAAS,MAAM,CAAC,OAAO,EAAE;CACzB,EAAE,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;CACzB,CAAC;AACD;CACA,MAAM,CAAC,SAAS,CAAC,QAAQ,GAAG,SAAS,QAAQ,GAAG;CAChD,EAAE,OAAO,QAAQ,IAAI,IAAI,CAAC,OAAO,GAAG,IAAI,GAAG,IAAI,CAAC,OAAO,GAAG,EAAE,CAAC,CAAC;CAC9D,CAAC,CAAC;AACF;CACA,MAAM,CAAC,SAAS,CAAC,UAAU,GAAG,IAAI,CAAC;AACnC;AACA,SAAc,GAAG,MAAM"
+      }
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156431,
+      "end": 1707436156431,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156431,
+      "end": 1707436156432,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156432,
+      "end": 1707436156432,
+      "order": "normal"
+    }
+  ]
+}

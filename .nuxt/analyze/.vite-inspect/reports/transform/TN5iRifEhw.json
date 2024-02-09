@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VImg/VImg.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { withDirectives as _withDirectives, mergeProps as _mergeProps, resolveDirective as _resolveDirective, Fragment as _Fragment, createVNode as _createVNode } from \"vue\";\n// Styles\nimport \"./VImg.css\";\n\n// Components\nimport { makeVResponsiveProps, VResponsive } from \"../VResponsive/VResponsive.mjs\"; // Composables\nimport { useBackgroundColor } from \"../../composables/color.mjs\";\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { makeRoundedProps, useRounded } from \"../../composables/rounded.mjs\";\nimport { makeTransitionProps, MaybeTransition } from \"../../composables/transition.mjs\"; // Directives\nimport intersect from \"../../directives/intersect/index.mjs\"; // Utilities\nimport { computed, nextTick, onBeforeMount, onBeforeUnmount, ref, shallowRef, toRef, vShow, watch, withDirectives } from 'vue';\nimport { convertToUnit, genericComponent, getCurrentInstance, propsFactory, SUPPORTS_INTERSECTION, useRender } from \"../../util/index.mjs\"; // Types\n// not intended for public use, this is passed in by vuetify-loader\nexport const makeVImgProps = propsFactory({\n  alt: String,\n  cover: Boolean,\n  color: String,\n  draggable: {\n    type: [Boolean, String],\n    default: undefined\n  },\n  eager: Boolean,\n  gradient: String,\n  lazySrc: String,\n  options: {\n    type: Object,\n    // For more information on types, navigate to:\n    // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API\n    default: () => ({\n      root: undefined,\n      rootMargin: undefined,\n      threshold: undefined\n    })\n  },\n  sizes: String,\n  src: {\n    type: [String, Object],\n    default: ''\n  },\n  crossorigin: String,\n  referrerpolicy: String,\n  srcset: String,\n  position: String,\n  ...makeVResponsiveProps(),\n  ...makeComponentProps(),\n  ...makeRoundedProps(),\n  ...makeTransitionProps()\n}, 'VImg');\nexport const VImg = genericComponent()({\n  name: 'VImg',\n  directives: {\n    intersect\n  },\n  props: makeVImgProps(),\n  emits: {\n    loadstart: value => true,\n    load: value => true,\n    error: value => true\n  },\n  setup(props, _ref) {\n    let {\n      emit,\n      slots\n    } = _ref;\n    const {\n      backgroundColorClasses,\n      backgroundColorStyles\n    } = useBackgroundColor(toRef(props, 'color'));\n    const {\n      roundedClasses\n    } = useRounded(props);\n    const vm = getCurrentInstance('VImg');\n    const currentSrc = shallowRef(''); // Set from srcset\n    const image = ref();\n    const state = shallowRef(props.eager ? 'loading' : 'idle');\n    const naturalWidth = shallowRef();\n    const naturalHeight = shallowRef();\n    const normalisedSrc = computed(() => {\n      return props.src && typeof props.src === 'object' ? {\n        src: props.src.src,\n        srcset: props.srcset || props.src.srcset,\n        lazySrc: props.lazySrc || props.src.lazySrc,\n        aspect: Number(props.aspectRatio || props.src.aspect || 0)\n      } : {\n        src: props.src,\n        srcset: props.srcset,\n        lazySrc: props.lazySrc,\n        aspect: Number(props.aspectRatio || 0)\n      };\n    });\n    const aspectRatio = computed(() => {\n      return normalisedSrc.value.aspect || naturalWidth.value / naturalHeight.value || 0;\n    });\n    watch(() => props.src, () => {\n      init(state.value !== 'idle');\n    });\n    watch(aspectRatio, (val, oldVal) => {\n      if (!val && oldVal && image.value) {\n        pollForSize(image.value);\n      }\n    });\n\n    // TODO: getSrc when window width changes\n\n    onBeforeMount(() => init());\n    function init(isIntersecting) {\n      if (props.eager && isIntersecting) return;\n      if (SUPPORTS_INTERSECTION && !isIntersecting && !props.eager) return;\n      state.value = 'loading';\n      if (normalisedSrc.value.lazySrc) {\n        const lazyImg = new Image();\n        lazyImg.src = normalisedSrc.value.lazySrc;\n        pollForSize(lazyImg, null);\n      }\n      if (!normalisedSrc.value.src) return;\n      nextTick(() => {\n        emit('loadstart', image.value?.currentSrc || normalisedSrc.value.src);\n        setTimeout(() => {\n          if (vm.isUnmounted) return;\n          if (image.value?.complete) {\n            if (!image.value.naturalWidth) {\n              onError();\n            }\n            if (state.value === 'error') return;\n            if (!aspectRatio.value) pollForSize(image.value, null);\n            if (state.value === 'loading') onLoad();\n          } else {\n            if (!aspectRatio.value) pollForSize(image.value);\n            getSrc();\n          }\n        });\n      });\n    }\n    function onLoad() {\n      if (vm.isUnmounted) return;\n      getSrc();\n      pollForSize(image.value);\n      state.value = 'loaded';\n      emit('load', image.value?.currentSrc || normalisedSrc.value.src);\n    }\n    function onError() {\n      if (vm.isUnmounted) return;\n      state.value = 'error';\n      emit('error', image.value?.currentSrc || normalisedSrc.value.src);\n    }\n    function getSrc() {\n      const img = image.value;\n      if (img) currentSrc.value = img.currentSrc || img.src;\n    }\n    let timer = -1;\n    onBeforeUnmount(() => {\n      clearTimeout(timer);\n    });\n    function pollForSize(img) {\n      let timeout = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 100;\n      const poll = () => {\n        clearTimeout(timer);\n        if (vm.isUnmounted) return;\n        const {\n          naturalHeight: imgHeight,\n          naturalWidth: imgWidth\n        } = img;\n        if (imgHeight || imgWidth) {\n          naturalWidth.value = imgWidth;\n          naturalHeight.value = imgHeight;\n        } else if (!img.complete && state.value === 'loading' && timeout != null) {\n          timer = window.setTimeout(poll, timeout);\n        } else if (img.currentSrc.endsWith('.svg') || img.currentSrc.startsWith('data:image/svg+xml')) {\n          naturalWidth.value = 1;\n          naturalHeight.value = 1;\n        }\n      };\n      poll();\n    }\n    const containClasses = computed(() => ({\n      'v-img__img--cover': props.cover,\n      'v-img__img--contain': !props.cover\n    }));\n    const __image = () => {\n      if (!normalisedSrc.value.src || state.value === 'idle') return null;\n      const img = _createVNode(\"img\", {\n        \"class\": ['v-img__img', containClasses.value],\n        \"style\": {\n          objectPosition: props.position\n        },\n        \"src\": normalisedSrc.value.src,\n        \"srcset\": normalisedSrc.value.srcset,\n        \"alt\": props.alt,\n        \"crossorigin\": props.crossorigin,\n        \"referrerpolicy\": props.referrerpolicy,\n        \"draggable\": props.draggable,\n        \"sizes\": props.sizes,\n        \"ref\": image,\n        \"onLoad\": onLoad,\n        \"onError\": onError\n      }, null);\n      const sources = slots.sources?.();\n      return _createVNode(MaybeTransition, {\n        \"transition\": props.transition,\n        \"appear\": true\n      }, {\n        default: () => [withDirectives(sources ? _createVNode(\"picture\", {\n          \"class\": \"v-img__picture\"\n        }, [sources, img]) : img, [[vShow, state.value === 'loaded']])]\n      });\n    };\n    const __preloadImage = () => _createVNode(MaybeTransition, {\n      \"transition\": props.transition\n    }, {\n      default: () => [normalisedSrc.value.lazySrc && state.value !== 'loaded' && _createVNode(\"img\", {\n        \"class\": ['v-img__img', 'v-img__img--preload', containClasses.value],\n        \"style\": {\n          objectPosition: props.position\n        },\n        \"src\": normalisedSrc.value.lazySrc,\n        \"alt\": props.alt,\n        \"crossorigin\": props.crossorigin,\n        \"referrerpolicy\": props.referrerpolicy,\n        \"draggable\": props.draggable\n      }, null)]\n    });\n    const __placeholder = () => {\n      if (!slots.placeholder) return null;\n      return _createVNode(MaybeTransition, {\n        \"transition\": props.transition,\n        \"appear\": true\n      }, {\n        default: () => [(state.value === 'loading' || state.value === 'error' && !slots.error) && _createVNode(\"div\", {\n          \"class\": \"v-img__placeholder\"\n        }, [slots.placeholder()])]\n      });\n    };\n    const __error = () => {\n      if (!slots.error) return null;\n      return _createVNode(MaybeTransition, {\n        \"transition\": props.transition,\n        \"appear\": true\n      }, {\n        default: () => [state.value === 'error' && _createVNode(\"div\", {\n          \"class\": \"v-img__error\"\n        }, [slots.error()])]\n      });\n    };\n    const __gradient = () => {\n      if (!props.gradient) return null;\n      return _createVNode(\"div\", {\n        \"class\": \"v-img__gradient\",\n        \"style\": {\n          backgroundImage: `linear-gradient(${props.gradient})`\n        }\n      }, null);\n    };\n    const isBooted = shallowRef(false);\n    {\n      const stop = watch(aspectRatio, val => {\n        if (val) {\n          // Doesn't work with nextTick, idk why\n          requestAnimationFrame(() => {\n            requestAnimationFrame(() => {\n              isBooted.value = true;\n            });\n          });\n          stop();\n        }\n      });\n    }\n    useRender(() => {\n      const responsiveProps = VResponsive.filterProps(props);\n      return _withDirectives(_createVNode(VResponsive, _mergeProps({\n        \"class\": ['v-img', {\n          'v-img--booting': !isBooted.value\n        }, backgroundColorClasses.value, roundedClasses.value, props.class],\n        \"style\": [{\n          width: convertToUnit(props.width === 'auto' ? naturalWidth.value : props.width)\n        }, backgroundColorStyles.value, props.style]\n      }, responsiveProps, {\n        \"aspectRatio\": aspectRatio.value,\n        \"aria-label\": props.alt,\n        \"role\": props.alt ? 'img' : undefined\n      }), {\n        additional: () => _createVNode(_Fragment, null, [_createVNode(__image, null, null), _createVNode(__preloadImage, null, null), _createVNode(__gradient, null, null), _createVNode(__placeholder, null, null), _createVNode(__error, null, null)]),\n        default: slots.default\n      }), [[_resolveDirective(\"intersect\"), {\n        handler: init,\n        options: props.options\n      }, null, {\n        once: true\n      }]]);\n    });\n    return {\n      currentSrc,\n      image,\n      state,\n      naturalWidth,\n      naturalHeight\n    };\n  }\n});\n//# sourceMappingURL=VImg.mjs.map",
+      "start": 1707436156095,
+      "end": 1707436156171,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156171,
+      "end": 1707436156171,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156172,
+      "end": 1707436156172,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VDataTable/VDataTableHeaders.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { resolveDirective as _resolveDirective, Fragment as _Fragment, mergeProps as _mergeProps, createVNode as _createVNode } from \"vue\";\n// Components\nimport { VDataTableColumn } from \"./VDataTableColumn.mjs\";\nimport { VCheckboxBtn } from \"../VCheckbox/index.mjs\";\nimport { VIcon } from \"../VIcon/index.mjs\"; // Composables\nimport { useHeaders } from \"./composables/headers.mjs\";\nimport { useSelection } from \"./composables/select.mjs\";\nimport { useSort } from \"./composables/sort.mjs\";\nimport { useBackgroundColor } from \"../../composables/color.mjs\";\nimport { IconValue } from \"../../composables/icons.mjs\";\nimport { LoaderSlot, makeLoaderProps, useLoader } from \"../../composables/loader.mjs\"; // Utilities\nimport { computed, mergeProps } from 'vue';\nimport { convertToUnit, genericComponent, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const makeVDataTableHeadersProps = propsFactory({\n  color: String,\n  sticky: Boolean,\n  multiSort: Boolean,\n  sortAscIcon: {\n    type: IconValue,\n    default: '$sortAsc'\n  },\n  sortDescIcon: {\n    type: IconValue,\n    default: '$sortDesc'\n  },\n  headerProps: {\n    type: Object\n  },\n  ...makeLoaderProps()\n}, 'VDataTableHeaders');\nexport const VDataTableHeaders = genericComponent()({\n  name: 'VDataTableHeaders',\n  props: makeVDataTableHeadersProps(),\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const {\n      toggleSort,\n      sortBy,\n      isSorted\n    } = useSort();\n    const {\n      someSelected,\n      allSelected,\n      selectAll,\n      showSelectAll\n    } = useSelection();\n    const {\n      columns,\n      headers\n    } = useHeaders();\n    const {\n      loaderClasses\n    } = useLoader(props);\n    function getFixedStyles(column, y) {\n      if (!props.sticky && !column.fixed) return undefined;\n      return {\n        position: 'sticky',\n        left: column.fixed ? convertToUnit(column.fixedOffset) : undefined,\n        top: props.sticky ? `calc(var(--v-table-header-height) * ${y})` : undefined\n      };\n    }\n    function getSortIcon(column) {\n      const item = sortBy.value.find(item => item.key === column.key);\n      if (!item) return props.sortAscIcon;\n      return item.order === 'asc' ? props.sortAscIcon : props.sortDescIcon;\n    }\n    const {\n      backgroundColorClasses,\n      backgroundColorStyles\n    } = useBackgroundColor(props, 'color');\n    const slotProps = computed(() => ({\n      headers: headers.value,\n      columns: columns.value,\n      toggleSort,\n      isSorted,\n      sortBy: sortBy.value,\n      someSelected: someSelected.value,\n      allSelected: allSelected.value,\n      selectAll,\n      getSortIcon\n    }));\n    const VDataTableHeaderCell = _ref2 => {\n      let {\n        column,\n        x,\n        y\n      } = _ref2;\n      const noPadding = column.key === 'data-table-select' || column.key === 'data-table-expand';\n      const headerProps = mergeProps(props.headerProps ?? {}, column.headerProps ?? {});\n      return _createVNode(VDataTableColumn, _mergeProps({\n        \"tag\": \"th\",\n        \"align\": column.align,\n        \"class\": ['v-data-table__th', {\n          'v-data-table__th--sortable': column.sortable,\n          'v-data-table__th--sorted': isSorted(column),\n          'v-data-table__th--fixed': column.fixed,\n          'v-data-table__th--sticky': props.sticky\n        }, loaderClasses.value],\n        \"style\": {\n          width: convertToUnit(column.width),\n          minWidth: convertToUnit(column.minWidth),\n          ...getFixedStyles(column, y)\n        },\n        \"colspan\": column.colspan,\n        \"rowspan\": column.rowspan,\n        \"onClick\": column.sortable ? () => toggleSort(column) : undefined,\n        \"fixed\": column.fixed,\n        \"lastFixed\": column.lastFixed,\n        \"noPadding\": noPadding\n      }, headerProps), {\n        default: () => {\n          const columnSlotName = `header.${column.key}`;\n          const columnSlotProps = {\n            column,\n            selectAll,\n            isSorted,\n            toggleSort,\n            sortBy: sortBy.value,\n            someSelected: someSelected.value,\n            allSelected: allSelected.value,\n            getSortIcon\n          };\n          if (slots[columnSlotName]) return slots[columnSlotName](columnSlotProps);\n          if (column.key === 'data-table-select') {\n            return slots['header.data-table-select']?.(columnSlotProps) ?? (showSelectAll && _createVNode(VCheckboxBtn, {\n              \"modelValue\": allSelected.value,\n              \"indeterminate\": someSelected.value && !allSelected.value,\n              \"onUpdate:modelValue\": selectAll\n            }, null));\n          }\n          return _createVNode(\"div\", {\n            \"class\": \"v-data-table-header__content\"\n          }, [_createVNode(\"span\", null, [column.title]), column.sortable && _createVNode(VIcon, {\n            \"key\": \"icon\",\n            \"class\": \"v-data-table-header__sort-icon\",\n            \"icon\": getSortIcon(column)\n          }, null), props.multiSort && isSorted(column) && _createVNode(\"div\", {\n            \"key\": \"badge\",\n            \"class\": ['v-data-table-header__sort-badge', ...backgroundColorClasses.value],\n            \"style\": backgroundColorStyles.value\n          }, [sortBy.value.findIndex(x => x.key === column.key) + 1])]);\n        }\n      });\n    };\n    useRender(() => {\n      return _createVNode(_Fragment, null, [slots.headers ? slots.headers(slotProps.value) : headers.value.map((row, y) => _createVNode(\"tr\", null, [row.map((column, x) => _createVNode(VDataTableHeaderCell, {\n        \"column\": column,\n        \"x\": x,\n        \"y\": y\n      }, null))])), props.loading && _createVNode(\"tr\", {\n        \"class\": \"v-data-table-progress\"\n      }, [_createVNode(\"th\", {\n        \"colspan\": columns.value.length\n      }, [_createVNode(LoaderSlot, {\n        \"name\": \"v-data-table-progress\",\n        \"absolute\": true,\n        \"active\": true,\n        \"color\": typeof props.loading === 'boolean' ? undefined : props.loading,\n        \"indeterminate\": true\n      }, {\n        default: slots.loader\n      })])])]);\n    });\n  }\n});\n//# sourceMappingURL=VDataTableHeaders.mjs.map",
+      "start": 1707436157109,
+      "end": 1707436157151,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436157151,
+      "end": 1707436157151,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436157152,
+      "end": 1707436157152,
+      "order": "normal"
+    }
+  ]
+}

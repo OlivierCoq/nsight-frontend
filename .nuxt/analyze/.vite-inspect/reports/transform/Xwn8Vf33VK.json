@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/schema/es/schema.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { __assign, __spreadArray, __read, __values } from 'tslib';\nimport { objectKeyEncode } from './utils.js';\n\n/**\r\n * Validate and map the value using the given schema.\r\n *\r\n * This method should be used after JSON deserialization.\r\n *\r\n * @param value Value to map\r\n * @param schema Schema for type\r\n */\nfunction validateAndMap(value, schema) {\n  var contextCreator = createSchemaContextCreator(createNewSchemaContext(value, schema.type()));\n  var validationResult = schema.validateBeforeMap(value, contextCreator);\n  if (validationResult.length === 0) {\n    return {\n      errors: false,\n      result: schema.map(value, contextCreator)\n    };\n  } else {\n    return {\n      errors: validationResult\n    };\n  }\n}\n/**\r\n * Valudate and unmap the value using the given schema.\r\n *\r\n * This method should be used before JSON serializatin.\r\n *\r\n * @param value Value to unmap\r\n * @param schema Schema for type\r\n */\nfunction validateAndUnmap(value, schema) {\n  var contextCreator = createSchemaContextCreator(createNewSchemaContext(value, schema.type()));\n  var validationResult = schema.validateBeforeUnmap(value, contextCreator);\n  if (validationResult.length === 0) {\n    return {\n      errors: false,\n      result: schema.unmap(value, contextCreator)\n    };\n  } else {\n    return {\n      errors: validationResult\n    };\n  }\n}\n/**\r\n * Validate and map the value using the given schema.\r\n *\r\n * This method should be used after XML deserialization.\r\n *\r\n * @param value Value to map\r\n * @param schema Schema for type\r\n */\nfunction validateAndMapXml(value, schema) {\n  var contextCreator = createSchemaContextCreator(createNewSchemaContext(value, schema.type()));\n  var validationResult = schema.validateBeforeMapXml(value, contextCreator);\n  if (validationResult.length === 0) {\n    return {\n      errors: false,\n      result: schema.mapXml(value, contextCreator)\n    };\n  } else {\n    return {\n      errors: validationResult\n    };\n  }\n}\n/**\r\n * Valudate and unmap the value using the given schema.\r\n *\r\n * This method should be used before XML serialization.\r\n *\r\n * @param value Value to unmap\r\n * @param schema Schema for type\r\n */\nfunction validateAndUnmapXml(value, schema) {\n  var contextCreator = createSchemaContextCreator(createNewSchemaContext(value, schema.type()));\n  var validationResult = schema.validateBeforeUnmap(value, contextCreator);\n  if (validationResult.length === 0) {\n    return {\n      errors: false,\n      result: schema.unmapXml(value, contextCreator)\n    };\n  } else {\n    return {\n      errors: validationResult\n    };\n  }\n}\n/**\r\n * Create a new schema context using the given value and type.\r\n */\nfunction createNewSchemaContext(value, type, strict) {\n  return {\n    value: value,\n    type: type,\n    branch: [value],\n    path: [],\n    strictValidation: strict\n  };\n}\n/**\r\n * Create a new SchemaContextCreator for the given SchemaContext.\r\n */\nfunction createSchemaContextCreator(currentContext) {\n  var createChildContext = function (key, value, childSchema) {\n    return createSchemaContextCreator({\n      value: value,\n      type: childSchema.type(),\n      branch: __spreadArray(__spreadArray([], __read(currentContext.branch)), [value]),\n      path: __spreadArray(__spreadArray([], __read(currentContext.path)), [key]),\n      strictValidation: currentContext.strictValidation\n    });\n  };\n  var mapChildren = function (items, itemSchema, mapper) {\n    return items.map(function (item) {\n      return mapper(item, createChildContext(item[0], item[1], itemSchema));\n    });\n  };\n  return __assign(__assign({}, currentContext), {\n    createChild: createChildContext,\n    flatmapChildren: function () {\n      var args = [];\n      for (var _i = 0; _i < arguments.length; _i++) {\n        args[_i] = arguments[_i];\n      }\n      return flatten(mapChildren.apply(void 0, __spreadArray([], __read(args))));\n    },\n    mapChildren: mapChildren,\n    fail: function (message) {\n      return [{\n        value: currentContext.value,\n        type: currentContext.type,\n        branch: currentContext.branch,\n        path: currentContext.path,\n        message: createErrorMessage(currentContext, message)\n      }];\n    }\n  });\n}\nfunction createErrorMessage(ctxt, message) {\n  var giveValue = JSON.stringify(ctxt.value, function (_, value) {\n    return typeof value === 'bigint' ? value.toString() : value;\n  });\n  message = (message !== null && message !== void 0 ? message : \"Expected value to be of type '\" + ctxt.type + \"' but found '\" + typeof ctxt.value + \"'.\") + '\\n' + (\"\\nGiven value: \" + giveValue) + (\"\\nType: '\" + typeof ctxt.value + \"'\") + (\"\\nExpected type: '\" + ctxt.type + \"'\");\n  if (ctxt.path.length > 0) {\n    var pathString = ctxt.path.map(function (value) {\n      return objectKeyEncode(value.toString());\n    }).join(' › ');\n    message += \"\\nPath: \" + pathString;\n  }\n  return message;\n}\nfunction flatten(array) {\n  var e_1, _a, e_2, _b;\n  var output = [];\n  try {\n    for (var array_1 = __values(array), array_1_1 = array_1.next(); !array_1_1.done; array_1_1 = array_1.next()) {\n      var ele = array_1_1.value;\n      try {\n        for (var ele_1 = (e_2 = void 0, __values(ele)), ele_1_1 = ele_1.next(); !ele_1_1.done; ele_1_1 = ele_1.next()) {\n          var x = ele_1_1.value;\n          output.push(x);\n        }\n      } catch (e_2_1) {\n        e_2 = {\n          error: e_2_1\n        };\n      } finally {\n        try {\n          if (ele_1_1 && !ele_1_1.done && (_b = ele_1.return)) _b.call(ele_1);\n        } finally {\n          if (e_2) throw e_2.error;\n        }\n      }\n    }\n  } catch (e_1_1) {\n    e_1 = {\n      error: e_1_1\n    };\n  } finally {\n    try {\n      if (array_1_1 && !array_1_1.done && (_a = array_1.return)) _a.call(array_1);\n    } finally {\n      if (e_1) throw e_1.error;\n    }\n  }\n  return output;\n}\nexport { validateAndMap, validateAndMapXml, validateAndUnmap, validateAndUnmapXml };",
+      "start": 1707436158991,
+      "end": 1707436159080,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436159080,
+      "end": 1707436159080,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436159080,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    }
+  ]
+}

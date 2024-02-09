@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VSkeletonLoader/VSkeletonLoader.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createVNode as _createVNode } from \"vue\";\n// Styles\nimport \"./VSkeletonLoader.css\";\n\n// Composables\nimport { useBackgroundColor } from \"../../composables/color.mjs\";\nimport { makeDimensionProps, useDimension } from \"../../composables/dimensions.mjs\";\nimport { makeElevationProps, useElevation } from \"../../composables/elevation.mjs\";\nimport { useLocale } from \"../../composables/locale.mjs\";\nimport { makeThemeProps, provideTheme } from \"../../composables/theme.mjs\"; // Utilities\nimport { computed, toRef } from 'vue';\nimport { genericComponent, propsFactory, useRender, wrapInArray } from \"../../util/index.mjs\"; // Types\nexport const rootTypes = {\n  actions: 'button@2',\n  article: 'heading, paragraph',\n  avatar: 'avatar',\n  button: 'button',\n  card: 'image, heading',\n  'card-avatar': 'image, list-item-avatar',\n  chip: 'chip',\n  'date-picker': 'list-item, heading, divider, date-picker-options, date-picker-days, actions',\n  'date-picker-options': 'text, avatar@2',\n  'date-picker-days': 'avatar@28',\n  divider: 'divider',\n  heading: 'heading',\n  image: 'image',\n  'list-item': 'text',\n  'list-item-avatar': 'avatar, text',\n  'list-item-two-line': 'sentences',\n  'list-item-avatar-two-line': 'avatar, sentences',\n  'list-item-three-line': 'paragraph',\n  'list-item-avatar-three-line': 'avatar, paragraph',\n  ossein: 'ossein',\n  paragraph: 'text@3',\n  sentences: 'text@2',\n  subtitle: 'text',\n  table: 'table-heading, table-thead, table-tbody, table-tfoot',\n  'table-heading': 'chip, text',\n  'table-thead': 'heading@6',\n  'table-tbody': 'table-row-divider@6',\n  'table-row-divider': 'table-row, divider',\n  'table-row': 'text@6',\n  'table-tfoot': 'text@2, avatar@2',\n  text: 'text'\n};\nfunction genBone(type) {\n  let children = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];\n  return _createVNode(\"div\", {\n    \"class\": ['v-skeleton-loader__bone', `v-skeleton-loader__${type}`]\n  }, [children]);\n}\nfunction genBones(bone) {\n  // e.g. 'text@3'\n  const [type, length] = bone.split('@');\n\n  // Generate a length array based upon\n  // value after @ in the bone string\n  return Array.from({\n    length\n  }).map(() => genStructure(type));\n}\nfunction genStructure(type) {\n  let children = [];\n  if (!type) return children;\n\n  // TODO: figure out a better way to type this\n  const bone = rootTypes[type];\n\n  // End of recursion, do nothing\n  /* eslint-disable-next-line no-empty, brace-style */\n  if (type === bone) {}\n  // Array of values - e.g. 'heading, paragraph, text@2'\n  else if (type.includes(',')) return mapBones(type);\n  // Array of values - e.g. 'paragraph@4'\n  else if (type.includes('@')) return genBones(type);\n  // Array of values - e.g. 'card@2'\n  else if (bone.includes(',')) children = mapBones(bone);\n  // Array of values - e.g. 'list-item@2'\n  else if (bone.includes('@')) children = genBones(bone);\n  // Single value - e.g. 'card-heading'\n  else if (bone) children.push(genStructure(bone));\n  return [genBone(type, children)];\n}\nfunction mapBones(bones) {\n  // Remove spaces and return array of structures\n  return bones.replace(/\\s/g, '').split(',').map(genStructure);\n}\nexport const makeVSkeletonLoaderProps = propsFactory({\n  boilerplate: Boolean,\n  color: String,\n  loading: Boolean,\n  loadingText: {\n    type: String,\n    default: '$vuetify.loading'\n  },\n  type: {\n    type: [String, Array],\n    default: 'ossein'\n  },\n  ...makeDimensionProps(),\n  ...makeElevationProps(),\n  ...makeThemeProps()\n}, 'VSkeletonLoader');\nexport const VSkeletonLoader = genericComponent()({\n  name: 'VSkeletonLoader',\n  props: makeVSkeletonLoaderProps(),\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const {\n      backgroundColorClasses,\n      backgroundColorStyles\n    } = useBackgroundColor(toRef(props, 'color'));\n    const {\n      dimensionStyles\n    } = useDimension(props);\n    const {\n      elevationClasses\n    } = useElevation(props);\n    const {\n      themeClasses\n    } = provideTheme(props);\n    const {\n      t\n    } = useLocale();\n    const items = computed(() => genStructure(wrapInArray(props.type).join(',')));\n    useRender(() => {\n      const isLoading = !slots.default || props.loading;\n      return _createVNode(\"div\", {\n        \"class\": ['v-skeleton-loader', {\n          'v-skeleton-loader--boilerplate': props.boilerplate\n        }, themeClasses.value, backgroundColorClasses.value, elevationClasses.value],\n        \"style\": [backgroundColorStyles.value, isLoading ? dimensionStyles.value : {}],\n        \"aria-busy\": !props.boilerplate ? isLoading : undefined,\n        \"aria-live\": !props.boilerplate ? 'polite' : undefined,\n        \"aria-label\": !props.boilerplate ? t(props.loadingText) : undefined,\n        \"role\": !props.boilerplate ? 'alert' : undefined\n      }, [isLoading ? items.value : slots.default?.()]);\n    });\n    return {};\n  }\n});\n//# sourceMappingURL=VSkeletonLoader.mjs.map",
+      "start": 1707436156227,
+      "end": 1707436156289,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156289,
+      "end": 1707436156289,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156289,
+      "end": 1707436156290,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156290,
+      "end": 1707436156290,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156290,
+      "end": 1707436156290,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156290,
+      "end": 1707436156290,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156290,
+      "end": 1707436156290,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156290,
+      "end": 1707436156290,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156290,
+      "end": 1707436156290,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156290,
+      "end": 1707436156290,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156290,
+      "end": 1707436156290,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156290,
+      "end": 1707436156290,
+      "order": "normal"
+    }
+  ]
+}

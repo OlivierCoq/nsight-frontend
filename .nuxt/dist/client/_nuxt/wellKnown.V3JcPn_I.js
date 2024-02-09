@@ -1,0 +1,1 @@
+import{R as t}from"./entry.7QSeHbCR.js";async function c(n,s,e){const a=t.resolve(__dirname,"..","static",".well-known",n.params.path);try{await t.promises.access(a,t.constants.F_OK),s.sendFile(a)}catch{s.status(404).send("File not found")}}export{c as default};

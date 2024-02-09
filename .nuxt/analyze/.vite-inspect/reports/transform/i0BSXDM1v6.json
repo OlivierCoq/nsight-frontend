@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VList/VListItem.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { withDirectives as _withDirectives, resolveDirective as _resolveDirective, createVNode as _createVNode, Fragment as _Fragment } from \"vue\";\n// Styles\nimport \"./VListItem.css\";\n\n// Components\nimport { VListItemSubtitle } from \"./VListItemSubtitle.mjs\";\nimport { VListItemTitle } from \"./VListItemTitle.mjs\";\nimport { VAvatar } from \"../VAvatar/index.mjs\";\nimport { VDefaultsProvider } from \"../VDefaultsProvider/index.mjs\";\nimport { VIcon } from \"../VIcon/index.mjs\"; // Composables\nimport { useList } from \"./list.mjs\";\nimport { makeBorderProps, useBorder } from \"../../composables/border.mjs\";\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { makeDensityProps, useDensity } from \"../../composables/density.mjs\";\nimport { makeDimensionProps, useDimension } from \"../../composables/dimensions.mjs\";\nimport { makeElevationProps, useElevation } from \"../../composables/elevation.mjs\";\nimport { IconValue } from \"../../composables/icons.mjs\";\nimport { useNestedItem } from \"../../composables/nested/nested.mjs\";\nimport { makeRoundedProps, useRounded } from \"../../composables/rounded.mjs\";\nimport { makeRouterProps, useLink } from \"../../composables/router.mjs\";\nimport { makeTagProps } from \"../../composables/tag.mjs\";\nimport { makeThemeProps, provideTheme } from \"../../composables/theme.mjs\";\nimport { genOverlays, makeVariantProps, useVariant } from \"../../composables/variant.mjs\"; // Directives\nimport { Ripple } from \"../../directives/ripple/index.mjs\"; // Utilities\nimport { computed, watch } from 'vue';\nimport { deprecate, EventProp, genericComponent, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const makeVListItemProps = propsFactory({\n  active: {\n    type: Boolean,\n    default: undefined\n  },\n  activeClass: String,\n  /* @deprecated */\n  activeColor: String,\n  appendAvatar: String,\n  appendIcon: IconValue,\n  baseColor: String,\n  disabled: Boolean,\n  lines: String,\n  link: {\n    type: Boolean,\n    default: undefined\n  },\n  nav: Boolean,\n  prependAvatar: String,\n  prependIcon: IconValue,\n  ripple: {\n    type: [Boolean, Object],\n    default: true\n  },\n  slim: Boolean,\n  subtitle: [String, Number],\n  title: [String, Number],\n  value: null,\n  onClick: EventProp(),\n  onClickOnce: EventProp(),\n  ...makeBorderProps(),\n  ...makeComponentProps(),\n  ...makeDensityProps(),\n  ...makeDimensionProps(),\n  ...makeElevationProps(),\n  ...makeRoundedProps(),\n  ...makeRouterProps(),\n  ...makeTagProps(),\n  ...makeThemeProps(),\n  ...makeVariantProps({\n    variant: 'text'\n  })\n}, 'VListItem');\nexport const VListItem = genericComponent()({\n  name: 'VListItem',\n  directives: {\n    Ripple\n  },\n  props: makeVListItemProps(),\n  emits: {\n    click: e => true\n  },\n  setup(props, _ref) {\n    let {\n      attrs,\n      slots,\n      emit\n    } = _ref;\n    const link = useLink(props, attrs);\n    const id = computed(() => props.value === undefined ? link.href.value : props.value);\n    const {\n      select,\n      isSelected,\n      isIndeterminate,\n      isGroupActivator,\n      root,\n      parent,\n      openOnSelect\n    } = useNestedItem(id, false);\n    const list = useList();\n    const isActive = computed(() => props.active !== false && (props.active || link.isActive?.value || isSelected.value));\n    const isLink = computed(() => props.link !== false && link.isLink.value);\n    const isClickable = computed(() => !props.disabled && props.link !== false && (props.link || link.isClickable.value || props.value != null && !!list));\n    const roundedProps = computed(() => props.rounded || props.nav);\n    const color = computed(() => props.color ?? props.activeColor);\n    const variantProps = computed(() => ({\n      color: isActive.value ? color.value ?? props.baseColor : props.baseColor,\n      variant: props.variant\n    }));\n    watch(() => link.isActive?.value, val => {\n      if (val && parent.value != null) {\n        root.open(parent.value, true);\n      }\n      if (val) {\n        openOnSelect(val);\n      }\n    }, {\n      immediate: true\n    });\n    const {\n      themeClasses\n    } = provideTheme(props);\n    const {\n      borderClasses\n    } = useBorder(props);\n    const {\n      colorClasses,\n      colorStyles,\n      variantClasses\n    } = useVariant(variantProps);\n    const {\n      densityClasses\n    } = useDensity(props);\n    const {\n      dimensionStyles\n    } = useDimension(props);\n    const {\n      elevationClasses\n    } = useElevation(props);\n    const {\n      roundedClasses\n    } = useRounded(roundedProps);\n    const lineClasses = computed(() => props.lines ? `v-list-item--${props.lines}-line` : undefined);\n    const slotProps = computed(() => ({\n      isActive: isActive.value,\n      select,\n      isSelected: isSelected.value,\n      isIndeterminate: isIndeterminate.value\n    }));\n    function onClick(e) {\n      emit('click', e);\n      if (isGroupActivator || !isClickable.value) return;\n      link.navigate?.(e);\n      props.value != null && select(!isSelected.value, e);\n    }\n    function onKeyDown(e) {\n      if (e.key === 'Enter' || e.key === ' ') {\n        e.preventDefault();\n        onClick(e);\n      }\n    }\n    useRender(() => {\n      const Tag = isLink.value ? 'a' : props.tag;\n      const hasTitle = slots.title || props.title != null;\n      const hasSubtitle = slots.subtitle || props.subtitle != null;\n      const hasAppendMedia = !!(props.appendAvatar || props.appendIcon);\n      const hasAppend = !!(hasAppendMedia || slots.append);\n      const hasPrependMedia = !!(props.prependAvatar || props.prependIcon);\n      const hasPrepend = !!(hasPrependMedia || slots.prepend);\n      list?.updateHasPrepend(hasPrepend);\n      if (props.activeColor) {\n        deprecate('active-color', ['color', 'base-color']);\n      }\n      return _withDirectives(_createVNode(Tag, {\n        \"class\": ['v-list-item', {\n          'v-list-item--active': isActive.value,\n          'v-list-item--disabled': props.disabled,\n          'v-list-item--link': isClickable.value,\n          'v-list-item--nav': props.nav,\n          'v-list-item--prepend': !hasPrepend && list?.hasPrepend.value,\n          'v-list-item--slim': props.slim,\n          [`${props.activeClass}`]: props.activeClass && isActive.value\n        }, themeClasses.value, borderClasses.value, colorClasses.value, densityClasses.value, elevationClasses.value, lineClasses.value, roundedClasses.value, variantClasses.value, props.class],\n        \"style\": [colorStyles.value, dimensionStyles.value, props.style],\n        \"href\": link.href.value,\n        \"tabindex\": isClickable.value ? list ? -2 : 0 : undefined,\n        \"onClick\": onClick,\n        \"onKeydown\": isClickable.value && !isLink.value && onKeyDown\n      }, {\n        default: () => [genOverlays(isClickable.value || isActive.value, 'v-list-item'), hasPrepend && _createVNode(\"div\", {\n          \"key\": \"prepend\",\n          \"class\": \"v-list-item__prepend\"\n        }, [!slots.prepend ? _createVNode(_Fragment, null, [props.prependAvatar && _createVNode(VAvatar, {\n          \"key\": \"prepend-avatar\",\n          \"density\": props.density,\n          \"image\": props.prependAvatar\n        }, null), props.prependIcon && _createVNode(VIcon, {\n          \"key\": \"prepend-icon\",\n          \"density\": props.density,\n          \"icon\": props.prependIcon\n        }, null)]) : _createVNode(VDefaultsProvider, {\n          \"key\": \"prepend-defaults\",\n          \"disabled\": !hasPrependMedia,\n          \"defaults\": {\n            VAvatar: {\n              density: props.density,\n              image: props.prependAvatar\n            },\n            VIcon: {\n              density: props.density,\n              icon: props.prependIcon\n            },\n            VListItemAction: {\n              start: true\n            }\n          }\n        }, {\n          default: () => [slots.prepend?.(slotProps.value)]\n        }), _createVNode(\"div\", {\n          \"class\": \"v-list-item__spacer\"\n        }, null)]), _createVNode(\"div\", {\n          \"class\": \"v-list-item__content\",\n          \"data-no-activator\": \"\"\n        }, [hasTitle && _createVNode(VListItemTitle, {\n          \"key\": \"title\"\n        }, {\n          default: () => [slots.title?.({\n            title: props.title\n          }) ?? props.title]\n        }), hasSubtitle && _createVNode(VListItemSubtitle, {\n          \"key\": \"subtitle\"\n        }, {\n          default: () => [slots.subtitle?.({\n            subtitle: props.subtitle\n          }) ?? props.subtitle]\n        }), slots.default?.(slotProps.value)]), hasAppend && _createVNode(\"div\", {\n          \"key\": \"append\",\n          \"class\": \"v-list-item__append\"\n        }, [!slots.append ? _createVNode(_Fragment, null, [props.appendIcon && _createVNode(VIcon, {\n          \"key\": \"append-icon\",\n          \"density\": props.density,\n          \"icon\": props.appendIcon\n        }, null), props.appendAvatar && _createVNode(VAvatar, {\n          \"key\": \"append-avatar\",\n          \"density\": props.density,\n          \"image\": props.appendAvatar\n        }, null)]) : _createVNode(VDefaultsProvider, {\n          \"key\": \"append-defaults\",\n          \"disabled\": !hasAppendMedia,\n          \"defaults\": {\n            VAvatar: {\n              density: props.density,\n              image: props.appendAvatar\n            },\n            VIcon: {\n              density: props.density,\n              icon: props.appendIcon\n            },\n            VListItemAction: {\n              end: true\n            }\n          }\n        }, {\n          default: () => [slots.append?.(slotProps.value)]\n        }), _createVNode(\"div\", {\n          \"class\": \"v-list-item__spacer\"\n        }, null)])]\n      }), [[_resolveDirective(\"ripple\"), isClickable.value && props.ripple]]);\n    });\n    return {};\n  }\n});\n//# sourceMappingURL=VListItem.mjs.map",
+      "start": 1707436156148,
+      "end": 1707436156223,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156223,
+      "end": 1707436156223,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156223,
+      "end": 1707436156224,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156224,
+      "end": 1707436156224,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156224,
+      "end": 1707436156224,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156224,
+      "end": 1707436156224,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156224,
+      "end": 1707436156224,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156224,
+      "end": 1707436156224,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156224,
+      "end": 1707436156224,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156224,
+      "end": 1707436156224,
+      "order": "normal"
+    }
+  ]
+}

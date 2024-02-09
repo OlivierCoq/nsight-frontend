@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/teamApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { bulkCreateTeamMembersRequestSchema, } from '../models/bulkCreateTeamMembersRequest';\nimport { bulkCreateTeamMembersResponseSchema, } from '../models/bulkCreateTeamMembersResponse';\nimport { bulkUpdateTeamMembersRequestSchema, } from '../models/bulkUpdateTeamMembersRequest';\nimport { bulkUpdateTeamMembersResponseSchema, } from '../models/bulkUpdateTeamMembersResponse';\nimport { createTeamMemberRequestSchema, } from '../models/createTeamMemberRequest';\nimport { createTeamMemberResponseSchema, } from '../models/createTeamMemberResponse';\nimport { retrieveTeamMemberResponseSchema, } from '../models/retrieveTeamMemberResponse';\nimport { retrieveWageSettingResponseSchema, } from '../models/retrieveWageSettingResponse';\nimport { searchTeamMembersRequestSchema, } from '../models/searchTeamMembersRequest';\nimport { searchTeamMembersResponseSchema, } from '../models/searchTeamMembersResponse';\nimport { updateTeamMemberRequestSchema, } from '../models/updateTeamMemberRequest';\nimport { updateTeamMemberResponseSchema, } from '../models/updateTeamMemberResponse';\nimport { updateWageSettingRequestSchema, } from '../models/updateWageSettingRequest';\nimport { updateWageSettingResponseSchema, } from '../models/updateWageSettingResponse';\nimport { string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class TeamApi extends BaseApi {\n    /**\n     * Creates a single `TeamMember` object. The `TeamMember` object is returned on successful creates.\n     * You must provide the following values in your request to this endpoint:\n     * - `given_name`\n     * - `family_name`\n     *\n     * Learn about [Troubleshooting the Team API](https://developer.squareup.\n     * com/docs/team/troubleshooting#createteammember).\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                       See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createTeamMember(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/team-members');\n        const mapped = req.prepareArgs({\n            body: [body, createTeamMemberRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createTeamMemberResponseSchema, requestOptions);\n    }\n    /**\n     * Creates multiple `TeamMember` objects. The created `TeamMember` objects are returned on successful\n     * creates.\n     * This process is non-transactional and processes as much of the request as possible. If one of the\n     * creates in\n     * the request cannot be successfully processed, the request is not marked as failed, but the body of\n     * the response\n     * contains explicit error information for the failed create.\n     *\n     * Learn about [Troubleshooting the Team API](https://developer.squareup.\n     * com/docs/team/troubleshooting#bulk-create-team-members).\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                            request.  See the corresponding object definition for\n     *                                                            field details.\n     * @return Response from the API call\n     */\n    async bulkCreateTeamMembers(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/team-members/bulk-create');\n        const mapped = req.prepareArgs({\n            body: [body, bulkCreateTeamMembersRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(bulkCreateTeamMembersResponseSchema, requestOptions);\n    }\n    /**\n     * Updates multiple `TeamMember` objects. The updated `TeamMember` objects are returned on successful\n     * updates.\n     * This process is non-transactional and processes as much of the request as possible. If one of the\n     * updates in\n     * the request cannot be successfully processed, the request is not marked as failed, but the body of\n     * the response\n     * contains explicit error information for the failed update.\n     * Learn about [Troubleshooting the Team API](https://developer.squareup.\n     * com/docs/team/troubleshooting#bulk-update-team-members).\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                            request.  See the corresponding object definition for\n     *                                                            field details.\n     * @return Response from the API call\n     */\n    async bulkUpdateTeamMembers(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/team-members/bulk-update');\n        const mapped = req.prepareArgs({\n            body: [body, bulkUpdateTeamMembersRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(bulkUpdateTeamMembersResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a paginated list of `TeamMember` objects for a business.\n     * The list can be filtered by the following:\n     * - location IDs\n     * - `status`\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                        See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async searchTeamMembers(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/team-members/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchTeamMembersRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchTeamMembersResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a `TeamMember` object for the given `TeamMember.id`.\n     * Learn about [Troubleshooting the Team API](https://developer.squareup.\n     * com/docs/team/troubleshooting#retrieve-a-team-member).\n     *\n     * @param teamMemberId   The ID of the team member to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveTeamMember(teamMemberId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ teamMemberId: [teamMemberId, string()] });\n        req.appendTemplatePath `/v2/team-members/${mapped.teamMemberId}`;\n        return req.callAsJson(retrieveTeamMemberResponseSchema, requestOptions);\n    }\n    /**\n     * Updates a single `TeamMember` object. The `TeamMember` object is returned on successful updates.\n     * Learn about [Troubleshooting the Team API](https://developer.squareup.\n     * com/docs/team/troubleshooting#update-a-team-member).\n     *\n     * @param teamMemberId   The ID of the team member to update.\n     * @param body           An object containing the fields to POST for the request.\n     *                                                         See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async updateTeamMember(teamMemberId, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            teamMemberId: [teamMemberId, string()],\n            body: [body, updateTeamMemberRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/team-members/${mapped.teamMemberId}`;\n        return req.callAsJson(updateTeamMemberResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a `WageSetting` object for a team member specified\n     * by `TeamMember.id`.\n     * Learn about [Troubleshooting the Team API](https://developer.squareup.\n     * com/docs/team/troubleshooting#retrievewagesetting).\n     *\n     * @param teamMemberId   The ID of the team member for which to retrieve the wage setting.\n     * @return Response from the API call\n     */\n    async retrieveWageSetting(teamMemberId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ teamMemberId: [teamMemberId, string()] });\n        req.appendTemplatePath `/v2/team-members/${mapped.teamMemberId}/wage-setting`;\n        return req.callAsJson(retrieveWageSettingResponseSchema, requestOptions);\n    }\n    /**\n     * Creates or updates a `WageSetting` object. The object is created if a\n     * `WageSetting` with the specified `team_member_id` does not exist. Otherwise,\n     * it fully replaces the `WageSetting` object for the team member.\n     * The `WageSetting` is returned on a successful update.\n     * Learn about [Troubleshooting the Team API](https://developer.squareup.\n     * com/docs/team/troubleshooting#create-or-update-a-wage-setting).\n     *\n     * @param teamMemberId   The ID of the team member for which to update the\n     *                                                          `WageSetting` object.\n     * @param body           An object containing the fields to POST for the request.\n     *                                                          See the corresponding object definition for field\n     *                                                          details.\n     * @return Response from the API call\n     */\n    async updateWageSetting(teamMemberId, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            teamMemberId: [teamMemberId, string()],\n            body: [body, updateWageSettingRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/team-members/${mapped.teamMemberId}/wage-setting`;\n        return req.callAsJson(updateWageSettingResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=teamApi.js.map",
+      "start": 1707436156575,
+      "end": 1707436156767,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156767,
+      "end": 1707436156767,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156767,
+      "end": 1707436156767,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156768,
+      "end": 1707436156768,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156768,
+      "end": 1707436156769,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156769,
+      "end": 1707436156769,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156769,
+      "end": 1707436156769,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156769,
+      "end": 1707436156769,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156769,
+      "end": 1707436156769,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156769,
+      "end": 1707436156769,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156769,
+      "end": 1707436156769,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156769,
+      "end": 1707436156769,
+      "order": "normal"
+    }
+  ]
+}

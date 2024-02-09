@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VChip/VChip.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { mergeProps as _mergeProps, Fragment as _Fragment, withDirectives as _withDirectives, vShow as _vShow, resolveDirective as _resolveDirective, createVNode as _createVNode } from \"vue\";\n/* eslint-disable complexity */\n// Styles\nimport \"./VChip.css\";\n\n// Components\nimport { VExpandXTransition } from \"../transitions/index.mjs\";\nimport { VAvatar } from \"../VAvatar/index.mjs\";\nimport { VChipGroupSymbol } from \"../VChipGroup/VChipGroup.mjs\";\nimport { VDefaultsProvider } from \"../VDefaultsProvider/index.mjs\";\nimport { VIcon } from \"../VIcon/index.mjs\"; // Composables\nimport { makeBorderProps, useBorder } from \"../../composables/border.mjs\";\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { makeDensityProps, useDensity } from \"../../composables/density.mjs\";\nimport { makeElevationProps, useElevation } from \"../../composables/elevation.mjs\";\nimport { makeGroupItemProps, useGroupItem } from \"../../composables/group.mjs\";\nimport { IconValue } from \"../../composables/icons.mjs\";\nimport { useLocale } from \"../../composables/locale.mjs\";\nimport { useProxiedModel } from \"../../composables/proxiedModel.mjs\";\nimport { makeRoundedProps, useRounded } from \"../../composables/rounded.mjs\";\nimport { makeRouterProps, useLink } from \"../../composables/router.mjs\";\nimport { makeSizeProps, useSize } from \"../../composables/size.mjs\";\nimport { makeTagProps } from \"../../composables/tag.mjs\";\nimport { makeThemeProps, provideTheme } from \"../../composables/theme.mjs\";\nimport { genOverlays, makeVariantProps, useVariant } from \"../../composables/variant.mjs\"; // Directives\nimport { Ripple } from \"../../directives/ripple/index.mjs\"; // Utilities\nimport { computed } from 'vue';\nimport { EventProp, genericComponent, propsFactory } from \"../../util/index.mjs\"; // Types\nexport const makeVChipProps = propsFactory({\n  activeClass: String,\n  appendAvatar: String,\n  appendIcon: IconValue,\n  closable: Boolean,\n  closeIcon: {\n    type: IconValue,\n    default: '$delete'\n  },\n  closeLabel: {\n    type: String,\n    default: '$vuetify.close'\n  },\n  draggable: Boolean,\n  filter: Boolean,\n  filterIcon: {\n    type: String,\n    default: '$complete'\n  },\n  label: Boolean,\n  link: {\n    type: Boolean,\n    default: undefined\n  },\n  pill: Boolean,\n  prependAvatar: String,\n  prependIcon: IconValue,\n  ripple: {\n    type: [Boolean, Object],\n    default: true\n  },\n  text: String,\n  modelValue: {\n    type: Boolean,\n    default: true\n  },\n  onClick: EventProp(),\n  onClickOnce: EventProp(),\n  ...makeBorderProps(),\n  ...makeComponentProps(),\n  ...makeDensityProps(),\n  ...makeElevationProps(),\n  ...makeGroupItemProps(),\n  ...makeRoundedProps(),\n  ...makeRouterProps(),\n  ...makeSizeProps(),\n  ...makeTagProps({\n    tag: 'span'\n  }),\n  ...makeThemeProps(),\n  ...makeVariantProps({\n    variant: 'tonal'\n  })\n}, 'VChip');\nexport const VChip = genericComponent()({\n  name: 'VChip',\n  directives: {\n    Ripple\n  },\n  props: makeVChipProps(),\n  emits: {\n    'click:close': e => true,\n    'update:modelValue': value => true,\n    'group:selected': val => true,\n    click: e => true\n  },\n  setup(props, _ref) {\n    let {\n      attrs,\n      emit,\n      slots\n    } = _ref;\n    const {\n      t\n    } = useLocale();\n    const {\n      borderClasses\n    } = useBorder(props);\n    const {\n      colorClasses,\n      colorStyles,\n      variantClasses\n    } = useVariant(props);\n    const {\n      densityClasses\n    } = useDensity(props);\n    const {\n      elevationClasses\n    } = useElevation(props);\n    const {\n      roundedClasses\n    } = useRounded(props);\n    const {\n      sizeClasses\n    } = useSize(props);\n    const {\n      themeClasses\n    } = provideTheme(props);\n    const isActive = useProxiedModel(props, 'modelValue');\n    const group = useGroupItem(props, VChipGroupSymbol, false);\n    const link = useLink(props, attrs);\n    const isLink = computed(() => props.link !== false && link.isLink.value);\n    const isClickable = computed(() => !props.disabled && props.link !== false && (!!group || props.link || link.isClickable.value));\n    const closeProps = computed(() => ({\n      'aria-label': t(props.closeLabel),\n      onClick(e) {\n        e.stopPropagation();\n        isActive.value = false;\n        emit('click:close', e);\n      }\n    }));\n    function onClick(e) {\n      emit('click', e);\n      if (!isClickable.value) return;\n      link.navigate?.(e);\n      group?.toggle();\n    }\n    function onKeyDown(e) {\n      if (e.key === 'Enter' || e.key === ' ') {\n        e.preventDefault();\n        onClick(e);\n      }\n    }\n    return () => {\n      const Tag = link.isLink.value ? 'a' : props.tag;\n      const hasAppendMedia = !!(props.appendIcon || props.appendAvatar);\n      const hasAppend = !!(hasAppendMedia || slots.append);\n      const hasClose = !!(slots.close || props.closable);\n      const hasFilter = !!(slots.filter || props.filter) && group;\n      const hasPrependMedia = !!(props.prependIcon || props.prependAvatar);\n      const hasPrepend = !!(hasPrependMedia || slots.prepend);\n      const hasColor = !group || group.isSelected.value;\n      return isActive.value && _withDirectives(_createVNode(Tag, {\n        \"class\": ['v-chip', {\n          'v-chip--disabled': props.disabled,\n          'v-chip--label': props.label,\n          'v-chip--link': isClickable.value,\n          'v-chip--filter': hasFilter,\n          'v-chip--pill': props.pill\n        }, themeClasses.value, borderClasses.value, hasColor ? colorClasses.value : undefined, densityClasses.value, elevationClasses.value, roundedClasses.value, sizeClasses.value, variantClasses.value, group?.selectedClass.value, props.class],\n        \"style\": [hasColor ? colorStyles.value : undefined, props.style],\n        \"disabled\": props.disabled || undefined,\n        \"draggable\": props.draggable,\n        \"href\": link.href.value,\n        \"tabindex\": isClickable.value ? 0 : undefined,\n        \"onClick\": onClick,\n        \"onKeydown\": isClickable.value && !isLink.value && onKeyDown\n      }, {\n        default: () => [genOverlays(isClickable.value, 'v-chip'), hasFilter && _createVNode(VExpandXTransition, {\n          \"key\": \"filter\"\n        }, {\n          default: () => [_withDirectives(_createVNode(\"div\", {\n            \"class\": \"v-chip__filter\"\n          }, [!slots.filter ? _createVNode(VIcon, {\n            \"key\": \"filter-icon\",\n            \"icon\": props.filterIcon\n          }, null) : _createVNode(VDefaultsProvider, {\n            \"key\": \"filter-defaults\",\n            \"disabled\": !props.filterIcon,\n            \"defaults\": {\n              VIcon: {\n                icon: props.filterIcon\n              }\n            }\n          }, slots.filter)]), [[_vShow, group.isSelected.value]])]\n        }), hasPrepend && _createVNode(\"div\", {\n          \"key\": \"prepend\",\n          \"class\": \"v-chip__prepend\"\n        }, [!slots.prepend ? _createVNode(_Fragment, null, [props.prependIcon && _createVNode(VIcon, {\n          \"key\": \"prepend-icon\",\n          \"icon\": props.prependIcon,\n          \"start\": true\n        }, null), props.prependAvatar && _createVNode(VAvatar, {\n          \"key\": \"prepend-avatar\",\n          \"image\": props.prependAvatar,\n          \"start\": true\n        }, null)]) : _createVNode(VDefaultsProvider, {\n          \"key\": \"prepend-defaults\",\n          \"disabled\": !hasPrependMedia,\n          \"defaults\": {\n            VAvatar: {\n              image: props.prependAvatar,\n              start: true\n            },\n            VIcon: {\n              icon: props.prependIcon,\n              start: true\n            }\n          }\n        }, slots.prepend)]), _createVNode(\"div\", {\n          \"class\": \"v-chip__content\"\n        }, [slots.default?.({\n          isSelected: group?.isSelected.value,\n          selectedClass: group?.selectedClass.value,\n          select: group?.select,\n          toggle: group?.toggle,\n          value: group?.value.value,\n          disabled: props.disabled\n        }) ?? props.text]), hasAppend && _createVNode(\"div\", {\n          \"key\": \"append\",\n          \"class\": \"v-chip__append\"\n        }, [!slots.append ? _createVNode(_Fragment, null, [props.appendIcon && _createVNode(VIcon, {\n          \"key\": \"append-icon\",\n          \"end\": true,\n          \"icon\": props.appendIcon\n        }, null), props.appendAvatar && _createVNode(VAvatar, {\n          \"key\": \"append-avatar\",\n          \"end\": true,\n          \"image\": props.appendAvatar\n        }, null)]) : _createVNode(VDefaultsProvider, {\n          \"key\": \"append-defaults\",\n          \"disabled\": !hasAppendMedia,\n          \"defaults\": {\n            VAvatar: {\n              end: true,\n              image: props.appendAvatar\n            },\n            VIcon: {\n              end: true,\n              icon: props.appendIcon\n            }\n          }\n        }, slots.append)]), hasClose && _createVNode(\"button\", _mergeProps({\n          \"key\": \"close\",\n          \"class\": \"v-chip__close\",\n          \"type\": \"button\"\n        }, closeProps.value), [!slots.close ? _createVNode(VIcon, {\n          \"key\": \"close-icon\",\n          \"icon\": props.closeIcon,\n          \"size\": \"x-small\"\n        }, null) : _createVNode(VDefaultsProvider, {\n          \"key\": \"close-defaults\",\n          \"defaults\": {\n            VIcon: {\n              icon: props.closeIcon,\n              size: 'x-small'\n            }\n          }\n        }, slots.close)])]\n      }), [[_resolveDirective(\"ripple\"), isClickable.value && props.ripple, null]]);\n    };\n  }\n});\n//# sourceMappingURL=VChip.mjs.map",
+      "start": 1707436155922,
+      "end": 1707436156009,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156009,
+      "end": 1707436156009,
+      "order": "normal"
+    }
+  ]
+}

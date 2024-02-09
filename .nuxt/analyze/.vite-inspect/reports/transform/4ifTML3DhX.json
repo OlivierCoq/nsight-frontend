@@ -1,0 +1,212 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/framework.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Composables\nimport { createDate, DateAdapterSymbol, DateOptionsSymbol } from \"./composables/date/date.mjs\";\nimport { createDefaults, DefaultsSymbol } from \"./composables/defaults.mjs\";\nimport { createDisplay, DisplaySymbol } from \"./composables/display.mjs\";\nimport { createGoTo, GoToSymbol } from \"./composables/goto.mjs\";\nimport { createIcons, IconSymbol } from \"./composables/icons.mjs\";\nimport { createLocale, LocaleSymbol } from \"./composables/locale.mjs\";\nimport { createTheme, ThemeSymbol } from \"./composables/theme.mjs\"; // Utilities\nimport { nextTick, reactive } from 'vue';\nimport { defineComponent, getUid, IN_BROWSER, mergeDeep } from \"./util/index.mjs\"; // Types\nexport * from \"./composables/index.mjs\";\nexport function createVuetify() {\n  let vuetify = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};\n  const {\n    blueprint,\n    ...rest\n  } = vuetify;\n  const options = mergeDeep(blueprint, rest);\n  const {\n    aliases = {},\n    components = {},\n    directives = {}\n  } = options;\n  const defaults = createDefaults(options.defaults);\n  const display = createDisplay(options.display, options.ssr);\n  const theme = createTheme(options.theme);\n  const icons = createIcons(options.icons);\n  const locale = createLocale(options.locale);\n  const date = createDate(options.date, locale);\n  const goTo = createGoTo(options.goTo, locale);\n  const install = app => {\n    for (const key in directives) {\n      app.directive(key, directives[key]);\n    }\n    for (const key in components) {\n      app.component(key, components[key]);\n    }\n    for (const key in aliases) {\n      app.component(key, defineComponent({\n        ...aliases[key],\n        name: key,\n        aliasName: aliases[key].name\n      }));\n    }\n    theme.install(app);\n    app.provide(DefaultsSymbol, defaults);\n    app.provide(DisplaySymbol, display);\n    app.provide(ThemeSymbol, theme);\n    app.provide(IconSymbol, icons);\n    app.provide(LocaleSymbol, locale);\n    app.provide(DateOptionsSymbol, date.options);\n    app.provide(DateAdapterSymbol, date.instance);\n    app.provide(GoToSymbol, goTo);\n    if (IN_BROWSER && options.ssr) {\n      if (app.$nuxt) {\n        app.$nuxt.hook('app:suspense:resolve', () => {\n          display.update();\n        });\n      } else {\n        const {\n          mount\n        } = app;\n        app.mount = function () {\n          const vm = mount(...arguments);\n          nextTick(() => display.update());\n          app.mount = mount;\n          return vm;\n        };\n      }\n    }\n    getUid.reset();\n    if (typeof __VUE_OPTIONS_API__ !== 'boolean' || __VUE_OPTIONS_API__) {\n      app.mixin({\n        computed: {\n          $vuetify() {\n            return reactive({\n              defaults: inject.call(this, DefaultsSymbol),\n              display: inject.call(this, DisplaySymbol),\n              theme: inject.call(this, ThemeSymbol),\n              icons: inject.call(this, IconSymbol),\n              locale: inject.call(this, LocaleSymbol),\n              date: inject.call(this, DateAdapterSymbol)\n            });\n          }\n        }\n      });\n    }\n  };\n  return {\n    install,\n    defaults,\n    display,\n    theme,\n    icons,\n    locale,\n    date,\n    goTo\n  };\n}\nexport const version = \"3.5.1\";\ncreateVuetify.version = version;\n\n// Vue's inject() can only be used in setup\nfunction inject(key) {\n  const vm = this.$;\n  const provides = vm.parent?.provides ?? vm.vnode.appContext?.provides;\n  if (provides && key in provides) {\n    return provides[key];\n  }\n}\n//# sourceMappingURL=framework.mjs.map",
+      "start": 1707436155119,
+      "end": 1707436155204,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436155204,
+      "end": 1707436155204,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "result": "import { createDate, DateAdapterSymbol, DateOptionsSymbol } from \"./composables/date/date.mjs\";\nimport { createDefaults, DefaultsSymbol } from \"./composables/defaults.mjs\";\nimport { createDisplay, DisplaySymbol } from \"./composables/display.mjs\";\nimport { createGoTo, GoToSymbol } from \"./composables/goto.mjs\";\nimport { createIcons, IconSymbol } from \"./composables/icons.mjs\";\nimport { createLocale, LocaleSymbol } from \"./composables/locale.mjs\";\nimport { createTheme, ThemeSymbol } from \"./composables/theme.mjs\";\nimport { nextTick, reactive } from \"vue\";\nimport { defineComponent, getUid, IN_BROWSER, mergeDeep } from \"./util/index.mjs\";\nexport * from \"./composables/index.mjs\";\nexport function createVuetify() {\n  let vuetify = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};\n  const {\n    blueprint,\n    ...rest\n  } = vuetify;\n  const options = mergeDeep(blueprint, rest);\n  const {\n    aliases = {},\n    components = {},\n    directives = {}\n  } = options;\n  const defaults = createDefaults(options.defaults);\n  const display = createDisplay(options.display, options.ssr);\n  const theme = createTheme(options.theme);\n  const icons = createIcons(options.icons);\n  const locale = createLocale(options.locale);\n  const date = createDate(options.date, locale);\n  const goTo = createGoTo(options.goTo, locale);\n  const install = (app) => {\n    for (const key in directives) {\n      app.directive(key, directives[key]);\n    }\n    for (const key in components) {\n      app.component(key, components[key]);\n    }\n    for (const key in aliases) {\n      app.component(key, defineComponent({\n        ...aliases[key],\n        name: key,\n        aliasName: aliases[key].name\n      }));\n    }\n    theme.install(app);\n    app.provide(DefaultsSymbol, defaults);\n    app.provide(DisplaySymbol, display);\n    app.provide(ThemeSymbol, theme);\n    app.provide(IconSymbol, icons);\n    app.provide(LocaleSymbol, locale);\n    app.provide(DateOptionsSymbol, date.options);\n    app.provide(DateAdapterSymbol, date.instance);\n    app.provide(GoToSymbol, goTo);\n    if (IN_BROWSER && options.ssr) {\n      if (app.$nuxt) {\n        app.$nuxt.hook(\"app:suspense:resolve\", () => {\n          display.update();\n        });\n      } else {\n        const {\n          mount\n        } = app;\n        app.mount = function() {\n          const vm = mount(...arguments);\n          nextTick(() => display.update());\n          app.mount = mount;\n          return vm;\n        };\n      }\n    }\n    getUid.reset();\n    if (true) {\n      app.mixin({\n        computed: {\n          $vuetify() {\n            return reactive({\n              defaults: inject.call(this, DefaultsSymbol),\n              display: inject.call(this, DisplaySymbol),\n              theme: inject.call(this, ThemeSymbol),\n              icons: inject.call(this, IconSymbol),\n              locale: inject.call(this, LocaleSymbol),\n              date: inject.call(this, DateAdapterSymbol)\n            });\n          }\n        }\n      });\n    }\n  };\n  return {\n    install,\n    defaults,\n    display,\n    theme,\n    icons,\n    locale,\n    date,\n    goTo\n  };\n}\nexport const version = \"3.5.1\";\ncreateVuetify.version = version;\nfunction inject(key) {\n  const vm = this.$;\n  const provides = vm.parent?.provides ?? vm.vnode.appContext?.provides;\n  if (provides && key in provides) {\n    return provides[key];\n  }\n}\n",
+      "start": 1707436155204,
+      "end": 1707436156613,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156613,
+      "end": 1707436156613,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156613,
+      "end": 1707436156613,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156613,
+      "end": 1707436156613,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156613,
+      "end": 1707436156613,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156613,
+      "end": 1707436156614,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156614,
+      "end": 1707436156614,
+      "order": "normal"
+    }
+  ]
+}

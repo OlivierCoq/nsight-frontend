@@ -1,0 +1,218 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VCard/VCard.css",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": ".v-card {\n  display: block;\n  overflow: hidden;\n  overflow-wrap: break-word;\n  position: relative;\n  padding: 0;\n  text-decoration: none;\n  transition-duration: 0.28s;\n  transition-property: box-shadow, opacity, background;\n  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n  z-index: 0;\n  border-color: rgba(var(--v-border-color), var(--v-border-opacity));\n  border-style: solid;\n  border-width: 0;\n  border-radius: 4px;\n}\n.v-card--border {\n  border-width: thin;\n  box-shadow: none;\n}\n.v-card--absolute {\n  position: absolute;\n}\n.v-card--fixed {\n  position: fixed;\n}\n.v-card:hover > .v-card__overlay {\n  opacity: calc(var(--v-hover-opacity) * var(--v-theme-overlay-multiplier));\n}\n.v-card:focus-visible > .v-card__overlay {\n  opacity: calc(var(--v-focus-opacity) * var(--v-theme-overlay-multiplier));\n}\n@supports not selector(:focus-visible) {\n  .v-card:focus > .v-card__overlay {\n    opacity: calc(var(--v-focus-opacity) * var(--v-theme-overlay-multiplier));\n  }\n}\n.v-card--active > .v-card__overlay, .v-card[aria-haspopup=menu][aria-expanded=true] > .v-card__overlay {\n  opacity: calc(var(--v-activated-opacity) * var(--v-theme-overlay-multiplier));\n}\n.v-card--active:hover > .v-card__overlay, .v-card[aria-haspopup=menu][aria-expanded=true]:hover > .v-card__overlay {\n  opacity: calc((var(--v-activated-opacity) + var(--v-hover-opacity)) * var(--v-theme-overlay-multiplier));\n}\n.v-card--active:focus-visible > .v-card__overlay, .v-card[aria-haspopup=menu][aria-expanded=true]:focus-visible > .v-card__overlay {\n  opacity: calc((var(--v-activated-opacity) + var(--v-focus-opacity)) * var(--v-theme-overlay-multiplier));\n}\n@supports not selector(:focus-visible) {\n  .v-card--active:focus > .v-card__overlay, .v-card[aria-haspopup=menu][aria-expanded=true]:focus > .v-card__overlay {\n    opacity: calc((var(--v-activated-opacity) + var(--v-focus-opacity)) * var(--v-theme-overlay-multiplier));\n  }\n}\n.v-card--variant-plain, .v-card--variant-outlined, .v-card--variant-text, .v-card--variant-tonal {\n  background: transparent;\n  color: inherit;\n}\n.v-card--variant-plain {\n  opacity: 0.62;\n}\n.v-card--variant-plain:focus, .v-card--variant-plain:hover {\n  opacity: 1;\n}\n.v-card--variant-plain .v-card__overlay {\n  display: none;\n}\n.v-card--variant-elevated, .v-card--variant-flat {\n  background: rgb(var(--v-theme-surface));\n  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));\n}\n.v-card--variant-elevated {\n  box-shadow: 0px 2px 1px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 1px 1px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 3px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));\n}\n.v-card--variant-flat {\n  box-shadow: 0px 0px 0px 0px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 0px 0px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 0px 0px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));\n}\n.v-card--variant-outlined {\n  border: thin solid currentColor;\n}\n.v-card--variant-text .v-card__overlay {\n  background: currentColor;\n}\n.v-card--variant-tonal .v-card__underlay {\n  background: currentColor;\n  opacity: var(--v-activated-opacity);\n  border-radius: inherit;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  pointer-events: none;\n}\n.v-card--disabled {\n  pointer-events: none;\n  user-select: none;\n}\n.v-card--disabled > :not(.v-card__loader) {\n  opacity: 0.6;\n}\n.v-card--flat {\n  box-shadow: none;\n}\n.v-card--hover {\n  cursor: pointer;\n}\n.v-card--hover::before, .v-card--hover::after {\n  border-radius: inherit;\n  bottom: 0;\n  content: \"\";\n  display: block;\n  left: 0;\n  pointer-events: none;\n  position: absolute;\n  right: 0;\n  top: 0;\n  transition: inherit;\n}\n.v-card--hover::before {\n  opacity: 1;\n  z-index: -1;\n  box-shadow: 0px 2px 1px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 1px 1px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 1px 3px 0px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));\n}\n.v-card--hover::after {\n  z-index: 1;\n  opacity: 0;\n  box-shadow: 0px 5px 5px -3px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 8px 10px 1px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 3px 14px 2px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));\n}\n.v-card--hover:hover::after {\n  opacity: 1;\n}\n.v-card--hover:hover::before {\n  opacity: 0;\n}\n.v-card--hover:hover {\n  box-shadow: 0px 5px 5px -3px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 8px 10px 1px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 3px 14px 2px var(--v-shadow-key-ambient-opacity, rgba(0, 0, 0, 0.12));\n}\n.v-card--link {\n  cursor: pointer;\n}\n\n.v-card-actions {\n  align-items: center;\n  display: flex;\n  flex: none;\n  min-height: 52px;\n  padding: 0.5rem;\n}\n\n.v-card-item {\n  align-items: center;\n  display: grid;\n  flex: none;\n  grid-template-areas: \"prepend content append\";\n  grid-template-columns: max-content auto max-content;\n  padding: 0.625rem 1rem;\n}\n.v-card-item + .v-card-text {\n  padding-top: 0;\n}\n.v-card-item__prepend, .v-card-item__append {\n  align-items: center;\n  display: flex;\n}\n.v-card-item__prepend {\n  grid-area: prepend;\n  padding-inline-end: 0.5rem;\n}\n.v-card-item__append {\n  grid-area: append;\n  padding-inline-start: 0.5rem;\n}\n\n.v-card-item__content {\n  align-self: center;\n  grid-area: content;\n  overflow: hidden;\n}\n\n.v-card-title {\n  display: block;\n  flex: none;\n  font-size: 1.25rem;\n  font-weight: 500;\n  hyphens: auto;\n  letter-spacing: 0.0125em;\n  min-width: 0;\n  overflow-wrap: normal;\n  overflow: hidden;\n  padding: 0.5rem 1rem;\n  text-overflow: ellipsis;\n  text-transform: none;\n  white-space: nowrap;\n  word-break: normal;\n  word-wrap: break-word;\n}\n.v-card .v-card-title {\n  line-height: 2rem;\n}\n.v-card--density-comfortable .v-card-title {\n  line-height: 1.75rem;\n}\n.v-card--density-compact .v-card-title {\n  line-height: 1.55rem;\n}\n.v-card-item .v-card-title {\n  padding: 0;\n}\n.v-card-title + .v-card-text,\n.v-card-title + .v-card-actions {\n  padding-top: 0;\n}\n\n.v-card-subtitle {\n  display: block;\n  flex: none;\n  font-size: 0.875rem;\n  font-weight: 400;\n  letter-spacing: 0.0178571429em;\n  opacity: var(--v-medium-emphasis-opacity);\n  overflow: hidden;\n  padding: 0 1rem;\n  text-overflow: ellipsis;\n  text-transform: none;\n  white-space: nowrap;\n}\n.v-card .v-card-subtitle {\n  line-height: 1.25rem;\n}\n.v-card--density-comfortable .v-card-subtitle {\n  line-height: 1.125rem;\n}\n.v-card--density-compact .v-card-subtitle {\n  line-height: 1rem;\n}\n.v-card-item .v-card-subtitle {\n  padding: 0 0 0.25rem;\n}\n\n.v-card-text {\n  flex: 1 1 auto;\n  font-size: 0.875rem;\n  font-weight: 400;\n  letter-spacing: 0.0178571429em;\n  padding: 1rem;\n  text-transform: none;\n}\n.v-card .v-card-text {\n  line-height: 1.25rem;\n}\n.v-card--density-comfortable .v-card-text {\n  line-height: 1.2rem;\n}\n.v-card--density-compact .v-card-text {\n  line-height: 1.15rem;\n}\n\n.v-card__image {\n  display: flex;\n  height: 100%;\n  flex: 1 1 auto;\n  left: 0;\n  overflow: hidden;\n  position: absolute;\n  top: 0;\n  width: 100%;\n  z-index: -1;\n}\n\n.v-card__content {\n  border-radius: inherit;\n  overflow: hidden;\n  position: relative;\n}\n\n.v-card__loader {\n  bottom: auto;\n  top: 0;\n  left: 0;\n  position: absolute;\n  right: 0;\n  width: 100%;\n  z-index: 1;\n}\n\n.v-card__overlay {\n  background-color: currentColor;\n  border-radius: inherit;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  pointer-events: none;\n  opacity: 0;\n  transition: opacity 0.2s ease-in-out;\n}",
+      "start": 1707436156909,
+      "end": 1707436157018,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436157018,
+      "end": 1707436157018,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436157018,
+      "end": 1707436157018,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436157018,
+      "end": 1707436157018,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".v-card{border-color:rgba(var(--v-border-color),var(--v-border-opacity));border-radius:4px;border-style:solid;border-width:0;display:block;overflow:hidden;overflow-wrap:break-word;padding:0;position:relative;text-decoration:none;transition-duration:.28s;transition-property:box-shadow,opacity,background;transition-timing-function:cubic-bezier(.4,0,.2,1);z-index:0}.v-card--border{border-width:thin;box-shadow:none}.v-card--absolute{position:absolute}.v-card--fixed{position:fixed}.v-card:hover>.v-card__overlay{opacity:calc(var(--v-hover-opacity)*var(--v-theme-overlay-multiplier))}.v-card:focus-visible>.v-card__overlay{opacity:calc(var(--v-focus-opacity)*var(--v-theme-overlay-multiplier))}@supports not selector(:focus-visible){.v-card:focus>.v-card__overlay{opacity:calc(var(--v-focus-opacity)*var(--v-theme-overlay-multiplier))}}.v-card--active>.v-card__overlay,.v-card[aria-haspopup=menu][aria-expanded=true]>.v-card__overlay{opacity:calc(var(--v-activated-opacity)*var(--v-theme-overlay-multiplier))}.v-card--active:hover>.v-card__overlay,.v-card[aria-haspopup=menu][aria-expanded=true]:hover>.v-card__overlay{opacity:calc((var(--v-activated-opacity) + var(--v-hover-opacity))*var(--v-theme-overlay-multiplier))}.v-card--active:focus-visible>.v-card__overlay,.v-card[aria-haspopup=menu][aria-expanded=true]:focus-visible>.v-card__overlay{opacity:calc((var(--v-activated-opacity) + var(--v-focus-opacity))*var(--v-theme-overlay-multiplier))}@supports not selector(:focus-visible){.v-card--active:focus>.v-card__overlay,.v-card[aria-haspopup=menu][aria-expanded=true]:focus>.v-card__overlay{opacity:calc((var(--v-activated-opacity) + var(--v-focus-opacity))*var(--v-theme-overlay-multiplier))}}.v-card--variant-outlined,.v-card--variant-plain,.v-card--variant-text,.v-card--variant-tonal{background:transparent;color:inherit}.v-card--variant-plain{opacity:.62}.v-card--variant-plain:focus,.v-card--variant-plain:hover{opacity:1}.v-card--variant-plain .v-card__overlay{display:none}.v-card--variant-elevated,.v-card--variant-flat{background:rgb(var(--v-theme-surface));color:rgba(var(--v-theme-on-surface),var(--v-high-emphasis-opacity))}.v-card--variant-elevated{box-shadow:0 2px 1px -1px var(--v-shadow-key-umbra-opacity,rgba(0,0,0,.2)),0 1px 1px 0 var(--v-shadow-key-penumbra-opacity,rgba(0,0,0,.14)),0 1px 3px 0 var(--v-shadow-key-ambient-opacity,rgba(0,0,0,.12))}.v-card--variant-flat{box-shadow:0 0 0 0 var(--v-shadow-key-umbra-opacity,rgba(0,0,0,.2)),0 0 0 0 var(--v-shadow-key-penumbra-opacity,rgba(0,0,0,.14)),0 0 0 0 var(--v-shadow-key-ambient-opacity,rgba(0,0,0,.12))}.v-card--variant-outlined{border:thin solid}.v-card--variant-text .v-card__overlay{background:currentColor}.v-card--variant-tonal .v-card__underlay{background:currentColor;border-radius:inherit;bottom:0;left:0;opacity:var(--v-activated-opacity);pointer-events:none;position:absolute;right:0;top:0}.v-card--disabled{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.v-card--disabled>:not(.v-card__loader){opacity:.6}.v-card--flat{box-shadow:none}.v-card--hover{cursor:pointer}.v-card--hover:after,.v-card--hover:before{border-radius:inherit;bottom:0;content:\"\";display:block;left:0;pointer-events:none;position:absolute;right:0;top:0;transition:inherit}.v-card--hover:before{box-shadow:0 2px 1px -1px var(--v-shadow-key-umbra-opacity,rgba(0,0,0,.2)),0 1px 1px 0 var(--v-shadow-key-penumbra-opacity,rgba(0,0,0,.14)),0 1px 3px 0 var(--v-shadow-key-ambient-opacity,rgba(0,0,0,.12));opacity:1;z-index:-1}.v-card--hover:after{box-shadow:0 5px 5px -3px var(--v-shadow-key-umbra-opacity,rgba(0,0,0,.2)),0 8px 10px 1px var(--v-shadow-key-penumbra-opacity,rgba(0,0,0,.14)),0 3px 14px 2px var(--v-shadow-key-ambient-opacity,rgba(0,0,0,.12));opacity:0;z-index:1}.v-card--hover:hover:after{opacity:1}.v-card--hover:hover:before{opacity:0}.v-card--hover:hover{box-shadow:0 5px 5px -3px var(--v-shadow-key-umbra-opacity,rgba(0,0,0,.2)),0 8px 10px 1px var(--v-shadow-key-penumbra-opacity,rgba(0,0,0,.14)),0 3px 14px 2px var(--v-shadow-key-ambient-opacity,rgba(0,0,0,.12))}.v-card--link{cursor:pointer}.v-card-actions{align-items:center;display:flex;flex:none;min-height:52px;padding:.5rem}.v-card-item{align-items:center;display:grid;flex:none;grid-template-areas:\"prepend content append\";grid-template-columns:max-content auto max-content;padding:.625rem 1rem}.v-card-item+.v-card-text{padding-top:0}.v-card-item__append,.v-card-item__prepend{align-items:center;display:flex}.v-card-item__prepend{grid-area:prepend;padding-inline-end:.5rem}.v-card-item__append{grid-area:append;padding-inline-start:.5rem}.v-card-item__content{align-self:center;grid-area:content;overflow:hidden}.v-card-title{display:block;flex:none;font-size:1.25rem;font-weight:500;-webkit-hyphens:auto;hyphens:auto;letter-spacing:.0125em;min-width:0;overflow:hidden;overflow-wrap:normal;padding:.5rem 1rem;text-overflow:ellipsis;text-transform:none;white-space:nowrap;word-break:normal;word-wrap:break-word}.v-card .v-card-title{line-height:2rem}.v-card--density-comfortable .v-card-title{line-height:1.75rem}.v-card--density-compact .v-card-title{line-height:1.55rem}.v-card-item .v-card-title{padding:0}.v-card-title+.v-card-actions,.v-card-title+.v-card-text{padding-top:0}.v-card-subtitle{display:block;flex:none;font-size:.875rem;font-weight:400;letter-spacing:.0178571429em;opacity:var(--v-medium-emphasis-opacity);overflow:hidden;padding:0 1rem;text-overflow:ellipsis;text-transform:none;white-space:nowrap}.v-card .v-card-subtitle{line-height:1.25rem}.v-card--density-comfortable .v-card-subtitle{line-height:1.125rem}.v-card--density-compact .v-card-subtitle{line-height:1rem}.v-card-item .v-card-subtitle{padding:0 0 .25rem}.v-card-text{flex:1 1 auto;font-size:.875rem;font-weight:400;letter-spacing:.0178571429em;padding:1rem;text-transform:none}.v-card .v-card-text{line-height:1.25rem}.v-card--density-comfortable .v-card-text{line-height:1.2rem}.v-card--density-compact .v-card-text{line-height:1.15rem}.v-card__image{display:flex;flex:1 1 auto;height:100%;left:0;overflow:hidden;position:absolute;top:0;width:100%;z-index:-1}.v-card__content{border-radius:inherit;overflow:hidden;position:relative}.v-card__loader{bottom:auto;width:100%;z-index:1}.v-card__loader,.v-card__overlay{left:0;position:absolute;right:0;top:0}.v-card__overlay{background-color:currentColor;border-radius:inherit;bottom:0;opacity:0;pointer-events:none;transition:opacity .2s ease-in-out}",
+      "start": 1707436157018,
+      "end": 1707436157039,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436157039,
+      "end": 1707436157039,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436157039,
+      "end": 1707436157039,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436157039,
+      "end": 1707436157039,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436157039,
+      "end": 1707436157039,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436157039,
+      "end": 1707436157039,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436157039,
+      "end": 1707436157039,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436157039,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436157040,
+      "end": 1707436157040,
+      "order": "normal"
+    }
+  ]
+}

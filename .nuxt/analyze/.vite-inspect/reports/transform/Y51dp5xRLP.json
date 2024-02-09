@@ -1,0 +1,219 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/axios/lib/helpers/combineURLs.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "'use strict';\n\n/**\n * Creates a new URL by combining the specified URLs\n *\n * @param {string} baseURL The base URL\n * @param {string} relativeURL The relative URL\n * @returns {string} The combined URL\n */\nmodule.exports = function combineURLs(baseURL, relativeURL) {\n  return relativeURL\n    ? baseURL.replace(/\\/+$/, '') + '/' + relativeURL.replace(/^\\/+/, '')\n    : baseURL;\n};\n",
+      "start": 1707436158950,
+      "end": 1707436158991,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436158991,
+      "end": 1707436158991,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\n\nvar combineURLs;\nvar hasRequiredCombineURLs;\n\nfunction requireCombineURLs () {\n\tif (hasRequiredCombineURLs) return combineURLs;\n\thasRequiredCombineURLs = 1;\n\t'use strict';\n\n\t/**\n\t * Creates a new URL by combining the specified URLs\n\t *\n\t * @param {string} baseURL The base URL\n\t * @param {string} relativeURL The relative URL\n\t * @returns {string} The combined URL\n\t */\n\tcombineURLs = function combineURLs(baseURL, relativeURL) {\n\t  return relativeURL\n\t    ? baseURL.replace(/\\/+$/, '') + '/' + relativeURL.replace(/^\\/+/, '')\n\t    : baseURL;\n\t};\n\treturn combineURLs;\n}\n\nexport { requireCombineURLs as __require };",
+      "start": 1707436158991,
+      "end": 1707436158992,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": ";;;;;;;;CAAA,YAAY,CAAC;AACb;CACA;CACA;CACA;CACA;CACA;CACA;CACA;AACA,YAAc,GAAG,SAAS,WAAW,CAAC,OAAO,EAAE,WAAW,EAAE;CAC5D,EAAE,OAAO,WAAW;CACpB,MAAM,OAAO,CAAC,OAAO,CAAC,MAAM,EAAE,EAAE,CAAC,GAAG,GAAG,GAAG,WAAW,CAAC,OAAO,CAAC,MAAM,EAAE,EAAE,CAAC;CACzE,MAAM,OAAO,CAAC;CACd,CAAC"
+      }
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436158992,
+      "end": 1707436158992,
+      "order": "normal"
+    }
+  ]
+}

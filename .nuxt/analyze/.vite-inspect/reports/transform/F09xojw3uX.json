@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/validation.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Composables\nimport { makeFocusProps } from \"./focus.mjs\";\nimport { useForm } from \"./form.mjs\";\nimport { useProxiedModel } from \"./proxiedModel.mjs\";\nimport { useToggleScope } from \"./toggleScope.mjs\"; // Utilities\nimport { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref, shallowRef, unref, watch } from 'vue';\nimport { getCurrentInstanceName, getUid, propsFactory, wrapInArray } from \"../util/index.mjs\"; // Types\nexport const makeValidationProps = propsFactory({\n  disabled: {\n    type: Boolean,\n    default: null\n  },\n  error: Boolean,\n  errorMessages: {\n    type: [Array, String],\n    default: () => []\n  },\n  maxErrors: {\n    type: [Number, String],\n    default: 1\n  },\n  name: String,\n  label: String,\n  readonly: {\n    type: Boolean,\n    default: null\n  },\n  rules: {\n    type: Array,\n    default: () => []\n  },\n  modelValue: null,\n  validateOn: String,\n  validationValue: null,\n  ...makeFocusProps()\n}, 'validation');\nexport function useValidation(props) {\n  let name = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : getCurrentInstanceName();\n  let id = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : getUid();\n  const model = useProxiedModel(props, 'modelValue');\n  const validationModel = computed(() => props.validationValue === undefined ? model.value : props.validationValue);\n  const form = useForm();\n  const internalErrorMessages = ref([]);\n  const isPristine = shallowRef(true);\n  const isDirty = computed(() => !!(wrapInArray(model.value === '' ? null : model.value).length || wrapInArray(validationModel.value === '' ? null : validationModel.value).length));\n  const isDisabled = computed(() => !!(props.disabled ?? form?.isDisabled.value));\n  const isReadonly = computed(() => !!(props.readonly ?? form?.isReadonly.value));\n  const errorMessages = computed(() => {\n    return props.errorMessages?.length ? wrapInArray(props.errorMessages).concat(internalErrorMessages.value).slice(0, Math.max(0, +props.maxErrors)) : internalErrorMessages.value;\n  });\n  const validateOn = computed(() => {\n    let value = (props.validateOn ?? form?.validateOn.value) || 'input';\n    if (value === 'lazy') value = 'input lazy';\n    const set = new Set(value?.split(' ') ?? []);\n    return {\n      blur: set.has('blur') || set.has('input'),\n      input: set.has('input'),\n      submit: set.has('submit'),\n      lazy: set.has('lazy')\n    };\n  });\n  const isValid = computed(() => {\n    if (props.error || props.errorMessages?.length) return false;\n    if (!props.rules.length) return true;\n    if (isPristine.value) {\n      return internalErrorMessages.value.length || validateOn.value.lazy ? null : true;\n    } else {\n      return !internalErrorMessages.value.length;\n    }\n  });\n  const isValidating = shallowRef(false);\n  const validationClasses = computed(() => {\n    return {\n      [`${name}--error`]: isValid.value === false,\n      [`${name}--dirty`]: isDirty.value,\n      [`${name}--disabled`]: isDisabled.value,\n      [`${name}--readonly`]: isReadonly.value\n    };\n  });\n  const uid = computed(() => props.name ?? unref(id));\n  onBeforeMount(() => {\n    form?.register({\n      id: uid.value,\n      validate,\n      reset,\n      resetValidation\n    });\n  });\n  onBeforeUnmount(() => {\n    form?.unregister(uid.value);\n  });\n  onMounted(async () => {\n    if (!validateOn.value.lazy) {\n      await validate(true);\n    }\n    form?.update(uid.value, isValid.value, errorMessages.value);\n  });\n  useToggleScope(() => validateOn.value.input, () => {\n    watch(validationModel, () => {\n      if (validationModel.value != null) {\n        validate();\n      } else if (props.focused) {\n        const unwatch = watch(() => props.focused, val => {\n          if (!val) validate();\n          unwatch();\n        });\n      }\n    });\n  });\n  useToggleScope(() => validateOn.value.blur, () => {\n    watch(() => props.focused, val => {\n      if (!val) validate();\n    });\n  });\n  watch(isValid, () => {\n    form?.update(uid.value, isValid.value, errorMessages.value);\n  });\n  function reset() {\n    model.value = null;\n    nextTick(resetValidation);\n  }\n  function resetValidation() {\n    isPristine.value = true;\n    if (!validateOn.value.lazy) {\n      validate(true);\n    } else {\n      internalErrorMessages.value = [];\n    }\n  }\n  async function validate() {\n    let silent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;\n    const results = [];\n    isValidating.value = true;\n    for (const rule of props.rules) {\n      if (results.length >= +(props.maxErrors ?? 1)) {\n        break;\n      }\n      const handler = typeof rule === 'function' ? rule : () => rule;\n      const result = await handler(validationModel.value);\n      if (result === true) continue;\n      if (result !== false && typeof result !== 'string') {\n        // eslint-disable-next-line no-console\n        console.warn(`${result} is not a valid value. Rule functions must return boolean true or a string.`);\n        continue;\n      }\n      results.push(result || '');\n    }\n    internalErrorMessages.value = results;\n    isValidating.value = false;\n    isPristine.value = silent;\n    return internalErrorMessages.value;\n  }\n  return {\n    errorMessages,\n    isDirty,\n    isDisabled,\n    isReadonly,\n    isPristine,\n    isValid,\n    isValidating,\n    reset,\n    resetValidation,\n    validate,\n    validationClasses\n  };\n}\n//# sourceMappingURL=validation.mjs.map",
+      "start": 1707436157203,
+      "end": 1707436157334,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436157334,
+      "end": 1707436157334,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436157334,
+      "end": 1707436157335,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436157335,
+      "end": 1707436157335,
+      "order": "normal"
+    }
+  ]
+}

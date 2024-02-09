@@ -1,0 +1,1 @@
+export { default } from "file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@nuxt/vite-builder/dist/runtime/vite-node.mjs"

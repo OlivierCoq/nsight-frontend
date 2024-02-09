@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/schema/es/types/dict.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { __spreadArray, __read } from 'tslib';\nimport { objectEntries } from '../utils.js';\n\n/**\r\n * Create a dictionary schema.\r\n *\r\n * This can be used to map/unmap a type like Record<string, something>.\r\n */\nfunction dict(itemSchema) {\n  var validate = function (validateFn, value, ctxt) {\n    if (typeof value !== 'object' || value === null) {\n      return ctxt.fail();\n    }\n    var valueObject = value;\n    return ctxt.flatmapChildren(objectEntries(valueObject), itemSchema, function (v, childCtxt) {\n      return itemSchema[validateFn](v[1], childCtxt);\n    });\n  };\n  return {\n    type: function () {\n      return \"Record<string,\" + itemSchema.type() + \">\";\n    },\n    validateBeforeMap: function () {\n      var args = [];\n      for (var _i = 0; _i < arguments.length; _i++) {\n        args[_i] = arguments[_i];\n      }\n      return validate.apply(void 0, __spreadArray(['validateBeforeMap'], __read(args)));\n    },\n    validateBeforeUnmap: function () {\n      var args = [];\n      for (var _i = 0; _i < arguments.length; _i++) {\n        args[_i] = arguments[_i];\n      }\n      return validate.apply(void 0, __spreadArray(['validateBeforeUnmap'], __read(args)));\n    },\n    map: function (value, ctxt) {\n      var output = {};\n      for (var key in value) {\n        /* istanbul ignore else */\n        if (Object.prototype.hasOwnProperty.call(value, key)) {\n          var propValue = value[key];\n          output[key] = itemSchema.map(propValue, ctxt.createChild(key, propValue, itemSchema));\n        }\n      }\n      return output;\n    },\n    unmap: function (value, ctxt) {\n      var output = {};\n      for (var key in value) {\n        /* istanbul ignore else */\n        if (Object.prototype.hasOwnProperty.call(value, key)) {\n          var propValue = value[key];\n          output[key] = itemSchema.unmap(propValue, ctxt.createChild(key, propValue, itemSchema));\n        }\n      }\n      return output;\n    },\n    validateBeforeMapXml: function () {\n      var args = [];\n      for (var _i = 0; _i < arguments.length; _i++) {\n        args[_i] = arguments[_i];\n      }\n      return validate.apply(void 0, __spreadArray(['validateBeforeMapXml'], __read(args)));\n    },\n    mapXml: function (value, ctxt) {\n      var output = {};\n      for (var key in value) {\n        /* istanbul ignore else */\n        if (Object.prototype.hasOwnProperty.call(value, key)) {\n          var propValue = value[key];\n          output[key] = itemSchema.mapXml(propValue, ctxt.createChild(key, propValue, itemSchema));\n        }\n      }\n      return output;\n    },\n    unmapXml: function (value, ctxt) {\n      var output = {};\n      for (var key in value) {\n        /* istanbul ignore else */\n        if (Object.prototype.hasOwnProperty.call(value, key)) {\n          var propValue = value[key];\n          output[key] = itemSchema.unmapXml(propValue, ctxt.createChild(key, propValue, itemSchema));\n        }\n      }\n      return output;\n    }\n  };\n}\nexport { dict };",
+      "start": 1707436158998,
+      "end": 1707436159094,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436159094,
+      "end": 1707436159094,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436159095,
+      "end": 1707436159095,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/models/giftCardActivity.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { lazy, nullable, object, optional, string } from '../schema';\nimport { giftCardActivityActivateSchema, } from './giftCardActivityActivate';\nimport { giftCardActivityAdjustDecrementSchema, } from './giftCardActivityAdjustDecrement';\nimport { giftCardActivityAdjustIncrementSchema, } from './giftCardActivityAdjustIncrement';\nimport { giftCardActivityBlockSchema, } from './giftCardActivityBlock';\nimport { giftCardActivityClearBalanceSchema, } from './giftCardActivityClearBalance';\nimport { giftCardActivityDeactivateSchema, } from './giftCardActivityDeactivate';\nimport { giftCardActivityImportSchema, } from './giftCardActivityImport';\nimport { giftCardActivityImportReversalSchema, } from './giftCardActivityImportReversal';\nimport { giftCardActivityLoadSchema, } from './giftCardActivityLoad';\nimport { giftCardActivityRedeemSchema, } from './giftCardActivityRedeem';\nimport { giftCardActivityRefundSchema, } from './giftCardActivityRefund';\nimport { giftCardActivityTransferBalanceFromSchema, } from './giftCardActivityTransferBalanceFrom';\nimport { giftCardActivityTransferBalanceToSchema, } from './giftCardActivityTransferBalanceTo';\nimport { giftCardActivityUnblockSchema, } from './giftCardActivityUnblock';\nimport { giftCardActivityUnlinkedActivityRefundSchema, } from './giftCardActivityUnlinkedActivityRefund';\nimport { moneySchema } from './money';\nexport const giftCardActivitySchema = object({\n    id: ['id', optional(string())],\n    type: ['type', string()],\n    locationId: ['location_id', string()],\n    createdAt: ['created_at', optional(string())],\n    giftCardId: ['gift_card_id', optional(nullable(string()))],\n    giftCardGan: ['gift_card_gan', optional(nullable(string()))],\n    giftCardBalanceMoney: [\n        'gift_card_balance_money',\n        optional(lazy(() => moneySchema)),\n    ],\n    loadActivityDetails: [\n        'load_activity_details',\n        optional(lazy(() => giftCardActivityLoadSchema)),\n    ],\n    activateActivityDetails: [\n        'activate_activity_details',\n        optional(lazy(() => giftCardActivityActivateSchema)),\n    ],\n    redeemActivityDetails: [\n        'redeem_activity_details',\n        optional(lazy(() => giftCardActivityRedeemSchema)),\n    ],\n    clearBalanceActivityDetails: [\n        'clear_balance_activity_details',\n        optional(lazy(() => giftCardActivityClearBalanceSchema)),\n    ],\n    deactivateActivityDetails: [\n        'deactivate_activity_details',\n        optional(lazy(() => giftCardActivityDeactivateSchema)),\n    ],\n    adjustIncrementActivityDetails: [\n        'adjust_increment_activity_details',\n        optional(lazy(() => giftCardActivityAdjustIncrementSchema)),\n    ],\n    adjustDecrementActivityDetails: [\n        'adjust_decrement_activity_details',\n        optional(lazy(() => giftCardActivityAdjustDecrementSchema)),\n    ],\n    refundActivityDetails: [\n        'refund_activity_details',\n        optional(lazy(() => giftCardActivityRefundSchema)),\n    ],\n    unlinkedActivityRefundActivityDetails: [\n        'unlinked_activity_refund_activity_details',\n        optional(lazy(() => giftCardActivityUnlinkedActivityRefundSchema)),\n    ],\n    importActivityDetails: [\n        'import_activity_details',\n        optional(lazy(() => giftCardActivityImportSchema)),\n    ],\n    blockActivityDetails: [\n        'block_activity_details',\n        optional(lazy(() => giftCardActivityBlockSchema)),\n    ],\n    unblockActivityDetails: [\n        'unblock_activity_details',\n        optional(lazy(() => giftCardActivityUnblockSchema)),\n    ],\n    importReversalActivityDetails: [\n        'import_reversal_activity_details',\n        optional(lazy(() => giftCardActivityImportReversalSchema)),\n    ],\n    transferBalanceToActivityDetails: [\n        'transfer_balance_to_activity_details',\n        optional(lazy(() => giftCardActivityTransferBalanceToSchema)),\n    ],\n    transferBalanceFromActivityDetails: [\n        'transfer_balance_from_activity_details',\n        optional(lazy(() => giftCardActivityTransferBalanceFromSchema)),\n    ],\n});\n//# sourceMappingURL=giftCardActivity.js.map",
+      "start": 1707436158683,
+      "end": 1707436158710,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436158710,
+      "end": 1707436158710,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436158710,
+      "end": 1707436158710,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436158710,
+      "end": 1707436158710,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436158710,
+      "end": 1707436158710,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436158710,
+      "end": 1707436158710,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436158710,
+      "end": 1707436158710,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436158710,
+      "end": 1707436158710,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436158710,
+      "end": 1707436158710,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436158710,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436158711,
+      "end": 1707436158711,
+      "order": "normal"
+    }
+  ]
+}

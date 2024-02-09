@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VSelect/VSelect.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createTextVNode as _createTextVNode, mergeProps as _mergeProps, createVNode as _createVNode, Fragment as _Fragment } from \"vue\";\n// Styles\nimport \"./VSelect.css\";\n\n// Components\nimport { VDialogTransition } from \"../transitions/index.mjs\";\nimport { VAvatar } from \"../VAvatar/index.mjs\";\nimport { VCheckboxBtn } from \"../VCheckbox/index.mjs\";\nimport { VChip } from \"../VChip/index.mjs\";\nimport { VDefaultsProvider } from \"../VDefaultsProvider/index.mjs\";\nimport { VIcon } from \"../VIcon/index.mjs\";\nimport { VList, VListItem } from \"../VList/index.mjs\";\nimport { VMenu } from \"../VMenu/index.mjs\";\nimport { makeVTextFieldProps, VTextField } from \"../VTextField/VTextField.mjs\";\nimport { VVirtualScroll } from \"../VVirtualScroll/index.mjs\"; // Composables\nimport { useScrolling } from \"./useScrolling.mjs\";\nimport { useForm } from \"../../composables/form.mjs\";\nimport { forwardRefs } from \"../../composables/forwardRefs.mjs\";\nimport { IconValue } from \"../../composables/icons.mjs\";\nimport { makeItemsProps, useItems } from \"../../composables/list-items.mjs\";\nimport { useLocale } from \"../../composables/locale.mjs\";\nimport { useProxiedModel } from \"../../composables/proxiedModel.mjs\";\nimport { makeTransitionProps } from \"../../composables/transition.mjs\"; // Utilities\nimport { computed, mergeProps, ref, shallowRef, watch } from 'vue';\nimport { ensureValidVNode, genericComponent, IN_BROWSER, matchesSelector, omit, propsFactory, useRender, wrapInArray } from \"../../util/index.mjs\"; // Types\nexport const makeSelectProps = propsFactory({\n  chips: Boolean,\n  closableChips: Boolean,\n  closeText: {\n    type: String,\n    default: '$vuetify.close'\n  },\n  openText: {\n    type: String,\n    default: '$vuetify.open'\n  },\n  eager: Boolean,\n  hideNoData: Boolean,\n  hideSelected: Boolean,\n  listProps: {\n    type: Object\n  },\n  menu: Boolean,\n  menuIcon: {\n    type: IconValue,\n    default: '$dropdown'\n  },\n  menuProps: {\n    type: Object\n  },\n  multiple: Boolean,\n  noDataText: {\n    type: String,\n    default: '$vuetify.noDataText'\n  },\n  openOnClear: Boolean,\n  itemColor: String,\n  ...makeItemsProps({\n    itemChildren: false\n  })\n}, 'Select');\nexport const makeVSelectProps = propsFactory({\n  ...makeSelectProps(),\n  ...omit(makeVTextFieldProps({\n    modelValue: null,\n    role: 'combobox'\n  }), ['validationValue', 'dirty', 'appendInnerIcon']),\n  ...makeTransitionProps({\n    transition: {\n      component: VDialogTransition\n    }\n  })\n}, 'VSelect');\nexport const VSelect = genericComponent()({\n  name: 'VSelect',\n  props: makeVSelectProps(),\n  emits: {\n    'update:focused': focused => true,\n    'update:modelValue': value => true,\n    'update:menu': ue => true\n  },\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const {\n      t\n    } = useLocale();\n    const vTextFieldRef = ref();\n    const vMenuRef = ref();\n    const vVirtualScrollRef = ref();\n    const _menu = useProxiedModel(props, 'menu');\n    const menu = computed({\n      get: () => _menu.value,\n      set: v => {\n        if (_menu.value && !v && vMenuRef.value?.ΨopenChildren) return;\n        _menu.value = v;\n      }\n    });\n    const {\n      items,\n      transformIn,\n      transformOut\n    } = useItems(props);\n    const model = useProxiedModel(props, 'modelValue', [], v => transformIn(v === null ? [null] : wrapInArray(v)), v => {\n      const transformed = transformOut(v);\n      return props.multiple ? transformed : transformed[0] ?? null;\n    });\n    const counterValue = computed(() => {\n      return typeof props.counterValue === 'function' ? props.counterValue(model.value) : typeof props.counterValue === 'number' ? props.counterValue : model.value.length;\n    });\n    const form = useForm();\n    const selectedValues = computed(() => model.value.map(selection => selection.value));\n    const isFocused = shallowRef(false);\n    const label = computed(() => menu.value ? props.closeText : props.openText);\n    let keyboardLookupPrefix = '';\n    let keyboardLookupLastTime;\n    const displayItems = computed(() => {\n      if (props.hideSelected) {\n        return items.value.filter(item => !model.value.some(s => s === item));\n      }\n      return items.value;\n    });\n    const menuDisabled = computed(() => props.hideNoData && !displayItems.value.length || props.readonly || form?.isReadonly.value);\n    const computedMenuProps = computed(() => {\n      return {\n        ...props.menuProps,\n        activatorProps: {\n          ...(props.menuProps?.activatorProps || {}),\n          'aria-haspopup': 'listbox' // Set aria-haspopup to 'listbox'\n        }\n      };\n    });\n    const listRef = ref();\n    const {\n      onListScroll,\n      onListKeydown\n    } = useScrolling(listRef, vTextFieldRef);\n    function onClear(e) {\n      if (props.openOnClear) {\n        menu.value = true;\n      }\n    }\n    function onMousedownControl() {\n      if (menuDisabled.value) return;\n      menu.value = !menu.value;\n    }\n    function onKeydown(e) {\n      if (!e.key || props.readonly || form?.isReadonly.value) return;\n      if (['Enter', ' ', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {\n        e.preventDefault();\n      }\n      if (['Enter', 'ArrowDown', ' '].includes(e.key)) {\n        menu.value = true;\n      }\n      if (['Escape', 'Tab'].includes(e.key)) {\n        menu.value = false;\n      }\n      if (e.key === 'Home') {\n        listRef.value?.focus('first');\n      } else if (e.key === 'End') {\n        listRef.value?.focus('last');\n      }\n\n      // html select hotkeys\n      const KEYBOARD_LOOKUP_THRESHOLD = 1000; // milliseconds\n\n      function checkPrintable(e) {\n        const isPrintableChar = e.key.length === 1;\n        const noModifier = !e.ctrlKey && !e.metaKey && !e.altKey;\n        return isPrintableChar && noModifier;\n      }\n      if (props.multiple || !checkPrintable(e)) return;\n      const now = performance.now();\n      if (now - keyboardLookupLastTime > KEYBOARD_LOOKUP_THRESHOLD) {\n        keyboardLookupPrefix = '';\n      }\n      keyboardLookupPrefix += e.key.toLowerCase();\n      keyboardLookupLastTime = now;\n      const item = items.value.find(item => item.title.toLowerCase().startsWith(keyboardLookupPrefix));\n      if (item !== undefined) {\n        model.value = [item];\n      }\n    }\n    function select(item) {\n      if (props.multiple) {\n        const index = model.value.findIndex(selection => props.valueComparator(selection.value, item.value));\n        if (index === -1) {\n          model.value = [...model.value, item];\n        } else {\n          const value = [...model.value];\n          value.splice(index, 1);\n          model.value = value;\n        }\n      } else {\n        model.value = [item];\n        menu.value = false;\n      }\n    }\n    function onBlur(e) {\n      if (!listRef.value?.$el.contains(e.relatedTarget)) {\n        menu.value = false;\n      }\n    }\n    function onAfterLeave() {\n      if (isFocused.value) {\n        vTextFieldRef.value?.focus();\n      }\n    }\n    function onFocusin(e) {\n      isFocused.value = true;\n    }\n    function onModelUpdate(v) {\n      if (v == null) model.value = [];else if (matchesSelector(vTextFieldRef.value, ':autofill') || matchesSelector(vTextFieldRef.value, ':-webkit-autofill')) {\n        const item = items.value.find(item => item.title === v);\n        if (item) {\n          select(item);\n        }\n      } else if (vTextFieldRef.value) {\n        vTextFieldRef.value.value = '';\n      }\n    }\n    watch(menu, () => {\n      if (!props.hideSelected && menu.value && model.value.length) {\n        const index = displayItems.value.findIndex(item => model.value.some(s => props.valueComparator(s.value, item.value)));\n        IN_BROWSER && window.requestAnimationFrame(() => {\n          index >= 0 && vVirtualScrollRef.value?.scrollToIndex(index);\n        });\n      }\n    });\n    watch(displayItems, (val, oldVal) => {\n      if (!isFocused.value) return;\n      if (!val.length && props.hideNoData) {\n        menu.value = false;\n      }\n      if (!oldVal.length && val.length) {\n        menu.value = true;\n      }\n    });\n    useRender(() => {\n      const hasChips = !!(props.chips || slots.chip);\n      const hasList = !!(!props.hideNoData || displayItems.value.length || slots['prepend-item'] || slots['append-item'] || slots['no-data']);\n      const isDirty = model.value.length > 0;\n      const textFieldProps = VTextField.filterProps(props);\n      const placeholder = isDirty || !isFocused.value && props.label && !props.persistentPlaceholder ? undefined : props.placeholder;\n      return _createVNode(VTextField, _mergeProps({\n        \"ref\": vTextFieldRef\n      }, textFieldProps, {\n        \"modelValue\": model.value.map(v => v.props.value).join(', '),\n        \"onUpdate:modelValue\": onModelUpdate,\n        \"focused\": isFocused.value,\n        \"onUpdate:focused\": $event => isFocused.value = $event,\n        \"validationValue\": model.externalValue,\n        \"counterValue\": counterValue.value,\n        \"dirty\": isDirty,\n        \"class\": ['v-select', {\n          'v-select--active-menu': menu.value,\n          'v-select--chips': !!props.chips,\n          [`v-select--${props.multiple ? 'multiple' : 'single'}`]: true,\n          'v-select--selected': model.value.length,\n          'v-select--selection-slot': !!slots.selection\n        }, props.class],\n        \"style\": props.style,\n        \"inputmode\": \"none\",\n        \"placeholder\": placeholder,\n        \"onClick:clear\": onClear,\n        \"onMousedown:control\": onMousedownControl,\n        \"onBlur\": onBlur,\n        \"onKeydown\": onKeydown,\n        \"aria-label\": t(label.value),\n        \"title\": t(label.value)\n      }), {\n        ...slots,\n        default: () => _createVNode(_Fragment, null, [_createVNode(VMenu, _mergeProps({\n          \"ref\": vMenuRef,\n          \"modelValue\": menu.value,\n          \"onUpdate:modelValue\": $event => menu.value = $event,\n          \"activator\": \"parent\",\n          \"contentClass\": \"v-select__content\",\n          \"disabled\": menuDisabled.value,\n          \"eager\": props.eager,\n          \"maxHeight\": 310,\n          \"openOnClick\": false,\n          \"closeOnContentClick\": false,\n          \"transition\": props.transition,\n          \"onAfterLeave\": onAfterLeave\n        }, computedMenuProps.value), {\n          default: () => [hasList && _createVNode(VList, _mergeProps({\n            \"ref\": listRef,\n            \"selected\": selectedValues.value,\n            \"selectStrategy\": props.multiple ? 'independent' : 'single-independent',\n            \"onMousedown\": e => e.preventDefault(),\n            \"onKeydown\": onListKeydown,\n            \"onFocusin\": onFocusin,\n            \"onScrollPassive\": onListScroll,\n            \"tabindex\": \"-1\",\n            \"aria-live\": \"polite\",\n            \"color\": props.itemColor ?? props.color\n          }, props.listProps), {\n            default: () => [slots['prepend-item']?.(), !displayItems.value.length && !props.hideNoData && (slots['no-data']?.() ?? _createVNode(VListItem, {\n              \"title\": t(props.noDataText)\n            }, null)), _createVNode(VVirtualScroll, {\n              \"ref\": vVirtualScrollRef,\n              \"renderless\": true,\n              \"items\": displayItems.value\n            }, {\n              default: _ref2 => {\n                let {\n                  item,\n                  index,\n                  itemRef\n                } = _ref2;\n                const itemProps = mergeProps(item.props, {\n                  ref: itemRef,\n                  key: index,\n                  onClick: () => select(item)\n                });\n                return slots.item?.({\n                  item,\n                  index,\n                  props: itemProps\n                }) ?? _createVNode(VListItem, _mergeProps(itemProps, {\n                  \"role\": \"option\"\n                }), {\n                  prepend: _ref3 => {\n                    let {\n                      isSelected\n                    } = _ref3;\n                    return _createVNode(_Fragment, null, [props.multiple && !props.hideSelected ? _createVNode(VCheckboxBtn, {\n                      \"key\": item.value,\n                      \"modelValue\": isSelected,\n                      \"ripple\": false,\n                      \"tabindex\": \"-1\"\n                    }, null) : undefined, item.props.prependAvatar && _createVNode(VAvatar, {\n                      \"image\": item.props.prependAvatar\n                    }, null), item.props.prependIcon && _createVNode(VIcon, {\n                      \"icon\": item.props.prependIcon\n                    }, null)]);\n                  }\n                });\n              }\n            }), slots['append-item']?.()]\n          })]\n        }), model.value.map((item, index) => {\n          function onChipClose(e) {\n            e.stopPropagation();\n            e.preventDefault();\n            select(item);\n          }\n          const slotProps = {\n            'onClick:close': onChipClose,\n            onMousedown(e) {\n              e.preventDefault();\n              e.stopPropagation();\n            },\n            modelValue: true,\n            'onUpdate:modelValue': undefined\n          };\n          const hasSlot = hasChips ? !!slots.chip : !!slots.selection;\n          const slotContent = hasSlot ? ensureValidVNode(hasChips ? slots.chip({\n            item,\n            index,\n            props: slotProps\n          }) : slots.selection({\n            item,\n            index\n          })) : undefined;\n          if (hasSlot && !slotContent) return undefined;\n          return _createVNode(\"div\", {\n            \"key\": item.value,\n            \"class\": \"v-select__selection\"\n          }, [hasChips ? !slots.chip ? _createVNode(VChip, _mergeProps({\n            \"key\": \"chip\",\n            \"closable\": props.closableChips,\n            \"size\": \"small\",\n            \"text\": item.title,\n            \"disabled\": item.props.disabled\n          }, slotProps), null) : _createVNode(VDefaultsProvider, {\n            \"key\": \"chip-defaults\",\n            \"defaults\": {\n              VChip: {\n                closable: props.closableChips,\n                size: 'small',\n                text: item.title\n              }\n            }\n          }, {\n            default: () => [slotContent]\n          }) : slotContent ?? _createVNode(\"span\", {\n            \"class\": \"v-select__selection-text\"\n          }, [item.title, props.multiple && index < model.value.length - 1 && _createVNode(\"span\", {\n            \"class\": \"v-select__selection-comma\"\n          }, [_createTextVNode(\",\")])])]);\n        })]),\n        'append-inner': function () {\n          for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {\n            args[_key] = arguments[_key];\n          }\n          return _createVNode(_Fragment, null, [slots['append-inner']?.(...args), props.menuIcon ? _createVNode(VIcon, {\n            \"class\": \"v-select__menu-icon\",\n            \"icon\": props.menuIcon\n          }, null) : undefined]);\n        }\n      });\n    });\n    return forwardRefs({\n      isFocused,\n      menu,\n      select\n    }, vTextFieldRef);\n  }\n});\n//# sourceMappingURL=VSelect.mjs.map",
+      "start": 1707436156225,
+      "end": 1707436156288,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436156288,
+      "end": 1707436156288,
+      "order": "normal"
+    }
+  ]
+}

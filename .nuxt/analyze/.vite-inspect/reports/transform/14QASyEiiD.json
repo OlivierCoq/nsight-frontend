@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/models/payoutEntry.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { lazy, nullable, object, optional, string } from '../schema';\nimport { moneySchema } from './money';\nimport { paymentBalanceActivityAppFeeRefundDetailSchema, } from './paymentBalanceActivityAppFeeRefundDetail';\nimport { paymentBalanceActivityAppFeeRevenueDetailSchema, } from './paymentBalanceActivityAppFeeRevenueDetail';\nimport { paymentBalanceActivityAutomaticSavingsDetailSchema, } from './paymentBalanceActivityAutomaticSavingsDetail';\nimport { paymentBalanceActivityAutomaticSavingsReversedDetailSchema, } from './paymentBalanceActivityAutomaticSavingsReversedDetail';\nimport { paymentBalanceActivityChargeDetailSchema, } from './paymentBalanceActivityChargeDetail';\nimport { paymentBalanceActivityDepositFeeDetailSchema, } from './paymentBalanceActivityDepositFeeDetail';\nimport { paymentBalanceActivityDisputeDetailSchema, } from './paymentBalanceActivityDisputeDetail';\nimport { paymentBalanceActivityFeeDetailSchema, } from './paymentBalanceActivityFeeDetail';\nimport { paymentBalanceActivityFreeProcessingDetailSchema, } from './paymentBalanceActivityFreeProcessingDetail';\nimport { paymentBalanceActivityHoldAdjustmentDetailSchema, } from './paymentBalanceActivityHoldAdjustmentDetail';\nimport { paymentBalanceActivityOpenDisputeDetailSchema, } from './paymentBalanceActivityOpenDisputeDetail';\nimport { paymentBalanceActivityOtherAdjustmentDetailSchema, } from './paymentBalanceActivityOtherAdjustmentDetail';\nimport { paymentBalanceActivityOtherDetailSchema, } from './paymentBalanceActivityOtherDetail';\nimport { paymentBalanceActivityRefundDetailSchema, } from './paymentBalanceActivityRefundDetail';\nimport { paymentBalanceActivityReleaseAdjustmentDetailSchema, } from './paymentBalanceActivityReleaseAdjustmentDetail';\nimport { paymentBalanceActivityReserveHoldDetailSchema, } from './paymentBalanceActivityReserveHoldDetail';\nimport { paymentBalanceActivityReserveReleaseDetailSchema, } from './paymentBalanceActivityReserveReleaseDetail';\nimport { paymentBalanceActivitySquareCapitalPaymentDetailSchema, } from './paymentBalanceActivitySquareCapitalPaymentDetail';\nimport { paymentBalanceActivitySquareCapitalReversedPaymentDetailSchema, } from './paymentBalanceActivitySquareCapitalReversedPaymentDetail';\nimport { paymentBalanceActivityTaxOnFeeDetailSchema, } from './paymentBalanceActivityTaxOnFeeDetail';\nimport { paymentBalanceActivityThirdPartyFeeDetailSchema, } from './paymentBalanceActivityThirdPartyFeeDetail';\nimport { paymentBalanceActivityThirdPartyFeeRefundDetailSchema, } from './paymentBalanceActivityThirdPartyFeeRefundDetail';\nexport const payoutEntrySchema = object({\n    id: ['id', string()],\n    payoutId: ['payout_id', string()],\n    effectiveAt: ['effective_at', optional(nullable(string()))],\n    type: ['type', optional(string())],\n    grossAmountMoney: ['gross_amount_money', optional(lazy(() => moneySchema))],\n    feeAmountMoney: ['fee_amount_money', optional(lazy(() => moneySchema))],\n    netAmountMoney: ['net_amount_money', optional(lazy(() => moneySchema))],\n    typeAppFeeRevenueDetails: [\n        'type_app_fee_revenue_details',\n        optional(lazy(() => paymentBalanceActivityAppFeeRevenueDetailSchema)),\n    ],\n    typeAppFeeRefundDetails: [\n        'type_app_fee_refund_details',\n        optional(lazy(() => paymentBalanceActivityAppFeeRefundDetailSchema)),\n    ],\n    typeAutomaticSavingsDetails: [\n        'type_automatic_savings_details',\n        optional(lazy(() => paymentBalanceActivityAutomaticSavingsDetailSchema)),\n    ],\n    typeAutomaticSavingsReversedDetails: [\n        'type_automatic_savings_reversed_details',\n        optional(lazy(() => paymentBalanceActivityAutomaticSavingsReversedDetailSchema)),\n    ],\n    typeChargeDetails: [\n        'type_charge_details',\n        optional(lazy(() => paymentBalanceActivityChargeDetailSchema)),\n    ],\n    typeDepositFeeDetails: [\n        'type_deposit_fee_details',\n        optional(lazy(() => paymentBalanceActivityDepositFeeDetailSchema)),\n    ],\n    typeDisputeDetails: [\n        'type_dispute_details',\n        optional(lazy(() => paymentBalanceActivityDisputeDetailSchema)),\n    ],\n    typeFeeDetails: [\n        'type_fee_details',\n        optional(lazy(() => paymentBalanceActivityFeeDetailSchema)),\n    ],\n    typeFreeProcessingDetails: [\n        'type_free_processing_details',\n        optional(lazy(() => paymentBalanceActivityFreeProcessingDetailSchema)),\n    ],\n    typeHoldAdjustmentDetails: [\n        'type_hold_adjustment_details',\n        optional(lazy(() => paymentBalanceActivityHoldAdjustmentDetailSchema)),\n    ],\n    typeOpenDisputeDetails: [\n        'type_open_dispute_details',\n        optional(lazy(() => paymentBalanceActivityOpenDisputeDetailSchema)),\n    ],\n    typeOtherDetails: [\n        'type_other_details',\n        optional(lazy(() => paymentBalanceActivityOtherDetailSchema)),\n    ],\n    typeOtherAdjustmentDetails: [\n        'type_other_adjustment_details',\n        optional(lazy(() => paymentBalanceActivityOtherAdjustmentDetailSchema)),\n    ],\n    typeRefundDetails: [\n        'type_refund_details',\n        optional(lazy(() => paymentBalanceActivityRefundDetailSchema)),\n    ],\n    typeReleaseAdjustmentDetails: [\n        'type_release_adjustment_details',\n        optional(lazy(() => paymentBalanceActivityReleaseAdjustmentDetailSchema)),\n    ],\n    typeReserveHoldDetails: [\n        'type_reserve_hold_details',\n        optional(lazy(() => paymentBalanceActivityReserveHoldDetailSchema)),\n    ],\n    typeReserveReleaseDetails: [\n        'type_reserve_release_details',\n        optional(lazy(() => paymentBalanceActivityReserveReleaseDetailSchema)),\n    ],\n    typeSquareCapitalPaymentDetails: [\n        'type_square_capital_payment_details',\n        optional(lazy(() => paymentBalanceActivitySquareCapitalPaymentDetailSchema)),\n    ],\n    typeSquareCapitalReversedPaymentDetails: [\n        'type_square_capital_reversed_payment_details',\n        optional(lazy(() => paymentBalanceActivitySquareCapitalReversedPaymentDetailSchema)),\n    ],\n    typeTaxOnFeeDetails: [\n        'type_tax_on_fee_details',\n        optional(lazy(() => paymentBalanceActivityTaxOnFeeDetailSchema)),\n    ],\n    typeThirdPartyFeeDetails: [\n        'type_third_party_fee_details',\n        optional(lazy(() => paymentBalanceActivityThirdPartyFeeDetailSchema)),\n    ],\n    typeThirdPartyFeeRefundDetails: [\n        'type_third_party_fee_refund_details',\n        optional(lazy(() => paymentBalanceActivityThirdPartyFeeRefundDetailSchema)),\n    ],\n});\n//# sourceMappingURL=payoutEntry.js.map",
+      "start": 1707436158825,
+      "end": 1707436158856,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436158856,
+      "end": 1707436158856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436158856,
+      "end": 1707436158857,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436158857,
+      "end": 1707436158857,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436158857,
+      "end": 1707436158857,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436158857,
+      "end": 1707436158857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436158857,
+      "end": 1707436158857,
+      "order": "normal"
+    }
+  ]
+}

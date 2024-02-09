@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VSlider/VSliderTrack.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createVNode as _createVNode } from \"vue\";\n// Styles\nimport \"./VSliderTrack.css\";\n\n// Components\nimport { VSliderSymbol } from \"./slider.mjs\"; // Composables\nimport { useBackgroundColor } from \"../../composables/color.mjs\";\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { useRounded } from \"../../composables/rounded.mjs\"; // Utilities\nimport { computed, inject } from 'vue';\nimport { convertToUnit, genericComponent, propsFactory, useRender } from \"../../util/index.mjs\"; // Types\nexport const makeVSliderTrackProps = propsFactory({\n  start: {\n    type: Number,\n    required: true\n  },\n  stop: {\n    type: Number,\n    required: true\n  },\n  ...makeComponentProps()\n}, 'VSliderTrack');\nexport const VSliderTrack = genericComponent()({\n  name: 'VSliderTrack',\n  props: makeVSliderTrackProps(),\n  emits: {},\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const slider = inject(VSliderSymbol);\n    if (!slider) throw new Error('[Vuetify] v-slider-track must be inside v-slider or v-range-slider');\n    const {\n      color,\n      parsedTicks,\n      rounded,\n      showTicks,\n      tickSize,\n      trackColor,\n      trackFillColor,\n      trackSize,\n      vertical,\n      min,\n      max,\n      indexFromEnd\n    } = slider;\n    const {\n      roundedClasses\n    } = useRounded(rounded);\n    const {\n      backgroundColorClasses: trackFillColorClasses,\n      backgroundColorStyles: trackFillColorStyles\n    } = useBackgroundColor(trackFillColor);\n    const {\n      backgroundColorClasses: trackColorClasses,\n      backgroundColorStyles: trackColorStyles\n    } = useBackgroundColor(trackColor);\n    const startDir = computed(() => `inset-${vertical.value ? 'block' : 'inline'}-${indexFromEnd.value ? 'end' : 'start'}`);\n    const endDir = computed(() => vertical.value ? 'height' : 'width');\n    const backgroundStyles = computed(() => {\n      return {\n        [startDir.value]: '0%',\n        [endDir.value]: '100%'\n      };\n    });\n    const trackFillWidth = computed(() => props.stop - props.start);\n    const trackFillStyles = computed(() => {\n      return {\n        [startDir.value]: convertToUnit(props.start, '%'),\n        [endDir.value]: convertToUnit(trackFillWidth.value, '%')\n      };\n    });\n    const computedTicks = computed(() => {\n      if (!showTicks.value) return [];\n      const ticks = vertical.value ? parsedTicks.value.slice().reverse() : parsedTicks.value;\n      return ticks.map((tick, index) => {\n        const directionValue = tick.value !== min.value && tick.value !== max.value ? convertToUnit(tick.position, '%') : undefined;\n        return _createVNode(\"div\", {\n          \"key\": tick.value,\n          \"class\": ['v-slider-track__tick', {\n            'v-slider-track__tick--filled': tick.position >= props.start && tick.position <= props.stop,\n            'v-slider-track__tick--first': tick.value === min.value,\n            'v-slider-track__tick--last': tick.value === max.value\n          }],\n          \"style\": {\n            [startDir.value]: directionValue\n          }\n        }, [(tick.label || slots['tick-label']) && _createVNode(\"div\", {\n          \"class\": \"v-slider-track__tick-label\"\n        }, [slots['tick-label']?.({\n          tick,\n          index\n        }) ?? tick.label])]);\n      });\n    });\n    useRender(() => {\n      return _createVNode(\"div\", {\n        \"class\": ['v-slider-track', roundedClasses.value, props.class],\n        \"style\": [{\n          '--v-slider-track-size': convertToUnit(trackSize.value),\n          '--v-slider-tick-size': convertToUnit(tickSize.value)\n        }, props.style]\n      }, [_createVNode(\"div\", {\n        \"class\": ['v-slider-track__background', trackColorClasses.value, {\n          'v-slider-track__background--opacity': !!color.value || !trackFillColor.value\n        }],\n        \"style\": {\n          ...backgroundStyles.value,\n          ...trackColorStyles.value\n        }\n      }, null), _createVNode(\"div\", {\n        \"class\": ['v-slider-track__fill', trackFillColorClasses.value],\n        \"style\": {\n          ...trackFillStyles.value,\n          ...trackFillColorStyles.value\n        }\n      }, null), showTicks.value && _createVNode(\"div\", {\n        \"class\": ['v-slider-track__ticks', {\n          'v-slider-track__ticks--always-show': showTicks.value === 'always'\n        }]\n      }, [computedTicks.value])]);\n    });\n    return {};\n  }\n});\n//# sourceMappingURL=VSliderTrack.mjs.map",
+      "start": 1707436157431,
+      "end": 1707436157502,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436157502,
+      "end": 1707436157502,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436157502,
+      "end": 1707436157502,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436157502,
+      "end": 1707436157502,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436157502,
+      "end": 1707436157502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436157502,
+      "end": 1707436157502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436157502,
+      "end": 1707436157502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436157502,
+      "end": 1707436157502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436157502,
+      "end": 1707436157502,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436157502,
+      "end": 1707436157502,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436157502,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436157503,
+      "end": 1707436157503,
+      "order": "normal"
+    }
+  ]
+}

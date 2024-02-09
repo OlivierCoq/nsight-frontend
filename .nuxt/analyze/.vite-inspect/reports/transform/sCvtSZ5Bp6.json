@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/schema/es/types/array.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { arrayEntries } from '../utils.js';\n\n/**\r\n * Create an array schema.\r\n *\r\n * The array must be a homogenous array confirming to the itemsSchema. Each item\r\n * will be mapped/unmapped using the itemsSchema.\r\n */\nfunction array(itemsSchema, xmlOptions) {\n  var arraySchema;\n  arraySchema = {\n    type: function () {\n      return \"Array<\" + itemsSchema.type() + \">\";\n    },\n    validateBeforeMap: function (value, ctxt) {\n      return Array.isArray(value) ? ctxt.flatmapChildren(arrayEntries(value), itemsSchema, function (v, childCtxt) {\n        return itemsSchema.validateBeforeMap(v[1], childCtxt);\n      }) : ctxt.fail();\n    },\n    validateBeforeUnmap: function (value, ctxt) {\n      return Array.isArray(value) ? ctxt.flatmapChildren(arrayEntries(value), itemsSchema, function (v, childCtxt) {\n        return itemsSchema.validateBeforeUnmap(v[1], childCtxt);\n      }) : ctxt.fail();\n    },\n    map: function (value, ctxt) {\n      return ctxt.mapChildren(arrayEntries(value), itemsSchema, function (v, childCtxt) {\n        return itemsSchema.map(v[1], childCtxt);\n      });\n    },\n    unmap: function (value, ctxt) {\n      return ctxt.mapChildren(arrayEntries(value), itemsSchema, function (v, childCtxt) {\n        return itemsSchema.unmap(v[1], childCtxt);\n      });\n    },\n    mapXml: function (value, ctxt) {\n      var items = value;\n      if (xmlOptions === null || xmlOptions === void 0 ? void 0 : xmlOptions.xmlItemName) {\n        items = value[xmlOptions.xmlItemName];\n        ctxt = ctxt.createChild(xmlOptions.xmlItemName, items, itemsSchema);\n      }\n      return ctxt.mapChildren(arrayEntries(items), itemsSchema, function (v, childCtxt) {\n        return itemsSchema.mapXml(v[1], childCtxt);\n      });\n    },\n    unmapXml: function (value, ctxt) {\n      var _a;\n      var items = ctxt.mapChildren(arrayEntries(value), itemsSchema, function (v, childCtxt) {\n        return itemsSchema.unmapXml(v[1], childCtxt);\n      });\n      if (xmlOptions === null || xmlOptions === void 0 ? void 0 : xmlOptions.xmlItemName) {\n        return _a = {}, _a[xmlOptions.xmlItemName] = items, _a;\n      } else {\n        return items;\n      }\n    },\n    validateBeforeMapXml: function (value, ctxt) {\n      var items = value;\n      if (xmlOptions === null || xmlOptions === void 0 ? void 0 : xmlOptions.xmlItemName) {\n        var errorMessage = \"Expected array to be wrapped with XML element \" + xmlOptions.xmlItemName + \".\";\n        if (typeof value !== 'object' || value === null || !(xmlOptions.xmlItemName in value)) {\n          return ctxt.fail(errorMessage);\n        }\n        items = value[xmlOptions.xmlItemName];\n        ctxt = ctxt.createChild(xmlOptions.xmlItemName, items, itemsSchema);\n      }\n      return Array.isArray(items) ? ctxt.flatmapChildren(arrayEntries(items), itemsSchema, function (v, childCtxt) {\n        return itemsSchema.validateBeforeMapXml(v[1], childCtxt);\n      }) : ctxt.fail();\n    }\n  };\n  return arraySchema;\n}\nexport { array };",
+      "start": 1707436158993,
+      "end": 1707436159081,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707436159081,
+      "end": 1707436159081,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707436159081,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707436159082,
+      "end": 1707436159082,
+      "order": "normal"
+    }
+  ]
+}
