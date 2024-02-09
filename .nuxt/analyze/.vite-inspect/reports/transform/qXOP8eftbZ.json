@@ -1,0 +1,219 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/axios/lib/helpers/validator.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "'use strict';\n\nvar VERSION = require('../env/data').version;\n\nvar validators = {};\n\n// eslint-disable-next-line func-names\n['object', 'boolean', 'number', 'function', 'string', 'symbol'].forEach(function(type, i) {\n  validators[type] = function validator(thing) {\n    return typeof thing === type || 'a' + (i < 1 ? 'n ' : ' ') + type;\n  };\n});\n\nvar deprecatedWarnings = {};\n\n/**\n * Transitional option validator\n * @param {function|boolean?} validator - set to false if the transitional option has been removed\n * @param {string?} version - deprecated version / removed since version\n * @param {string?} message - some message with additional info\n * @returns {function}\n */\nvalidators.transitional = function transitional(validator, version, message) {\n  function formatMessage(opt, desc) {\n    return '[Axios v' + VERSION + '] Transitional option \\'' + opt + '\\'' + desc + (message ? '. ' + message : '');\n  }\n\n  // eslint-disable-next-line func-names\n  return function(value, opt, opts) {\n    if (validator === false) {\n      throw new Error(formatMessage(opt, ' has been removed' + (version ? ' in ' + version : '')));\n    }\n\n    if (version && !deprecatedWarnings[opt]) {\n      deprecatedWarnings[opt] = true;\n      // eslint-disable-next-line no-console\n      console.warn(\n        formatMessage(\n          opt,\n          ' has been deprecated since v' + version + ' and will be removed in the near future'\n        )\n      );\n    }\n\n    return validator ? validator(value, opt, opts) : true;\n  };\n};\n\n/**\n * Assert object's properties type\n * @param {object} options\n * @param {object} schema\n * @param {boolean?} allowUnknown\n */\n\nfunction assertOptions(options, schema, allowUnknown) {\n  if (typeof options !== 'object') {\n    throw new TypeError('options must be an object');\n  }\n  var keys = Object.keys(options);\n  var i = keys.length;\n  while (i-- > 0) {\n    var opt = keys[i];\n    var validator = schema[opt];\n    if (validator) {\n      var value = options[opt];\n      var result = value === undefined || validator(value, opt, options);\n      if (result !== true) {\n        throw new TypeError('option ' + opt + ' must be ' + result);\n      }\n      continue;\n    }\n    if (allowUnknown !== true) {\n      throw Error('Unknown option ' + opt);\n    }\n  }\n}\n\nmodule.exports = {\n  assertOptions: assertOptions,\n  validators: validators\n};\n",
+      "start": 1707437861257,
+      "end": 1707437861349,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437861349,
+      "end": 1707437861349,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437861349,
+      "end": 1707437861349,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437861349,
+      "end": 1707437861349,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437861349,
+      "end": 1707437861349,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437861349,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437861350,
+      "end": 1707437861350,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\nimport { __require as require$$0 } from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/axios/lib/env/data.js?commonjs-wrapped\";\n\n'use strict';\n\nvar VERSION = require$$0().version;\n\nvar validators = {};\n\n// eslint-disable-next-line func-names\n['object', 'boolean', 'number', 'function', 'string', 'symbol'].forEach(function(type, i) {\n  validators[type] = function validator(thing) {\n    return typeof thing === type || 'a' + (i < 1 ? 'n ' : ' ') + type;\n  };\n});\n\nvar deprecatedWarnings = {};\n\n/**\n * Transitional option validator\n * @param {function|boolean?} validator - set to false if the transitional option has been removed\n * @param {string?} version - deprecated version / removed since version\n * @param {string?} message - some message with additional info\n * @returns {function}\n */\nvalidators.transitional = function transitional(validator, version, message) {\n  function formatMessage(opt, desc) {\n    return '[Axios v' + VERSION + '] Transitional option \\'' + opt + '\\'' + desc + (message ? '. ' + message : '');\n  }\n\n  // eslint-disable-next-line func-names\n  return function(value, opt, opts) {\n    if (validator === false) {\n      throw new Error(formatMessage(opt, ' has been removed' + (version ? ' in ' + version : '')));\n    }\n\n    if (version && !deprecatedWarnings[opt]) {\n      deprecatedWarnings[opt] = true;\n      // eslint-disable-next-line no-console\n      console.warn(\n        formatMessage(\n          opt,\n          ' has been deprecated since v' + version + ' and will be removed in the near future'\n        )\n      );\n    }\n\n    return validator ? validator(value, opt, opts) : true;\n  };\n};\n\n/**\n * Assert object's properties type\n * @param {object} options\n * @param {object} schema\n * @param {boolean?} allowUnknown\n */\n\nfunction assertOptions(options, schema, allowUnknown) {\n  if (typeof options !== 'object') {\n    throw new TypeError('options must be an object');\n  }\n  var keys = Object.keys(options);\n  var i = keys.length;\n  while (i-- > 0) {\n    var opt = keys[i];\n    var validator = schema[opt];\n    if (validator) {\n      var value = options[opt];\n      var result = value === undefined || validator(value, opt, options);\n      if (result !== true) {\n        throw new TypeError('option ' + opt + ' must be ' + result);\n      }\n      continue;\n    }\n    if (allowUnknown !== true) {\n      throw Error('Unknown option ' + opt);\n    }\n  }\n}\n\nvar validator = {\n  assertOptions: assertOptions,\n  validators: validators\n};\n\nexport default /*@__PURE__*/commonjsHelpers.getDefaultExportFromCjs(validator);\nexport { validator as __moduleExports };",
+      "start": 1707437861350,
+      "end": 1707437861351,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": "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"
+      }
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437861351,
+      "end": 1707437861351,
+      "order": "normal"
+    }
+  ]
+}

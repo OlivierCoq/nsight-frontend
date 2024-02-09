@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/inventoryApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { batchChangeInventoryRequestSchema, } from '../models/batchChangeInventoryRequest';\nimport { batchChangeInventoryResponseSchema, } from '../models/batchChangeInventoryResponse';\nimport { batchRetrieveInventoryChangesRequestSchema, } from '../models/batchRetrieveInventoryChangesRequest';\nimport { batchRetrieveInventoryChangesResponseSchema, } from '../models/batchRetrieveInventoryChangesResponse';\nimport { batchRetrieveInventoryCountsRequestSchema, } from '../models/batchRetrieveInventoryCountsRequest';\nimport { batchRetrieveInventoryCountsResponseSchema, } from '../models/batchRetrieveInventoryCountsResponse';\nimport { retrieveInventoryAdjustmentResponseSchema, } from '../models/retrieveInventoryAdjustmentResponse';\nimport { retrieveInventoryChangesResponseSchema, } from '../models/retrieveInventoryChangesResponse';\nimport { retrieveInventoryCountResponseSchema, } from '../models/retrieveInventoryCountResponse';\nimport { retrieveInventoryPhysicalCountResponseSchema, } from '../models/retrieveInventoryPhysicalCountResponse';\nimport { retrieveInventoryTransferResponseSchema, } from '../models/retrieveInventoryTransferResponse';\nimport { optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class InventoryApi extends BaseApi {\n    /**\n     * Deprecated version of [RetrieveInventoryAdjustment](api-endpoint:Inventory-\n     * RetrieveInventoryAdjustment) after the endpoint URL\n     * is updated to conform to the standard convention.\n     *\n     * @param adjustmentId  ID of the [InventoryAdjustment](entity:InventoryAdjustment) to retrieve.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async deprecatedRetrieveInventoryAdjustment(adjustmentId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ adjustmentId: [adjustmentId, string()] });\n        req.appendTemplatePath `/v2/inventory/adjustment/${mapped.adjustmentId}`;\n        req.deprecated('InventoryApi.deprecatedRetrieveInventoryAdjustment');\n        return req.callAsJson(retrieveInventoryAdjustmentResponseSchema, requestOptions);\n    }\n    /**\n     * Returns the [InventoryAdjustment]($m/InventoryAdjustment) object\n     * with the provided `adjustment_id`.\n     *\n     * @param adjustmentId  ID of the [InventoryAdjustment](entity:InventoryAdjustment) to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveInventoryAdjustment(adjustmentId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ adjustmentId: [adjustmentId, string()] });\n        req.appendTemplatePath `/v2/inventory/adjustments/${mapped.adjustmentId}`;\n        return req.callAsJson(retrieveInventoryAdjustmentResponseSchema, requestOptions);\n    }\n    /**\n     * Deprecated version of [BatchChangeInventory](api-endpoint:Inventory-BatchChangeInventory) after the\n     * endpoint URL\n     * is updated to conform to the standard convention.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                           See the corresponding object definition for field\n     *                                                           details.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async deprecatedBatchChangeInventory(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/inventory/batch-change');\n        const mapped = req.prepareArgs({\n            body: [body, batchChangeInventoryRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.deprecated('InventoryApi.deprecatedBatchChangeInventory');\n        return req.callAsJson(batchChangeInventoryResponseSchema, requestOptions);\n    }\n    /**\n     * Deprecated version of [BatchRetrieveInventoryChanges](api-endpoint:Inventory-\n     * BatchRetrieveInventoryChanges) after the endpoint URL\n     * is updated to conform to the standard convention.\n     *\n     * @param body         An object containing the fields to POST for\n     *                                                                    the request.  See the corresponding object\n     *                                                                    definition for field details.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async deprecatedBatchRetrieveInventoryChanges(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/inventory/batch-retrieve-changes');\n        const mapped = req.prepareArgs({\n            body: [body, batchRetrieveInventoryChangesRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.deprecated('InventoryApi.deprecatedBatchRetrieveInventoryChanges');\n        return req.callAsJson(batchRetrieveInventoryChangesResponseSchema, requestOptions);\n    }\n    /**\n     * Deprecated version of [BatchRetrieveInventoryCounts](api-endpoint:Inventory-\n     * BatchRetrieveInventoryCounts) after the endpoint URL\n     * is updated to conform to the standard convention.\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                                   request.  See the corresponding object\n     *                                                                   definition for field details.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async deprecatedBatchRetrieveInventoryCounts(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/inventory/batch-retrieve-counts');\n        const mapped = req.prepareArgs({\n            body: [body, batchRetrieveInventoryCountsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.deprecated('InventoryApi.deprecatedBatchRetrieveInventoryCounts');\n        return req.callAsJson(batchRetrieveInventoryCountsResponseSchema, requestOptions);\n    }\n    /**\n     * Applies adjustments and counts to the provided item quantities.\n     *\n     * On success: returns the current calculated counts for all objects\n     * referenced in the request.\n     * On failure: returns a list of related errors.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                           See the corresponding object definition for field\n     *                                                           details.\n     * @return Response from the API call\n     */\n    async batchChangeInventory(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/inventory/changes/batch-create');\n        const mapped = req.prepareArgs({\n            body: [body, batchChangeInventoryRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(batchChangeInventoryResponseSchema, requestOptions);\n    }\n    /**\n     * Returns historical physical counts and adjustments based on the\n     * provided filter criteria.\n     *\n     * Results are paginated and sorted in ascending order according their\n     * `occurred_at` timestamp (oldest first).\n     *\n     * BatchRetrieveInventoryChanges is a catch-all query endpoint for queries\n     * that cannot be handled by other, simpler endpoints.\n     *\n     * @param body         An object containing the fields to POST for\n     *                                                                    the request.  See the corresponding object\n     *                                                                    definition for field details.\n     * @return Response from the API call\n     */\n    async batchRetrieveInventoryChanges(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/inventory/changes/batch-retrieve');\n        const mapped = req.prepareArgs({\n            body: [body, batchRetrieveInventoryChangesRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(batchRetrieveInventoryChangesResponseSchema, requestOptions);\n    }\n    /**\n     * Returns current counts for the provided\n     * [CatalogObject]($m/CatalogObject)s at the requested\n     * [Location]($m/Location)s.\n     *\n     * Results are paginated and sorted in descending order according to their\n     * `calculated_at` timestamp (newest first).\n     *\n     * When `updated_after` is specified, only counts that have changed since that\n     * time (based on the server timestamp for the most recent change) are\n     * returned. This allows clients to perform a \"sync\" operation, for example\n     * in response to receiving a Webhook notification.\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                                   request.  See the corresponding object\n     *                                                                   definition for field details.\n     * @return Response from the API call\n     */\n    async batchRetrieveInventoryCounts(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/inventory/counts/batch-retrieve');\n        const mapped = req.prepareArgs({\n            body: [body, batchRetrieveInventoryCountsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(batchRetrieveInventoryCountsResponseSchema, requestOptions);\n    }\n    /**\n     * Deprecated version of [RetrieveInventoryPhysicalCount](api-endpoint:Inventory-\n     * RetrieveInventoryPhysicalCount) after the endpoint URL\n     * is updated to conform to the standard convention.\n     *\n     * @param physicalCountId   ID of the [InventoryPhysicalCount](entity:InventoryPhysicalCount) to retrieve.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async deprecatedRetrieveInventoryPhysicalCount(physicalCountId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            physicalCountId: [physicalCountId, string()],\n        });\n        req.appendTemplatePath `/v2/inventory/physical-count/${mapped.physicalCountId}`;\n        req.deprecated('InventoryApi.deprecatedRetrieveInventoryPhysicalCount');\n        return req.callAsJson(retrieveInventoryPhysicalCountResponseSchema, requestOptions);\n    }\n    /**\n     * Returns the [InventoryPhysicalCount]($m/InventoryPhysicalCount)\n     * object with the provided `physical_count_id`.\n     *\n     * @param physicalCountId   ID of the [InventoryPhysicalCount](entity:InventoryPhysicalCount) to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveInventoryPhysicalCount(physicalCountId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            physicalCountId: [physicalCountId, string()],\n        });\n        req.appendTemplatePath `/v2/inventory/physical-counts/${mapped.physicalCountId}`;\n        return req.callAsJson(retrieveInventoryPhysicalCountResponseSchema, requestOptions);\n    }\n    /**\n     * Returns the [InventoryTransfer]($m/InventoryTransfer) object\n     * with the provided `transfer_id`.\n     *\n     * @param transferId  ID of the [InventoryTransfer](entity:InventoryTransfer) to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveInventoryTransfer(transferId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ transferId: [transferId, string()] });\n        req.appendTemplatePath `/v2/inventory/transfers/${mapped.transferId}`;\n        return req.callAsJson(retrieveInventoryTransferResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves the current calculated stock count for a given\n     * [CatalogObject]($m/CatalogObject) at a given set of\n     * [Location]($m/Location)s. Responses are paginated and unsorted.\n     * For more sophisticated queries, use a batch endpoint.\n     *\n     * @param catalogObjectId   ID of the [CatalogObject](entity:CatalogObject) to retrieve.\n     * @param locationIds       The [Location](entity:Location) IDs to look up as a comma-separated list. An\n     *                                    empty list queries all locations.\n     * @param cursor            A pagination cursor returned by a previous call to this endpoint. Provide this\n     *                                    to retrieve the next set of results for the original query.  See the\n     *                                    [Pagination](https://developer.squareup.com/docs/working-with-apis/pagination)\n     *                                    guide for more information.\n     * @return Response from the API call\n     */\n    async retrieveInventoryCount(catalogObjectId, locationIds, cursor, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            catalogObjectId: [catalogObjectId, string()],\n            locationIds: [locationIds, optional(string())],\n            cursor: [cursor, optional(string())],\n        });\n        req.query('location_ids', mapped.locationIds);\n        req.query('cursor', mapped.cursor);\n        req.appendTemplatePath `/v2/inventory/${mapped.catalogObjectId}`;\n        return req.callAsJson(retrieveInventoryCountResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a set of physical counts and inventory adjustments for the\n     * provided [CatalogObject](entity:CatalogObject) at the requested\n     * [Location](entity:Location)s.\n     *\n     * You can achieve the same result by calling [BatchRetrieveInventoryChanges](api-endpoint:Inventory-\n     * BatchRetrieveInventoryChanges)\n     * and having the `catalog_object_ids` list contain a single element of the `CatalogObject` ID.\n     *\n     * Results are paginated and sorted in descending order according to their\n     * `occurred_at` timestamp (newest first).\n     *\n     * There are no limits on how far back the caller can page. This endpoint can be\n     * used to display recent changes for a specific item. For more\n     * sophisticated queries, use a batch endpoint.\n     *\n     * @param catalogObjectId   ID of the [CatalogObject](entity:CatalogObject) to retrieve.\n     * @param locationIds       The [Location](entity:Location) IDs to look up as a comma-separated list. An\n     *                                    empty list queries all locations.\n     * @param cursor            A pagination cursor returned by a previous call to this endpoint. Provide this\n     *                                    to retrieve the next set of results for the original query.  See the\n     *                                    [Pagination](https://developer.squareup.com/docs/working-with-apis/pagination)\n     *                                    guide for more information.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async retrieveInventoryChanges(catalogObjectId, locationIds, cursor, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            catalogObjectId: [catalogObjectId, string()],\n            locationIds: [locationIds, optional(string())],\n            cursor: [cursor, optional(string())],\n        });\n        req.query('location_ids', mapped.locationIds);\n        req.query('cursor', mapped.cursor);\n        req.appendTemplatePath `/v2/inventory/${mapped.catalogObjectId}/changes`;\n        req.deprecated('InventoryApi.retrieveInventoryChanges');\n        return req.callAsJson(retrieveInventoryChangesResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=inventoryApi.js.map",
+      "start": 1707437860289,
+      "end": 1707437860389,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860389,
+      "end": 1707437860389,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860390,
+      "end": 1707437860390,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860390,
+      "end": 1707437860391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860391,
+      "end": 1707437860391,
+      "order": "normal"
+    }
+  ]
+}

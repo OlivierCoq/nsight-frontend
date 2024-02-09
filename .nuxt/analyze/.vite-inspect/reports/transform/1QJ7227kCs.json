@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/http-query/es/queryString.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { __spreadArray, __read, __values } from 'tslib';\nimport { isFileWrapper, cloneFileWrapper } from '@apimatic/file-wrapper';\nfunction objectEncoding(key, iter, value, prefixFormat) {\n  var _a;\n  return formDataEncodeObject((_a = {}, _a[key + \"[\" + iter + \"]\"] = value, _a), prefixFormat);\n}\nfunction objectArrayEncoding(key, value, prefixFormat, result) {\n  for (var iter = 0; iter < value.length; iter += 1) {\n    result.push.apply(result, __spreadArray([], __read(objectEncoding(key, iter, value[iter], prefixFormat))));\n  }\n}\n/**\r\n * Array prefix format: item[1]=1&item[2]=2\r\n */\nvar indexedPrefix = function (key, value, result) {\n  for (var iter = 0; iter < value.length; iter += 1) {\n    result.push.apply(result, __spreadArray([], __read(objectEncoding(key, iter, value[iter], indexedPrefix))));\n  }\n};\n/**\r\n * Array prefix format: item[]=1&item[]=2\r\n */\nvar unindexedPrefix = function (key, value, result) {\n  var e_1, _a, _b;\n  if (value.some(function (val) {\n    return typeof val === 'object';\n  })) {\n    objectArrayEncoding(key, value, unindexedPrefix, result);\n  } else {\n    try {\n      for (var value_1 = __values(value), value_1_1 = value_1.next(); !value_1_1.done; value_1_1 = value_1.next()) {\n        var val = value_1_1.value;\n        result.push.apply(result, __spreadArray([], __read(formDataEncodeObject((_b = {}, _b[key + '[]'] = val, _b), unindexedPrefix))));\n      }\n    } catch (e_1_1) {\n      e_1 = {\n        error: e_1_1\n      };\n    } finally {\n      try {\n        if (value_1_1 && !value_1_1.done && (_a = value_1.return)) _a.call(value_1);\n      } finally {\n        if (e_1) throw e_1.error;\n      }\n    }\n  }\n};\n/**\r\n * Array prefix format: item=1&item=2\r\n */\nvar plainPrefix = function (key, value, result) {\n  var e_2, _a, _b;\n  if (value.some(function (val) {\n    return typeof val === 'object';\n  })) {\n    objectArrayEncoding(key, value, plainPrefix, result);\n  } else {\n    try {\n      for (var value_2 = __values(value), value_2_1 = value_2.next(); !value_2_1.done; value_2_1 = value_2.next()) {\n        var val = value_2_1.value;\n        result.push.apply(result, __spreadArray([], __read(formDataEncodeObject((_b = {}, _b[key] = val, _b), plainPrefix))));\n      }\n    } catch (e_2_1) {\n      e_2 = {\n        error: e_2_1\n      };\n    } finally {\n      try {\n        if (value_2_1 && !value_2_1.done && (_a = value_2.return)) _a.call(value_2);\n      } finally {\n        if (e_2) throw e_2.error;\n      }\n    }\n  }\n};\n/**\r\n * Array prefix format: item=1\\t2\r\n */\nvar tabPrefix = function (key, value, result) {\n  if (value.some(function (val) {\n    return typeof val === 'object';\n  })) {\n    objectArrayEncoding(key, value, tabPrefix, result);\n  } else {\n    var prefixedArray = value.map(function (element) {\n      return element.toString();\n    }).join('\\t');\n    result.push.apply(result, [{\n      key: key,\n      value: prefixedArray\n    }]);\n  }\n};\n/**\r\n * Array prefix format: item=1,2\r\n */\nvar commaPrefix = function (key, value, result) {\n  if (value.some(function (val) {\n    return typeof val === 'object';\n  })) {\n    objectArrayEncoding(key, value, commaPrefix, result);\n  } else {\n    var prefixedArray = value.map(function (element) {\n      return element.toString();\n    }).join(',');\n    result.push.apply(result, [{\n      key: key,\n      value: prefixedArray\n    }]);\n  }\n};\n/**\r\n * Array prefix format: item=1|2\r\n */\nvar pipePrefix = function (key, value, result) {\n  if (value.some(function (val) {\n    return typeof val === 'object';\n  })) {\n    objectArrayEncoding(key, value, pipePrefix, result);\n  } else {\n    var prefixedArray = value.map(function (element) {\n      return element.toString();\n    }).join('|');\n    result.push.apply(result, [{\n      key: key,\n      value: prefixedArray\n    }]);\n  }\n};\n/**\r\n * Converts an object to a list of key-value pairs for form-urlencoded serialization.\r\n *\r\n * @param obj The object to serialize\r\n * @param prefixFormat Formatting function to create key for nested arrays\r\n * @return Result of serialization\r\n */\nfunction formDataEncodeObject(obj, prefixFormat) {\n  var e_3, _a, _b;\n  if (prefixFormat === void 0) {\n    prefixFormat = indexedPrefix;\n  }\n  var result = [];\n  try {\n    for (var _c = __values(Object.keys(obj)), _d = _c.next(); !_d.done; _d = _c.next()) {\n      var key = _d.value;\n      var value = obj[key];\n      if (value === null || value === undefined) {\n        continue;\n      } else if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') {\n        result.push({\n          key: key,\n          value: value.toString()\n        });\n      } else if (isFileWrapper(value)) {\n        result.push({\n          key: key,\n          value: cloneFileWrapper(value)\n        });\n      } else if (Array.isArray(value)) {\n        prefixFormat(key, value, result);\n      } else if (typeof value === 'object') {\n        for (var objectKey in value) {\n          if (Object.prototype.hasOwnProperty.call(value, objectKey)) {\n            var element = value[objectKey];\n            result.push.apply(result, __spreadArray([], __read(formDataEncodeObject((_b = {}, _b[key + \"[\" + objectKey + \"]\"] = element, _b), prefixFormat))));\n          }\n        }\n      }\n    }\n  } catch (e_3_1) {\n    e_3 = {\n      error: e_3_1\n    };\n  } finally {\n    try {\n      if (_d && !_d.done && (_a = _c.return)) _a.call(_c);\n    } finally {\n      if (e_3) throw e_3.error;\n    }\n  }\n  return result;\n}\n/**\r\n * Return a new list with all key-value pairs, which have a FileWrapper as value, removed\r\n *\r\n * @param params List of key-value pairs\r\n */\nfunction filterFileWrapperFromKeyValuePairs(params) {\n  return params.filter(function (p) {\n    return !isFileWrapper(p.value);\n  });\n}\n/**\r\n * Serializes an object for a form-urlencoded request.\r\n *\r\n * Nested and complex types in values will be flattened using {@link formDataEncodeObject() function} method.\r\n *\r\n * @param  obj The object to be serialized\r\n * @return The result of serialization\r\n */\nfunction urlEncodeObject(obj, prefixFormat) {\n  var params = formDataEncodeObject(obj, prefixFormat);\n  return urlEncodeKeyValuePairs(params);\n}\n/**\r\n * Serializes a list of key-value pairs for a form-urlencoded request.\r\n *\r\n * @param params List of key-value pairs to serialize\r\n * @return The result of serialization\r\n */\nfunction urlEncodeKeyValuePairs(params) {\n  var encode = encodeURIComponent;\n  return params.map(function (p) {\n    return encode(p.key) + \"=\" + encode(p.value.toString());\n  }).join('&');\n}\nexport { commaPrefix, filterFileWrapperFromKeyValuePairs, formDataEncodeObject, indexedPrefix, objectArrayEncoding, objectEncoding, pipePrefix, plainPrefix, tabPrefix, unindexedPrefix, urlEncodeKeyValuePairs, urlEncodeObject };",
+      "start": 1707437862494,
+      "end": 1707437862542,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437862542,
+      "end": 1707437862542,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437862542,
+      "end": 1707437862543,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437862543,
+      "end": 1707437862543,
+      "order": "normal"
+    }
+  ]
+}

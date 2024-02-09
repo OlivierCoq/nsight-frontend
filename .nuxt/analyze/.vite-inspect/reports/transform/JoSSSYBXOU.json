@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/terminalApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { cancelTerminalActionResponseSchema, } from '../models/cancelTerminalActionResponse';\nimport { cancelTerminalCheckoutResponseSchema, } from '../models/cancelTerminalCheckoutResponse';\nimport { cancelTerminalRefundResponseSchema, } from '../models/cancelTerminalRefundResponse';\nimport { createTerminalActionRequestSchema, } from '../models/createTerminalActionRequest';\nimport { createTerminalActionResponseSchema, } from '../models/createTerminalActionResponse';\nimport { createTerminalCheckoutRequestSchema, } from '../models/createTerminalCheckoutRequest';\nimport { createTerminalCheckoutResponseSchema, } from '../models/createTerminalCheckoutResponse';\nimport { createTerminalRefundRequestSchema, } from '../models/createTerminalRefundRequest';\nimport { createTerminalRefundResponseSchema, } from '../models/createTerminalRefundResponse';\nimport { dismissTerminalActionResponseSchema, } from '../models/dismissTerminalActionResponse';\nimport { dismissTerminalCheckoutResponseSchema, } from '../models/dismissTerminalCheckoutResponse';\nimport { dismissTerminalRefundResponseSchema, } from '../models/dismissTerminalRefundResponse';\nimport { getTerminalActionResponseSchema, } from '../models/getTerminalActionResponse';\nimport { getTerminalCheckoutResponseSchema, } from '../models/getTerminalCheckoutResponse';\nimport { getTerminalRefundResponseSchema, } from '../models/getTerminalRefundResponse';\nimport { searchTerminalActionsRequestSchema, } from '../models/searchTerminalActionsRequest';\nimport { searchTerminalActionsResponseSchema, } from '../models/searchTerminalActionsResponse';\nimport { searchTerminalCheckoutsRequestSchema, } from '../models/searchTerminalCheckoutsRequest';\nimport { searchTerminalCheckoutsResponseSchema, } from '../models/searchTerminalCheckoutsResponse';\nimport { searchTerminalRefundsRequestSchema, } from '../models/searchTerminalRefundsRequest';\nimport { searchTerminalRefundsResponseSchema, } from '../models/searchTerminalRefundsResponse';\nimport { string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class TerminalApi extends BaseApi {\n    /**\n     * Creates a Terminal action request and sends it to the specified device.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                           See the corresponding object definition for field\n     *                                                           details.\n     * @return Response from the API call\n     */\n    async createTerminalAction(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/terminals/actions');\n        const mapped = req.prepareArgs({\n            body: [body, createTerminalActionRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createTerminalActionResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a filtered list of Terminal action requests created by the account making the request.\n     * Terminal action requests are available for 30 days.\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                            request.  See the corresponding object definition for\n     *                                                            field details.\n     * @return Response from the API call\n     */\n    async searchTerminalActions(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/terminals/actions/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchTerminalActionsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchTerminalActionsResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a Terminal action request by `action_id`. Terminal action requests are available for 30\n     * days.\n     *\n     * @param actionId  Unique ID for the desired `TerminalAction`.\n     * @return Response from the API call\n     */\n    async getTerminalAction(actionId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ actionId: [actionId, string()] });\n        req.appendTemplatePath `/v2/terminals/actions/${mapped.actionId}`;\n        return req.callAsJson(getTerminalActionResponseSchema, requestOptions);\n    }\n    /**\n     * Cancels a Terminal action request if the status of the request permits it.\n     *\n     * @param actionId  Unique ID for the desired `TerminalAction`.\n     * @return Response from the API call\n     */\n    async cancelTerminalAction(actionId, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({ actionId: [actionId, string()] });\n        req.appendTemplatePath `/v2/terminals/actions/${mapped.actionId}/cancel`;\n        return req.callAsJson(cancelTerminalActionResponseSchema, requestOptions);\n    }\n    /**\n     * Dismisses a Terminal action request if the status and type of the request permits it.\n     *\n     * See [Link and Dismiss Actions](https://developer.squareup.com/docs/terminal-api/advanced-\n     * features/custom-workflows/link-and-dismiss-actions) for more details.\n     *\n     * @param actionId  Unique ID for the `TerminalAction` associated with the action to be dismissed.\n     * @return Response from the API call\n     */\n    async dismissTerminalAction(actionId, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({ actionId: [actionId, string()] });\n        req.appendTemplatePath `/v2/terminals/actions/${mapped.actionId}/dismiss`;\n        return req.callAsJson(dismissTerminalActionResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a Terminal checkout request and sends it to the specified device to take a payment\n     * for the requested amount.\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                             request.  See the corresponding object definition for\n     *                                                             field details.\n     * @return Response from the API call\n     */\n    async createTerminalCheckout(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/terminals/checkouts');\n        const mapped = req.prepareArgs({\n            body: [body, createTerminalCheckoutRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createTerminalCheckoutResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a filtered list of Terminal checkout requests created by the application making the request.\n     * Only Terminal checkout requests created for the merchant scoped to the OAuth token are returned.\n     * Terminal checkout requests are available for 30 days.\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                              request.  See the corresponding object definition for\n     *                                                              field details.\n     * @return Response from the API call\n     */\n    async searchTerminalCheckouts(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/terminals/checkouts/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchTerminalCheckoutsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchTerminalCheckoutsResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a Terminal checkout request by `checkout_id`. Terminal checkout requests are available for\n     * 30 days.\n     *\n     * @param checkoutId  The unique ID for the desired `TerminalCheckout`.\n     * @return Response from the API call\n     */\n    async getTerminalCheckout(checkoutId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ checkoutId: [checkoutId, string()] });\n        req.appendTemplatePath `/v2/terminals/checkouts/${mapped.checkoutId}`;\n        return req.callAsJson(getTerminalCheckoutResponseSchema, requestOptions);\n    }\n    /**\n     * Cancels a Terminal checkout request if the status of the request permits it.\n     *\n     * @param checkoutId  The unique ID for the desired `TerminalCheckout`.\n     * @return Response from the API call\n     */\n    async cancelTerminalCheckout(checkoutId, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({ checkoutId: [checkoutId, string()] });\n        req.appendTemplatePath `/v2/terminals/checkouts/${mapped.checkoutId}/cancel`;\n        return req.callAsJson(cancelTerminalCheckoutResponseSchema, requestOptions);\n    }\n    /**\n     * Dismisses a Terminal checkout request if the status and type of the request permits it.\n     *\n     * @param checkoutId  Unique ID for the `TerminalCheckout` associated with the checkout to be dismissed.\n     * @return Response from the API call\n     */\n    async dismissTerminalCheckout(checkoutId, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({ checkoutId: [checkoutId, string()] });\n        req.appendTemplatePath `/v2/terminals/checkouts/${mapped.checkoutId}/dismiss`;\n        return req.callAsJson(dismissTerminalCheckoutResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a request to refund an Interac payment completed on a Square Terminal. Refunds for Interac\n     * payments on a Square Terminal are supported only for Interac debit cards in Canada. Other refunds\n     * for Terminal payments should use the Refunds API. For more information, see [Refunds\n     * API]($e/Refunds).\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                           See the corresponding object definition for field\n     *                                                           details.\n     * @return Response from the API call\n     */\n    async createTerminalRefund(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/terminals/refunds');\n        const mapped = req.prepareArgs({\n            body: [body, createTerminalRefundRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createTerminalRefundResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a filtered list of Interac Terminal refund requests created by the seller making the\n     * request. Terminal refund requests are available for 30 days.\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                            request.  See the corresponding object definition for\n     *                                                            field details.\n     * @return Response from the API call\n     */\n    async searchTerminalRefunds(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/terminals/refunds/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchTerminalRefundsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchTerminalRefundsResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves an Interac Terminal refund object by ID. Terminal refund objects are available for 30 days.\n     *\n     * @param terminalRefundId   The unique ID for the desired `TerminalRefund`.\n     * @return Response from the API call\n     */\n    async getTerminalRefund(terminalRefundId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            terminalRefundId: [terminalRefundId, string()],\n        });\n        req.appendTemplatePath `/v2/terminals/refunds/${mapped.terminalRefundId}`;\n        return req.callAsJson(getTerminalRefundResponseSchema, requestOptions);\n    }\n    /**\n     * Cancels an Interac Terminal refund request by refund request ID if the status of the request permits\n     * it.\n     *\n     * @param terminalRefundId   The unique ID for the desired `TerminalRefund`.\n     * @return Response from the API call\n     */\n    async cancelTerminalRefund(terminalRefundId, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            terminalRefundId: [terminalRefundId, string()],\n        });\n        req.appendTemplatePath `/v2/terminals/refunds/${mapped.terminalRefundId}/cancel`;\n        return req.callAsJson(cancelTerminalRefundResponseSchema, requestOptions);\n    }\n    /**\n     * Dismisses a Terminal refund request if the status and type of the request permits it.\n     *\n     * @param terminalRefundId   Unique ID for the `TerminalRefund` associated with the refund to be dismissed.\n     * @return Response from the API call\n     */\n    async dismissTerminalRefund(terminalRefundId, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            terminalRefundId: [terminalRefundId, string()],\n        });\n        req.appendTemplatePath `/v2/terminals/refunds/${mapped.terminalRefundId}/dismiss`;\n        return req.callAsJson(dismissTerminalRefundResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=terminalApi.js.map",
+      "start": 1707437860387,
+      "end": 1707437860513,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860513,
+      "end": 1707437860513,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860513,
+      "end": 1707437860514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860514,
+      "end": 1707437860514,
+      "order": "normal"
+    }
+  ]
+}

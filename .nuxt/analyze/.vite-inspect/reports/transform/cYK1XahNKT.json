@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/transitions/dialog-transition.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createVNode as _createVNode, mergeProps as _mergeProps, resolveDirective as _resolveDirective } from \"vue\";\n// Utilities\nimport { Transition } from 'vue';\nimport { acceleratedEasing, animate, deceleratedEasing, genericComponent, nullifyTransforms, propsFactory, standardEasing } from \"../../util/index.mjs\";\nimport { getTargetBox } from \"../../util/box.mjs\"; // Types\nexport const makeVDialogTransitionProps = propsFactory({\n  target: [Object, Array]\n}, 'v-dialog-transition');\nexport const VDialogTransition = genericComponent()({\n  name: 'VDialogTransition',\n  props: makeVDialogTransitionProps(),\n  setup(props, _ref) {\n    let {\n      slots\n    } = _ref;\n    const functions = {\n      onBeforeEnter(el) {\n        el.style.pointerEvents = 'none';\n        el.style.visibility = 'hidden';\n      },\n      async onEnter(el, done) {\n        await new Promise(resolve => requestAnimationFrame(resolve));\n        await new Promise(resolve => requestAnimationFrame(resolve));\n        el.style.visibility = '';\n        const {\n          x,\n          y,\n          sx,\n          sy,\n          speed\n        } = getDimensions(props.target, el);\n        const animation = animate(el, [{\n          transform: `translate(${x}px, ${y}px) scale(${sx}, ${sy})`,\n          opacity: 0\n        }, {}], {\n          duration: 225 * speed,\n          easing: deceleratedEasing\n        });\n        getChildren(el)?.forEach(el => {\n          animate(el, [{\n            opacity: 0\n          }, {\n            opacity: 0,\n            offset: 0.33\n          }, {}], {\n            duration: 225 * 2 * speed,\n            easing: standardEasing\n          });\n        });\n        animation.finished.then(() => done());\n      },\n      onAfterEnter(el) {\n        el.style.removeProperty('pointer-events');\n      },\n      onBeforeLeave(el) {\n        el.style.pointerEvents = 'none';\n      },\n      async onLeave(el, done) {\n        await new Promise(resolve => requestAnimationFrame(resolve));\n        const {\n          x,\n          y,\n          sx,\n          sy,\n          speed\n        } = getDimensions(props.target, el);\n        const animation = animate(el, [{}, {\n          transform: `translate(${x}px, ${y}px) scale(${sx}, ${sy})`,\n          opacity: 0\n        }], {\n          duration: 125 * speed,\n          easing: acceleratedEasing\n        });\n        animation.finished.then(() => done());\n        getChildren(el)?.forEach(el => {\n          animate(el, [{}, {\n            opacity: 0,\n            offset: 0.2\n          }, {\n            opacity: 0\n          }], {\n            duration: 125 * 2 * speed,\n            easing: standardEasing\n          });\n        });\n      },\n      onAfterLeave(el) {\n        el.style.removeProperty('pointer-events');\n      }\n    };\n    return () => {\n      return props.target ? _createVNode(Transition, _mergeProps({\n        \"name\": \"dialog-transition\"\n      }, functions, {\n        \"css\": false\n      }), slots) : _createVNode(Transition, {\n        \"name\": \"dialog-transition\"\n      }, slots);\n    };\n  }\n});\n\n/** Animatable children (card, sheet, list) */\nfunction getChildren(el) {\n  const els = el.querySelector(':scope > .v-card, :scope > .v-sheet, :scope > .v-list')?.children;\n  return els && [...els];\n}\nfunction getDimensions(target, el) {\n  const targetBox = getTargetBox(target);\n  const elBox = nullifyTransforms(el);\n  const [originX, originY] = getComputedStyle(el).transformOrigin.split(' ').map(v => parseFloat(v));\n  const [anchorSide, anchorOffset] = getComputedStyle(el).getPropertyValue('--v-overlay-anchor-origin').split(' ');\n  let offsetX = targetBox.left + targetBox.width / 2;\n  if (anchorSide === 'left' || anchorOffset === 'left') {\n    offsetX -= targetBox.width / 2;\n  } else if (anchorSide === 'right' || anchorOffset === 'right') {\n    offsetX += targetBox.width / 2;\n  }\n  let offsetY = targetBox.top + targetBox.height / 2;\n  if (anchorSide === 'top' || anchorOffset === 'top') {\n    offsetY -= targetBox.height / 2;\n  } else if (anchorSide === 'bottom' || anchorOffset === 'bottom') {\n    offsetY += targetBox.height / 2;\n  }\n  const tsx = targetBox.width / elBox.width;\n  const tsy = targetBox.height / elBox.height;\n  const maxs = Math.max(1, tsx, tsy);\n  const sx = tsx / maxs || 0;\n  const sy = tsy / maxs || 0;\n\n  // Animate elements larger than 12% of the screen area up to 1.5x slower\n  const asa = elBox.width * elBox.height / (window.innerWidth * window.innerHeight);\n  const speed = asa > 0.12 ? Math.min(1.5, (asa - 0.12) * 10 + 1) : 1;\n  return {\n    x: offsetX - (originX + elBox.left),\n    y: offsetY - (originY + elBox.top),\n    sx,\n    sy,\n    speed\n  };\n}\n//# sourceMappingURL=dialog-transition.mjs.map",
+      "start": 1707437860163,
+      "end": 1707437860215,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860215,
+      "end": 1707437860215,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860215,
+      "end": 1707437860216,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860216,
+      "end": 1707437860216,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860216,
+      "end": 1707437860216,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860216,
+      "end": 1707437860216,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860216,
+      "end": 1707437860216,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860216,
+      "end": 1707437860216,
+      "order": "normal"
+    }
+  ]
+}

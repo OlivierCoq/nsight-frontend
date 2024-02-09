@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VDataTable/composables/headers.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Utilities\nimport { capitalize, inject, provide, ref, watchEffect } from 'vue';\nimport { consoleError, propsFactory } from \"../../../util/index.mjs\"; // Types\nexport const makeDataTableHeaderProps = propsFactory({\n  headers: Array\n}, 'DataTable-header');\nexport const VDataTableHeadersSymbol = Symbol.for('vuetify:data-table-headers');\nconst defaultHeader = {\n  title: '',\n  sortable: false\n};\nconst defaultActionHeader = {\n  ...defaultHeader,\n  width: 48\n};\nfunction priorityQueue() {\n  let arr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];\n  const queue = arr.map(element => ({\n    element,\n    priority: 0\n  }));\n  return {\n    enqueue: (element, priority) => {\n      let added = false;\n      for (let i = 0; i < queue.length; i++) {\n        const item = queue[i];\n        if (item.priority > priority) {\n          queue.splice(i, 0, {\n            element,\n            priority\n          });\n          added = true;\n          break;\n        }\n      }\n      if (!added) queue.push({\n        element,\n        priority\n      });\n    },\n    size: () => queue.length,\n    count: () => {\n      let count = 0;\n      if (!queue.length) return 0;\n      const whole = Math.floor(queue[0].priority);\n      for (let i = 0; i < queue.length; i++) {\n        if (Math.floor(queue[i].priority) === whole) count += 1;\n      }\n      return count;\n    },\n    dequeue: () => {\n      return queue.shift();\n    }\n  };\n}\nfunction extractLeaves(item) {\n  let columns = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];\n  if (!item.children) {\n    columns.push(item);\n  } else {\n    for (const child of item.children) {\n      extractLeaves(child, columns);\n    }\n  }\n  return columns;\n}\nfunction extractKeys(headers) {\n  let keys = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : new Set();\n  for (const item of headers) {\n    if (item.key) keys.add(item.key);\n    if (item.children) {\n      extractKeys(item.children, keys);\n    }\n  }\n  return keys;\n}\nfunction getDefaultItem(item) {\n  if (!item.key) return undefined;\n  if (item.key === 'data-table-group') return defaultHeader;\n  if (['data-table-expand', 'data-table-select'].includes(item.key)) return defaultActionHeader;\n  return undefined;\n}\nfunction getDepth(item) {\n  let depth = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;\n  if (!item.children) return depth;\n  return Math.max(depth, ...item.children.map(child => getDepth(child, depth + 1)));\n}\nfunction parseFixedColumns(items) {\n  let seenFixed = false;\n  function setFixed(item) {\n    let parentFixed = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;\n    if (!item) return;\n    if (parentFixed) {\n      item.fixed = true;\n    }\n    if (item.fixed) {\n      if (item.children) {\n        for (let i = item.children.length - 1; i >= 0; i--) {\n          setFixed(item.children[i], true);\n        }\n      } else {\n        if (!seenFixed) {\n          item.lastFixed = true;\n        } else if (isNaN(+item.width)) {\n          consoleError(`Multiple fixed columns should have a static width (key: ${item.key})`);\n        }\n        seenFixed = true;\n      }\n    } else {\n      if (item.children) {\n        for (let i = item.children.length - 1; i >= 0; i--) {\n          setFixed(item.children[i]);\n        }\n      } else {\n        seenFixed = false;\n      }\n    }\n  }\n  for (let i = items.length - 1; i >= 0; i--) {\n    setFixed(items[i]);\n  }\n  function setFixedOffset(item) {\n    let fixedOffset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;\n    if (!item) return fixedOffset;\n    if (item.children) {\n      item.fixedOffset = fixedOffset;\n      for (const child of item.children) {\n        fixedOffset = setFixedOffset(child, fixedOffset);\n      }\n    } else if (item.fixed) {\n      item.fixedOffset = fixedOffset;\n      fixedOffset += parseFloat(item.width || '0') || 0;\n    }\n    return fixedOffset;\n  }\n  let fixedOffset = 0;\n  for (const item of items) {\n    fixedOffset = setFixedOffset(item, fixedOffset);\n  }\n}\nfunction parse(items, maxDepth) {\n  const headers = [];\n  let currentDepth = 0;\n  const queue = priorityQueue(items);\n  while (queue.size() > 0) {\n    let rowSize = queue.count();\n    const row = [];\n    let fraction = 1;\n    while (rowSize > 0) {\n      const {\n        element: item,\n        priority\n      } = queue.dequeue();\n      const diff = maxDepth - currentDepth - getDepth(item);\n      row.push({\n        ...item,\n        rowspan: diff ?? 1,\n        colspan: item.children ? extractLeaves(item).length : 1\n      });\n      if (item.children) {\n        for (const child of item.children) {\n          // This internally sorts items that are on the same priority \"row\"\n          const sort = priority % 1 + fraction / Math.pow(10, currentDepth + 2);\n          queue.enqueue(child, currentDepth + diff + sort);\n        }\n      }\n      fraction += 1;\n      rowSize -= 1;\n    }\n    currentDepth += 1;\n    headers.push(row);\n  }\n  const columns = items.map(item => extractLeaves(item)).flat();\n  return {\n    columns,\n    headers\n  };\n}\nfunction convertToInternalHeaders(items) {\n  const internalHeaders = [];\n  for (const item of items) {\n    const defaultItem = {\n      ...getDefaultItem(item),\n      ...item\n    };\n    const key = defaultItem.key ?? (typeof defaultItem.value === 'string' ? defaultItem.value : null);\n    const value = defaultItem.value ?? key ?? null;\n    const internalItem = {\n      ...defaultItem,\n      key,\n      value,\n      sortable: defaultItem.sortable ?? (defaultItem.key != null || !!defaultItem.sort),\n      children: defaultItem.children ? convertToInternalHeaders(defaultItem.children) : undefined\n    };\n    internalHeaders.push(internalItem);\n  }\n  return internalHeaders;\n}\nexport function createHeaders(props, options) {\n  const headers = ref([]);\n  const columns = ref([]);\n  const sortFunctions = ref({});\n  const sortRawFunctions = ref({});\n  const filterFunctions = ref({});\n  watchEffect(() => {\n    const _headers = props.headers || Object.keys(props.items[0] ?? {}).map(key => ({\n      key,\n      title: capitalize(key)\n    }));\n    const items = _headers.slice();\n    const keys = extractKeys(items);\n    if (options?.groupBy?.value.length && !keys.has('data-table-group')) {\n      items.unshift({\n        key: 'data-table-group',\n        title: 'Group'\n      });\n    }\n    if (options?.showSelect?.value && !keys.has('data-table-select')) {\n      items.unshift({\n        key: 'data-table-select'\n      });\n    }\n    if (options?.showExpand?.value && !keys.has('data-table-expand')) {\n      items.push({\n        key: 'data-table-expand'\n      });\n    }\n    const internalHeaders = convertToInternalHeaders(items);\n    parseFixedColumns(internalHeaders);\n    const maxDepth = Math.max(...internalHeaders.map(item => getDepth(item))) + 1;\n    const parsed = parse(internalHeaders, maxDepth);\n    headers.value = parsed.headers;\n    columns.value = parsed.columns;\n    const flatHeaders = parsed.headers.flat(1);\n    for (const header of flatHeaders) {\n      if (!header.key) continue;\n      if (header.sortable) {\n        if (header.sort) {\n          sortFunctions.value[header.key] = header.sort;\n        }\n        if (header.sortRaw) {\n          sortRawFunctions.value[header.key] = header.sortRaw;\n        }\n      }\n      if (header.filter) {\n        filterFunctions.value[header.key] = header.filter;\n      }\n    }\n  });\n  const data = {\n    headers,\n    columns,\n    sortFunctions,\n    sortRawFunctions,\n    filterFunctions\n  };\n  provide(VDataTableHeadersSymbol, data);\n  return data;\n}\nexport function useHeaders() {\n  const data = inject(VDataTableHeadersSymbol);\n  if (!data) throw new Error('Missing headers!');\n  return data;\n}\n//# sourceMappingURL=headers.mjs.map",
+      "start": 1707437860826,
+      "end": 1707437860880,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860880,
+      "end": 1707437860880,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860880,
+      "end": 1707437860881,
+      "order": "normal"
+    }
+  ]
+}

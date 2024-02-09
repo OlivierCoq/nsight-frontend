@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VOverlay/VOverlay.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { withDirectives as _withDirectives, resolveDirective as _resolveDirective, vShow as _vShow, Fragment as _Fragment, createVNode as _createVNode, mergeProps as _mergeProps } from \"vue\";\n// Styles\nimport \"./VOverlay.css\";\n\n// Composables\nimport { makeLocationStrategyProps, useLocationStrategies } from \"./locationStrategies.mjs\";\nimport { makeScrollStrategyProps, useScrollStrategies } from \"./scrollStrategies.mjs\";\nimport { makeActivatorProps, useActivator } from \"./useActivator.mjs\";\nimport { useBackgroundColor } from \"../../composables/color.mjs\";\nimport { makeComponentProps } from \"../../composables/component.mjs\";\nimport { makeDimensionProps, useDimension } from \"../../composables/dimensions.mjs\";\nimport { useHydration } from \"../../composables/hydration.mjs\";\nimport { makeLazyProps, useLazy } from \"../../composables/lazy.mjs\";\nimport { useRtl } from \"../../composables/locale.mjs\";\nimport { useProxiedModel } from \"../../composables/proxiedModel.mjs\";\nimport { useBackButton, useRouter } from \"../../composables/router.mjs\";\nimport { useScopeId } from \"../../composables/scopeId.mjs\";\nimport { useStack } from \"../../composables/stack.mjs\";\nimport { useTeleport } from \"../../composables/teleport.mjs\";\nimport { makeThemeProps, provideTheme } from \"../../composables/theme.mjs\";\nimport { useToggleScope } from \"../../composables/toggleScope.mjs\";\nimport { makeTransitionProps, MaybeTransition } from \"../../composables/transition.mjs\"; // Directives\nimport { ClickOutside } from \"../../directives/click-outside/index.mjs\"; // Utilities\nimport { computed, mergeProps, onBeforeUnmount, ref, Teleport, toRef, Transition, watch } from 'vue';\nimport { animate, convertToUnit, genericComponent, getScrollParent, IN_BROWSER, propsFactory, standardEasing, useRender } from \"../../util/index.mjs\"; // Types\nfunction Scrim(props) {\n  const {\n    modelValue,\n    color,\n    ...rest\n  } = props;\n  return _createVNode(Transition, {\n    \"name\": \"fade-transition\",\n    \"appear\": true\n  }, {\n    default: () => [props.modelValue && _createVNode(\"div\", _mergeProps({\n      \"class\": ['v-overlay__scrim', props.color.backgroundColorClasses.value],\n      \"style\": props.color.backgroundColorStyles.value\n    }, rest), null)]\n  });\n}\nexport const makeVOverlayProps = propsFactory({\n  absolute: Boolean,\n  attach: [Boolean, String, Object],\n  closeOnBack: {\n    type: Boolean,\n    default: true\n  },\n  contained: Boolean,\n  contentClass: null,\n  contentProps: null,\n  disabled: Boolean,\n  noClickAnimation: Boolean,\n  modelValue: Boolean,\n  persistent: Boolean,\n  scrim: {\n    type: [Boolean, String],\n    default: true\n  },\n  zIndex: {\n    type: [Number, String],\n    default: 2000\n  },\n  ...makeActivatorProps(),\n  ...makeComponentProps(),\n  ...makeDimensionProps(),\n  ...makeLazyProps(),\n  ...makeLocationStrategyProps(),\n  ...makeScrollStrategyProps(),\n  ...makeThemeProps(),\n  ...makeTransitionProps()\n}, 'VOverlay');\nexport const VOverlay = genericComponent()({\n  name: 'VOverlay',\n  directives: {\n    ClickOutside\n  },\n  inheritAttrs: false,\n  props: {\n    _disableGlobalStack: Boolean,\n    ...makeVOverlayProps()\n  },\n  emits: {\n    'click:outside': e => true,\n    'update:modelValue': value => true,\n    afterLeave: () => true\n  },\n  setup(props, _ref) {\n    let {\n      slots,\n      attrs,\n      emit\n    } = _ref;\n    const model = useProxiedModel(props, 'modelValue');\n    const isActive = computed({\n      get: () => model.value,\n      set: v => {\n        if (!(v && props.disabled)) model.value = v;\n      }\n    });\n    const {\n      teleportTarget\n    } = useTeleport(computed(() => props.attach || props.contained));\n    const {\n      themeClasses\n    } = provideTheme(props);\n    const {\n      rtlClasses,\n      isRtl\n    } = useRtl();\n    const {\n      hasContent,\n      onAfterLeave: _onAfterLeave\n    } = useLazy(props, isActive);\n    const scrimColor = useBackgroundColor(computed(() => {\n      return typeof props.scrim === 'string' ? props.scrim : null;\n    }));\n    const {\n      globalTop,\n      localTop,\n      stackStyles\n    } = useStack(isActive, toRef(props, 'zIndex'), props._disableGlobalStack);\n    const {\n      activatorEl,\n      activatorRef,\n      target,\n      targetEl,\n      targetRef,\n      activatorEvents,\n      contentEvents,\n      scrimEvents\n    } = useActivator(props, {\n      isActive,\n      isTop: localTop\n    });\n    const {\n      dimensionStyles\n    } = useDimension(props);\n    const isMounted = useHydration();\n    const {\n      scopeId\n    } = useScopeId();\n    watch(() => props.disabled, v => {\n      if (v) isActive.value = false;\n    });\n    const root = ref();\n    const contentEl = ref();\n    const {\n      contentStyles,\n      updateLocation\n    } = useLocationStrategies(props, {\n      isRtl,\n      contentEl,\n      target,\n      isActive\n    });\n    useScrollStrategies(props, {\n      root,\n      contentEl,\n      targetEl,\n      isActive,\n      updateLocation\n    });\n    function onClickOutside(e) {\n      emit('click:outside', e);\n      if (!props.persistent) isActive.value = false;else animateClick();\n    }\n    function closeConditional() {\n      return isActive.value && globalTop.value;\n    }\n    IN_BROWSER && watch(isActive, val => {\n      if (val) {\n        window.addEventListener('keydown', onKeydown);\n      } else {\n        window.removeEventListener('keydown', onKeydown);\n      }\n    }, {\n      immediate: true\n    });\n    onBeforeUnmount(() => {\n      if (!IN_BROWSER) return;\n      window.removeEventListener('keydown', onKeydown);\n    });\n    function onKeydown(e) {\n      if (e.key === 'Escape' && globalTop.value) {\n        if (!props.persistent) {\n          isActive.value = false;\n          if (contentEl.value?.contains(document.activeElement)) {\n            activatorEl.value?.focus();\n          }\n        } else animateClick();\n      }\n    }\n    const router = useRouter();\n    useToggleScope(() => props.closeOnBack, () => {\n      useBackButton(router, next => {\n        if (globalTop.value && isActive.value) {\n          next(false);\n          if (!props.persistent) isActive.value = false;else animateClick();\n        } else {\n          next();\n        }\n      });\n    });\n    const top = ref();\n    watch(() => isActive.value && (props.absolute || props.contained) && teleportTarget.value == null, val => {\n      if (val) {\n        const scrollParent = getScrollParent(root.value);\n        if (scrollParent && scrollParent !== document.scrollingElement) {\n          top.value = scrollParent.scrollTop;\n        }\n      }\n    });\n\n    // Add a quick \"bounce\" animation to the content\n    function animateClick() {\n      if (props.noClickAnimation) return;\n      contentEl.value && animate(contentEl.value, [{\n        transformOrigin: 'center'\n      }, {\n        transform: 'scale(1.03)'\n      }, {\n        transformOrigin: 'center'\n      }], {\n        duration: 150,\n        easing: standardEasing\n      });\n    }\n    function onAfterLeave() {\n      _onAfterLeave();\n      emit('afterLeave');\n    }\n    useRender(() => _createVNode(_Fragment, null, [slots.activator?.({\n      isActive: isActive.value,\n      props: mergeProps({\n        ref: activatorRef,\n        targetRef\n      }, activatorEvents.value, props.activatorProps)\n    }), !props.disabled && isMounted.value && hasContent.value && _createVNode(Teleport, {\n      \"disabled\": !teleportTarget.value,\n      \"to\": teleportTarget.value\n    }, {\n      default: () => [_createVNode(\"div\", _mergeProps({\n        \"class\": ['v-overlay', {\n          'v-overlay--absolute': props.absolute || props.contained,\n          'v-overlay--active': isActive.value,\n          'v-overlay--contained': props.contained\n        }, themeClasses.value, rtlClasses.value, props.class],\n        \"style\": [stackStyles.value, {\n          top: convertToUnit(top.value)\n        }, props.style],\n        \"ref\": root\n      }, scopeId, attrs), [_createVNode(Scrim, _mergeProps({\n        \"color\": scrimColor,\n        \"modelValue\": !!props.scrim && isActive.value\n      }, scrimEvents.value), null), _createVNode(MaybeTransition, {\n        \"appear\": true,\n        \"persisted\": true,\n        \"transition\": props.transition,\n        \"target\": target.value,\n        \"onAfterLeave\": onAfterLeave\n      }, {\n        default: () => [_withDirectives(_createVNode(\"div\", _mergeProps({\n          \"ref\": contentEl,\n          \"class\": ['v-overlay__content', props.contentClass],\n          \"style\": [dimensionStyles.value, contentStyles.value]\n        }, contentEvents.value, props.contentProps), [slots.default?.({\n          isActive\n        })]), [[_vShow, isActive.value], [_resolveDirective(\"click-outside\"), {\n          handler: onClickOutside,\n          closeConditional,\n          include: () => [activatorEl.value]\n        }]])]\n      })])]\n    })]));\n    return {\n      activatorEl,\n      target,\n      animateClick,\n      contentEl,\n      globalTop,\n      localTop,\n      updateLocation\n    };\n  }\n});\n//# sourceMappingURL=VOverlay.mjs.map",
+      "start": 1707437860059,
+      "end": 1707437860100,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860100,
+      "end": 1707437860100,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860100,
+      "end": 1707437860101,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860101,
+      "end": 1707437860101,
+      "order": "normal"
+    }
+  ]
+}

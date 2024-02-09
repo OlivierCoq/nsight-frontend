@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/bankAccountsApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { getBankAccountByV1IdResponseSchema, } from '../models/getBankAccountByV1IdResponse';\nimport { getBankAccountResponseSchema, } from '../models/getBankAccountResponse';\nimport { listBankAccountsResponseSchema, } from '../models/listBankAccountsResponse';\nimport { number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class BankAccountsApi extends BaseApi {\n    /**\n     * Returns a list of [BankAccount]($m/BankAccount) objects linked to a Square account.\n     *\n     * @param cursor      The pagination cursor returned by a previous call to this endpoint. Use it in the\n     *                              next `ListBankAccounts` request to retrieve the next set  of results.  See the\n     *                              [Pagination](https://developer.squareup.com/docs/working-with-apis/pagination) guide\n     *                              for more information.\n     * @param limit       Upper limit on the number of bank accounts to return in the response.  Currently,\n     *                              1000 is the largest supported limit. You can specify a limit  of up to 1000 bank\n     *                              accounts. This is also the default limit.\n     * @param locationId  Location ID. You can specify this optional filter  to retrieve only the linked bank\n     *                              accounts belonging to a specific location.\n     * @return Response from the API call\n     */\n    async listBankAccounts(cursor, limit, locationId, requestOptions) {\n        const req = this.createRequest('GET', '/v2/bank-accounts');\n        const mapped = req.prepareArgs({\n            cursor: [cursor, optional(string())],\n            limit: [limit, optional(number())],\n            locationId: [locationId, optional(string())],\n        });\n        req.query('cursor', mapped.cursor);\n        req.query('limit', mapped.limit);\n        req.query('location_id', mapped.locationId);\n        return req.callAsJson(listBankAccountsResponseSchema, requestOptions);\n    }\n    /**\n     * Returns details of a [BankAccount]($m/BankAccount) identified by V1 bank account ID.\n     *\n     * @param v1BankAccountId    Connect V1 ID of the desired `BankAccount`. For more information, see\n     *                                     [Retrieve a bank account by using an ID issued by V1 Bank Accounts API](https:\n     *                                     //developer.squareup.com/docs/bank-accounts-api#retrieve-a-bank-account-by-\n     *                                     using-an-id-issued-by-v1-bank-accounts-api).\n     * @return Response from the API call\n     */\n    async getBankAccountByV1Id(v1BankAccountId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            v1BankAccountId: [v1BankAccountId, string()],\n        });\n        req.appendTemplatePath `/v2/bank-accounts/by-v1-id/${mapped.v1BankAccountId}`;\n        return req.callAsJson(getBankAccountByV1IdResponseSchema, requestOptions);\n    }\n    /**\n     * Returns details of a [BankAccount]($m/BankAccount)\n     * linked to a Square account.\n     *\n     * @param bankAccountId   Square-issued ID of the desired `BankAccount`.\n     * @return Response from the API call\n     */\n    async getBankAccount(bankAccountId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            bankAccountId: [bankAccountId, string()],\n        });\n        req.appendTemplatePath `/v2/bank-accounts/${mapped.bankAccountId}`;\n        return req.callAsJson(getBankAccountResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=bankAccountsApi.js.map",
+      "start": 1707437860255,
+      "end": 1707437860314,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860314,
+      "end": 1707437860314,
+      "order": "normal"
+    }
+  ]
+}

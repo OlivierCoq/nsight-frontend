@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/defaults.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Utilities\nimport { computed, inject, provide, ref, shallowRef, unref, watchEffect } from 'vue';\nimport { getCurrentInstance, injectSelf, mergeDeep, toKebabCase } from \"../util/index.mjs\"; // Types\nexport const DefaultsSymbol = Symbol.for('vuetify:defaults');\nexport function createDefaults(options) {\n  return ref(options);\n}\nexport function injectDefaults() {\n  const defaults = inject(DefaultsSymbol);\n  if (!defaults) throw new Error('[Vuetify] Could not find defaults instance');\n  return defaults;\n}\nexport function provideDefaults(defaults, options) {\n  const injectedDefaults = injectDefaults();\n  const providedDefaults = ref(defaults);\n  const newDefaults = computed(() => {\n    const disabled = unref(options?.disabled);\n    if (disabled) return injectedDefaults.value;\n    const scoped = unref(options?.scoped);\n    const reset = unref(options?.reset);\n    const root = unref(options?.root);\n    if (providedDefaults.value == null && !(scoped || reset || root)) return injectedDefaults.value;\n    let properties = mergeDeep(providedDefaults.value, {\n      prev: injectedDefaults.value\n    });\n    if (scoped) return properties;\n    if (reset || root) {\n      const len = Number(reset || Infinity);\n      for (let i = 0; i <= len; i++) {\n        if (!properties || !('prev' in properties)) {\n          break;\n        }\n        properties = properties.prev;\n      }\n      if (properties && typeof root === 'string' && root in properties) {\n        properties = mergeDeep(mergeDeep(properties, {\n          prev: properties\n        }), properties[root]);\n      }\n      return properties;\n    }\n    return properties.prev ? mergeDeep(properties.prev, properties) : properties;\n  });\n  provide(DefaultsSymbol, newDefaults);\n  return newDefaults;\n}\nfunction propIsDefined(vnode, prop) {\n  return typeof vnode.props?.[prop] !== 'undefined' || typeof vnode.props?.[toKebabCase(prop)] !== 'undefined';\n}\nexport function internalUseDefaults() {\n  let props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};\n  let name = arguments.length > 1 ? arguments[1] : undefined;\n  let defaults = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : injectDefaults();\n  const vm = getCurrentInstance('useDefaults');\n  name = name ?? vm.type.name ?? vm.type.__name;\n  if (!name) {\n    throw new Error('[Vuetify] Could not determine component name');\n  }\n  const componentDefaults = computed(() => defaults.value?.[props._as ?? name]);\n  const _props = new Proxy(props, {\n    get(target, prop) {\n      const propValue = Reflect.get(target, prop);\n      if (prop === 'class' || prop === 'style') {\n        return [componentDefaults.value?.[prop], propValue].filter(v => v != null);\n      } else if (typeof prop === 'string' && !propIsDefined(vm.vnode, prop)) {\n        return componentDefaults.value?.[prop] ?? defaults.value?.global?.[prop] ?? propValue;\n      }\n      return propValue;\n    }\n  });\n  const _subcomponentDefaults = shallowRef();\n  watchEffect(() => {\n    if (componentDefaults.value) {\n      const subComponents = Object.entries(componentDefaults.value).filter(_ref => {\n        let [key] = _ref;\n        return key.startsWith(key[0].toUpperCase());\n      });\n      _subcomponentDefaults.value = subComponents.length ? Object.fromEntries(subComponents) : undefined;\n    } else {\n      _subcomponentDefaults.value = undefined;\n    }\n  });\n  function provideSubDefaults() {\n    const injected = injectSelf(DefaultsSymbol, vm);\n    provide(DefaultsSymbol, computed(() => {\n      return _subcomponentDefaults.value ? mergeDeep(injected?.value ?? {}, _subcomponentDefaults.value) : injected?.value;\n    }));\n  }\n  return {\n    props: _props,\n    provideSubDefaults\n  };\n}\nexport function useDefaults() {\n  let props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};\n  let name = arguments.length > 1 ? arguments[1] : undefined;\n  const {\n    props: _props,\n    provideSubDefaults\n  } = internalUseDefaults(props, name);\n  provideSubDefaults();\n  return _props;\n}\n//# sourceMappingURL=defaults.mjs.map",
+      "start": 1707437860613,
+      "end": 1707437860670,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860670,
+      "end": 1707437860670,
+      "order": "normal"
+    }
+  ]
+}

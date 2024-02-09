@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VDataTable/composables/select.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Composables\nimport { useProxiedModel } from \"../../../composables/proxiedModel.mjs\"; // Utilities\nimport { computed, inject, provide } from 'vue';\nimport { deepEqual, propsFactory, wrapInArray } from \"../../../util/index.mjs\"; // Types\nconst singleSelectStrategy = {\n  showSelectAll: false,\n  allSelected: () => [],\n  select: _ref => {\n    let {\n      items,\n      value\n    } = _ref;\n    return new Set(value ? [items[0]?.value] : []);\n  },\n  selectAll: _ref2 => {\n    let {\n      selected\n    } = _ref2;\n    return selected;\n  }\n};\nconst pageSelectStrategy = {\n  showSelectAll: true,\n  allSelected: _ref3 => {\n    let {\n      currentPage\n    } = _ref3;\n    return currentPage;\n  },\n  select: _ref4 => {\n    let {\n      items,\n      value,\n      selected\n    } = _ref4;\n    for (const item of items) {\n      if (value) selected.add(item.value);else selected.delete(item.value);\n    }\n    return selected;\n  },\n  selectAll: _ref5 => {\n    let {\n      value,\n      currentPage,\n      selected\n    } = _ref5;\n    return pageSelectStrategy.select({\n      items: currentPage,\n      value,\n      selected\n    });\n  }\n};\nconst allSelectStrategy = {\n  showSelectAll: true,\n  allSelected: _ref6 => {\n    let {\n      allItems\n    } = _ref6;\n    return allItems;\n  },\n  select: _ref7 => {\n    let {\n      items,\n      value,\n      selected\n    } = _ref7;\n    for (const item of items) {\n      if (value) selected.add(item.value);else selected.delete(item.value);\n    }\n    return selected;\n  },\n  selectAll: _ref8 => {\n    let {\n      value,\n      allItems,\n      selected\n    } = _ref8;\n    return allSelectStrategy.select({\n      items: allItems,\n      value,\n      selected\n    });\n  }\n};\nexport const makeDataTableSelectProps = propsFactory({\n  showSelect: Boolean,\n  selectStrategy: {\n    type: [String, Object],\n    default: 'page'\n  },\n  modelValue: {\n    type: Array,\n    default: () => []\n  },\n  valueComparator: {\n    type: Function,\n    default: deepEqual\n  }\n}, 'DataTable-select');\nexport const VDataTableSelectionSymbol = Symbol.for('vuetify:data-table-selection');\nexport function provideSelection(props, _ref9) {\n  let {\n    allItems,\n    currentPage\n  } = _ref9;\n  const selected = useProxiedModel(props, 'modelValue', props.modelValue, v => {\n    return new Set(wrapInArray(v).map(v => {\n      return allItems.value.find(item => props.valueComparator(v, item.value))?.value ?? v;\n    }));\n  }, v => {\n    return [...v.values()];\n  });\n  const allSelectable = computed(() => allItems.value.filter(item => item.selectable));\n  const currentPageSelectable = computed(() => currentPage.value.filter(item => item.selectable));\n  const selectStrategy = computed(() => {\n    if (typeof props.selectStrategy === 'object') return props.selectStrategy;\n    switch (props.selectStrategy) {\n      case 'single':\n        return singleSelectStrategy;\n      case 'all':\n        return allSelectStrategy;\n      case 'page':\n      default:\n        return pageSelectStrategy;\n    }\n  });\n  function isSelected(items) {\n    return wrapInArray(items).every(item => selected.value.has(item.value));\n  }\n  function isSomeSelected(items) {\n    return wrapInArray(items).some(item => selected.value.has(item.value));\n  }\n  function select(items, value) {\n    const newSelected = selectStrategy.value.select({\n      items,\n      value,\n      selected: new Set(selected.value)\n    });\n    selected.value = newSelected;\n  }\n  function toggleSelect(item) {\n    select([item], !isSelected([item]));\n  }\n  function selectAll(value) {\n    const newSelected = selectStrategy.value.selectAll({\n      value,\n      allItems: allSelectable.value,\n      currentPage: currentPageSelectable.value,\n      selected: new Set(selected.value)\n    });\n    selected.value = newSelected;\n  }\n  const someSelected = computed(() => selected.value.size > 0);\n  const allSelected = computed(() => {\n    const items = selectStrategy.value.allSelected({\n      allItems: allSelectable.value,\n      currentPage: currentPageSelectable.value\n    });\n    return !!items.length && isSelected(items);\n  });\n  const data = {\n    toggleSelect,\n    select,\n    selectAll,\n    isSelected,\n    isSomeSelected,\n    someSelected,\n    allSelected,\n    showSelectAll: selectStrategy.value.showSelectAll\n  };\n  provide(VDataTableSelectionSymbol, data);\n  return data;\n}\nexport function useSelection() {\n  const data = inject(VDataTableSelectionSymbol);\n  if (!data) throw new Error('Missing selection!');\n  return data;\n}\n//# sourceMappingURL=select.mjs.map",
+      "start": 1707437860818,
+      "end": 1707437860856,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860856,
+      "end": 1707437860856,
+      "order": "normal"
+    }
+  ]
+}

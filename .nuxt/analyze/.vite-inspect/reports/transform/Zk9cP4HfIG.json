@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/postcode-validator/lib/esm/postcode-types.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export var CountryCode;\n(function (CountryCode) {\n    CountryCode[\"UK\"] = \"UK\";\n    CountryCode[\"GB\"] = \"GB\";\n    CountryCode[\"JE\"] = \"JE\";\n    CountryCode[\"GG\"] = \"GG\";\n    CountryCode[\"IM\"] = \"IM\";\n    CountryCode[\"US\"] = \"US\";\n    CountryCode[\"CA\"] = \"CA\";\n    CountryCode[\"IE\"] = \"IE\";\n    CountryCode[\"DE\"] = \"DE\";\n    CountryCode[\"JP\"] = \"JP\";\n    CountryCode[\"FR\"] = \"FR\";\n    CountryCode[\"AU\"] = \"AU\";\n    CountryCode[\"IT\"] = \"IT\";\n    CountryCode[\"CH\"] = \"CH\";\n    CountryCode[\"AT\"] = \"AT\";\n    CountryCode[\"ES\"] = \"ES\";\n    CountryCode[\"NL\"] = \"NL\";\n    CountryCode[\"BE\"] = \"BE\";\n    CountryCode[\"DK\"] = \"DK\";\n    CountryCode[\"SE\"] = \"SE\";\n    CountryCode[\"NO\"] = \"NO\";\n    CountryCode[\"BR\"] = \"BR\";\n    CountryCode[\"PT\"] = \"PT\";\n    CountryCode[\"FI\"] = \"FI\";\n    CountryCode[\"AX\"] = \"AX\";\n    CountryCode[\"KR\"] = \"KR\";\n    CountryCode[\"CN\"] = \"CN\";\n    CountryCode[\"TW\"] = \"TW\";\n    CountryCode[\"SG\"] = \"SG\";\n    CountryCode[\"DZ\"] = \"DZ\";\n    CountryCode[\"AD\"] = \"AD\";\n    CountryCode[\"AR\"] = \"AR\";\n    CountryCode[\"AM\"] = \"AM\";\n    CountryCode[\"AZ\"] = \"AZ\";\n    CountryCode[\"BH\"] = \"BH\";\n    CountryCode[\"BD\"] = \"BD\";\n    CountryCode[\"BB\"] = \"BB\";\n    CountryCode[\"BY\"] = \"BY\";\n    CountryCode[\"BM\"] = \"BM\";\n    CountryCode[\"BA\"] = \"BA\";\n    CountryCode[\"IO\"] = \"IO\";\n    CountryCode[\"BN\"] = \"BN\";\n    CountryCode[\"BG\"] = \"BG\";\n    CountryCode[\"KH\"] = \"KH\";\n    CountryCode[\"CV\"] = \"CV\";\n    CountryCode[\"CL\"] = \"CL\";\n    CountryCode[\"CR\"] = \"CR\";\n    CountryCode[\"HR\"] = \"HR\";\n    CountryCode[\"CY\"] = \"CY\";\n    CountryCode[\"CZ\"] = \"CZ\";\n    CountryCode[\"DO\"] = \"DO\";\n    CountryCode[\"EC\"] = \"EC\";\n    CountryCode[\"EG\"] = \"EG\";\n    CountryCode[\"EE\"] = \"EE\";\n    CountryCode[\"FO\"] = \"FO\";\n    CountryCode[\"GE\"] = \"GE\";\n    CountryCode[\"GR\"] = \"GR\";\n    CountryCode[\"GL\"] = \"GL\";\n    CountryCode[\"GT\"] = \"GT\";\n    CountryCode[\"HT\"] = \"HT\";\n    CountryCode[\"HN\"] = \"HN\";\n    CountryCode[\"HU\"] = \"HU\";\n    CountryCode[\"IS\"] = \"IS\";\n    CountryCode[\"IN\"] = \"IN\";\n    CountryCode[\"ID\"] = \"ID\";\n    CountryCode[\"IL\"] = \"IL\";\n    CountryCode[\"JO\"] = \"JO\";\n    CountryCode[\"KZ\"] = \"KZ\";\n    CountryCode[\"KE\"] = \"KE\";\n    CountryCode[\"KW\"] = \"KW\";\n    CountryCode[\"KY\"] = \"KY\";\n    CountryCode[\"LA\"] = \"LA\";\n    CountryCode[\"LV\"] = \"LV\";\n    CountryCode[\"LB\"] = \"LB\";\n    CountryCode[\"LI\"] = \"LI\";\n    CountryCode[\"LT\"] = \"LT\";\n    CountryCode[\"LU\"] = \"LU\";\n    CountryCode[\"MK\"] = \"MK\";\n    CountryCode[\"MY\"] = \"MY\";\n    CountryCode[\"MV\"] = \"MV\";\n    CountryCode[\"MT\"] = \"MT\";\n    CountryCode[\"MU\"] = \"MU\";\n    CountryCode[\"MX\"] = \"MX\";\n    CountryCode[\"MD\"] = \"MD\";\n    CountryCode[\"MC\"] = \"MC\";\n    CountryCode[\"MA\"] = \"MA\";\n    CountryCode[\"NP\"] = \"NP\";\n    CountryCode[\"NZ\"] = \"NZ\";\n    CountryCode[\"NI\"] = \"NI\";\n    CountryCode[\"NG\"] = \"NG\";\n    CountryCode[\"OM\"] = \"OM\";\n    CountryCode[\"PA\"] = \"PA\";\n    CountryCode[\"PK\"] = \"PK\";\n    CountryCode[\"PY\"] = \"PY\";\n    CountryCode[\"PH\"] = \"PH\";\n    CountryCode[\"PL\"] = \"PL\";\n    CountryCode[\"PR\"] = \"PR\";\n    CountryCode[\"RO\"] = \"RO\";\n    CountryCode[\"RU\"] = \"RU\";\n    CountryCode[\"SM\"] = \"SM\";\n    CountryCode[\"SA\"] = \"SA\";\n    CountryCode[\"SN\"] = \"SN\";\n    CountryCode[\"SK\"] = \"SK\";\n    CountryCode[\"SI\"] = \"SI\";\n    CountryCode[\"ZA\"] = \"ZA\";\n    CountryCode[\"LK\"] = \"LK\";\n    CountryCode[\"TJ\"] = \"TJ\";\n    CountryCode[\"TH\"] = \"TH\";\n    CountryCode[\"TN\"] = \"TN\";\n    CountryCode[\"TR\"] = \"TR\";\n    CountryCode[\"TM\"] = \"TM\";\n    CountryCode[\"UA\"] = \"UA\";\n    CountryCode[\"UY\"] = \"UY\";\n    CountryCode[\"UZ\"] = \"UZ\";\n    CountryCode[\"VA\"] = \"VA\";\n    CountryCode[\"VE\"] = \"VE\";\n    CountryCode[\"ZM\"] = \"ZM\";\n    CountryCode[\"AS\"] = \"AS\";\n    CountryCode[\"CC\"] = \"CC\";\n    CountryCode[\"CK\"] = \"CK\";\n    CountryCode[\"RS\"] = \"RS\";\n    CountryCode[\"ME\"] = \"ME\";\n    CountryCode[\"CS\"] = \"CS\";\n    CountryCode[\"YU\"] = \"YU\";\n    CountryCode[\"CX\"] = \"CX\";\n    CountryCode[\"ET\"] = \"ET\";\n    CountryCode[\"FK\"] = \"FK\";\n    CountryCode[\"NF\"] = \"NF\";\n    CountryCode[\"FM\"] = \"FM\";\n    CountryCode[\"GF\"] = \"GF\";\n    CountryCode[\"GN\"] = \"GN\";\n    CountryCode[\"GP\"] = \"GP\";\n    CountryCode[\"GS\"] = \"GS\";\n    CountryCode[\"GU\"] = \"GU\";\n    CountryCode[\"GW\"] = \"GW\";\n    CountryCode[\"HM\"] = \"HM\";\n    CountryCode[\"IQ\"] = \"IQ\";\n    CountryCode[\"KG\"] = \"KG\";\n    CountryCode[\"LR\"] = \"LR\";\n    CountryCode[\"LS\"] = \"LS\";\n    CountryCode[\"MG\"] = \"MG\";\n    CountryCode[\"MH\"] = \"MH\";\n    CountryCode[\"MN\"] = \"MN\";\n    CountryCode[\"MP\"] = \"MP\";\n    CountryCode[\"MQ\"] = \"MQ\";\n    CountryCode[\"NC\"] = \"NC\";\n    CountryCode[\"NE\"] = \"NE\";\n    CountryCode[\"VI\"] = \"VI\";\n    CountryCode[\"VN\"] = \"VN\";\n    CountryCode[\"PF\"] = \"PF\";\n    CountryCode[\"PG\"] = \"PG\";\n    CountryCode[\"PM\"] = \"PM\";\n    CountryCode[\"PN\"] = \"PN\";\n    CountryCode[\"PW\"] = \"PW\";\n    CountryCode[\"RE\"] = \"RE\";\n    CountryCode[\"SH\"] = \"SH\";\n    CountryCode[\"SJ\"] = \"SJ\";\n    CountryCode[\"SO\"] = \"SO\";\n    CountryCode[\"SZ\"] = \"SZ\";\n    CountryCode[\"TC\"] = \"TC\";\n    CountryCode[\"WF\"] = \"WF\";\n    CountryCode[\"XK\"] = \"XK\";\n    CountryCode[\"YT\"] = \"YT\";\n    CountryCode[\"PE\"] = \"PE\";\n    CountryCode[\"INTL\"] = \"INTL\";\n})(CountryCode || (CountryCode = {}));\n",
+      "start": 1707437862826,
+      "end": 1707437862857,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437862857,
+      "end": 1707437862857,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437862857,
+      "end": 1707437862858,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437862858,
+      "end": 1707437862858,
+      "order": "normal"
+    }
+  ]
+}

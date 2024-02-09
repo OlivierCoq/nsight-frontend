@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/directives/ripple/index.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Styles\nimport \"./VRipple.css\";\n\n// Utilities\nimport { isObject, keyCodes } from \"../../util/index.mjs\"; // Types\nconst stopSymbol = Symbol('rippleStop');\nconst DELAY_RIPPLE = 80;\nfunction transform(el, value) {\n  el.style.transform = value;\n  el.style.webkitTransform = value;\n}\nfunction isTouchEvent(e) {\n  return e.constructor.name === 'TouchEvent';\n}\nfunction isKeyboardEvent(e) {\n  return e.constructor.name === 'KeyboardEvent';\n}\nconst calculate = function (e, el) {\n  let value = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};\n  let localX = 0;\n  let localY = 0;\n  if (!isKeyboardEvent(e)) {\n    const offset = el.getBoundingClientRect();\n    const target = isTouchEvent(e) ? e.touches[e.touches.length - 1] : e;\n    localX = target.clientX - offset.left;\n    localY = target.clientY - offset.top;\n  }\n  let radius = 0;\n  let scale = 0.3;\n  if (el._ripple?.circle) {\n    scale = 0.15;\n    radius = el.clientWidth / 2;\n    radius = value.center ? radius : radius + Math.sqrt((localX - radius) ** 2 + (localY - radius) ** 2) / 4;\n  } else {\n    radius = Math.sqrt(el.clientWidth ** 2 + el.clientHeight ** 2) / 2;\n  }\n  const centerX = `${(el.clientWidth - radius * 2) / 2}px`;\n  const centerY = `${(el.clientHeight - radius * 2) / 2}px`;\n  const x = value.center ? centerX : `${localX - radius}px`;\n  const y = value.center ? centerY : `${localY - radius}px`;\n  return {\n    radius,\n    scale,\n    x,\n    y,\n    centerX,\n    centerY\n  };\n};\nconst ripples = {\n  /* eslint-disable max-statements */\n  show(e, el) {\n    let value = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};\n    if (!el?._ripple?.enabled) {\n      return;\n    }\n    const container = document.createElement('span');\n    const animation = document.createElement('span');\n    container.appendChild(animation);\n    container.className = 'v-ripple__container';\n    if (value.class) {\n      container.className += ` ${value.class}`;\n    }\n    const {\n      radius,\n      scale,\n      x,\n      y,\n      centerX,\n      centerY\n    } = calculate(e, el, value);\n    const size = `${radius * 2}px`;\n    animation.className = 'v-ripple__animation';\n    animation.style.width = size;\n    animation.style.height = size;\n    el.appendChild(container);\n    const computed = window.getComputedStyle(el);\n    if (computed && computed.position === 'static') {\n      el.style.position = 'relative';\n      el.dataset.previousPosition = 'static';\n    }\n    animation.classList.add('v-ripple__animation--enter');\n    animation.classList.add('v-ripple__animation--visible');\n    transform(animation, `translate(${x}, ${y}) scale3d(${scale},${scale},${scale})`);\n    animation.dataset.activated = String(performance.now());\n    setTimeout(() => {\n      animation.classList.remove('v-ripple__animation--enter');\n      animation.classList.add('v-ripple__animation--in');\n      transform(animation, `translate(${centerX}, ${centerY}) scale3d(1,1,1)`);\n    }, 0);\n  },\n  hide(el) {\n    if (!el?._ripple?.enabled) return;\n    const ripples = el.getElementsByClassName('v-ripple__animation');\n    if (ripples.length === 0) return;\n    const animation = ripples[ripples.length - 1];\n    if (animation.dataset.isHiding) return;else animation.dataset.isHiding = 'true';\n    const diff = performance.now() - Number(animation.dataset.activated);\n    const delay = Math.max(250 - diff, 0);\n    setTimeout(() => {\n      animation.classList.remove('v-ripple__animation--in');\n      animation.classList.add('v-ripple__animation--out');\n      setTimeout(() => {\n        const ripples = el.getElementsByClassName('v-ripple__animation');\n        if (ripples.length === 1 && el.dataset.previousPosition) {\n          el.style.position = el.dataset.previousPosition;\n          delete el.dataset.previousPosition;\n        }\n        if (animation.parentNode?.parentNode === el) el.removeChild(animation.parentNode);\n      }, 300);\n    }, delay);\n  }\n};\nfunction isRippleEnabled(value) {\n  return typeof value === 'undefined' || !!value;\n}\nfunction rippleShow(e) {\n  const value = {};\n  const element = e.currentTarget;\n  if (!element?._ripple || element._ripple.touched || e[stopSymbol]) return;\n\n  // Don't allow the event to trigger ripples on any other elements\n  e[stopSymbol] = true;\n  if (isTouchEvent(e)) {\n    element._ripple.touched = true;\n    element._ripple.isTouch = true;\n  } else {\n    // It's possible for touch events to fire\n    // as mouse events on Android/iOS, this\n    // will skip the event call if it has\n    // already been registered as touch\n    if (element._ripple.isTouch) return;\n  }\n  value.center = element._ripple.centered || isKeyboardEvent(e);\n  if (element._ripple.class) {\n    value.class = element._ripple.class;\n  }\n  if (isTouchEvent(e)) {\n    // already queued that shows or hides the ripple\n    if (element._ripple.showTimerCommit) return;\n    element._ripple.showTimerCommit = () => {\n      ripples.show(e, element, value);\n    };\n    element._ripple.showTimer = window.setTimeout(() => {\n      if (element?._ripple?.showTimerCommit) {\n        element._ripple.showTimerCommit();\n        element._ripple.showTimerCommit = null;\n      }\n    }, DELAY_RIPPLE);\n  } else {\n    ripples.show(e, element, value);\n  }\n}\nfunction rippleStop(e) {\n  e[stopSymbol] = true;\n}\nfunction rippleHide(e) {\n  const element = e.currentTarget;\n  if (!element?._ripple) return;\n  window.clearTimeout(element._ripple.showTimer);\n\n  // The touch interaction occurs before the show timer is triggered.\n  // We still want to show ripple effect.\n  if (e.type === 'touchend' && element._ripple.showTimerCommit) {\n    element._ripple.showTimerCommit();\n    element._ripple.showTimerCommit = null;\n\n    // re-queue ripple hiding\n    element._ripple.showTimer = window.setTimeout(() => {\n      rippleHide(e);\n    });\n    return;\n  }\n  window.setTimeout(() => {\n    if (element._ripple) {\n      element._ripple.touched = false;\n    }\n  });\n  ripples.hide(element);\n}\nfunction rippleCancelShow(e) {\n  const element = e.currentTarget;\n  if (!element?._ripple) return;\n  if (element._ripple.showTimerCommit) {\n    element._ripple.showTimerCommit = null;\n  }\n  window.clearTimeout(element._ripple.showTimer);\n}\nlet keyboardRipple = false;\nfunction keyboardRippleShow(e) {\n  if (!keyboardRipple && (e.keyCode === keyCodes.enter || e.keyCode === keyCodes.space)) {\n    keyboardRipple = true;\n    rippleShow(e);\n  }\n}\nfunction keyboardRippleHide(e) {\n  keyboardRipple = false;\n  rippleHide(e);\n}\nfunction focusRippleHide(e) {\n  if (keyboardRipple) {\n    keyboardRipple = false;\n    rippleHide(e);\n  }\n}\nfunction updateRipple(el, binding, wasEnabled) {\n  const {\n    value,\n    modifiers\n  } = binding;\n  const enabled = isRippleEnabled(value);\n  if (!enabled) {\n    ripples.hide(el);\n  }\n  el._ripple = el._ripple ?? {};\n  el._ripple.enabled = enabled;\n  el._ripple.centered = modifiers.center;\n  el._ripple.circle = modifiers.circle;\n  if (isObject(value) && value.class) {\n    el._ripple.class = value.class;\n  }\n  if (enabled && !wasEnabled) {\n    if (modifiers.stop) {\n      el.addEventListener('touchstart', rippleStop, {\n        passive: true\n      });\n      el.addEventListener('mousedown', rippleStop);\n      return;\n    }\n    el.addEventListener('touchstart', rippleShow, {\n      passive: true\n    });\n    el.addEventListener('touchend', rippleHide, {\n      passive: true\n    });\n    el.addEventListener('touchmove', rippleCancelShow, {\n      passive: true\n    });\n    el.addEventListener('touchcancel', rippleHide);\n    el.addEventListener('mousedown', rippleShow);\n    el.addEventListener('mouseup', rippleHide);\n    el.addEventListener('mouseleave', rippleHide);\n    el.addEventListener('keydown', keyboardRippleShow);\n    el.addEventListener('keyup', keyboardRippleHide);\n    el.addEventListener('blur', focusRippleHide);\n\n    // Anchor tags can be dragged, causes other hides to fail - #1537\n    el.addEventListener('dragstart', rippleHide, {\n      passive: true\n    });\n  } else if (!enabled && wasEnabled) {\n    removeListeners(el);\n  }\n}\nfunction removeListeners(el) {\n  el.removeEventListener('mousedown', rippleShow);\n  el.removeEventListener('touchstart', rippleShow);\n  el.removeEventListener('touchend', rippleHide);\n  el.removeEventListener('touchmove', rippleCancelShow);\n  el.removeEventListener('touchcancel', rippleHide);\n  el.removeEventListener('mouseup', rippleHide);\n  el.removeEventListener('mouseleave', rippleHide);\n  el.removeEventListener('keydown', keyboardRippleShow);\n  el.removeEventListener('keyup', keyboardRippleHide);\n  el.removeEventListener('dragstart', rippleHide);\n  el.removeEventListener('blur', focusRippleHide);\n}\nfunction mounted(el, binding) {\n  updateRipple(el, binding, false);\n}\nfunction unmounted(el) {\n  delete el._ripple;\n  removeListeners(el);\n}\nfunction updated(el, binding) {\n  if (binding.value === binding.oldValue) {\n    return;\n  }\n  const wasEnabled = isRippleEnabled(binding.oldValue);\n  updateRipple(el, binding, wasEnabled);\n}\nexport const Ripple = {\n  mounted,\n  unmounted,\n  updated\n};\nexport default Ripple;\n//# sourceMappingURL=index.mjs.map",
+      "start": 1707437859534,
+      "end": 1707437859562,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437859562,
+      "end": 1707437859562,
+      "order": "normal"
+    }
+  ]
+}

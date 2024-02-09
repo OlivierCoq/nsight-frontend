@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/layout.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Composables\nimport { useResizeObserver } from \"./resizeObserver.mjs\"; // Utilities\nimport { computed, inject, onActivated, onBeforeUnmount, onDeactivated, onMounted, provide, reactive, ref, shallowRef } from 'vue';\nimport { convertToUnit, findChildrenWithProvide, getCurrentInstance, getUid, propsFactory } from \"../util/index.mjs\"; // Types\nexport const VuetifyLayoutKey = Symbol.for('vuetify:layout');\nexport const VuetifyLayoutItemKey = Symbol.for('vuetify:layout-item');\nconst ROOT_ZINDEX = 1000;\nexport const makeLayoutProps = propsFactory({\n  overlaps: {\n    type: Array,\n    default: () => []\n  },\n  fullHeight: Boolean\n}, 'layout');\n\n// Composables\nexport const makeLayoutItemProps = propsFactory({\n  name: {\n    type: String\n  },\n  order: {\n    type: [Number, String],\n    default: 0\n  },\n  absolute: Boolean\n}, 'layout-item');\nexport function useLayout() {\n  const layout = inject(VuetifyLayoutKey);\n  if (!layout) throw new Error('[Vuetify] Could not find injected layout');\n  return {\n    getLayoutItem: layout.getLayoutItem,\n    mainRect: layout.mainRect,\n    mainStyles: layout.mainStyles\n  };\n}\nexport function useLayoutItem(options) {\n  const layout = inject(VuetifyLayoutKey);\n  if (!layout) throw new Error('[Vuetify] Could not find injected layout');\n  const id = options.id ?? `layout-item-${getUid()}`;\n  const vm = getCurrentInstance('useLayoutItem');\n  provide(VuetifyLayoutItemKey, {\n    id\n  });\n  const isKeptAlive = shallowRef(false);\n  onDeactivated(() => isKeptAlive.value = true);\n  onActivated(() => isKeptAlive.value = false);\n  const {\n    layoutItemStyles,\n    layoutItemScrimStyles\n  } = layout.register(vm, {\n    ...options,\n    active: computed(() => isKeptAlive.value ? false : options.active.value),\n    id\n  });\n  onBeforeUnmount(() => layout.unregister(id));\n  return {\n    layoutItemStyles,\n    layoutRect: layout.layoutRect,\n    layoutItemScrimStyles\n  };\n}\nconst generateLayers = (layout, positions, layoutSizes, activeItems) => {\n  let previousLayer = {\n    top: 0,\n    left: 0,\n    right: 0,\n    bottom: 0\n  };\n  const layers = [{\n    id: '',\n    layer: {\n      ...previousLayer\n    }\n  }];\n  for (const id of layout) {\n    const position = positions.get(id);\n    const amount = layoutSizes.get(id);\n    const active = activeItems.get(id);\n    if (!position || !amount || !active) continue;\n    const layer = {\n      ...previousLayer,\n      [position.value]: parseInt(previousLayer[position.value], 10) + (active.value ? parseInt(amount.value, 10) : 0)\n    };\n    layers.push({\n      id,\n      layer\n    });\n    previousLayer = layer;\n  }\n  return layers;\n};\nexport function createLayout(props) {\n  const parentLayout = inject(VuetifyLayoutKey, null);\n  const rootZIndex = computed(() => parentLayout ? parentLayout.rootZIndex.value - 100 : ROOT_ZINDEX);\n  const registered = ref([]);\n  const positions = reactive(new Map());\n  const layoutSizes = reactive(new Map());\n  const priorities = reactive(new Map());\n  const activeItems = reactive(new Map());\n  const disabledTransitions = reactive(new Map());\n  const {\n    resizeRef,\n    contentRect: layoutRect\n  } = useResizeObserver();\n  const computedOverlaps = computed(() => {\n    const map = new Map();\n    const overlaps = props.overlaps ?? [];\n    for (const overlap of overlaps.filter(item => item.includes(':'))) {\n      const [top, bottom] = overlap.split(':');\n      if (!registered.value.includes(top) || !registered.value.includes(bottom)) continue;\n      const topPosition = positions.get(top);\n      const bottomPosition = positions.get(bottom);\n      const topAmount = layoutSizes.get(top);\n      const bottomAmount = layoutSizes.get(bottom);\n      if (!topPosition || !bottomPosition || !topAmount || !bottomAmount) continue;\n      map.set(bottom, {\n        position: topPosition.value,\n        amount: parseInt(topAmount.value, 10)\n      });\n      map.set(top, {\n        position: bottomPosition.value,\n        amount: -parseInt(bottomAmount.value, 10)\n      });\n    }\n    return map;\n  });\n  const layers = computed(() => {\n    const uniquePriorities = [...new Set([...priorities.values()].map(p => p.value))].sort((a, b) => a - b);\n    const layout = [];\n    for (const p of uniquePriorities) {\n      const items = registered.value.filter(id => priorities.get(id)?.value === p);\n      layout.push(...items);\n    }\n    return generateLayers(layout, positions, layoutSizes, activeItems);\n  });\n  const transitionsEnabled = computed(() => {\n    return !Array.from(disabledTransitions.values()).some(ref => ref.value);\n  });\n  const mainRect = computed(() => {\n    return layers.value[layers.value.length - 1].layer;\n  });\n  const mainStyles = computed(() => {\n    return {\n      '--v-layout-left': convertToUnit(mainRect.value.left),\n      '--v-layout-right': convertToUnit(mainRect.value.right),\n      '--v-layout-top': convertToUnit(mainRect.value.top),\n      '--v-layout-bottom': convertToUnit(mainRect.value.bottom),\n      ...(transitionsEnabled.value ? undefined : {\n        transition: 'none'\n      })\n    };\n  });\n  const items = computed(() => {\n    return layers.value.slice(1).map((_ref, index) => {\n      let {\n        id\n      } = _ref;\n      const {\n        layer\n      } = layers.value[index];\n      const size = layoutSizes.get(id);\n      const position = positions.get(id);\n      return {\n        id,\n        ...layer,\n        size: Number(size.value),\n        position: position.value\n      };\n    });\n  });\n  const getLayoutItem = id => {\n    return items.value.find(item => item.id === id);\n  };\n  const rootVm = getCurrentInstance('createLayout');\n  const isMounted = shallowRef(false);\n  onMounted(() => {\n    isMounted.value = true;\n  });\n  provide(VuetifyLayoutKey, {\n    register: (vm, _ref2) => {\n      let {\n        id,\n        order,\n        position,\n        layoutSize,\n        elementSize,\n        active,\n        disableTransitions,\n        absolute\n      } = _ref2;\n      priorities.set(id, order);\n      positions.set(id, position);\n      layoutSizes.set(id, layoutSize);\n      activeItems.set(id, active);\n      disableTransitions && disabledTransitions.set(id, disableTransitions);\n      const instances = findChildrenWithProvide(VuetifyLayoutItemKey, rootVm?.vnode);\n      const instanceIndex = instances.indexOf(vm);\n      if (instanceIndex > -1) registered.value.splice(instanceIndex, 0, id);else registered.value.push(id);\n      const index = computed(() => items.value.findIndex(i => i.id === id));\n      const zIndex = computed(() => rootZIndex.value + layers.value.length * 2 - index.value * 2);\n      const layoutItemStyles = computed(() => {\n        const isHorizontal = position.value === 'left' || position.value === 'right';\n        const isOppositeHorizontal = position.value === 'right';\n        const isOppositeVertical = position.value === 'bottom';\n        const styles = {\n          [position.value]: 0,\n          zIndex: zIndex.value,\n          transform: `translate${isHorizontal ? 'X' : 'Y'}(${(active.value ? 0 : -110) * (isOppositeHorizontal || isOppositeVertical ? -1 : 1)}%)`,\n          position: absolute.value || rootZIndex.value !== ROOT_ZINDEX ? 'absolute' : 'fixed',\n          ...(transitionsEnabled.value ? undefined : {\n            transition: 'none'\n          })\n        };\n        if (!isMounted.value) return styles;\n        const item = items.value[index.value];\n        if (!item) throw new Error(`[Vuetify] Could not find layout item \"${id}\"`);\n        const overlap = computedOverlaps.value.get(id);\n        if (overlap) {\n          item[overlap.position] += overlap.amount;\n        }\n        return {\n          ...styles,\n          height: isHorizontal ? `calc(100% - ${item.top}px - ${item.bottom}px)` : elementSize.value ? `${elementSize.value}px` : undefined,\n          left: isOppositeHorizontal ? undefined : `${item.left}px`,\n          right: isOppositeHorizontal ? `${item.right}px` : undefined,\n          top: position.value !== 'bottom' ? `${item.top}px` : undefined,\n          bottom: position.value !== 'top' ? `${item.bottom}px` : undefined,\n          width: !isHorizontal ? `calc(100% - ${item.left}px - ${item.right}px)` : elementSize.value ? `${elementSize.value}px` : undefined\n        };\n      });\n      const layoutItemScrimStyles = computed(() => ({\n        zIndex: zIndex.value - 1\n      }));\n      return {\n        layoutItemStyles,\n        layoutItemScrimStyles,\n        zIndex\n      };\n    },\n    unregister: id => {\n      priorities.delete(id);\n      positions.delete(id);\n      layoutSizes.delete(id);\n      activeItems.delete(id);\n      disabledTransitions.delete(id);\n      registered.value = registered.value.filter(v => v !== id);\n    },\n    mainRect,\n    mainStyles,\n    getLayoutItem,\n    items,\n    layoutRect,\n    rootZIndex\n  });\n  const layoutClasses = computed(() => ['v-layout', {\n    'v-layout--full-height': props.fullHeight\n  }]);\n  const layoutStyles = computed(() => ({\n    zIndex: parentLayout ? rootZIndex.value : undefined,\n    position: parentLayout ? 'relative' : undefined,\n    overflow: parentLayout ? 'hidden' : undefined\n  }));\n  return {\n    layoutClasses,\n    layoutStyles,\n    getLayoutItem,\n    items,\n    layoutRect,\n    layoutRef: resizeRef\n  };\n}\n//# sourceMappingURL=layout.mjs.map",
+      "start": 1707437860476,
+      "end": 1707437860576,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860576,
+      "end": 1707437860576,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860576,
+      "end": 1707437860577,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860577,
+      "end": 1707437860577,
+      "order": "normal"
+    }
+  ]
+}

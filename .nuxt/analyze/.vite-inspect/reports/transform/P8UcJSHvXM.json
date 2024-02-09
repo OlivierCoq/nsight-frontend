@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/locationCustomAttributesApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { bulkDeleteLocationCustomAttributesRequestSchema, } from '../models/bulkDeleteLocationCustomAttributesRequest';\nimport { bulkDeleteLocationCustomAttributesResponseSchema, } from '../models/bulkDeleteLocationCustomAttributesResponse';\nimport { bulkUpsertLocationCustomAttributesRequestSchema, } from '../models/bulkUpsertLocationCustomAttributesRequest';\nimport { bulkUpsertLocationCustomAttributesResponseSchema, } from '../models/bulkUpsertLocationCustomAttributesResponse';\nimport { createLocationCustomAttributeDefinitionRequestSchema, } from '../models/createLocationCustomAttributeDefinitionRequest';\nimport { createLocationCustomAttributeDefinitionResponseSchema, } from '../models/createLocationCustomAttributeDefinitionResponse';\nimport { deleteLocationCustomAttributeDefinitionResponseSchema, } from '../models/deleteLocationCustomAttributeDefinitionResponse';\nimport { deleteLocationCustomAttributeResponseSchema, } from '../models/deleteLocationCustomAttributeResponse';\nimport { listLocationCustomAttributeDefinitionsResponseSchema, } from '../models/listLocationCustomAttributeDefinitionsResponse';\nimport { listLocationCustomAttributesResponseSchema, } from '../models/listLocationCustomAttributesResponse';\nimport { retrieveLocationCustomAttributeDefinitionResponseSchema, } from '../models/retrieveLocationCustomAttributeDefinitionResponse';\nimport { retrieveLocationCustomAttributeResponseSchema, } from '../models/retrieveLocationCustomAttributeResponse';\nimport { updateLocationCustomAttributeDefinitionRequestSchema, } from '../models/updateLocationCustomAttributeDefinitionRequest';\nimport { updateLocationCustomAttributeDefinitionResponseSchema, } from '../models/updateLocationCustomAttributeDefinitionResponse';\nimport { upsertLocationCustomAttributeRequestSchema, } from '../models/upsertLocationCustomAttributeRequest';\nimport { upsertLocationCustomAttributeResponseSchema, } from '../models/upsertLocationCustomAttributeResponse';\nimport { boolean, number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class LocationCustomAttributesApi extends BaseApi {\n    /**\n     * Lists the location-related [custom attribute definitions]($m/CustomAttributeDefinition) that belong\n     * to a Square seller account.\n     * When all response pages are retrieved, the results include all custom attribute definitions\n     * that are visible to the requesting application, including those that are created by other\n     * applications and set to `VISIBILITY_READ_ONLY` or `VISIBILITY_READ_WRITE_VALUES`.\n     *\n     * @param visibilityFilter  Filters the `CustomAttributeDefinition` results by their `visibility` values.\n     * @param limit             The maximum number of results to return in a single paged response. This limit\n     *                                    is advisory. The response might contain more or fewer results. The minimum\n     *                                    value is 1 and the maximum value is 100. The default value is 20. For more\n     *                                    information, see [Pagination](https://developer.squareup.com/docs/build-\n     *                                    basics/common-api-patterns/pagination).\n     * @param cursor            The cursor returned in the paged response from the previous call to this\n     *                                    endpoint. Provide this cursor to retrieve the next page of results for your\n     *                                    original request. For more information, see [Pagination](https://developer.\n     *                                    squareup.com/docs/build-basics/common-api-patterns/pagination).\n     * @return Response from the API call\n     */\n    async listLocationCustomAttributeDefinitions(visibilityFilter, limit, cursor, requestOptions) {\n        const req = this.createRequest('GET', '/v2/locations/custom-attribute-definitions');\n        const mapped = req.prepareArgs({\n            visibilityFilter: [visibilityFilter, optional(string())],\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n        });\n        req.query('visibility_filter', mapped.visibilityFilter);\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        return req.callAsJson(listLocationCustomAttributeDefinitionsResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a location-related [custom attribute definition]($m/CustomAttributeDefinition) for a Square\n     * seller account.\n     * Use this endpoint to define a custom attribute that can be associated with locations.\n     * A custom attribute definition specifies the `key`, `visibility`, `schema`, and other properties\n     * for a custom attribute. After the definition is created, you can call\n     * [UpsertLocationCustomAttribute]($e/LocationCustomAttributes/UpsertLocationCustomAttribute) or\n     * [BulkUpsertLocationCustomAttributes]($e/LocationCustomAttributes/BulkUpsertLocationCustomAttributes)\n     * to set the custom attribute for locations.\n     *\n     * @param body         An object containing the fields to\n     *                                                                              POST for the request.  See the\n     *                                                                              corresponding object definition for\n     *                                                                              field details.\n     * @return Response from the API call\n     */\n    async createLocationCustomAttributeDefinition(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/locations/custom-attribute-definitions');\n        const mapped = req.prepareArgs({\n            body: [body, createLocationCustomAttributeDefinitionRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createLocationCustomAttributeDefinitionResponseSchema, requestOptions);\n    }\n    /**\n     * Deletes a location-related [custom attribute definition]($m/CustomAttributeDefinition) from a Square\n     * seller account.\n     * Deleting a custom attribute definition also deletes the corresponding custom attribute from\n     * all locations.\n     * Only the definition owner can delete a custom attribute definition.\n     *\n     * @param key The key of the custom attribute definition to delete.\n     * @return Response from the API call\n     */\n    async deleteLocationCustomAttributeDefinition(key, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({ key: [key, string()] });\n        req.appendTemplatePath `/v2/locations/custom-attribute-definitions/${mapped.key}`;\n        return req.callAsJson(deleteLocationCustomAttributeDefinitionResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a location-related [custom attribute definition]($m/CustomAttributeDefinition) from a\n     * Square seller account.\n     * To retrieve a custom attribute definition created by another application, the `visibility`\n     * setting must be `VISIBILITY_READ_ONLY` or `VISIBILITY_READ_WRITE_VALUES`.\n     *\n     * @param key     The key of the custom attribute definition to retrieve. If the requesting application is\n     *                          not the definition owner, you must use the qualified key.\n     * @param version The current version of the custom attribute definition, which is used for strongly\n     *                          consistent reads to guarantee that you receive the most up-to-date data. When included in\n     *                          the request, Square returns the specified version or a higher version if one exists. If\n     *                          the specified version is higher than the current version, Square returns a `BAD_REQUEST`\n     *                          error.\n     * @return Response from the API call\n     */\n    async retrieveLocationCustomAttributeDefinition(key, version, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            key: [key, string()],\n            version: [version, optional(number())],\n        });\n        req.query('version', mapped.version);\n        req.appendTemplatePath `/v2/locations/custom-attribute-definitions/${mapped.key}`;\n        return req.callAsJson(retrieveLocationCustomAttributeDefinitionResponseSchema, requestOptions);\n    }\n    /**\n     * Updates a location-related [custom attribute definition]($m/CustomAttributeDefinition) for a Square\n     * seller account.\n     * Use this endpoint to update the following fields: `name`, `description`, `visibility`, or the\n     * `schema` for a `Selection` data type.\n     * Only the definition owner can update a custom attribute definition.\n     *\n     * @param key          The key of the custom attribute\n     *                                                                              definition to update.\n     * @param body         An object containing the fields to\n     *                                                                              POST for the request.  See the\n     *                                                                              corresponding object definition for\n     *                                                                              field details.\n     * @return Response from the API call\n     */\n    async updateLocationCustomAttributeDefinition(key, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            key: [key, string()],\n            body: [body, updateLocationCustomAttributeDefinitionRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/locations/custom-attribute-definitions/${mapped.key}`;\n        return req.callAsJson(updateLocationCustomAttributeDefinitionResponseSchema, requestOptions);\n    }\n    /**\n     * Deletes [custom attributes]($m/CustomAttribute) for locations as a bulk operation.\n     * To delete a custom attribute owned by another application, the `visibility` setting must be\n     * `VISIBILITY_READ_WRITE_VALUES`.\n     *\n     * @param body         An object containing the fields to POST\n     *                                                                         for the request.  See the corresponding\n     *                                                                         object definition for field details.\n     * @return Response from the API call\n     */\n    async bulkDeleteLocationCustomAttributes(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/locations/custom-attributes/bulk-delete');\n        const mapped = req.prepareArgs({\n            body: [body, bulkDeleteLocationCustomAttributesRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(bulkDeleteLocationCustomAttributesResponseSchema, requestOptions);\n    }\n    /**\n     * Creates or updates [custom attributes]($m/CustomAttribute) for locations as a bulk operation.\n     * Use this endpoint to set the value of one or more custom attributes for one or more locations.\n     * A custom attribute is based on a custom attribute definition in a Square seller account, which is\n     * created using the\n     * [CreateLocationCustomAttributeDefinition]($e/LocationCustomAttributes/CreateLocationCustomAttributeD\n     * efinition) endpoint.\n     * This `BulkUpsertLocationCustomAttributes` endpoint accepts a map of 1 to 25 individual upsert\n     * requests and returns a map of individual upsert responses. Each upsert request has a unique ID\n     * and provides a location ID and custom attribute. Each upsert response is returned with the ID\n     * of the corresponding request.\n     * To create or update a custom attribute owned by another application, the `visibility` setting\n     * must be `VISIBILITY_READ_WRITE_VALUES`.\n     *\n     * @param body         An object containing the fields to POST\n     *                                                                         for the request.  See the corresponding\n     *                                                                         object definition for field details.\n     * @return Response from the API call\n     */\n    async bulkUpsertLocationCustomAttributes(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/locations/custom-attributes/bulk-upsert');\n        const mapped = req.prepareArgs({\n            body: [body, bulkUpsertLocationCustomAttributesRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(bulkUpsertLocationCustomAttributesResponseSchema, requestOptions);\n    }\n    /**\n     * Lists the [custom attributes]($m/CustomAttribute) associated with a location.\n     * You can use the `with_definitions` query parameter to also retrieve custom attribute definitions\n     * in the same call.\n     * When all response pages are retrieved, the results include all custom attributes that are\n     * visible to the requesting application, including those that are owned by other applications\n     * and set to `VISIBILITY_READ_ONLY` or `VISIBILITY_READ_WRITE_VALUES`.\n     *\n     * @param locationId        The ID of the target [location](entity:Location).\n     * @param visibilityFilter  Filters the `CustomAttributeDefinition` results by their `visibility` values.\n     * @param limit             The maximum number of results to return in a single paged response. This\n     *                                     limit is advisory. The response might contain more or fewer results. The\n     *                                     minimum value is 1 and the maximum value is 100. The default value is 20. For\n     *                                     more information, see [Pagination](https://developer.squareup.com/docs/build-\n     *                                     basics/common-api-patterns/pagination).\n     * @param cursor            The cursor returned in the paged response from the previous call to this\n     *                                     endpoint. Provide this cursor to retrieve the next page of results for your\n     *                                     original request. For more information, see [Pagination](https://developer.\n     *                                     squareup.com/docs/build-basics/common-api-patterns/pagination).\n     * @param withDefinitions   Indicates whether to return the [custom attribute definition](entity:\n     *                                     CustomAttributeDefinition) in the `definition` field of each custom attribute.\n     *                                     Set this parameter to `true` to get the name and description of each custom\n     *                                     attribute, information about the data type, or other definition details. The\n     *                                     default value is `false`.\n     * @return Response from the API call\n     */\n    async listLocationCustomAttributes(locationId, visibilityFilter, limit, cursor, withDefinitions, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            locationId: [locationId, string()],\n            visibilityFilter: [visibilityFilter, optional(string())],\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n            withDefinitions: [withDefinitions, optional(boolean())],\n        });\n        req.query('visibility_filter', mapped.visibilityFilter);\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        req.query('with_definitions', mapped.withDefinitions);\n        req.appendTemplatePath `/v2/locations/${mapped.locationId}/custom-attributes`;\n        return req.callAsJson(listLocationCustomAttributesResponseSchema, requestOptions);\n    }\n    /**\n     * Deletes a [custom attribute]($m/CustomAttribute) associated with a location.\n     * To delete a custom attribute owned by another application, the `visibility` setting must be\n     * `VISIBILITY_READ_WRITE_VALUES`.\n     *\n     * @param locationId  The ID of the target [location](entity:Location).\n     * @param key         The key of the custom attribute to delete. This key must match the `key` of a custom\n     *                              attribute definition in the Square seller account. If the requesting application is\n     *                              not the definition owner, you must use the qualified key.\n     * @return Response from the API call\n     */\n    async deleteLocationCustomAttribute(locationId, key, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({\n            locationId: [locationId, string()],\n            key: [key, string()],\n        });\n        req.appendTemplatePath `/v2/locations/${mapped.locationId}/custom-attributes/${mapped.key}`;\n        return req.callAsJson(deleteLocationCustomAttributeResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a [custom attribute]($m/CustomAttribute) associated with a location.\n     * You can use the `with_definition` query parameter to also retrieve the custom attribute definition\n     * in the same call.\n     * To retrieve a custom attribute owned by another application, the `visibility` setting must be\n     * `VISIBILITY_READ_ONLY` or `VISIBILITY_READ_WRITE_VALUES`.\n     *\n     * @param locationId      The ID of the target [location](entity:Location).\n     * @param key             The key of the custom attribute to retrieve. This key must match the `key` of a\n     *                                   custom attribute definition in the Square seller account. If the requesting\n     *                                   application is not the definition owner, you must use the qualified key.\n     * @param withDefinition  Indicates whether to return the [custom attribute definition](entity:\n     *                                   CustomAttributeDefinition) in the `definition` field of the custom attribute.\n     *                                   Set this parameter to `true` to get the name and description of the custom\n     *                                   attribute, information about the data type, or other definition details. The\n     *                                   default value is `false`.\n     * @param version         The current version of the custom attribute, which is used for strongly\n     *                                   consistent reads to guarantee that you receive the most up-to-date data. When\n     *                                   included in the request, Square returns the specified version or a higher\n     *                                   version if one exists. If the specified version is higher than the current\n     *                                   version, Square returns a `BAD_REQUEST` error.\n     * @return Response from the API call\n     */\n    async retrieveLocationCustomAttribute(locationId, key, withDefinition, version, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            locationId: [locationId, string()],\n            key: [key, string()],\n            withDefinition: [withDefinition, optional(boolean())],\n            version: [version, optional(number())],\n        });\n        req.query('with_definition', mapped.withDefinition);\n        req.query('version', mapped.version);\n        req.appendTemplatePath `/v2/locations/${mapped.locationId}/custom-attributes/${mapped.key}`;\n        return req.callAsJson(retrieveLocationCustomAttributeResponseSchema, requestOptions);\n    }\n    /**\n     * Creates or updates a [custom attribute]($m/CustomAttribute) for a location.\n     * Use this endpoint to set the value of a custom attribute for a specified location.\n     * A custom attribute is based on a custom attribute definition in a Square seller account, which\n     * is created using the\n     * [CreateLocationCustomAttributeDefinition]($e/LocationCustomAttributes/CreateLocationCustomAttributeD\n     * efinition) endpoint.\n     * To create or update a custom attribute owned by another application, the `visibility` setting\n     * must be `VISIBILITY_READ_WRITE_VALUES`.\n     *\n     * @param locationId   The ID of the target [location](entity:\n     *                                                                    Location).\n     * @param key          The key of the custom attribute to create or\n     *                                                                    update. This key must match the `key` of a\n     *                                                                    custom attribute definition in the Square\n     *                                                                    seller account. If the requesting application\n     *                                                                    is not the definition owner, you must use the\n     *                                                                    qualified key.\n     * @param body         An object containing the fields to POST for\n     *                                                                    the request.  See the corresponding object\n     *                                                                    definition for field details.\n     * @return Response from the API call\n     */\n    async upsertLocationCustomAttribute(locationId, key, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            locationId: [locationId, string()],\n            key: [key, string()],\n            body: [body, upsertLocationCustomAttributeRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/locations/${mapped.locationId}/custom-attributes/${mapped.key}`;\n        return req.callAsJson(upsertLocationCustomAttributeResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=locationCustomAttributesApi.js.map",
+      "start": 1707437860291,
+      "end": 1707437860392,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860392,
+      "end": 1707437860392,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860392,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860393,
+      "end": 1707437860393,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860394,
+      "end": 1707437860394,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860394,
+      "end": 1707437860394,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860394,
+      "end": 1707437860394,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860394,
+      "end": 1707437860394,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860394,
+      "end": 1707437860394,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860394,
+      "end": 1707437860394,
+      "order": "normal"
+    }
+  ]
+}

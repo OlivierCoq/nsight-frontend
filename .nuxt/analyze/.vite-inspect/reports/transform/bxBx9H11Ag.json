@@ -1,0 +1,219 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/json-bigint/lib/stringify.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "\r\n/*\r\n    json2.js\r\n    2013-05-26\r\n\r\n    Public Domain.\r\n\r\n    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.\r\n\r\n    See http://www.JSON.org/js.html\r\n\r\n\r\n    This code should be minified before deployment.\r\n    See http://javascript.crockford.com/jsmin.html\r\n\r\n    USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO\r\n    NOT CONTROL.\r\n\r\n\r\n    This file creates a global JSON object containing two methods: stringify\r\n    and parse.\r\n\r\n        JSON.stringify(value, replacer, space)\r\n            value       any JavaScript value, usually an object or array.\r\n\r\n            replacer    an optional parameter that determines how object\r\n                        values are stringified for objects. It can be a\r\n                        function or an array of strings.\r\n\r\n            space       an optional parameter that specifies the indentation\r\n                        of nested structures. If it is omitted, the text will\r\n                        be packed without extra whitespace. If it is a number,\r\n                        it will specify the number of spaces to indent at each\r\n                        level. If it is a string (such as '\\t' or '&nbsp;'),\r\n                        it contains the characters used to indent at each level.\r\n\r\n            This method produces a JSON text from a JavaScript value.\r\n\r\n            When an object value is found, if the object contains a toJSON\r\n            method, its toJSON method will be called and the result will be\r\n            stringified. A toJSON method does not serialize: it returns the\r\n            value represented by the name/value pair that should be serialized,\r\n            or undefined if nothing should be serialized. The toJSON method\r\n            will be passed the key associated with the value, and this will be\r\n            bound to the value\r\n\r\n            For example, this would serialize Dates as ISO strings.\r\n\r\n                Date.prototype.toJSON = function (key) {\r\n                    function f(n) {\r\n                        // Format integers to have at least two digits.\r\n                        return n < 10 ? '0' + n : n;\r\n                    }\r\n\r\n                    return this.getUTCFullYear()   + '-' +\r\n                         f(this.getUTCMonth() + 1) + '-' +\r\n                         f(this.getUTCDate())      + 'T' +\r\n                         f(this.getUTCHours())     + ':' +\r\n                         f(this.getUTCMinutes())   + ':' +\r\n                         f(this.getUTCSeconds())   + 'Z';\r\n                };\r\n\r\n            You can provide an optional replacer method. It will be passed the\r\n            key and value of each member, with this bound to the containing\r\n            object. The value that is returned from your method will be\r\n            serialized. If your method returns undefined, then the member will\r\n            be excluded from the serialization.\r\n\r\n            If the replacer parameter is an array of strings, then it will be\r\n            used to select the members to be serialized. It filters the results\r\n            such that only members with keys listed in the replacer array are\r\n            stringified.\r\n\r\n            Values that do not have JSON representations, such as undefined or\r\n            functions, will not be serialized. Such values in objects will be\r\n            dropped; in arrays they will be replaced with null. You can use\r\n            a replacer function to replace those with JSON values.\r\n            JSON.stringify(undefined) returns undefined.\r\n\r\n            The optional space parameter produces a stringification of the\r\n            value that is filled with line breaks and indentation to make it\r\n            easier to read.\r\n\r\n            If the space parameter is a non-empty string, then that string will\r\n            be used for indentation. If the space parameter is a number, then\r\n            the indentation will be that many spaces.\r\n\r\n            Example:\r\n\r\n            text = JSON.stringify(['e', {pluribus: 'unum'}]);\r\n            // text is '[\"e\",{\"pluribus\":\"unum\"}]'\r\n\r\n\r\n            text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\\t');\r\n            // text is '[\\n\\t\"e\",\\n\\t{\\n\\t\\t\"pluribus\": \"unum\"\\n\\t}\\n]'\r\n\r\n            text = JSON.stringify([new Date()], function (key, value) {\r\n                return this[key] instanceof Date ?\r\n                    'Date(' + this[key] + ')' : value;\r\n            });\r\n            // text is '[\"Date(---current time---)\"]'\r\n\r\n\r\n        JSON.parse(text, reviver)\r\n            This method parses a JSON text to produce an object or array.\r\n            It can throw a SyntaxError exception.\r\n\r\n            The optional reviver parameter is a function that can filter and\r\n            transform the results. It receives each of the keys and values,\r\n            and its return value is used instead of the original value.\r\n            If it returns what it received, then the structure is not modified.\r\n            If it returns undefined then the member is deleted.\r\n\r\n            Example:\r\n\r\n            // Parse the text. Values that look like ISO date strings will\r\n            // be converted to Date objects.\r\n\r\n            myData = JSON.parse(text, function (key, value) {\r\n                var a;\r\n                if (typeof value === 'string') {\r\n                    a =\r\n/^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2}(?:\\.\\d*)?)Z$/.exec(value);\r\n                    if (a) {\r\n                        return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],\r\n                            +a[5], +a[6]));\r\n                    }\r\n                }\r\n                return value;\r\n            });\r\n\r\n            myData = JSON.parse('[\"Date(09/09/2001)\"]', function (key, value) {\r\n                var d;\r\n                if (typeof value === 'string' &&\r\n                        value.slice(0, 5) === 'Date(' &&\r\n                        value.slice(-1) === ')') {\r\n                    d = new Date(value.slice(5, -1));\r\n                    if (d) {\r\n                        return d;\r\n                    }\r\n                }\r\n                return value;\r\n            });\r\n\r\n\r\n    This is a reference implementation. You are free to copy, modify, or\r\n    redistribute.\r\n*/\r\n\r\n/*jslint evil: true, regexp: true */\r\n\r\n/*members \"\", \"\\b\", \"\\t\", \"\\n\", \"\\f\", \"\\r\", \"\\\"\", JSON, \"\\\\\", apply,\r\n    call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,\r\n    getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,\r\n    lastIndex, length, parse, prototype, push, replace, slice, stringify,\r\n    test, toJSON, toString, valueOf\r\n*/\r\n\r\n\r\n// Create a JSON object only if one does not already exist. We create the\r\n// methods in a closure to avoid creating global variables.\r\n\r\nvar JSON = module.exports;\r\n\r\n(function () {\r\n    'use strict';\r\n\r\n    function f(n) {\r\n        // Format integers to have at least two digits.\r\n        return n < 10 ? '0' + n : n;\r\n    }\r\n\r\n    var cx = /[\\u0000\\u00ad\\u0600-\\u0604\\u070f\\u17b4\\u17b5\\u200c-\\u200f\\u2028-\\u202f\\u2060-\\u206f\\ufeff\\ufff0-\\uffff]/g,\r\n        escapable = /[\\\\\\\"\\x00-\\x1f\\x7f-\\x9f\\u00ad\\u0600-\\u0604\\u070f\\u17b4\\u17b5\\u200c-\\u200f\\u2028-\\u202f\\u2060-\\u206f\\ufeff\\ufff0-\\uffff]/g,\r\n        gap,\r\n        indent,\r\n        meta = {    // table of character substitutions\r\n            '\\b': '\\\\b',\r\n            '\\t': '\\\\t',\r\n            '\\n': '\\\\n',\r\n            '\\f': '\\\\f',\r\n            '\\r': '\\\\r',\r\n            '\"' : '\\\\\"',\r\n            '\\\\': '\\\\\\\\'\r\n        },\r\n        rep;\r\n\r\n\r\n    function quote(string) {\r\n\r\n// If the string contains no control characters, no quote characters, and no\r\n// backslash characters, then we can safely slap some quotes around it.\r\n// Otherwise we must also replace the offending characters with safe escape\r\n// sequences.\r\n\r\n        escapable.lastIndex = 0;\r\n        return escapable.test(string) ? '\"' + string.replace(escapable, function (a) {\r\n            var c = meta[a];\r\n            return typeof c === 'string'\r\n                ? c\r\n                : '\\\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);\r\n        }) + '\"' : '\"' + string + '\"';\r\n    }\r\n\r\n\r\n    function str(key, holder) {\r\n\r\n// Produce a string from holder[key].\r\n\r\n        var i,          // The loop counter.\r\n            k,          // The member key.\r\n            v,          // The member value.\r\n            length,\r\n            mind = gap,\r\n            partial,\r\n            value = holder[key];\r\n\r\n// If the value has a toJSON method, call it to obtain a replacement value.\r\n\r\n        if (value && typeof value === 'object' &&\r\n                typeof value.toJSON === 'function') {\r\n            value = value.toJSON(key);\r\n        }\r\n\r\n// If we were called with a replacer function, then call the replacer to\r\n// obtain a replacement value.\r\n\r\n        if (typeof rep === 'function') {\r\n            value = rep.call(holder, key, value);\r\n        }\r\n\r\n// What happens next depends on the value's type.\r\n\r\n        switch (typeof value) {\r\n        case 'string':\r\n                return quote(value);\r\n\r\n        case 'number':\r\n\r\n// JSON numbers must be finite. Encode non-finite numbers as null.\r\n\r\n            return isFinite(value) ? String(value) : 'null';\r\n\r\n        case 'boolean':\r\n        case 'null':\r\n        case 'bigint':\r\n\r\n// If the value is a boolean or null, convert it to a string. Note:\r\n// typeof null does not produce 'null'. The case is included here in\r\n// the remote chance that this gets fixed someday.\r\n\r\n            return String(value);\r\n\r\n// If the type is 'object', we might be dealing with an object or an array or\r\n// null.\r\n\r\n        case 'object':\r\n\r\n// Due to a specification blunder in ECMAScript, typeof null is 'object',\r\n// so watch out for that case.\r\n\r\n            if (!value) {\r\n                return 'null';\r\n            }\r\n\r\n// Make an array to hold the partial results of stringifying this object value.\r\n\r\n            gap += indent;\r\n            partial = [];\r\n\r\n// Is the value an array?\r\n\r\n            if (Object.prototype.toString.apply(value) === '[object Array]') {\r\n\r\n// The value is an array. Stringify every element. Use null as a placeholder\r\n// for non-JSON values.\r\n\r\n                length = value.length;\r\n                for (i = 0; i < length; i += 1) {\r\n                    partial[i] = str(i, value) || 'null';\r\n                }\r\n\r\n// Join all of the elements together, separated with commas, and wrap them in\r\n// brackets.\r\n\r\n                v = partial.length === 0\r\n                    ? '[]'\r\n                    : gap\r\n                    ? '[\\n' + gap + partial.join(',\\n' + gap) + '\\n' + mind + ']'\r\n                    : '[' + partial.join(',') + ']';\r\n                gap = mind;\r\n                return v;\r\n            }\r\n\r\n// If the replacer is an array, use it to select the members to be stringified.\r\n\r\n            if (rep && typeof rep === 'object') {\r\n                length = rep.length;\r\n                for (i = 0; i < length; i += 1) {\r\n                    if (typeof rep[i] === 'string') {\r\n                        k = rep[i];\r\n                        v = str(k, value);\r\n                        if (v) {\r\n                            partial.push(quote(k) + (gap ? ': ' : ':') + v);\r\n                        }\r\n                    }\r\n                }\r\n            } else {\r\n\r\n// Otherwise, iterate through all of the keys in the object.\r\n\r\n                Object.keys(value).forEach(function(k) {\r\n                    var v = str(k, value);\r\n                    if (v) {\r\n                        partial.push(quote(k) + (gap ? ': ' : ':') + v);\r\n                    }\r\n                });\r\n            }\r\n\r\n// Join all of the member texts together, separated with commas,\r\n// and wrap them in braces.\r\n\r\n            v = partial.length === 0\r\n                ? '{}'\r\n                : gap\r\n                ? '{\\n' + gap + partial.join(',\\n' + gap) + '\\n' + mind + '}'\r\n                : '{' + partial.join(',') + '}';\r\n            gap = mind;\r\n            return v;\r\n        }\r\n    }\r\n\r\n// If the JSON object does not yet have a stringify method, give it one.\r\n\r\n    if (typeof JSON.stringify !== 'function') {\r\n        JSON.stringify = function (value, replacer, space) {\r\n\r\n// The stringify method takes a value and an optional replacer, and an optional\r\n// space parameter, and returns a JSON text. The replacer can be a function\r\n// that can replace values, or an array of strings that will select the keys.\r\n// A default replacer method can be provided. Use of the space parameter can\r\n// produce text that is more easily readable.\r\n\r\n            var i;\r\n            gap = '';\r\n            indent = '';\r\n\r\n// If the space parameter is a number, make an indent string containing that\r\n// many spaces.\r\n\r\n            if (typeof space === 'number') {\r\n                for (i = 0; i < space; i += 1) {\r\n                    indent += ' ';\r\n                }\r\n\r\n// If the space parameter is a string, it will be used as the indent string.\r\n\r\n            } else if (typeof space === 'string') {\r\n                indent = space;\r\n            }\r\n\r\n// If there is a replacer, it must be a function or an array.\r\n// Otherwise, throw an error.\r\n\r\n            rep = replacer;\r\n            if (replacer && typeof replacer !== 'function' &&\r\n                    (typeof replacer !== 'object' ||\r\n                    typeof replacer.length !== 'number')) {\r\n                throw new Error('JSON.stringify');\r\n            }\r\n\r\n// Make a fake root object containing our value under the key of ''.\r\n// Return the result of stringifying the value.\r\n\r\n            return str('', {'': value});\r\n        };\r\n    }\r\n}());\r\n",
+      "start": 1707437862436,
+      "end": 1707437862472,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437862472,
+      "end": 1707437862472,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\nimport { __module as stringifyModule } from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/json-bigint/lib/stringify.js?commonjs-module\";\nvar stringify = stringifyModule.exports;\n\n(function (module) {\n\t/*\r\n\t    json2.js\r\n\t    2013-05-26\r\n\r\n\t    Public Domain.\r\n\r\n\t    NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.\r\n\r\n\t    See http://www.JSON.org/js.html\r\n\r\n\r\n\t    This code should be minified before deployment.\r\n\t    See http://javascript.crockford.com/jsmin.html\r\n\r\n\t    USE YOUR OWN COPY. IT IS EXTREMELY UNWISE TO LOAD CODE FROM SERVERS YOU DO\r\n\t    NOT CONTROL.\r\n\r\n\r\n\t    This file creates a global JSON object containing two methods: stringify\r\n\t    and parse.\r\n\r\n\t        JSON.stringify(value, replacer, space)\r\n\t            value       any JavaScript value, usually an object or array.\r\n\r\n\t            replacer    an optional parameter that determines how object\r\n\t                        values are stringified for objects. It can be a\r\n\t                        function or an array of strings.\r\n\r\n\t            space       an optional parameter that specifies the indentation\r\n\t                        of nested structures. If it is omitted, the text will\r\n\t                        be packed without extra whitespace. If it is a number,\r\n\t                        it will specify the number of spaces to indent at each\r\n\t                        level. If it is a string (such as '\\t' or '&nbsp;'),\r\n\t                        it contains the characters used to indent at each level.\r\n\r\n\t            This method produces a JSON text from a JavaScript value.\r\n\r\n\t            When an object value is found, if the object contains a toJSON\r\n\t            method, its toJSON method will be called and the result will be\r\n\t            stringified. A toJSON method does not serialize: it returns the\r\n\t            value represented by the name/value pair that should be serialized,\r\n\t            or undefined if nothing should be serialized. The toJSON method\r\n\t            will be passed the key associated with the value, and this will be\r\n\t            bound to the value\r\n\r\n\t            For example, this would serialize Dates as ISO strings.\r\n\r\n\t                Date.prototype.toJSON = function (key) {\r\n\t                    function f(n) {\r\n\t                        // Format integers to have at least two digits.\r\n\t                        return n < 10 ? '0' + n : n;\r\n\t                    }\r\n\r\n\t                    return this.getUTCFullYear()   + '-' +\r\n\t                         f(this.getUTCMonth() + 1) + '-' +\r\n\t                         f(this.getUTCDate())      + 'T' +\r\n\t                         f(this.getUTCHours())     + ':' +\r\n\t                         f(this.getUTCMinutes())   + ':' +\r\n\t                         f(this.getUTCSeconds())   + 'Z';\r\n\t                };\r\n\r\n\t            You can provide an optional replacer method. It will be passed the\r\n\t            key and value of each member, with this bound to the containing\r\n\t            object. The value that is returned from your method will be\r\n\t            serialized. If your method returns undefined, then the member will\r\n\t            be excluded from the serialization.\r\n\r\n\t            If the replacer parameter is an array of strings, then it will be\r\n\t            used to select the members to be serialized. It filters the results\r\n\t            such that only members with keys listed in the replacer array are\r\n\t            stringified.\r\n\r\n\t            Values that do not have JSON representations, such as undefined or\r\n\t            functions, will not be serialized. Such values in objects will be\r\n\t            dropped; in arrays they will be replaced with null. You can use\r\n\t            a replacer function to replace those with JSON values.\r\n\t            JSON.stringify(undefined) returns undefined.\r\n\r\n\t            The optional space parameter produces a stringification of the\r\n\t            value that is filled with line breaks and indentation to make it\r\n\t            easier to read.\r\n\r\n\t            If the space parameter is a non-empty string, then that string will\r\n\t            be used for indentation. If the space parameter is a number, then\r\n\t            the indentation will be that many spaces.\r\n\r\n\t            Example:\r\n\r\n\t            text = JSON.stringify(['e', {pluribus: 'unum'}]);\r\n\t            // text is '[\"e\",{\"pluribus\":\"unum\"}]'\r\n\r\n\r\n\t            text = JSON.stringify(['e', {pluribus: 'unum'}], null, '\\t');\r\n\t            // text is '[\\n\\t\"e\",\\n\\t{\\n\\t\\t\"pluribus\": \"unum\"\\n\\t}\\n]'\r\n\r\n\t            text = JSON.stringify([new Date()], function (key, value) {\r\n\t                return this[key] instanceof Date ?\r\n\t                    'Date(' + this[key] + ')' : value;\r\n\t            });\r\n\t            // text is '[\"Date(---current time---)\"]'\r\n\r\n\r\n\t        JSON.parse(text, reviver)\r\n\t            This method parses a JSON text to produce an object or array.\r\n\t            It can throw a SyntaxError exception.\r\n\r\n\t            The optional reviver parameter is a function that can filter and\r\n\t            transform the results. It receives each of the keys and values,\r\n\t            and its return value is used instead of the original value.\r\n\t            If it returns what it received, then the structure is not modified.\r\n\t            If it returns undefined then the member is deleted.\r\n\r\n\t            Example:\r\n\r\n\t            // Parse the text. Values that look like ISO date strings will\r\n\t            // be converted to Date objects.\r\n\r\n\t            myData = JSON.parse(text, function (key, value) {\r\n\t                var a;\r\n\t                if (typeof value === 'string') {\r\n\t                    a =\r\n\t/^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2}(?:\\.\\d*)?)Z$/.exec(value);\r\n\t                    if (a) {\r\n\t                        return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4],\r\n\t                            +a[5], +a[6]));\r\n\t                    }\r\n\t                }\r\n\t                return value;\r\n\t            });\r\n\r\n\t            myData = JSON.parse('[\"Date(09/09/2001)\"]', function (key, value) {\r\n\t                var d;\r\n\t                if (typeof value === 'string' &&\r\n\t                        value.slice(0, 5) === 'Date(' &&\r\n\t                        value.slice(-1) === ')') {\r\n\t                    d = new Date(value.slice(5, -1));\r\n\t                    if (d) {\r\n\t                        return d;\r\n\t                    }\r\n\t                }\r\n\t                return value;\r\n\t            });\r\n\r\n\r\n\t    This is a reference implementation. You are free to copy, modify, or\r\n\t    redistribute.\r\n\t*/\r\n\r\n\t/*jslint evil: true, regexp: true */\r\n\r\n\t/*members \"\", \"\\b\", \"\\t\", \"\\n\", \"\\f\", \"\\r\", \"\\\"\", JSON, \"\\\\\", apply,\r\n\t    call, charCodeAt, getUTCDate, getUTCFullYear, getUTCHours,\r\n\t    getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join,\r\n\t    lastIndex, length, parse, prototype, push, replace, slice, stringify,\r\n\t    test, toJSON, toString, valueOf\r\n\t*/\r\n\r\n\r\n\t// Create a JSON object only if one does not already exist. We create the\r\n\t// methods in a closure to avoid creating global variables.\r\n\r\n\tvar JSON = module.exports;\r\n\r\n\t(function () {\r\n\t    'use strict';\r\n\r\n\t    function f(n) {\r\n\t        // Format integers to have at least two digits.\r\n\t        return n < 10 ? '0' + n : n;\r\n\t    }\r\n\r\n\t    var cx = /[\\u0000\\u00ad\\u0600-\\u0604\\u070f\\u17b4\\u17b5\\u200c-\\u200f\\u2028-\\u202f\\u2060-\\u206f\\ufeff\\ufff0-\\uffff]/g,\r\n\t        escapable = /[\\\\\\\"\\x00-\\x1f\\x7f-\\x9f\\u00ad\\u0600-\\u0604\\u070f\\u17b4\\u17b5\\u200c-\\u200f\\u2028-\\u202f\\u2060-\\u206f\\ufeff\\ufff0-\\uffff]/g,\r\n\t        gap,\r\n\t        indent,\r\n\t        meta = {    // table of character substitutions\r\n\t            '\\b': '\\\\b',\r\n\t            '\\t': '\\\\t',\r\n\t            '\\n': '\\\\n',\r\n\t            '\\f': '\\\\f',\r\n\t            '\\r': '\\\\r',\r\n\t            '\"' : '\\\\\"',\r\n\t            '\\\\': '\\\\\\\\'\r\n\t        },\r\n\t        rep;\r\n\r\n\r\n\t    function quote(string) {\r\n\r\n\t// If the string contains no control characters, no quote characters, and no\r\n\t// backslash characters, then we can safely slap some quotes around it.\r\n\t// Otherwise we must also replace the offending characters with safe escape\r\n\t// sequences.\r\n\r\n\t        escapable.lastIndex = 0;\r\n\t        return escapable.test(string) ? '\"' + string.replace(escapable, function (a) {\r\n\t            var c = meta[a];\r\n\t            return typeof c === 'string'\r\n\t                ? c\r\n\t                : '\\\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);\r\n\t        }) + '\"' : '\"' + string + '\"';\r\n\t    }\r\n\r\n\r\n\t    function str(key, holder) {\r\n\r\n\t// Produce a string from holder[key].\r\n\r\n\t        var i,          // The loop counter.\r\n\t            k,          // The member key.\r\n\t            v,          // The member value.\r\n\t            length,\r\n\t            mind = gap,\r\n\t            partial,\r\n\t            value = holder[key];\r\n\r\n\t// If the value has a toJSON method, call it to obtain a replacement value.\r\n\r\n\t        if (value && typeof value === 'object' &&\r\n\t                typeof value.toJSON === 'function') {\r\n\t            value = value.toJSON(key);\r\n\t        }\r\n\r\n\t// If we were called with a replacer function, then call the replacer to\r\n\t// obtain a replacement value.\r\n\r\n\t        if (typeof rep === 'function') {\r\n\t            value = rep.call(holder, key, value);\r\n\t        }\r\n\r\n\t// What happens next depends on the value's type.\r\n\r\n\t        switch (typeof value) {\r\n\t        case 'string':\r\n\t                return quote(value);\r\n\r\n\t        case 'number':\r\n\r\n\t// JSON numbers must be finite. Encode non-finite numbers as null.\r\n\r\n\t            return isFinite(value) ? String(value) : 'null';\r\n\r\n\t        case 'boolean':\r\n\t        case 'null':\r\n\t        case 'bigint':\r\n\r\n\t// If the value is a boolean or null, convert it to a string. Note:\r\n\t// typeof null does not produce 'null'. The case is included here in\r\n\t// the remote chance that this gets fixed someday.\r\n\r\n\t            return String(value);\r\n\r\n\t// If the type is 'object', we might be dealing with an object or an array or\r\n\t// null.\r\n\r\n\t        case 'object':\r\n\r\n\t// Due to a specification blunder in ECMAScript, typeof null is 'object',\r\n\t// so watch out for that case.\r\n\r\n\t            if (!value) {\r\n\t                return 'null';\r\n\t            }\r\n\r\n\t// Make an array to hold the partial results of stringifying this object value.\r\n\r\n\t            gap += indent;\r\n\t            partial = [];\r\n\r\n\t// Is the value an array?\r\n\r\n\t            if (Object.prototype.toString.apply(value) === '[object Array]') {\r\n\r\n\t// The value is an array. Stringify every element. Use null as a placeholder\r\n\t// for non-JSON values.\r\n\r\n\t                length = value.length;\r\n\t                for (i = 0; i < length; i += 1) {\r\n\t                    partial[i] = str(i, value) || 'null';\r\n\t                }\r\n\r\n\t// Join all of the elements together, separated with commas, and wrap them in\r\n\t// brackets.\r\n\r\n\t                v = partial.length === 0\r\n\t                    ? '[]'\r\n\t                    : gap\r\n\t                    ? '[\\n' + gap + partial.join(',\\n' + gap) + '\\n' + mind + ']'\r\n\t                    : '[' + partial.join(',') + ']';\r\n\t                gap = mind;\r\n\t                return v;\r\n\t            }\r\n\r\n\t// If the replacer is an array, use it to select the members to be stringified.\r\n\r\n\t            if (rep && typeof rep === 'object') {\r\n\t                length = rep.length;\r\n\t                for (i = 0; i < length; i += 1) {\r\n\t                    if (typeof rep[i] === 'string') {\r\n\t                        k = rep[i];\r\n\t                        v = str(k, value);\r\n\t                        if (v) {\r\n\t                            partial.push(quote(k) + (gap ? ': ' : ':') + v);\r\n\t                        }\r\n\t                    }\r\n\t                }\r\n\t            } else {\r\n\r\n\t// Otherwise, iterate through all of the keys in the object.\r\n\r\n\t                Object.keys(value).forEach(function(k) {\r\n\t                    var v = str(k, value);\r\n\t                    if (v) {\r\n\t                        partial.push(quote(k) + (gap ? ': ' : ':') + v);\r\n\t                    }\r\n\t                });\r\n\t            }\r\n\r\n\t// Join all of the member texts together, separated with commas,\r\n\t// and wrap them in braces.\r\n\r\n\t            v = partial.length === 0\r\n\t                ? '{}'\r\n\t                : gap\r\n\t                ? '{\\n' + gap + partial.join(',\\n' + gap) + '\\n' + mind + '}'\r\n\t                : '{' + partial.join(',') + '}';\r\n\t            gap = mind;\r\n\t            return v;\r\n\t        }\r\n\t    }\r\n\r\n\t// If the JSON object does not yet have a stringify method, give it one.\r\n\r\n\t    if (typeof JSON.stringify !== 'function') {\r\n\t        JSON.stringify = function (value, replacer, space) {\r\n\r\n\t// The stringify method takes a value and an optional replacer, and an optional\r\n\t// space parameter, and returns a JSON text. The replacer can be a function\r\n\t// that can replace values, or an array of strings that will select the keys.\r\n\t// A default replacer method can be provided. Use of the space parameter can\r\n\t// produce text that is more easily readable.\r\n\r\n\t            var i;\r\n\t            gap = '';\r\n\t            indent = '';\r\n\r\n\t// If the space parameter is a number, make an indent string containing that\r\n\t// many spaces.\r\n\r\n\t            if (typeof space === 'number') {\r\n\t                for (i = 0; i < space; i += 1) {\r\n\t                    indent += ' ';\r\n\t                }\r\n\r\n\t// If the space parameter is a string, it will be used as the indent string.\r\n\r\n\t            } else if (typeof space === 'string') {\r\n\t                indent = space;\r\n\t            }\r\n\r\n\t// If there is a replacer, it must be a function or an array.\r\n\t// Otherwise, throw an error.\r\n\r\n\t            rep = replacer;\r\n\t            if (replacer && typeof replacer !== 'function' &&\r\n\t                    (typeof replacer !== 'object' ||\r\n\t                    typeof replacer.length !== 'number')) {\r\n\t                throw new Error('JSON.stringify');\r\n\t            }\r\n\r\n\t// Make a fake root object containing our value under the key of ''.\r\n\t// Return the result of stringifying the value.\r\n\r\n\t            return str('', {'': value});\r\n\t        };\r\n\t    }\r\n\t}()); \n} (stringifyModule));\n\nvar stringifyExports = stringifyModule.exports;\nexport default /*@__PURE__*/commonjsHelpers.getDefaultExportFromCjs(stringifyExports);\nexport { stringifyExports as __moduleExports };",
+      "start": 1707437862472,
+      "end": 1707437862475,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": ";;;;;CACA;CACA;CACA;AACA;CACA;AACA;CACA;AACA;CACA;AACA;AACA;CACA;CACA;AACA;CACA;CACA;AACA;AACA;CACA;CACA;AACA;CACA;CACA;AACA;CACA;CACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;CACA;AACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;AACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;AACA;CACA;CACA;CACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;AACA;CACA;CACA;CACA;AACA;CACA;CACA;CACA;AACA;CACA;AACA;CACA;CACA;AACA;AACA;CACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;AACA;AACA;CACA;CACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;AACA;CACA;AACA;CACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;CACA;AACA;AACA;CACA;CACA;CACA;AACA;CACA;AACA;CACA;CACA;CACA;CACA;CACA;CACA;AACA;AACA;CACA;CACA;AACA;CACA,IAAI,IAAI,GAAG,MAAM,CAAC,OAAO,CAAC;AAC1B;CACA,CAAC,YAAY;CACb,IAAI,YAAY,CAAC;AACjB;CACA,IAAI,SAAS,CAAC,CAAC,CAAC,EAAE;CAClB;CACA,QAAQ,OAAO,CAAC,GAAG,EAAE,GAAG,GAAG,GAAG,CAAC,GAAG,CAAC,CAAC;CACpC,KAAK;AACL;CACA,IAAI,IAAI,EAAE,GAAG,0GAA0G;CACvH,QAAQ,SAAS,GAAG,0HAA0H;CAC9I,QAAQ,GAAG;CACX,QAAQ,MAAM;CACd,QAAQ,IAAI,GAAG;CACf,YAAY,IAAI,EAAE,KAAK;CACvB,YAAY,IAAI,EAAE,KAAK;CACvB,YAAY,IAAI,EAA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"
+      }
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437862475,
+      "end": 1707437862475,
+      "order": "normal"
+    }
+  ]
+}

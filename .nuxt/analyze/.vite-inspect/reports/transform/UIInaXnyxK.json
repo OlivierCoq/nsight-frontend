@@ -1,0 +1,219 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/axios/lib/helpers/isAbsoluteURL.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "'use strict';\n\n/**\n * Determines whether the specified URL is absolute\n *\n * @param {string} url The URL to test\n * @returns {boolean} True if the specified URL is absolute, otherwise false\n */\nmodule.exports = function isAbsoluteURL(url) {\n  // A URL is considered absolute if it begins with \"<scheme>://\" or \"//\" (protocol-relative URL).\n  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed\n  // by any combination of letters, digits, plus, period, or hyphen.\n  return /^([a-z][a-z\\d\\+\\-\\.]*:)?\\/\\//i.test(url);\n};\n",
+      "start": 1707437862452,
+      "end": 1707437862498,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\n\nvar isAbsoluteURL;\nvar hasRequiredIsAbsoluteURL;\n\nfunction requireIsAbsoluteURL () {\n\tif (hasRequiredIsAbsoluteURL) return isAbsoluteURL;\n\thasRequiredIsAbsoluteURL = 1;\n\t'use strict';\n\n\t/**\n\t * Determines whether the specified URL is absolute\n\t *\n\t * @param {string} url The URL to test\n\t * @returns {boolean} True if the specified URL is absolute, otherwise false\n\t */\n\tisAbsoluteURL = function isAbsoluteURL(url) {\n\t  // A URL is considered absolute if it begins with \"<scheme>://\" or \"//\" (protocol-relative URL).\n\t  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed\n\t  // by any combination of letters, digits, plus, period, or hyphen.\n\t  return /^([a-z][a-z\\d\\+\\-\\.]*:)?\\/\\//i.test(url);\n\t};\n\treturn isAbsoluteURL;\n}\n\nexport { requireIsAbsoluteURL as __require };",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": ";;;;;;;;CAAA,YAAY,CAAC;AACb;CACA;CACA;CACA;CACA;CACA;CACA;AACA,cAAc,GAAG,SAAS,aAAa,CAAC,GAAG,EAAE;CAC7C;CACA;CACA;CACA,EAAE,OAAO,+BAA+B,CAAC,IAAI,CAAC,GAAG,CAAC,CAAC;CACnD,CAAC"
+      }
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437862498,
+      "end": 1707437862498,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437862498,
+      "end": 1707437862499,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437862499,
+      "end": 1707437862499,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437862499,
+      "end": 1707437862499,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437862499,
+      "end": 1707437862499,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437862499,
+      "end": 1707437862499,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437862499,
+      "end": 1707437862499,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437862499,
+      "end": 1707437862499,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437862499,
+      "end": 1707437862499,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437862499,
+      "end": 1707437862499,
+      "order": "normal"
+    }
+  ]
+}

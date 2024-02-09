@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/composables/virtual.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "// Composables\nimport { useDisplay } from \"./display.mjs\";\nimport { useResizeObserver } from \"./resizeObserver.mjs\"; // Utilities\nimport { computed, nextTick, onScopeDispose, ref, shallowRef, watch, watchEffect } from 'vue';\nimport { clamp, debounce, IN_BROWSER, propsFactory } from \"../util/index.mjs\"; // Types\nconst UP = -1;\nconst DOWN = 1;\n\n/** Determines how large each batch of items should be */\nconst BUFFER_PX = 100;\nexport const makeVirtualProps = propsFactory({\n  itemHeight: {\n    type: [Number, String],\n    default: null\n  },\n  height: [Number, String]\n}, 'virtual');\nexport function useVirtual(props, items) {\n  const display = useDisplay();\n  const itemHeight = shallowRef(0);\n  watchEffect(() => {\n    itemHeight.value = parseFloat(props.itemHeight || 0);\n  });\n  const first = shallowRef(0);\n  const last = shallowRef(Math.ceil(\n  // Assume 16px items filling the entire screen height if\n  // not provided. This is probably incorrect but it minimises\n  // the chance of ending up with empty space at the bottom.\n  // The default value is set here to avoid poisoning getSize()\n  (parseInt(props.height) || display.height.value) / (itemHeight.value || 16)) || 1);\n  const paddingTop = shallowRef(0);\n  const paddingBottom = shallowRef(0);\n\n  /** The scrollable element */\n  const containerRef = ref();\n  /** An element marking the top of the scrollable area,\n   * used to add an offset if there's padding or other elements above the virtual list */\n  const markerRef = ref();\n  /** markerRef's offsetTop, lazily evaluated */\n  let markerOffset = 0;\n  const {\n    resizeRef,\n    contentRect\n  } = useResizeObserver();\n  watchEffect(() => {\n    resizeRef.value = containerRef.value;\n  });\n  const viewportHeight = computed(() => {\n    return containerRef.value === document.documentElement ? display.height.value : contentRect.value?.height || parseInt(props.height) || 0;\n  });\n  /** All static elements have been rendered and we have an assumed item height */\n  const hasInitialRender = computed(() => {\n    return !!(containerRef.value && markerRef.value && viewportHeight.value && itemHeight.value);\n  });\n  let sizes = Array.from({\n    length: items.value.length\n  });\n  let offsets = Array.from({\n    length: items.value.length\n  });\n  const updateTime = shallowRef(0);\n  let targetScrollIndex = -1;\n  function getSize(index) {\n    return sizes[index] || itemHeight.value;\n  }\n  const updateOffsets = debounce(() => {\n    const start = performance.now();\n    offsets[0] = 0;\n    const length = items.value.length;\n    for (let i = 1; i <= length - 1; i++) {\n      offsets[i] = (offsets[i - 1] || 0) + getSize(i - 1);\n    }\n    updateTime.value = Math.max(updateTime.value, performance.now() - start);\n  }, updateTime);\n  const unwatch = watch(hasInitialRender, v => {\n    if (!v) return;\n    // First render is complete, update offsets and visible\n    // items in case our assumed item height was incorrect\n\n    unwatch();\n    markerOffset = markerRef.value.offsetTop;\n    updateOffsets.immediate();\n    calculateVisibleItems();\n    if (!~targetScrollIndex) return;\n    nextTick(() => {\n      IN_BROWSER && window.requestAnimationFrame(() => {\n        scrollToIndex(targetScrollIndex);\n        targetScrollIndex = -1;\n      });\n    });\n  });\n  watch(viewportHeight, (val, oldVal) => {\n    oldVal && calculateVisibleItems();\n  });\n  onScopeDispose(() => {\n    updateOffsets.clear();\n  });\n  function handleItemResize(index, height) {\n    const prevHeight = sizes[index];\n    const prevMinHeight = itemHeight.value;\n    itemHeight.value = prevMinHeight ? Math.min(itemHeight.value, height) : height;\n    if (prevHeight !== height || prevMinHeight !== itemHeight.value) {\n      sizes[index] = height;\n      updateOffsets();\n    }\n  }\n  function calculateOffset(index) {\n    index = clamp(index, 0, items.value.length - 1);\n    return offsets[index] || 0;\n  }\n  function calculateIndex(scrollTop) {\n    return binaryClosest(offsets, scrollTop);\n  }\n  let lastScrollTop = 0;\n  let scrollVelocity = 0;\n  let lastScrollTime = 0;\n  function handleScroll() {\n    if (!containerRef.value || !markerRef.value) return;\n    const scrollTop = containerRef.value.scrollTop;\n    const scrollTime = performance.now();\n    const scrollDeltaT = scrollTime - lastScrollTime;\n    if (scrollDeltaT > 500) {\n      scrollVelocity = Math.sign(scrollTop - lastScrollTop);\n\n      // Not super important, only update at the\n      // start of a scroll sequence to avoid reflows\n      markerOffset = markerRef.value.offsetTop;\n    } else {\n      scrollVelocity = scrollTop - lastScrollTop;\n    }\n    lastScrollTop = scrollTop;\n    lastScrollTime = scrollTime;\n    calculateVisibleItems();\n  }\n  function handleScrollend() {\n    if (!containerRef.value || !markerRef.value) return;\n    scrollVelocity = 0;\n    lastScrollTime = 0;\n    calculateVisibleItems();\n  }\n  let raf = -1;\n  function calculateVisibleItems() {\n    cancelAnimationFrame(raf);\n    raf = requestAnimationFrame(_calculateVisibleItems);\n  }\n  function _calculateVisibleItems() {\n    if (!containerRef.value || !viewportHeight.value) return;\n    const scrollTop = lastScrollTop - markerOffset;\n    const direction = Math.sign(scrollVelocity);\n    const startPx = Math.max(0, scrollTop - BUFFER_PX);\n    const start = clamp(calculateIndex(startPx), 0, items.value.length);\n    const endPx = scrollTop + viewportHeight.value + BUFFER_PX;\n    const end = clamp(calculateIndex(endPx) + 1, start + 1, items.value.length);\n    if (\n    // Only update the side we're scrolling towards,\n    // the other side will be updated incidentally\n    (direction !== UP || start < first.value) && (direction !== DOWN || end > last.value)) {\n      const topOverflow = calculateOffset(first.value) - calculateOffset(start);\n      const bottomOverflow = calculateOffset(end) - calculateOffset(last.value);\n      const bufferOverflow = Math.max(topOverflow, bottomOverflow);\n      if (bufferOverflow > BUFFER_PX) {\n        first.value = start;\n        last.value = end;\n      } else {\n        // Only update the side that's reached its limit if there's still buffer left\n        if (start <= 0) first.value = start;\n        if (end >= items.value.length) last.value = end;\n      }\n    }\n    paddingTop.value = calculateOffset(first.value);\n    paddingBottom.value = calculateOffset(items.value.length) - calculateOffset(last.value);\n  }\n  function scrollToIndex(index) {\n    const offset = calculateOffset(index);\n    if (!containerRef.value || index && !offset) {\n      targetScrollIndex = index;\n    } else {\n      containerRef.value.scrollTop = offset;\n    }\n  }\n  const computedItems = computed(() => {\n    return items.value.slice(first.value, last.value).map((item, index) => ({\n      raw: item,\n      index: index + first.value\n    }));\n  });\n  watch(items, () => {\n    sizes = Array.from({\n      length: items.value.length\n    });\n    offsets = Array.from({\n      length: items.value.length\n    });\n    updateOffsets.immediate();\n    calculateVisibleItems();\n  }, {\n    deep: true\n  });\n  return {\n    containerRef,\n    markerRef,\n    computedItems,\n    paddingTop,\n    paddingBottom,\n    scrollToIndex,\n    handleScroll,\n    handleScrollend,\n    handleItemResize\n  };\n}\n\n// https://gist.github.com/robertleeplummerjr/1cc657191d34ecd0a324\nfunction binaryClosest(arr, val) {\n  let high = arr.length - 1;\n  let low = 0;\n  let mid = 0;\n  let item = null;\n  let target = -1;\n  if (arr[high] < val) {\n    return high;\n  }\n  while (low <= high) {\n    mid = low + high >> 1;\n    item = arr[mid];\n    if (item > val) {\n      high = mid - 1;\n    } else if (item < val) {\n      target = mid;\n      low = mid + 1;\n    } else if (item === val) {\n      return mid;\n    } else {\n      return low;\n    }\n  }\n  return target;\n}\n//# sourceMappingURL=virtual.mjs.map",
+      "start": 1707437860829,
+      "end": 1707437860891,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437860891,
+      "end": 1707437860891,
+      "order": "normal"
+    }
+  ]
+}

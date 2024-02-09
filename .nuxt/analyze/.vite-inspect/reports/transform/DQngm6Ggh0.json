@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/models/catalogItem.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { array, boolean, lazy, nullable, object, optional, string, } from '../schema';\nimport { catalogEcomSeoDataSchema, } from './catalogEcomSeoData';\nimport { catalogItemFoodAndBeverageDetailsSchema, } from './catalogItemFoodAndBeverageDetails';\nimport { catalogItemModifierListInfoSchema, } from './catalogItemModifierListInfo';\nimport { catalogItemOptionForItemSchema, } from './catalogItemOptionForItem';\nimport { catalogObjectSchema } from './catalogObject';\nimport { catalogObjectCategorySchema, } from './catalogObjectCategory';\nexport const catalogItemSchema = object({\n    name: ['name', optional(nullable(string()))],\n    description: ['description', optional(nullable(string()))],\n    abbreviation: ['abbreviation', optional(nullable(string()))],\n    labelColor: ['label_color', optional(nullable(string()))],\n    availableOnline: ['available_online', optional(nullable(boolean()))],\n    availableForPickup: ['available_for_pickup', optional(nullable(boolean()))],\n    availableElectronically: [\n        'available_electronically',\n        optional(nullable(boolean())),\n    ],\n    categoryId: ['category_id', optional(nullable(string()))],\n    taxIds: ['tax_ids', optional(nullable(array(string())))],\n    modifierListInfo: [\n        'modifier_list_info',\n        optional(nullable(array(lazy(() => catalogItemModifierListInfoSchema)))),\n    ],\n    variations: [\n        'variations',\n        optional(nullable(array(lazy(() => catalogObjectSchema)))),\n    ],\n    productType: ['product_type', optional(string())],\n    skipModifierScreen: ['skip_modifier_screen', optional(nullable(boolean()))],\n    itemOptions: [\n        'item_options',\n        optional(nullable(array(lazy(() => catalogItemOptionForItemSchema)))),\n    ],\n    imageIds: ['image_ids', optional(nullable(array(string())))],\n    sortName: ['sort_name', optional(nullable(string()))],\n    categories: [\n        'categories',\n        optional(nullable(array(lazy(() => catalogObjectCategorySchema)))),\n    ],\n    descriptionHtml: ['description_html', optional(nullable(string()))],\n    descriptionPlaintext: ['description_plaintext', optional(string())],\n    channels: ['channels', optional(nullable(array(string())))],\n    isArchived: ['is_archived', optional(nullable(boolean()))],\n    ecomSeoData: [\n        'ecom_seo_data',\n        optional(lazy(() => catalogEcomSeoDataSchema)),\n    ],\n    foodAndBeverageDetails: [\n        'food_and_beverage_details',\n        optional(lazy(() => catalogItemFoodAndBeverageDetailsSchema)),\n    ],\n    reportingCategory: [\n        'reporting_category',\n        optional(lazy(() => catalogObjectCategorySchema)),\n    ],\n});\n//# sourceMappingURL=catalogItem.js.map",
+      "start": 1707437862605,
+      "end": 1707437862643,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437862643,
+      "end": 1707437862643,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437862643,
+      "end": 1707437862644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437862644,
+      "end": 1707437862644,
+      "order": "normal"
+    }
+  ]
+}

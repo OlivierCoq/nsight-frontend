@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/index.mjs",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export * from \"./VApp/index.mjs\";\nexport * from \"./VAppBar/index.mjs\";\nexport * from \"./VAlert/index.mjs\";\nexport * from \"./VAutocomplete/index.mjs\";\nexport * from \"./VAvatar/index.mjs\";\nexport * from \"./VBadge/index.mjs\";\nexport * from \"./VBanner/index.mjs\";\nexport * from \"./VBottomNavigation/index.mjs\";\nexport * from \"./VBottomSheet/index.mjs\";\nexport * from \"./VBreadcrumbs/index.mjs\";\nexport * from \"./VBtn/index.mjs\";\nexport * from \"./VBtnGroup/index.mjs\";\nexport * from \"./VBtnToggle/index.mjs\"; // export * from './VCalendar'\nexport * from \"./VCard/index.mjs\";\nexport * from \"./VCarousel/index.mjs\";\nexport * from \"./VCheckbox/index.mjs\";\nexport * from \"./VChip/index.mjs\";\nexport * from \"./VChipGroup/index.mjs\";\nexport * from \"./VCode/index.mjs\";\nexport * from \"./VColorPicker/index.mjs\"; // export * from './VContent'\nexport * from \"./VCombobox/index.mjs\";\nexport * from \"./VCounter/index.mjs\";\nexport * from \"./VDataIterator/index.mjs\";\nexport * from \"./VDataTable/index.mjs\";\nexport * from \"./VDatePicker/index.mjs\";\nexport * from \"./VDefaultsProvider/index.mjs\";\nexport * from \"./VDialog/index.mjs\";\nexport * from \"./VDivider/index.mjs\";\nexport * from \"./VExpansionPanel/index.mjs\";\nexport * from \"./VField/index.mjs\";\nexport * from \"./VFileInput/index.mjs\";\nexport * from \"./VFooter/index.mjs\";\nexport * from \"./VForm/index.mjs\";\nexport * from \"./VGrid/index.mjs\";\nexport * from \"./VHover/index.mjs\";\nexport * from \"./VIcon/index.mjs\";\nexport * from \"./VImg/index.mjs\";\nexport * from \"./VInfiniteScroll/index.mjs\";\nexport * from \"./VInput/index.mjs\";\nexport * from \"./VItemGroup/index.mjs\";\nexport * from \"./VKbd/index.mjs\";\nexport * from \"./VLabel/index.mjs\";\nexport * from \"./VLayout/index.mjs\";\nexport * from \"./VLazy/index.mjs\";\nexport * from \"./VList/index.mjs\";\nexport * from \"./VLocaleProvider/index.mjs\";\nexport * from \"./VMain/index.mjs\";\nexport * from \"./VMenu/index.mjs\";\nexport * from \"./VMessages/index.mjs\";\nexport * from \"./VNavigationDrawer/index.mjs\";\nexport * from \"./VNoSsr/index.mjs\";\nexport * from \"./VOtpInput/index.mjs\"; // export * from './VOverflowBtn'\nexport * from \"./VOverlay/index.mjs\";\nexport * from \"./VPagination/index.mjs\";\nexport * from \"./VParallax/index.mjs\";\nexport * from \"./VProgressCircular/index.mjs\";\nexport * from \"./VProgressLinear/index.mjs\";\nexport * from \"./VRadio/index.mjs\";\nexport * from \"./VRadioGroup/index.mjs\";\nexport * from \"./VRangeSlider/index.mjs\";\nexport * from \"./VRating/index.mjs\";\nexport * from \"./VResponsive/index.mjs\";\nexport * from \"./VSelect/index.mjs\";\nexport * from \"./VSelectionControl/index.mjs\";\nexport * from \"./VSelectionControlGroup/index.mjs\";\nexport * from \"./VSheet/index.mjs\";\nexport * from \"./VSkeletonLoader/index.mjs\";\nexport * from \"./VSlideGroup/index.mjs\";\nexport * from \"./VSlider/index.mjs\";\nexport * from \"./VSnackbar/index.mjs\"; // export * from './VSparkline'\n// export * from './VSpeedDial'\nexport * from \"./VStepper/index.mjs\";\nexport * from \"./VSwitch/index.mjs\";\nexport * from \"./VSystemBar/index.mjs\";\nexport * from \"./VTabs/index.mjs\";\nexport * from \"./VTable/index.mjs\";\nexport * from \"./VTextarea/index.mjs\";\nexport * from \"./VTextField/index.mjs\";\nexport * from \"./VThemeProvider/index.mjs\";\nexport * from \"./VTimeline/index.mjs\"; // export * from './VTimePicker'\nexport * from \"./VToolbar/index.mjs\";\nexport * from \"./VTooltip/index.mjs\"; // export * from './VTreeview'\nexport * from \"./VValidation/index.mjs\";\nexport * from \"./VVirtualScroll/index.mjs\";\nexport * from \"./VWindow/index.mjs\";\nexport * from \"./transitions/index.mjs\";\n//# sourceMappingURL=index.mjs.map",
+      "start": 1707437858978,
+      "end": 1707437859074,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437859074,
+      "end": 1707437859074,
+      "order": "normal"
+    }
+  ]
+}

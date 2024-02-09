@@ -1,0 +1,218 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vuetify/lib/components/VSlider/VSliderThumb.css",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": ".v-slider-thumb {\n  touch-action: none;\n  color: rgb(var(--v-theme-surface-variant));\n}\n.v-input--error:not(.v-input--disabled) .v-slider-thumb {\n  color: inherit;\n}\n\n.v-slider-thumb__label {\n  background: rgba(var(--v-theme-surface-variant), 0.7);\n  color: rgb(var(--v-theme-on-surface-variant));\n}\n.v-slider-thumb__label::before {\n  color: rgba(var(--v-theme-surface-variant), 0.7);\n}\n\n.v-slider-thumb {\n  outline: none;\n  position: absolute;\n  transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);\n}\n\n.v-slider-thumb__surface {\n  cursor: pointer;\n  width: var(--v-slider-thumb-size);\n  height: var(--v-slider-thumb-size);\n  border-radius: 50%;\n  user-select: none;\n  background-color: currentColor;\n}\n.v-slider-thumb__surface::before {\n  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n  content: \"\";\n  color: inherit;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  border-radius: 50%;\n  background: currentColor;\n  position: absolute;\n  pointer-events: none;\n  opacity: 0;\n}\n.v-slider-thumb__surface::after {\n  content: \"\";\n  width: 42px;\n  height: 42px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n\n.v-slider-thumb__label-container {\n  position: absolute;\n  transition: 0.2s cubic-bezier(0.4, 0, 1, 1);\n}\n\n.v-slider-thumb__label {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.75rem;\n  min-width: 35px;\n  height: 25px;\n  border-radius: 4px;\n  padding: 6px;\n  position: absolute;\n  user-select: none;\n  transition: 0.2s cubic-bezier(0.4, 0, 1, 1);\n}\n.v-slider-thumb__label::before {\n  content: \"\";\n  width: 0;\n  height: 0;\n  position: absolute;\n}\n\n.v-slider-thumb__ripple {\n  position: absolute;\n  left: calc(var(--v-slider-thumb-size) / -2);\n  top: calc(var(--v-slider-thumb-size) / -2);\n  width: calc(var(--v-slider-thumb-size) * 2);\n  height: calc(var(--v-slider-thumb-size) * 2);\n  background: inherit;\n}\n\n.v-slider.v-input--horizontal .v-slider-thumb {\n  top: 50%;\n  transform: translateY(-50%);\n  inset-inline-start: calc(var(--v-slider-thumb-position) - var(--v-slider-thumb-size) / 2);\n}\n.v-slider.v-input--horizontal .v-slider-thumb__label-container {\n  left: calc(var(--v-slider-thumb-size) / 2);\n  top: 0;\n}\n.v-slider.v-input--horizontal .v-slider-thumb__label {\n  bottom: calc(var(--v-slider-thumb-size) / 2);\n}\n.v-locale--is-ltr.v-slider.v-input--horizontal .v-slider-thumb__label, .v-locale--is-ltr .v-slider.v-input--horizontal .v-slider-thumb__label {\n  transform: translateX(-50%);\n}\n\n.v-locale--is-rtl.v-slider.v-input--horizontal .v-slider-thumb__label, .v-locale--is-rtl .v-slider.v-input--horizontal .v-slider-thumb__label {\n  transform: translateX(50%);\n}\n\n.v-slider.v-input--horizontal .v-slider-thumb__label::before {\n  border-left: 6px solid transparent;\n  border-right: 6px solid transparent;\n  border-top: 6px solid currentColor;\n  bottom: -6px;\n}\n\n.v-slider.v-input--vertical .v-slider-thumb {\n  top: calc(var(--v-slider-thumb-position) - var(--v-slider-thumb-size) / 2);\n}\n.v-slider.v-input--vertical .v-slider-thumb__label-container {\n  top: calc(var(--v-slider-thumb-size) / 2);\n  right: 0;\n}\n.v-slider.v-input--vertical .v-slider-thumb__label {\n  top: -12.5px;\n  left: calc(var(--v-slider-thumb-size) / 2);\n}\n.v-slider.v-input--vertical .v-slider-thumb__label::before {\n  border-right: 6px solid currentColor;\n  border-top: 6px solid transparent;\n  border-bottom: 6px solid transparent;\n  left: -6px;\n}\n\n.v-slider-thumb--focused .v-slider-thumb__surface::before {\n  transform: scale(2);\n  opacity: var(--v-focus-opacity);\n}\n\n.v-slider-thumb--pressed {\n  transition: none;\n}\n.v-slider-thumb--pressed .v-slider-thumb__surface::before {\n  opacity: var(--v-pressed-opacity);\n}\n\n@media (hover: hover) {\n  .v-slider-thumb:hover .v-slider-thumb__surface::before {\n    transform: scale(2);\n  }\n  .v-slider-thumb:hover:not(.v-slider-thumb--focused) .v-slider-thumb__surface::before {\n    opacity: var(--v-hover-opacity);\n  }\n}",
+      "start": 1707437862038,
+      "end": 1707437862103,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1707437862103,
+      "end": 1707437862103,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1707437862103,
+      "end": 1707437862103,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1707437862103,
+      "end": 1707437862103,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "result": ".v-slider-thumb{color:rgb(var(--v-theme-surface-variant));touch-action:none}.v-input--error:not(.v-input--disabled) .v-slider-thumb{color:inherit}.v-slider-thumb__label{background:rgba(var(--v-theme-surface-variant),.7);color:rgb(var(--v-theme-on-surface-variant))}.v-slider-thumb__label:before{color:rgba(var(--v-theme-surface-variant),.7)}.v-slider-thumb{outline:none;position:absolute;transition:.3s cubic-bezier(.25,.8,.5,1)}.v-slider-thumb__surface{background-color:currentColor;border-radius:50%;cursor:pointer;height:var(--v-slider-thumb-size);-webkit-user-select:none;-moz-user-select:none;user-select:none;width:var(--v-slider-thumb-size)}.v-slider-thumb__surface:before{background:currentColor;border-radius:50%;color:inherit;content:\"\";height:100%;left:0;opacity:0;pointer-events:none;position:absolute;top:0;transition:.3s cubic-bezier(.4,0,.2,1);width:100%}.v-slider-thumb__surface:after{content:\"\";height:42px;left:50%;position:absolute;top:50%;transform:translate(-50%,-50%);width:42px}.v-slider-thumb__label,.v-slider-thumb__label-container{position:absolute;transition:.2s cubic-bezier(.4,0,1,1)}.v-slider-thumb__label{align-items:center;border-radius:4px;display:flex;font-size:.75rem;height:25px;justify-content:center;min-width:35px;padding:6px;-webkit-user-select:none;-moz-user-select:none;user-select:none}.v-slider-thumb__label:before{content:\"\";height:0;position:absolute;width:0}.v-slider-thumb__ripple{background:inherit;height:calc(var(--v-slider-thumb-size)*2);left:calc(var(--v-slider-thumb-size)/-2);position:absolute;top:calc(var(--v-slider-thumb-size)/-2);width:calc(var(--v-slider-thumb-size)*2)}.v-slider.v-input--horizontal .v-slider-thumb{inset-inline-start:calc(var(--v-slider-thumb-position) - var(--v-slider-thumb-size)/2);top:50%;transform:translateY(-50%)}.v-slider.v-input--horizontal .v-slider-thumb__label-container{left:calc(var(--v-slider-thumb-size)/2);top:0}.v-slider.v-input--horizontal .v-slider-thumb__label{bottom:calc(var(--v-slider-thumb-size)/2)}.v-locale--is-ltr .v-slider.v-input--horizontal .v-slider-thumb__label,.v-locale--is-ltr.v-slider.v-input--horizontal .v-slider-thumb__label{transform:translateX(-50%)}.v-locale--is-rtl .v-slider.v-input--horizontal .v-slider-thumb__label,.v-locale--is-rtl.v-slider.v-input--horizontal .v-slider-thumb__label{transform:translateX(50%)}.v-slider.v-input--horizontal .v-slider-thumb__label:before{border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid;bottom:-6px}.v-slider.v-input--vertical .v-slider-thumb{top:calc(var(--v-slider-thumb-position) - var(--v-slider-thumb-size)/2)}.v-slider.v-input--vertical .v-slider-thumb__label-container{right:0;top:calc(var(--v-slider-thumb-size)/2)}.v-slider.v-input--vertical .v-slider-thumb__label{left:calc(var(--v-slider-thumb-size)/2);top:-12.5px}.v-slider.v-input--vertical .v-slider-thumb__label:before{border-bottom:6px solid transparent;border-right:6px solid;border-top:6px solid transparent;left:-6px}.v-slider-thumb--focused .v-slider-thumb__surface:before{opacity:var(--v-focus-opacity);transform:scale(2)}.v-slider-thumb--pressed{transition:none}.v-slider-thumb--pressed .v-slider-thumb__surface:before{opacity:var(--v-pressed-opacity)}@media (hover:hover){.v-slider-thumb:hover .v-slider-thumb__surface:before{transform:scale(2)}.v-slider-thumb:hover:not(.v-slider-thumb--focused) .v-slider-thumb__surface:before{opacity:var(--v-hover-opacity)}}",
+      "start": 1707437862103,
+      "end": 1707437862112,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "result": "",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal",
+      "sourcemaps": {
+        "mappings": ""
+      }
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1707437862112,
+      "end": 1707437862112,
+      "order": "normal"
+    }
+  ]
+}
