@@ -3,7 +3,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { mkdirSync } from 'node:fs';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, createEvent, getRequestHeader, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseHeader, send, getResponseStatus, setResponseStatus, setResponseHeaders, getRequestHeaders, setHeader, sendError, H3Error, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, getQuery as getQuery$1, createError, getResponseStatusText } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, createEvent, getRequestHeader, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseHeader, send, getResponseStatus, setResponseStatus, setResponseHeaders, getRequestHeaders, setHeader, sendError, H3Error, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, readBody, getQuery as getQuery$1, createError, getResponseStatusText } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/h3/dist/index.mjs';
+import { ApiError, Client, Environment } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/cjs/index.js';
 import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { stringify, uneval } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/devalue/index.js';
 import { renderSSRHead } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@unhead/ssr/dist/index.mjs';
@@ -764,9 +765,15 @@ function render(options) {
   return options.content;
 }
 
+const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
+const _lazy_PpW176 = () => Promise.resolve().then(function () { return gateway$1; });
+const _lazy_GNob4r = () => Promise.resolve().then(function () { return test_get$1; });
 const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
+  { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
+  { route: '/api/square/gateway', handler: _lazy_PpW176, lazy: true, middleware: false, method: undefined },
+  { route: '/api/square/test', handler: _lazy_GNob4r, lazy: true, middleware: false, method: "get" },
   { route: '/__nuxt_error', handler: _lazy_ShO9cQ, lazy: true, middleware: false, method: undefined },
   { route: '/.well-known/security.txt', handler: _E2XjkS, lazy: false, middleware: false, method: undefined },
   { route: '/.well-known/change-password', handler: _icsbdn, lazy: false, middleware: false, method: undefined },
@@ -954,6 +961,48 @@ const template$1 = _template;
 const errorDev = /*#__PURE__*/Object.freeze({
   __proto__: null,
   template: template$1
+});
+
+const square_client = new Client({
+  environment: Environment.Production,
+  // or Environment.Sandbox for testing
+  accessToken: process.env.SQUARE_ACCESS_TOKEN
+});
+const createCustomer_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  try {
+    const { result, ...httpResponse } = await square_client.customersApi.createCustomer(post_data);
+    return result;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      const errors = error.result;
+      console.log("Square error", errors);
+      return errors;
+    }
+  }
+});
+
+const createCustomer_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: createCustomer_post
+});
+
+const gateway = defineEventHandler((event) => {
+  return {
+    hell: "world"
+  };
+});
+
+const gateway$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: gateway
+});
+
+const test_get = defineEventHandler(() => "Test GET handler");
+
+const test_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: test_get
 });
 
 const Vue3 = version.startsWith("3");

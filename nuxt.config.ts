@@ -50,9 +50,9 @@ export default defineNuxtConfig({
   pinia: {
     autoImports: ["defineStore", ["defineStore", "definePiniaStore"]],
   },
-  serverMiddleware: [
-    { path: "/api/square", handler: "~/server-middleware/gateway.js" },
-  ],
+  // serverMiddleware: [
+  //   { path: "/api/square", handler: "~/server-middleware/gateway.js" },
+  // ],
   // stripe: {
   //   server: {
   //     key: process.env.NUXT_ENV_STRIPE_SECRET_KEY,

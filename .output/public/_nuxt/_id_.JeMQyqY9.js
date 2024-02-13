@@ -1,1 +1,0 @@
-import{d as t}from"./composables.PaokOPte.js";import{_ as r,n as a,c as o,o as s}from"./entry.xkWbsTyt.js";const n={name:"Member",setup(){const e=a({});return{definePageMeta:t,state:e}}};function c(e,_,p,i,d,f){return s(),o("div")}const l=r(n,[["render",c]]);export{l as default};
