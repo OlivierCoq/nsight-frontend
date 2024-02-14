@@ -976,12 +976,10 @@ const createCustomer_post = defineEventHandler(async (event) => {
   const body = post_data;
   try {
     const { result, ...httpResponse } = await square_client.customersApi.createCustomer(body);
-    const response = JSONBig.parse(result);
-    console.log("square customer response", response);
+    const response = JSONBig.parse(JSONBig.stringify(result));
     event.node.res.statusCode = 200;
     event.node.res.setHeader("Content-Type", "application/json");
     event.node.res.end(JSONBig.stringify(response));
-    return response;
   } catch (error) {
     if (error instanceof ApiError) {
       const errors = error.result;
