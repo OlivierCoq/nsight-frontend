@@ -32,6 +32,8 @@
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@pinia/nuxt": "^0.5.1",
     "express": "^4.18.2",
+    "json-bigint": "^1.0.0",
+    "libphonenumber-js": "^1.10.55",
     "moment": "^2.29.4",
     "pinia": "^2.1.7",
     "postcode-validator": "^3.8.20",

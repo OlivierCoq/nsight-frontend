@@ -5,6 +5,7 @@ import { mkdirSync } from 'node:fs';
 import { parentPort, threadId } from 'node:worker_threads';
 import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, createEvent, getRequestHeader, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseHeader, send, getResponseStatus, setResponseStatus, setResponseHeaders, getRequestHeaders, setHeader, sendError, H3Error, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, readBody, getQuery as getQuery$1, createError, getResponseStatusText } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/h3/dist/index.mjs';
 import { ApiError, Client, Environment } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/cjs/index.js';
+import JSONBig from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/json-bigint/index.js';
 import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { stringify, uneval } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/devalue/index.js';
 import { renderSSRHead } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@unhead/ssr/dist/index.mjs';
@@ -768,12 +769,14 @@ function render(options) {
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
 const _lazy_PpW176 = () => Promise.resolve().then(function () { return gateway$1; });
 const _lazy_GNob4r = () => Promise.resolve().then(function () { return test_get$1; });
+const _lazy_osTstg = () => Promise.resolve().then(function () { return test_post$1; });
 const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/gateway', handler: _lazy_PpW176, lazy: true, middleware: false, method: undefined },
   { route: '/api/square/test', handler: _lazy_GNob4r, lazy: true, middleware: false, method: "get" },
+  { route: '/api/square/test', handler: _lazy_osTstg, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_ShO9cQ, lazy: true, middleware: false, method: undefined },
   { route: '/.well-known/security.txt', handler: _E2XjkS, lazy: false, middleware: false, method: undefined },
   { route: '/.well-known/change-password', handler: _icsbdn, lazy: false, middleware: false, method: undefined },
@@ -964,20 +967,26 @@ const errorDev = /*#__PURE__*/Object.freeze({
 });
 
 const square_client = new Client({
-  environment: Environment.Production,
+  environment: Environment.Sandbox,
   // or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
 const createCustomer_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
+  const body = post_data;
   try {
-    const { result, ...httpResponse } = await square_client.customersApi.createCustomer(post_data);
-    return result;
+    const { result, ...httpResponse } = await square_client.customersApi.createCustomer(body);
+    const response = JSONBig.parse(result);
+    console.log("square customer response", response);
+    event.node.res.statusCode = 200;
+    event.node.res.setHeader("Content-Type", "application/json");
+    event.node.res.end(JSONBig.stringify(response));
+    return response;
   } catch (error) {
     if (error instanceof ApiError) {
       const errors = error.result;
       console.log("Square error", errors);
-      return errors;
+      return JSONBig.parse(errors);
     }
   }
 });
@@ -1003,6 +1012,19 @@ const test_get = defineEventHandler(() => "Test GET handler");
 const test_get$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: test_get
+});
+
+const test_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  return {
+    status: 200,
+    data: post_data
+  };
+});
+
+const test_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: test_post
 });
 
 const Vue3 = version.startsWith("3");

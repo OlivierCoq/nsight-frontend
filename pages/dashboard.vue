@@ -108,6 +108,18 @@
                                           label="Phone Number"
                                           required
                                           pattern="[0-9\-]*"
+                                          placeholder="+1-123-456-7890"
+                                          @keydown="
+                                            () => {
+                                              state.tabs[1].data.new_member.phone_number =
+                                                new AsYouType()
+                                                  .input(
+                                                    state.tabs[1].data
+                                                      .new_member.phone_number
+                                                  )
+                                                  .replace(/\s/g, '-');
+                                            }
+                                          "
                                         ></v-text-field>
                                       </v-col>
                                     </v-row>
@@ -160,6 +172,7 @@ definePageMeta({
 // necessary imports
 import moment from "moment";
 import qs from "qs";
+import { parsePhoneNumber, AsYouType } from "libphonenumber-js";
 
 // oFetch
 import { ofetch } from "ofetch";
@@ -234,8 +247,8 @@ const validateEmail = (email: string) => {
 };
 
 const validatePhone = (number: string) => {
-  // make sure is only numbers and dashes:
-  return number.length && number.toString().match(/^[0-9\-]*$/);
+  const regex = /^\+\d{1,3}-\d{3}-\d{3}-\d{4}$/;
+  return regex.test(number);
 };
 // const new_n_id = () => {
 //   state.tabs[1].data.new_member.n_id = `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`

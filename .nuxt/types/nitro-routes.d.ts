@@ -11,6 +11,7 @@ declare module 'nitropack' {
     }
     '/api/square/test': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/test.get').default>>>>
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/test.post').default>>>>
     }
     '/__nuxt_error': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/renderer').default>>>>
