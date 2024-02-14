@@ -298,9 +298,9 @@ const post_new_member = async () => {
       headers: headers_obj,
     }
   )
-    .then((res) => {
+    .then((nsight_id_check) => {
       // If none found, add the nsight_id to the nsight-ids table
-      if (!res.data.length) {
+      if (!nsight_id_check.data.length) {
         // Add the nsight_id to the nsight-ids table
         let new_nsight_id = {
           data: {
@@ -316,9 +316,9 @@ const post_new_member = async () => {
             body: JSON.stringify(new_nsight_id),
           }
         )
-          .then((data) => {
-            console.log("New nsight id added", data);
-            const new_strapi_nsight_id = data.data;
+          .then((new_nsight_id_data) => {
+            console.log("New nsight id added", new_nsight_id_data);
+            const new_strapi_nsight_id = new_nsight_id_data.data;
 
             // Add the user to the users table
             let new_nsight_member = {
@@ -329,6 +329,7 @@ const post_new_member = async () => {
               last_name: active_tab.data.new_member.last_name,
               phone_number: active_tab.data.new_member.phone_number,
               nsight_id: new_strapi_nsight_id,
+              square_id: "",
               preferences: [
                 {
                   dark_mode: true,
@@ -370,9 +371,12 @@ const post_new_member = async () => {
               headers: headers_obj,
               body: JSON.stringify(new_nsight_member),
             })
-              .then((data) => {
-                console.log("created new strapi member: ", data);
-                const new_strapi_user = data;
+              .then((new_strapi_user_data) => {
+                console.log(
+                  "created new strapi member: ",
+                  new_strapi_user_data
+                );
+                const new_strapi_user = new_strapi_user_data;
 
                 // update nsight_id with new user
                 $fetch(
@@ -387,67 +391,66 @@ const post_new_member = async () => {
                     }),
                   }
                 )
-                  .then((data) => {
-                    console.log("updated nsight_id with new user: ", data);
+                  .then(async (updated_nsight_id_data) => {
+                    console.log(
+                      "updated nsight_id with new user: ",
+                      updated_nsight_id_data
+                    );
 
-                    // Add the user to Medusa
-                    medusa_client.customers
-                      .create({
-                        first_name: new_nsight_member.first_name,
-                        last_name: new_nsight_member.last_name,
-                        password: new_nsight_member.medusa_password,
-                        email: new_nsight_member.email,
-                      })
-                      .then(async (data) => {
-                        console.log("created new medusa member: ", data);
+                    // Add the user to Square
+                    const new_square_customer = {
+                      givenName: new_nsight_member.first_name,
+                      familyName: new_nsight_member.last_name,
+                      emailAddress: new_nsight_member.email,
+                      phoneNumber: new_nsight_member.phone_number,
+                    };
 
-                        const new_square_customer = {
-                          givenName: new_nsight_member.first_name,
-                          familyName: new_nsight_member.last_name,
-                          emailAddress: new_nsight_member.email,
-                          phoneNumber: new_nsight_member.phone_number,
-                        };
+                    // Add customer to Square
 
-                        // Add customer to Square
-                        $fetch("/api/square/create-customer", {
-                          method: "POST",
-                          headers: headers_obj,
-                          body: JSON.stringify(new_square_customer),
-                        })
-                          .then((data) => {
-                            console.log("created new square customer: ", data);
-                          })
-                          .catch((err) => {
-                            console.log(
-                              "error creating new square customer: ",
-                              err
-                            );
-                            state.error = err;
-                          });
+                    const square_data = await $fetch(
+                      "/api/square/create-customer",
+                      {
+                        method: "POST",
+                        headers: headers_obj,
+                        body: JSON.stringify(new_square_customer),
+                      }
+                    );
+                    new_nsight_member.square_id = square_data.customer.id;
 
-                        // Update Strapi with medusa_id
+                    if (square_data.customer && square_data.customer.id) {
+                      new_nsight_member.square_id = square_data.customer.id;
+
+                      // console.log("holup!!!!!!", new_nsight_member);
+                      // Update Strapi with square_id
+                      nextTick(() => {
+                        new_nsight_member.square_id = square_data.customer.id;
+                        console.log(
+                          "updated new_nsight_member with square_id: ",
+                          new_nsight_member
+                        );
+
+                        const updated_new_sight_member = new_nsight_member;
+
                         $fetch(
                           `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${new_strapi_user.id}`,
                           {
                             method: "PUT",
                             headers: headers_obj,
                             body: JSON.stringify({
-                              data: {
-                                medusa_id: data.id,
-                              },
+                              square_id: square_data.customer.id,
                             }),
                           }
                         )
-                          .then((data) => {
+                          .then((square_id_update_data) => {
                             console.log(
-                              "updated strapi user with medusa_id: ",
-                              data
+                              "updated strapi user with square_id: ",
+                              square_id_update_data
                             );
 
                             // Add the user to your friends list
                             // There's an issue right now with friends vs users. I'm adding to both for now.
-                            auth.user.friends.push(data);
-                            auth.user.users.push(data);
+                            auth.user.friends.push(square_id_update_data);
+                            auth.user.users.push(square_id_update_data);
                             state.tabs[1].data.adding_new = false;
 
                             nextTick(() => {
@@ -489,16 +492,13 @@ const post_new_member = async () => {
                           })
                           .catch((err) => {
                             console.log(
-                              "error updating strapi user with medusa_id: ",
+                              "error updating strapi user with square_id: ",
                               err
                             );
                             state.error = err;
                           });
-                      })
-                      .catch((err) => {
-                        console.log("error creating new medusa member: ", err);
-                        state.error = err;
                       });
+                    }
                   })
                   .catch((err) => {
                     console.log(

@@ -767,16 +767,10 @@ function render(options) {
 }
 
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
-const _lazy_PpW176 = () => Promise.resolve().then(function () { return gateway$1; });
-const _lazy_GNob4r = () => Promise.resolve().then(function () { return test_get$1; });
-const _lazy_osTstg = () => Promise.resolve().then(function () { return test_post$1; });
 const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
-  { route: '/api/square/gateway', handler: _lazy_PpW176, lazy: true, middleware: false, method: undefined },
-  { route: '/api/square/test', handler: _lazy_GNob4r, lazy: true, middleware: false, method: "get" },
-  { route: '/api/square/test', handler: _lazy_osTstg, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_ShO9cQ, lazy: true, middleware: false, method: undefined },
   { route: '/.well-known/security.txt', handler: _E2XjkS, lazy: false, middleware: false, method: undefined },
   { route: '/.well-known/change-password', handler: _icsbdn, lazy: false, middleware: false, method: undefined },
@@ -992,37 +986,6 @@ const createCustomer_post = defineEventHandler(async (event) => {
 const createCustomer_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: createCustomer_post
-});
-
-const gateway = defineEventHandler((event) => {
-  return {
-    hell: "world"
-  };
-});
-
-const gateway$1 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  default: gateway
-});
-
-const test_get = defineEventHandler(() => "Test GET handler");
-
-const test_get$1 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  default: test_get
-});
-
-const test_post = defineEventHandler(async (event) => {
-  const post_data = await readBody(event);
-  return {
-    status: 200,
-    data: post_data
-  };
-});
-
-const test_post$1 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  default: test_post
 });
 
 const Vue3 = version.startsWith("3");

@@ -1,10 +1,4 @@
-import {
-  Client,
-  Environment,
-  ApiError,
-  CreateCustomerRequest,
-  CreateCustomerResponse,
-} from "square";
+import { Client, Environment, ApiError, CreateCustomerRequest } from "square";
 import JSONBig from "json-bigint";
 const square_client = new Client({
   environment: Environment.Production, // or Environment.Sandbox for testing
