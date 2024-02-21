@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { mkdirSync } from 'node:fs';
 import { parentPort, threadId } from 'node:worker_threads';
 import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, createEvent, getRequestHeader, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseHeader, send, getResponseStatus, setResponseStatus, setResponseHeaders, getRequestHeaders, setHeader, sendError, H3Error, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, readBody, getQuery as getQuery$1, createError, getResponseStatusText } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/h3/dist/index.mjs';
-import { ApiError, Client, Environment } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/cjs/index.js';
+import { Client, Environment, ApiError } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/cjs/index.js';
 import JSONBig from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/json-bigint/index.js';
 import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { stringify, uneval } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/devalue/index.js';
@@ -766,11 +766,15 @@ function render(options) {
   return options.content;
 }
 
+const _lazy_xsVbzw = () => Promise.resolve().then(function () { return createCard_post$1; });
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
+const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_post$1; });
 const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
+  { route: '/api/square/create-card', handler: _lazy_xsVbzw, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
+  { route: '/api/square/payment', handler: _lazy_lOjqNk, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_ShO9cQ, lazy: true, middleware: false, method: undefined },
   { route: '/.well-known/security.txt', handler: _E2XjkS, lazy: false, middleware: false, method: undefined },
   { route: '/.well-known/change-password', handler: _icsbdn, lazy: false, middleware: false, method: undefined },
@@ -960,8 +964,28 @@ const errorDev = /*#__PURE__*/Object.freeze({
   template: template$1
 });
 
-const square_client = new Client({
-  environment: Environment.Production,
+const square_client$2 = new Client({
+  environment: Environment.Sandbox,
+  // or Environment.Sandbox for testing
+  accessToken: process.env.SQUARE_ACCESS_TOKEN
+});
+const createCard_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  const body = post_data;
+  const { result, ...httpResponse } = await square_client$2.cardsApi.createCard(
+    body
+  );
+  const response = JSONBig.parse(JSONBig.stringify(result));
+  return response;
+});
+
+const createCard_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: createCard_post
+});
+
+const square_client$1 = new Client({
+  environment: Environment.Sandbox,
   // or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -969,7 +993,7 @@ const createCustomer_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   const body = post_data;
   try {
-    const { result, ...httpResponse } = await square_client.customersApi.createCustomer(body);
+    const { result, ...httpResponse } = await square_client$1.customersApi.createCustomer(body);
     const response = JSONBig.parse(JSONBig.stringify(result));
     event.node.res.statusCode = 200;
     event.node.res.setHeader("Content-Type", "application/json");
@@ -986,6 +1010,24 @@ const createCustomer_post = defineEventHandler(async (event) => {
 const createCustomer_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: createCustomer_post
+});
+
+const square_client = new Client({
+  environment: Environment.Sandbox,
+  // or Environment.Sandbox for testing
+  accessToken: process.env.SQUARE_ACCESS_TOKEN
+});
+const payment_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  const body = post_data;
+  const { result, ...httpResponse } = await square_client.paymentsApi.createPayment(body);
+  const response = JSONBig.parse(JSONBig.stringify(result));
+  return response;
+});
+
+const payment_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: payment_post
 });
 
 const Vue3 = version.startsWith("3");

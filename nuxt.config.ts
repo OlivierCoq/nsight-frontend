@@ -50,14 +50,18 @@ export default defineNuxtConfig({
   pinia: {
     autoImports: ["defineStore", ["defineStore", "definePiniaStore"]],
   },
-  // stripe: {
-  //   server: {
-  //     key: process.env.NUXT_ENV_STRIPE_SECRET_KEY,
-  //   },
-  //   client: {
-  //     key: process.env.NUXT_ENV_STRIPE_PUBLISHABLE_KEY,
-  //   }
-  // },
+  vuetify: {
+    theme: {
+      themes: {
+        light: {
+          primary: "#f6e232",
+        },
+        dark: {
+          primary: "#f6e232",
+        },
+      },
+    },
+  },
   runtimeConfig: {
     // The private keys which are only available server-side
     apiSecret: process.env.NUXT_ENV_CHEC_SECRET_API_KEY,
