@@ -125,257 +125,251 @@
       </v-btn>
     </v-card-title>
     <v-card-text>
-      <v-container>
-        <v-row>
-          <v-col
-            v-if="!auth.user.addresses || !auth.user.addresses.shipping.length"
+      <v-row>
+        <v-col
+          v-if="!auth.user.addresses || !auth.user.addresses.shipping.length"
+        >
+          <p class="text-start">
+            No addresses found. Please add a default address for your products.
+          </p>
+        </v-col>
+        <v-col
+          v-else
+          v-for="(address, a) in auth.user.addresses.shipping"
+          :key="a"
+          cols="12"
+          sm="12"
+          md="5"
+          lg="5"
+          xl="5"
+        >
+          <div
+            class="ctr-address px-3 w-100 py-4 me-3 d-flex flex-column align-start justify-start"
+            :class="
+              auth.user.selected_addresses &&
+              address.street === auth.user.selected_addresses.street
+                ? 'selected'
+                : ''
+            "
           >
-            <p class="text-start">
-              No addresses found. Please add a default address for your
-              products.
-            </p>
-          </v-col>
-          <v-col
-            v-else
-            v-for="(address, a) in auth.user.addresses.shipping"
-            :key="a"
-            cols="12"
-            sm="12"
-            md="5"
-            lg="5"
-            xl="5"
-          >
-            <div
-              class="ctr-address px-3 w-100 py-4 me-3 d-flex flex-column align-start justify-start"
-              :class="
+            <h3
+              v-if="
                 auth.user.selected_addresses &&
                 address.street === auth.user.selected_addresses.street
-                  ? 'selected'
-                  : ''
               "
+              class="fw-bold mb-3"
             >
-              <h3
-                v-if="
-                  auth.user.selected_addresses &&
-                  address.street === auth.user.selected_addresses.street
+              Default
+            </h3>
+            <div class="info">
+              <p class="fw-bold">
+                <strong>Name:</strong> {{ address.first_name }}
+                {{ address.last_name }}
+              </p>
+              <p class="fw-bold">
+                <strong>Street:</strong> {{ address.street }}
+              </p>
+              <p class="fw-bold">
+                <strong>Street:</strong> {{ address.street_2 }}
+              </p>
+              <p class="fw-bold">
+                <strong>City:</strong> {{ address.town_city }}
+              </p>
+              <p class="fw-bold">
+                <strong>State:</strong> {{ address.county_state }}
+              </p>
+              <p class="fw-bold">
+                <strong>Zip:</strong> {{ address.postal_zip_code }}
+              </p>
+            </div>
+            <div class="w-100 d-flex flex-row justify-start align-start">
+              <v-btn
+                color="info"
+                size="x-small"
+                text
+                class="mt-3"
+                @click="
+                  state.address.edit_address = address;
+                  state.address.edit_modal = true;
                 "
-                class="fw-bold mb-3"
               >
-                Default
-              </h3>
-              <div class="info">
-                <p class="fw-bold">
-                  <strong>Name:</strong> {{ address.first_name }}
-                  {{ address.last_name }}
-                </p>
-                <p class="fw-bold">
-                  <strong>Street:</strong> {{ address.street }}
-                </p>
-                <p class="fw-bold">
-                  <strong>Street:</strong> {{ address.street_2 }}
-                </p>
-                <p class="fw-bold">
-                  <strong>City:</strong> {{ address.town_city }}
-                </p>
-                <p class="fw-bold">
-                  <strong>State:</strong> {{ address.county_state }}
-                </p>
-                <p class="fw-bold">
-                  <strong>Zip:</strong> {{ address.postal_zip_code }}
-                </p>
-              </div>
-              <div class="w-100 d-flex flex-row justify-start align-start">
-                <v-btn
-                  color="info"
-                  size="x-small"
-                  text
-                  class="mt-3"
-                  @click="
-                    state.address.edit_address = address;
-                    state.address.edit_modal = true;
-                  "
-                >
-                  Edit
+                Edit
 
-                  <v-dialog v-model="state.address.edit_modal" max-width="500">
-                    <v-card>
-                      <v-card-title> Edit Address </v-card-title>
-                      <v-card-text>
-                        <v-col>
-                          <v-form>
-                            <v-row>
-                              <v-col cols="6" sm="6" md="6" lg="6" xl="6">
-                                <v-text-field
-                                  v-model="
-                                    state.address.edit_address.first_name
-                                  "
-                                  label="First"
-                                  outlined
-                                  dense
-                                  hide-details
-                                  @keydown="validate($event, 'text')"
-                                />
-                              </v-col>
-                              <v-col cols="6" sm="6" md="6" lg="6" xl="6">
-                                <v-text-field
-                                  v-model="state.address.edit_address.last_name"
-                                  label="Last"
-                                  outlined
-                                  dense
-                                  hide-details
-                                  @keydown="validate($event, 'text')"
-                                />
-                              </v-col>
-                              <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                                <v-text-field
-                                  v-model="state.address.edit_address.street"
-                                  label="Street"
-                                  outlined
-                                  dense
-                                  @keydown="validate($event, 'text')"
-                                  hide-details
-                                />
-                              </v-col>
-                              <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                                <v-text-field
-                                  v-model="state.address.edit_address.street_2"
-                                  label="Street 2 (Optional)"
-                                  outlined
-                                  @keydown="validate($event, 'text')"
-                                  dense
-                                  hide-details
-                                />
-                              </v-col>
-                              <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                                <v-text-field
-                                  v-model="state.address.edit_address.town_city"
-                                  label="City"
-                                  outlined
-                                  dense
-                                  @keydown="validate($event, 'text')"
-                                  hide-details
-                                />
-                              </v-col>
-                              <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                                <v-text-field
-                                  v-model="
-                                    state.address.edit_address.county_state
-                                  "
-                                  label="State"
-                                  outlined
-                                  dense
-                                  @keydown="validate($event, 'text')"
-                                  hide-details
-                                />
-                              </v-col>
-                              <v-col cols="7" sm="7" md="7" lg="7" xl="7">
-                                <v-autocomplete
-                                  label="Country"
-                                  v-model="state.address.edit_address.country"
-                                  :items="state.country_codes"
-                                  outlined
-                                  dense
-                                  item-title="name"
-                                  item-value="code"
-                                  @keydown="validate($event, 'country')"
-                                  return-object
-                                ></v-autocomplete>
-                              </v-col>
-                              <v-col cols="5">
-                                <v-text-field
-                                  v-model="
-                                    state.address.edit_address.postal_zip_code
-                                  "
-                                  label="Zip"
-                                  outlined
-                                  dense
-                                  @keyup="validate($event, 'zip')"
-                                  hide-details
-                                />
-                                <small
-                                  v-if="state.address.edit_address.zip_error"
-                                  >Please enter a valid zip code.</small
-                                >
-                              </v-col>
-                            </v-row>
-                          </v-form>
-                        </v-col>
-                      </v-card-text>
-                      <v-card-actions>
-                        <v-col>
-                          <v-btn
-                            class="mt-3"
-                            @click="state.address.edit_address = false"
-                          >
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            color="info"
-                            class="mt-3 ms-3"
-                            @click="edit_address(address)"
-                          >
-                            Save
-                          </v-btn>
-                        </v-col>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-btn>
-                <v-btn
-                  color="error"
-                  size="x-small"
-                  class="mt-3 ms-3"
-                  text
-                  @click="state.address.delete_address = true"
-                >
-                  Delete
-
-                  <v-dialog
-                    v-model="state.address.delete_address"
-                    max-width="500"
-                  >
-                    <v-card>
-                      <v-card-title> Delete Address </v-card-title>
-                      <v-card-text>
-                        <p>Are you sure you want to delete this address?</p>
-                      </v-card-text>
-                      <v-card-actions>
+                <v-dialog v-model="state.address.edit_modal" max-width="500">
+                  <v-card>
+                    <v-card-title> Edit Address </v-card-title>
+                    <v-card-text>
+                      <v-col>
+                        <v-form>
+                          <v-row>
+                            <v-col cols="6" sm="6" md="6" lg="6" xl="6">
+                              <v-text-field
+                                v-model="state.address.edit_address.first_name"
+                                label="First"
+                                outlined
+                                dense
+                                hide-details
+                                @keydown="validate($event, 'text')"
+                              />
+                            </v-col>
+                            <v-col cols="6" sm="6" md="6" lg="6" xl="6">
+                              <v-text-field
+                                v-model="state.address.edit_address.last_name"
+                                label="Last"
+                                outlined
+                                dense
+                                hide-details
+                                @keydown="validate($event, 'text')"
+                              />
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12" lg="12" xl="12">
+                              <v-text-field
+                                v-model="state.address.edit_address.street"
+                                label="Street"
+                                outlined
+                                dense
+                                @keydown="validate($event, 'text')"
+                                hide-details
+                              />
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12" lg="12" xl="12">
+                              <v-text-field
+                                v-model="state.address.edit_address.street_2"
+                                label="Street 2 (Optional)"
+                                outlined
+                                @keydown="validate($event, 'text')"
+                                dense
+                                hide-details
+                              />
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12" lg="12" xl="12">
+                              <v-text-field
+                                v-model="state.address.edit_address.town_city"
+                                label="City"
+                                outlined
+                                dense
+                                @keydown="validate($event, 'text')"
+                                hide-details
+                              />
+                            </v-col>
+                            <v-col cols="12" sm="12" md="12" lg="12" xl="12">
+                              <v-text-field
+                                v-model="
+                                  state.address.edit_address.county_state
+                                "
+                                label="State"
+                                outlined
+                                dense
+                                @keydown="validate($event, 'text')"
+                                hide-details
+                              />
+                            </v-col>
+                            <v-col cols="7" sm="7" md="7" lg="7" xl="7">
+                              <v-autocomplete
+                                label="Country"
+                                v-model="state.address.edit_address.country"
+                                :items="state.country_codes"
+                                outlined
+                                dense
+                                item-title="name"
+                                item-value="code"
+                                @keydown="validate($event, 'country')"
+                                return-object
+                              ></v-autocomplete>
+                            </v-col>
+                            <v-col cols="5">
+                              <v-text-field
+                                v-model="
+                                  state.address.edit_address.postal_zip_code
+                                "
+                                label="Zip"
+                                outlined
+                                dense
+                                @keyup="validate($event, 'zip')"
+                                hide-details
+                              />
+                              <small v-if="state.address.edit_address.zip_error"
+                                >Please enter a valid zip code.</small
+                              >
+                            </v-col>
+                          </v-row>
+                        </v-form>
+                      </v-col>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-col>
                         <v-btn
                           class="mt-3"
-                          style="color: #9d9021"
-                          @click="state.address.delete_address = false"
+                          @click="state.address.edit_address = false"
                         >
                           Cancel
                         </v-btn>
                         <v-btn
-                          color="error"
+                          color="info"
                           class="mt-3 ms-3"
-                          @click="delete_address(address)"
+                          @click="edit_address(address)"
                         >
-                          Delete Address
+                          Save
                         </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                </v-btn>
-                <v-btn
-                  v-if="
-                    auth.user.selected_addresses &&
-                    address.street !== auth.user.selected_addresses.street
-                  "
-                  color="primary"
-                  size="x-small"
-                  class="mt-3 ms-3"
-                  text
-                  @click="set_address_default(address)"
+                      </v-col>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-btn>
+              <v-btn
+                color="error"
+                size="x-small"
+                class="mt-3 ms-3"
+                text
+                @click="state.address.delete_address = true"
+              >
+                Delete
+
+                <v-dialog
+                  v-model="state.address.delete_address"
+                  max-width="500"
                 >
-                  Default
-                </v-btn>
-              </div>
+                  <v-card>
+                    <v-card-title> Delete Address </v-card-title>
+                    <v-card-text>
+                      <p>Are you sure you want to delete this address?</p>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-btn
+                        class="mt-3"
+                        style="color: #9d9021"
+                        @click="state.address.delete_address = false"
+                      >
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        color="error"
+                        class="mt-3 ms-3"
+                        @click="delete_address(address)"
+                      >
+                        Delete Address
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-btn>
+              <v-btn
+                v-if="
+                  auth.user.selected_addresses &&
+                  address.street !== auth.user.selected_addresses.street
+                "
+                color="primary"
+                size="x-small"
+                class="mt-3 ms-3"
+                text
+                @click="set_address_default(address)"
+              >
+                Default
+              </v-btn>
             </div>
-          </v-col>
-        </v-row>
-      </v-container>
+          </div>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>

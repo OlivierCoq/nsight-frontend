@@ -353,6 +353,15 @@ const post_new_member = async () => {
               payment_methods: {
                 data: [],
               },
+              orders: {
+                data: [],
+              },
+              returns: {
+                data: [],
+              },
+              cancelled_orders: {
+                data: [],
+              },
               role: {
                 id: 1,
                 name: "Authenticated",

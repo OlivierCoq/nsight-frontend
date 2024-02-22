@@ -768,12 +768,14 @@ function render(options) {
 
 const _lazy_xsVbzw = () => Promise.resolve().then(function () { return createCard_post$1; });
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
+const _lazy_2muENO = () => Promise.resolve().then(function () { return listCatalog_get$1; });
 const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_post$1; });
 const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '/api/square/create-card', handler: _lazy_xsVbzw, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
+  { route: '/api/square/list-catalog', handler: _lazy_2muENO, lazy: true, middleware: false, method: "get" },
   { route: '/api/square/payment', handler: _lazy_lOjqNk, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_ShO9cQ, lazy: true, middleware: false, method: undefined },
   { route: '/.well-known/security.txt', handler: _E2XjkS, lazy: false, middleware: false, method: undefined },
@@ -964,7 +966,7 @@ const errorDev = /*#__PURE__*/Object.freeze({
   template: template$1
 });
 
-const square_client$2 = new Client({
+const square_client$3 = new Client({
   environment: Environment.Sandbox,
   // or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
@@ -972,7 +974,7 @@ const square_client$2 = new Client({
 const createCard_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   const body = post_data;
-  const { result, ...httpResponse } = await square_client$2.cardsApi.createCard(
+  const { result, ...httpResponse } = await square_client$3.cardsApi.createCard(
     body
   );
   const response = JSONBig.parse(JSONBig.stringify(result));
@@ -984,7 +986,7 @@ const createCard_post$1 = /*#__PURE__*/Object.freeze({
   default: createCard_post
 });
 
-const square_client$1 = new Client({
+const square_client$2 = new Client({
   environment: Environment.Sandbox,
   // or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
@@ -993,7 +995,7 @@ const createCustomer_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   const body = post_data;
   try {
-    const { result, ...httpResponse } = await square_client$1.customersApi.createCustomer(body);
+    const { result, ...httpResponse } = await square_client$2.customersApi.createCustomer(body);
     const response = JSONBig.parse(JSONBig.stringify(result));
     event.node.res.statusCode = 200;
     event.node.res.setHeader("Content-Type", "application/json");
@@ -1010,6 +1012,23 @@ const createCustomer_post = defineEventHandler(async (event) => {
 const createCustomer_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: createCustomer_post
+});
+
+const square_client$1 = new Client({
+  environment: Environment.Sandbox,
+  // or Environment.Sandbox for testing
+  accessToken: process.env.SQUARE_ACCESS_TOKEN
+});
+const listCatalog_get = defineEventHandler(async (event) => {
+  await readBody(event);
+  const { result, ...httpResponse } = await square_client$1.catalogApi.listCatalog();
+  const response = JSONBig.parse(JSONBig.stringify(result));
+  return response;
+});
+
+const listCatalog_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: listCatalog_get
 });
 
 const square_client = new Client({

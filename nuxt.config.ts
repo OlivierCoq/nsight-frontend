@@ -20,9 +20,8 @@ export default defineNuxtConfig({
   ssr: false,
   typescript: { strict: true },
   css: [
-    "vuetify/styles",
+    "~/assets/css/main.css",
     "@fortawesome/fontawesome-svg-core/styles.css",
-    "vuetify/lib/styles/main.sass",
     "~/assets/style/main.scss",
   ],
 
@@ -60,6 +59,13 @@ export default defineNuxtConfig({
           primary: "#f6e232",
         },
       },
+    },
+  },
+  // Tailwind:
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
     },
   },
   runtimeConfig: {
