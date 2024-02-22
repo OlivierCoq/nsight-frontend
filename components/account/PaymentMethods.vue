@@ -35,76 +35,7 @@
                         indeterminate
                         color="primary"
                       />
-                      <!-- Form with state.new_card.address inputs: -->
-                      <!-- <v-form v-if="state.stripe_data.cardElement">
-                        <v-row>
-                          <v-col>
-                            <v-text-field
-                              v-model="state.new_card.name"
-                              label="Name on Card"
-                              required
-                              dense
-                              hide-details
-                            ></v-text-field>
-                            <v-text-field
-                              v-model="state.new_card.address.line1"
-                              label="Address Line 1"
-                              required
-                              dense
-                              hide-details
-                            ></v-text-field>
-                            <v-text-field
-                              v-model="state.new_card.address.line2"
-                              label="Address Line 2"
-                              dense
-                              hide-details
-                            ></v-text-field>
-                          </v-col>
-                        </v-row>
-                        <v-row>
-                          <v-col>
-                            <v-text-field
-                              v-model="state.new_card.address.city"
-                              label="City"
-                              required
-                              dense
-                              hide-details
-                            ></v-text-field>
-                          </v-col>
-                          <v-col>
-                            <v-text-field
-                              v-model="state.new_card.address.state"
-                              label="State"
-                              required
-                              dense
-                              hide-details
-                            ></v-text-field>
-                          </v-col>
-                          <v-col>
-                            <v-text-field
-                              v-model="state.new_card.address.postal_code"
-                              label="Postal Code"
-                              required
-                              dense
-                              hide-details
-                            ></v-text-field>
-                          </v-col>
-                        </v-row>
-                        <v-row>
-                          <v-col>
-                            <v-text-field
-                              v-model="state.new_card.address.country"
-                              label="Country"
-                              required
-                              dense
-                              hide-details
-                            ></v-text-field>
-                          </v-col>
-                        </v-row>
-                        <v-row>
-                          <v-col> </v-col>
-                        </v-row>
-                      </v-form> -->
+
                       <div class="ctr-card">
                         <!-- <div id="card-element"></div> -->
                         <form id="payment-form">
@@ -159,7 +90,7 @@
     </v-card-title>
     <v-card-text>
       <v-row v-if="auth.user.payment_methods">
-        <!-- <v-col
+        <v-col
           cols="12"
           md="6"
           v-for="(payment_method, a) in auth.user.payment_methods.data"
@@ -167,8 +98,9 @@
         >
           <v-card
             :variant="
-              auth.user.selected_payment_method &&
-              auth.user.selected_payment_method.id == payment_method.id
+              auth.user.selected_payment_method.card &&
+              auth.user.selected_payment_method.card.id ==
+                payment_method.card.id
                 ? 'tonal'
                 : 'plain'
             "
@@ -176,12 +108,16 @@
           >
             <v-card-title>
               <font-awesome-icon
-                :icon="['fab', `cc-${payment_method.card.brand}`]"
+                :icon="[
+                  'fab',
+                  format_card_brand(payment_method.card.cardBrand),
+                ]"
               />
               <small
                 v-if="
                   auth.user.selected_payment_method &&
-                  auth.user.selected_payment_method.id == payment_method.id
+                  auth.user.selected_payment_method.card.id ==
+                    payment_method.card.id
                 "
                 class="text-uppercase"
               >
@@ -193,7 +129,7 @@
                 <v-col>
                   <p class="text--white">
                     <span class="text-uppercase">
-                      {{ payment_method.billing_details.name }}
+                      {{ payment_method.card.cardholderName }}
                     </span>
                     |
                     <span class="text-uppercase">
@@ -222,7 +158,8 @@
               </v-btn>
               <v-btn
                 v-if="
-                  auth.user.selected_payment_method.id !== payment_method.id
+                  auth.user.selected_payment_method.card.id !==
+                  payment_method.card.id
                 "
                 color="primary"
                 size="small"
@@ -235,6 +172,10 @@
                 color="error"
                 size="small"
                 text
+                :disabled="
+                  auth.user.selected_payment_method.card.id ===
+                  payment_method.card.id
+                "
                 @click="state.delete_method_dialog = true"
               >
                 Delete
@@ -270,7 +211,7 @@
               <v-spacer />
             </v-card-actions>
           </v-card>
-        </v-col> -->
+        </v-col>
       </v-row>
       <v-row v-else>
         <p class="text--white text-start px-4 pb-6">
@@ -329,10 +270,6 @@ const state = reactive({
       state: "",
     },
   },
-  stripe_data: {
-    stripe: null,
-    cardElement: null,
-  },
 });
 
 const runtimeConfig = useRuntimeConfig();
@@ -351,32 +288,31 @@ const set_default = (method) => {
 
 const add_new = async () => {
   state.dialog = false;
-  // state.stripe_data.stripe.createPaymentMethod({
-  //   type: 'card',
-  //   card: state.stripe_data.cardElement,
-  //   billing_details: {
-  //     name: state.new_card.name,
-  //     address: state.new_card.address
-  //   }
-  // })
-  //   .then((res) => {
-  //     console.log('stripe res', res)
-  //     auth.user.payment_methods.data.push(res.paymentMethod)
-  //     if (!auth.user.selected_payment_method) {
-  //       auth.user.selected_payment_method = res.paymentMethod
-  //     }
-  //     nextTick(() => {
-  //       // add payment method to Medusa
-  //       auth.updateUser()
-  //       state.dialog = false
-  //     })
-  //   })
+};
+
+const format_card_brand = (str) => {
+  switch (str) {
+    case "VISA":
+      return "cc-visa";
+    case "MASTERCARD":
+      return "cc-mastercard";
+    case "AMERICAN_EXPRESS":
+      return "cc-amex";
+    case "DISCOVER":
+      return "cc-discover";
+    case "DISCOVER_DINERS":
+      return "cc-diners-club";
+    case "JCB":
+      return "cc-jcb";
+    default:
+      return "credit-card";
+  }
 };
 
 const delete_method = (method) => {
   auth.user.payment_methods.data = auth.user.payment_methods.data.filter(
     (m) => {
-      return m.id !== method.id;
+      return m.card.id !== method.card.id;
     }
   );
   nextTick(() => {
