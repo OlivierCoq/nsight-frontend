@@ -24,7 +24,8 @@
       <div class="h-[95%] my-auto me-4 rounded-lg w-full md:w-4/5 px-3 pb-4 bg-zinc-400 dark:bg-zinc-700 shadow-xl">
 
         <div v-if="state?.current_tab?.name == 'My Friends'" class="w-full flex flex-col p-4">
-          <div class="w-full flex flex-row justify-between">
+
+          <div class="w-full flex flex-row justify-between mb-4">
             <h1 class="text-neutral-900 dark:text-white text-5xl mt-2 mb-3 font-thin">My friends</h1>
             <button
               class="nsight-btn-primary w-1/5 h-[40px] text-neutral-900 dark:text-white px-2 rounded uppercase"
@@ -107,7 +108,11 @@
             
             </button>
           </div>
-
+          
+          <!-- Friends grid -->
+          <div class="w-full grid grid-cols-1 md:grid-cols-6">
+            <!-- Friend grid items -->
+          </div>
           
         </div>
       </div>
