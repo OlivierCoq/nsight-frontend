@@ -1,163 +1,5 @@
 <template>
-  <v-row
-    v-if="auth.user"
-    id="dashboard"
-    :class="auth.user.preferences[0].dark_mode ? 'bg-dark' : 'bg-light'"
-  >
-    <v-col class="h-100">
-      <v-card
-        :theme="auth.user.preferences[0].dark_mode ? 'dark' : 'light'"
-        class="mx-3 my-3 h-100 overflow-auto"
-      >
-        <v-card-title>let's get it</v-card-title>
-
-        <!-- Tabs -->
-        <v-card-text>
-          <v-tabs v-model="state.current_tab">
-            <v-tab v-for="(tab, a) in state.tabs" :key="a">
-              {{ tab.name }}
-            </v-tab>
-          </v-tabs>
-
-          <!-- Tab content -->
-          <v-window v-model="state.current_tab">
-            <div v-if="state.current_tab == 1">
-              <v-row class="my-3">
-                <!-- Member cards -->
-                <v-col
-                  v-for="(user, b) in auth.user.friends"
-                  :key="b"
-                  cols="12"
-                  sm="6"
-                  md="3"
-                  lg="2"
-                  xl="1"
-                >
-                  <DashboardMemberCard :member="user" />
-                </v-col>
-
-                <!-- Add new member card -->
-                <v-col cols="12" sm="6" md="3" lg="2" xl="1">
-                  <v-card variant="tonal" class="w-100 h-100">
-                    <v-card-text
-                      class="d-flex w-100 h-100 justify-center align-center"
-                    >
-                      <v-btn @click="state.tabs[1].data.adding_new = true" flat>
-                        <strong style="font-size: 200%">+</strong>
-                        <v-tooltip
-                          activator="parent"
-                          location="top"
-                          open-delay="500"
-                          >Invite new member</v-tooltip
-                        >
-
-                        <!-- Add new member dialog -->
-                        <v-dialog
-                          v-model="state.tabs[1].data.adding_new"
-                          width="600"
-                        >
-                          <v-row>
-                            <v-col>
-                              <v-card flat variant="flat">
-                                <v-card-title>
-                                  <span class="headline"
-                                    >invite new member</span
-                                  >
-                                </v-card-title>
-                                <v-card-text>
-                                  <!-- Make rows and columns thin: -->
-                                  <v-form>
-                                    <v-row dense>
-                                      <v-col dense>
-                                        <v-text-field
-                                          v-model="
-                                            state.tabs[1].data.new_member
-                                              .first_name
-                                          "
-                                          label="First Name"
-                                          required
-                                        />
-                                      </v-col>
-                                      <v-col dense>
-                                        <v-text-field
-                                          v-model="
-                                            state.tabs[1].data.new_member
-                                              .last_name
-                                          "
-                                          label="Last Name"
-                                          required
-                                        />
-                                      </v-col>
-                                    </v-row>
-                                    <v-row dense>
-                                      <v-col cols="7" dense>
-                                        <v-text-field
-                                          v-model="
-                                            state.tabs[1].data.new_member.email
-                                          "
-                                          label="Email"
-                                          required
-                                        ></v-text-field>
-                                      </v-col>
-                                      <v-col cols="5" dense>
-                                        <v-text-field
-                                          v-model="
-                                            state.tabs[1].data.new_member
-                                              .phone_number
-                                          "
-                                          label="Phone Number"
-                                          required
-                                          pattern="[0-9\-]*"
-                                          placeholder="+1-123-456-7890"
-                                          @keydown="
-                                            () => {
-                                              state.tabs[1].data.new_member.phone_number =
-                                                new AsYouType()
-                                                  .input(
-                                                    state.tabs[1].data
-                                                      .new_member.phone_number
-                                                  )
-                                                  .replace(/\s/g, '-');
-                                            }
-                                          "
-                                        ></v-text-field>
-                                      </v-col>
-                                    </v-row>
-                                  </v-form>
-                                </v-card-text>
-                                <v-card-actions>
-                                  <v-spacer></v-spacer>
-                                  <v-btn
-                                    color="blue darken-1"
-                                    text
-                                    @click="
-                                      state.tabs[1].data.adding_new = false
-                                    "
-                                    >Cancel</v-btn
-                                  >
-                                  <v-btn
-                                    :disabled="!state.validate"
-                                    color="blue darken-1"
-                                    text
-                                    @click="post_new_member"
-                                    >Invite</v-btn
-                                  >
-                                </v-card-actions>
-                              </v-card>
-                            </v-col>
-                          </v-row>
-                        </v-dialog>
-                      </v-btn>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
-              </v-row>
-            </div>
-          </v-window>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
+  <div class="w-full"></div>
 </template>
 <script setup lang="ts">
 // Page meta
@@ -184,9 +26,6 @@ const runtimeConfig = useRuntimeConfig();
 //     'X-Authorization': runtimeConfig.apiSecret
 //   }
 // })
-
-// Medusa
-const medusa_client = useMedusaClient();
 
 // Stores
 const auth = authStore();
@@ -270,7 +109,7 @@ const validatePhone = (number: string) => {
       password: generate_random_password(),
       nsight_id: state.tabs[1].data.new_member.n_id
     })
-  5. Add user to Medusa by using medusa.customers.create()
+  5. Add user to Square by using local API endpoint /api/square/create-customer
   6. Add user to your friends list
   7. Send email confirmation to new member
   8. Update on your DB that the user has been added
@@ -337,7 +176,6 @@ const post_new_member = async () => {
               ],
               username: active_tab.data.new_member.email,
               // password: thisObj.generate_random_password()
-              medusa_password: generate_random_password(),
               password: "P@ssW3rd9756",
               users: [auth.user],
               friends: [auth.user],

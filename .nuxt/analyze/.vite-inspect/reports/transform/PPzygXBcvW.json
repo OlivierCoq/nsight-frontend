@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/presets/nsight_style_presets/autocomplete/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export default {\n    root: ({ props }) => ({\n        class: [\n            'relative',\n\n            // Flex\n            'inline-flex',\n\n            // Size\n            { 'w-full': props.multiple },\n\n            // Color\n            'text-surface-900 dark:text-surface-0',\n\n            //States\n            {\n                'opacity-60 select-none pointer-events-none cursor-default': props.disabled\n            }\n        ]\n    }),\n    container: ({ props, state }) => ({\n        class: [\n            // Font\n            'font-sans text-base leading-none',\n\n            // Flex\n            'flex items-center flex-wrap',\n            'gap-2',\n\n            // Spacing\n            'm-0 list-none',\n            'px-3 py-1.5',\n\n            // Size\n            'w-full',\n            'min-h-[2.877rem]',\n\n            // Shape\n            'appearance-none rounded-md',\n\n            // Color\n            'text-surface-700 dark:text-white/80',\n            'placeholder:text-surface-400 dark:placeholder:text-surface-500',\n            'bg-surface-0 dark:bg-surface-900',\n            'border',\n            { 'border-surface-300 dark:border-surface-600': !props.invalid },\n\n            // Invalid State\n            { 'border-red-500 dark:border-red-400': props.invalid },\n\n            // States\n            { 'hover:border-primary-500 dark:hover:border-primary-400': !props.invalid },\n            'focus:outline-none focus:outline-offset-0',\n            { 'ring ring-primary-400/50 dark:ring-primary-300/50': state.focused },\n            { 'ring ring-primary-400/50 dark:ring-primary-300/50': state.hovered },\n            // Transition\n            'transition duration-200 ease-in-out',\n\n            // Misc\n            'cursor-text overflow-hidden'\n        ]\n    }),\n    inputtoken: {\n        class: ['py-1.5 px-0', 'inline-flex flex-auto']\n    },\n    input: ({ props }) => ({\n        class: [\n            // Font\n            'font-sans text-base leading-none',\n\n            // Shape\n            'appearance-none rounded-md',\n            { 'rounded-tr-none rounded-br-none': props.dropdown },\n            { 'outline-none shadow-none rounded-none': props.multiple },\n\n            // Size\n            { 'w-full': props.multiple },\n\n            // Spacing\n            'm-0',\n            { 'p-3': !props.multiple, 'p-0': props.multiple },\n\n            // Colors\n            'text-surface-700 dark:text-white/80',\n            'border',\n            {\n                'bg-surface-0 dark:bg-surface-900': !props.multiple,\n                ' border-surface-300 dark:border-surface-700': !props.multiple && !props.invalid,\n                'border-0 bg-transparent': props.multiple\n            },\n\n            // Invalid State\n            { 'border-red-500 dark:border-red-400': props.invalid },\n\n            // States\n            { 'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-primary-400/50 dark:focus:ring-primary-300/50': !props.multiple },\n\n            // Transition\n            'transition-colors duration-200'\n        ]\n    }),\n    token: {\n        class: [\n            // Flex\n            'inline-flex items-center',\n\n            // Spacings\n            'py-1.5 px-3',\n\n            // Shape\n            'rounded-[1.14rem]',\n\n            // Colors\n            'bg-surface-200 dark:bg-surface-700',\n            'text-surface-700 dark:text-white/70',\n\n            // Misc\n            'cursor-default'\n        ]\n    },\n    label: {\n        class: 'leading-5'\n    },\n    removeTokenIcon: {\n        class: [\n            // Shape\n            'rounded-md leading-6',\n\n            // Spacing\n            'ml-2',\n\n            // Size\n            'w-4 h-4',\n\n            // Transition\n            'transition duration-200 ease-in-out',\n\n            // Misc\n            'cursor-pointer'\n        ]\n    },\n    dropdownbutton: {\n        root: {\n            class: [\n                'relative',\n\n                // Alignments\n                'items-center inline-flex text-center align-bottom',\n\n                // Shape\n                'rounded-r-md',\n\n                // Size\n                'px-4 py-3 leading-none',\n\n                // Colors\n                'text-white dark:text-surface-900',\n                'bg-primary-500 dark:bg-primary-400',\n                'border border-primary-500 dark:border-primary-400',\n\n                // States\n                'focus:outline-none focus:outline-offset-0 focus:ring',\n                'hover:bg-primary-600 dark:hover:bg-primary-300 hover:border-primary-600 dark:hover:border-primary-300',\n                'focus:ring-primary-400/50 dark:focus:ring-primary-300/50'\n            ]\n        }\n    },\n    loadingicon: {\n        class: ['text-surface-500 dark:text-surface-0/70', 'absolute top-[50%] right-[0.5rem] -mt-2 animate-spin']\n    },\n    panel: {\n        class: [\n            // Colors\n            'bg-surface-0 dark:bg-surface-800',\n            'text-surface-700 dark:text-white/80',\n\n            // Shape\n            'border-0',\n            'rounded-md',\n            'shadow-md',\n\n            // Size\n            'max-h-[200px] overflow-auto'\n        ]\n    },\n    list: {\n        class: 'py-3 px-0 list-none m-0'\n    },\n    item: ({ context }) => ({\n        class: [\n            'relative',\n\n            // Font\n            'font-normal text-base leading-none',\n\n            // Spacing\n            'm-0 px-5 py-3',\n\n            // Shape\n            'border-0 rounded-none',\n\n            // Colors\n            {\n                'text-surface-700 dark:text-white/80': !context.focused && !context.selected,\n                'bg-surface-200 dark:bg-surface-600/60': context.focused && !context.selected,\n                'text-surface-700 dark:text-white/80': context.focused && !context.selected,\n\n                'text-primary-700 dark:text-white/80': context.focused && context.selected,\n                'bg-primary-100 dark:bg-primary-400': context.focused && context.selected,\n                'text-primary-700 dark:text-white/80': !context.focused && context.selected,\n                'bg-primary-50 dark:bg-primary-300': !context.focused && context.selected\n            },\n\n            //States\n            { 'hover:bg-surface-100 dark:hover:bg-surface-600/80': !context.focused && !context.selected },\n            { 'hover:text-surface-700 hover:bg-surface-100 dark:hover:text-white dark:hover:bg-surface-600/80': context.focused && !context.selected },\n\n            // Transition\n            'transition-shadow duration-200',\n\n            // Misc\n            'cursor-pointer overflow-hidden whitespace-nowrap'\n        ]\n    }),\n    itemgroup: {\n        class: [\n            'font-bold',\n\n            // Spacing\n            'm-0 p-3',\n\n            // Colors\n            'bg-surface-0 dark:bg-surface-700',\n            'text-surface-800 dark:text-white/80',\n\n            // Misc\n            'cursor-auto'\n        ]\n    },\n    emptymessage: {\n        class: [\n            // Font\n            'leading-none',\n\n            // Spacing\n            'py-3 px-5',\n\n            // Color\n            'text-surface-800 dark:text-white/80',\n            'bg-transparent'\n        ]\n    },\n    transition: {\n        enterFromClass: 'opacity-0 scale-y-[0.8]',\n        enterActiveClass: 'transition-[transform,opacity] duration-[120ms] ease-[cubic-bezier(0,0,0.2,1)]',\n        leaveActiveClass: 'transition-opacity duration-100 ease-linear',\n        leaveToClass: 'opacity-0'\n    }\n};\n",
+      "start": 1709003845927,
+      "end": 1709003846019,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003846019,
+      "end": 1709003846019,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003846019,
+      "end": 1709003846021,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003846021,
+      "end": 1709003846021,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003846021,
+      "end": 1709003846021,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003846021,
+      "end": 1709003846021,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003846021,
+      "end": 1709003846021,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003846021,
+      "end": 1709003846021,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003846021,
+      "end": 1709003846021,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003846021,
+      "end": 1709003846021,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003846021,
+      "end": 1709003846021,
+      "order": "normal"
+    }
+  ]
+}

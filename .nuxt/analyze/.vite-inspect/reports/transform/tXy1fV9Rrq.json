@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/schema/es/types/dictWithXmlEntries.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { __assign, __read, __values } from 'tslib';\nimport { objectEntries } from '../utils.js';\nimport { dict } from './dict.js';\nfunction dictWithXmlEntries(itemSchema) {\n  var dictSchema = dict(itemSchema);\n  var modifiedSchema = __assign({}, dictSchema);\n  modifiedSchema.unmapXml = function (inputValue, ctxt) {\n    var output = dictSchema.unmapXml(inputValue, ctxt);\n    // Convert each entry to XML \"entry\" elements. The XML \"entry\" element looks\n    // like this: `<entry key=\"key\">value</entry>`. Note that the element name\n    // \"entry\" is set later at the return.\n    var entries = objectEntries(output).map(function (_a) {\n      var _b = __read(_a, 2),\n        key = _b[0],\n        value = _b[1];\n      return {\n        $: {\n          key: key\n        },\n        _: value\n      };\n    });\n    return {\n      entry: entries\n    };\n  };\n  modifiedSchema.mapXml = function (value, ctxt) {\n    var e_1, _a;\n    // Empty dictionary\n    if (!('entry' in value)) {\n      return {};\n    }\n    var entries = value.entry;\n    // For a single entry, the XML parser gives a single object instead of an array.\n    // Make it an array for easier handling.\n    if (!Array.isArray(entries)) {\n      entries = [entries];\n    }\n    // Convert entry elements containing a key attribute and content to a dictionary.\n    var dictObj = {};\n    try {\n      for (var entries_1 = __values(entries), entries_1_1 = entries_1.next(); !entries_1_1.done; entries_1_1 = entries_1.next()) {\n        var item = entries_1_1.value;\n        dictObj[item.$.key] = item._;\n      }\n    } catch (e_1_1) {\n      e_1 = {\n        error: e_1_1\n      };\n    } finally {\n      try {\n        if (entries_1_1 && !entries_1_1.done && (_a = entries_1.return)) _a.call(entries_1);\n      } finally {\n        if (e_1) throw e_1.error;\n      }\n    }\n    // Run validation on entry values against the item schema.\n    // TODO: Maintain context and path when delegating validatin\n    return dictSchema.mapXml(dictObj, ctxt);\n  };\n  modifiedSchema.validateBeforeMapXml = function (value, ctxt) {\n    var e_2, _a;\n    if (typeof value !== 'object' || value === null) {\n      return ctxt.fail();\n    }\n    // Empty dictionary case\n    if (!('entry' in value)) {\n      return [];\n    }\n    var entries = value.entry;\n    // Non-repeating XML elements are passed as a single-object instead of an array of objects.\n    // We normalize this behavior of the XML parser.\n    if (!Array.isArray(entries)) {\n      entries = [entries];\n    }\n    // Dictionary for all entries\n    var dictObj = {};\n    try {\n      for (var entries_2 = __values(entries), entries_2_1 = entries_2.next(); !entries_2_1.done; entries_2_1 = entries_2.next()) {\n        var entry = entries_2_1.value;\n        // Fail if entry is not an XML element object.\n        if (typeof entry !== 'object' || entry === null) {\n          return ctxt.fail('Expected \"entry\" to be an XML element.');\n        }\n        // Fail if entry does not have an attribute named key.\n        if (!('$' in entry) || !('key' in entry.$)) {\n          return ctxt.fail('Expected \"entry\" element to have an attribute named \"key\".');\n        }\n        // Set entry in dictionary\n        var typedEntry = entry;\n        dictObj[typedEntry.$.key] = typedEntry._;\n      }\n    } catch (e_2_1) {\n      e_2 = {\n        error: e_2_1\n      };\n    } finally {\n      try {\n        if (entries_2_1 && !entries_2_1.done && (_a = entries_2.return)) _a.call(entries_2);\n      } finally {\n        if (e_2) throw e_2.error;\n      }\n    }\n    // Check all entry values against the item schema.\n    // TODO: Maintain context and path when delegating validation\n    return dictSchema.validateBeforeMapXml(dictObj, ctxt);\n  };\n  return modifiedSchema;\n}\nexport { dictWithXmlEntries };",
+      "start": 1709003848088,
+      "end": 1709003848143,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003848143,
+      "end": 1709003848143,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003848143,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003848144,
+      "end": 1709003848144,
+      "order": "normal"
+    }
+  ]
+}

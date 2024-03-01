@@ -1,30 +1,26 @@
-import { createPinia } from 'pinia'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import { ofetch } from 'ofetch'
+import { createPinia } from "pinia";
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import { ofetch } from "ofetch";
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
-const runtimeConfig = useRuntimeConfig()
-
-
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+const runtimeConfig = useRuntimeConfig();
 
 export const settingsStore = defineStore({
-  id: 'settingsStore',
+  id: "settingsStore",
   state: () => {
     return {
-      dark_mode: false,
-      account: {
-
-      }
-    }
+      dark_mode: true,
+      account: {},
+    };
   },
   actions: {
     toggleDarkMode() {
-      this.dark_mode = !this.dark_mode
-    }
+      this.dark_mode = !this.dark_mode;
+    },
   },
   getters: {},
   persist: {
-    enabled: true
-  }
-})
+    enabled: true,
+  },
+});

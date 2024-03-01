@@ -1,14 +1,14 @@
 <template>
-  <v-card variant="tonal" class="mb-4">
-    <v-card-title> Orders </v-card-title>
-    <v-card-text>
-      <div class="ctr-orders overflow-auto">
-        <p v-if="!state.orders">
-          No orders yet! Head over to the shop and check out our products!
-        </p>
+  <div
+      class="py-3 px-5 ms-2 me-5 shadow-xl bg-zinc-300 dark:bg-zinc-900 min-h-[300px] rounded-md flex flex-col"
+    >
+      <h2 class="text-neutral-900 dark:text-white font-bold text-xl m-2">
+        Orders
+      </h2>
+      <div v-if="!state.orders" class="w-full flex flex-col mx-2">
+        <p class="text-neutral-900 dark:text-white">No Orders found! Head over to the shop and check out our products!</p>
       </div>
-    </v-card-text>
-  </v-card>
+  </div>
 </template>
 <script>
 const runtimeConfig = useRuntimeConfig();

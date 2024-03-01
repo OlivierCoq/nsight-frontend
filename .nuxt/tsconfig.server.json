@@ -54,6 +54,9 @@
       "pinia": [
         "../node_modules/pinia/dist/pinia"
       ],
+      "#primevue-style": [
+        "./primevue-style"
+      ],
       "#well-known": [
         "./well-known"
       ]
@@ -63,7 +66,7 @@
     "./types/nitro-nuxt.d.ts",
     "../node_modules/@pinia/nuxt/runtime/server",
     "../node_modules/@pinia-plugin-persistedstate/nuxt/runtime/server",
-    "../node_modules/nuxt-medusa/runtime/server",
+    "../node_modules/nuxt-primevue/runtime/server",
     "../node_modules/@zadigetvoltaire/nuxt-well-known/runtime/server",
     "../node_modules/@nuxt/devtools/runtime/server",
     "../node_modules/@nuxt/telemetry/runtime/server",

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/customersApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { addGroupToCustomerResponseSchema, } from '../models/addGroupToCustomerResponse';\nimport { createCustomerCardRequestSchema, } from '../models/createCustomerCardRequest';\nimport { createCustomerCardResponseSchema, } from '../models/createCustomerCardResponse';\nimport { createCustomerRequestSchema, } from '../models/createCustomerRequest';\nimport { createCustomerResponseSchema, } from '../models/createCustomerResponse';\nimport { deleteCustomerCardResponseSchema, } from '../models/deleteCustomerCardResponse';\nimport { deleteCustomerResponseSchema, } from '../models/deleteCustomerResponse';\nimport { listCustomersResponseSchema, } from '../models/listCustomersResponse';\nimport { removeGroupFromCustomerResponseSchema, } from '../models/removeGroupFromCustomerResponse';\nimport { retrieveCustomerResponseSchema, } from '../models/retrieveCustomerResponse';\nimport { searchCustomersRequestSchema, } from '../models/searchCustomersRequest';\nimport { searchCustomersResponseSchema, } from '../models/searchCustomersResponse';\nimport { updateCustomerRequestSchema, } from '../models/updateCustomerRequest';\nimport { updateCustomerResponseSchema, } from '../models/updateCustomerResponse';\nimport { bigint, boolean, number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class CustomersApi extends BaseApi {\n    /**\n     * Lists customer profiles associated with a Square account.\n     *\n     * Under normal operating conditions, newly created or updated customer profiles become available\n     * for the listing operation in well under 30 seconds. Occasionally, propagation of the new or updated\n     * profiles can take closer to one minute or longer, especially during network incidents and outages.\n     *\n     * @param cursor     A pagination cursor returned by a previous call to this endpoint. Provide this\n     *                              cursor to retrieve the next set of results for your original query.  For more\n     *                              information, see [Pagination](https://developer.squareup.com/docs/build-basics/common-\n     *                              api-patterns/pagination).\n     * @param limit      The maximum number of results to return in a single page. This limit is advisory.\n     *                              The response might contain more or fewer results. If the specified limit is less than\n     *                              1 or greater than 100, Square returns a `400 VALUE_TOO_LOW` or `400 VALUE_TOO_HIGH`\n     *                              error. The default value is 100.  For more information, see [Pagination](https:\n     *                              //developer.squareup.com/docs/build-basics/common-api-patterns/pagination).\n     * @param sortField  Indicates how customers should be sorted.  The default value is `DEFAULT`.\n     * @param sortOrder  Indicates whether customers should be sorted in ascending (`ASC`) or descending\n     *                              (`DESC`) order.  The default value is `ASC`.\n     * @param count      Indicates whether to return the total count of customers in the `count` field of the\n     *                              response.  The default value is `false`.\n     * @return Response from the API call\n     */\n    async listCustomers(cursor, limit, sortField, sortOrder, count, requestOptions) {\n        const req = this.createRequest('GET', '/v2/customers');\n        const mapped = req.prepareArgs({\n            cursor: [cursor, optional(string())],\n            limit: [limit, optional(number())],\n            sortField: [sortField, optional(string())],\n            sortOrder: [sortOrder, optional(string())],\n            count: [count, optional(boolean())],\n        });\n        req.query('cursor', mapped.cursor);\n        req.query('limit', mapped.limit);\n        req.query('sort_field', mapped.sortField);\n        req.query('sort_order', mapped.sortOrder);\n        req.query('count', mapped.count);\n        return req.callAsJson(listCustomersResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a new customer for a business.\n     *\n     * You must provide at least one of the following values in your request to this\n     * endpoint:\n     *\n     * - `given_name`\n     * - `family_name`\n     * - `company_name`\n     * - `email_address`\n     * - `phone_number`\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                     the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createCustomer(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/customers');\n        const mapped = req.prepareArgs({\n            body: [body, createCustomerRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createCustomerResponseSchema, requestOptions);\n    }\n    /**\n     * Searches the customer profiles associated with a Square account using one or more supported query\n     * filters.\n     *\n     * Calling `SearchCustomers` without any explicit query filter returns all\n     * customer profiles ordered alphabetically based on `given_name` and\n     * `family_name`.\n     *\n     * Under normal operating conditions, newly created or updated customer profiles become available\n     * for the search operation in well under 30 seconds. Occasionally, propagation of the new or updated\n     * profiles can take closer to one minute or longer, especially during network incidents and outages.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                      See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async searchCustomers(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/customers/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchCustomersRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchCustomersResponseSchema, requestOptions);\n    }\n    /**\n     * Deletes a customer profile from a business. This operation also unlinks any associated cards on file.\n     *\n     * As a best practice, include the `version` field in the request to enable [optimistic\n     * concurrency](https://developer.squareup.com/docs/build-basics/common-api-patterns/optimistic-\n     * concurrency) control.\n     * If included, the value must be set to the current version of the customer profile.\n     *\n     * To delete a customer profile that was created by merging existing profiles, you must use the ID of\n     * the newly created profile.\n     *\n     * @param customerId  The ID of the customer to delete.\n     * @param version     The current version of the customer profile.  As a best practice, you should include\n     *                              this parameter to enable [optimistic concurrency](https://developer.squareup.\n     *                              com/docs/build-basics/common-api-patterns/optimistic-concurrency) control.  For more\n     *                              information, see [Delete a customer profile](https://developer.squareup.\n     *                              com/docs/customers-api/use-the-api/keep-records#delete-customer-profile).\n     * @return Response from the API call\n     */\n    async deleteCustomer(customerId, version, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({\n            customerId: [customerId, string()],\n            version: [version, optional(bigint())],\n        });\n        req.query('version', mapped.version);\n        req.appendTemplatePath `/v2/customers/${mapped.customerId}`;\n        return req.callAsJson(deleteCustomerResponseSchema, requestOptions);\n    }\n    /**\n     * Returns details for a single customer.\n     *\n     * @param customerId  The ID of the customer to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveCustomer(customerId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ customerId: [customerId, string()] });\n        req.appendTemplatePath `/v2/customers/${mapped.customerId}`;\n        return req.callAsJson(retrieveCustomerResponseSchema, requestOptions);\n    }\n    /**\n     * Updates a customer profile. This endpoint supports sparse updates, so only new or changed fields are\n     * required in the request.\n     * To add or update a field, specify the new value. To remove a field, specify `null`\n     * (recommended) or specify an empty string (string fields only).\n     *\n     * As a best practice, include the `version` field in the request to enable [optimistic\n     * concurrency](https://developer.squareup.com/docs/build-basics/common-api-patterns/optimistic-\n     * concurrency) control.\n     * If included, the value must be set to the current version of the customer profile.\n     *\n     * To update a customer profile that was created by merging existing profiles, you must use the ID of\n     * the newly created profile.\n     *\n     * You cannot use this endpoint to change cards on file. To make changes, use the [Cards API]($e/Cards)\n     * or [Gift Cards API]($e/GiftCards).\n     *\n     * @param customerId   The ID of the customer to update.\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                     the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async updateCustomer(customerId, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            customerId: [customerId, string()],\n            body: [body, updateCustomerRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/customers/${mapped.customerId}`;\n        return req.callAsJson(updateCustomerResponseSchema, requestOptions);\n    }\n    /**\n     * Adds a card on file to an existing customer.\n     *\n     * As with charges, calls to `CreateCustomerCard` are idempotent. Multiple\n     * calls with the same card nonce return the same card record that was created\n     * with the provided nonce during the _first_ call.\n     *\n     * @param customerId   The Square ID of the customer profile the card is linked\n     *                                                         to.\n     * @param body         An object containing the fields to POST for the request.\n     *                                                         See the corresponding object definition for field details.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async createCustomerCard(customerId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            customerId: [customerId, string()],\n            body: [body, createCustomerCardRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/customers/${mapped.customerId}/cards`;\n        req.deprecated('CustomersApi.createCustomerCard');\n        return req.callAsJson(createCustomerCardResponseSchema, requestOptions);\n    }\n    /**\n     * Removes a card on file from a customer.\n     *\n     * @param customerId  The ID of the customer that the card on file belongs to.\n     * @param cardId      The ID of the card on file to delete.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async deleteCustomerCard(customerId, cardId, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({\n            customerId: [customerId, string()],\n            cardId: [cardId, string()],\n        });\n        req.appendTemplatePath `/v2/customers/${mapped.customerId}/cards/${mapped.cardId}`;\n        req.deprecated('CustomersApi.deleteCustomerCard');\n        return req.callAsJson(deleteCustomerCardResponseSchema, requestOptions);\n    }\n    /**\n     * Removes a group membership from a customer.\n     *\n     * The customer is identified by the `customer_id` value\n     * and the customer group is identified by the `group_id` value.\n     *\n     * @param customerId  The ID of the customer to remove from the group.\n     * @param groupId     The ID of the customer group to remove the customer from.\n     * @return Response from the API call\n     */\n    async removeGroupFromCustomer(customerId, groupId, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({\n            customerId: [customerId, string()],\n            groupId: [groupId, string()],\n        });\n        req.appendTemplatePath `/v2/customers/${mapped.customerId}/groups/${mapped.groupId}`;\n        return req.callAsJson(removeGroupFromCustomerResponseSchema, requestOptions);\n    }\n    /**\n     * Adds a group membership to a customer.\n     *\n     * The customer is identified by the `customer_id` value\n     * and the customer group is identified by the `group_id` value.\n     *\n     * @param customerId  The ID of the customer to add to a group.\n     * @param groupId     The ID of the customer group to add the customer to.\n     * @return Response from the API call\n     */\n    async addGroupToCustomer(customerId, groupId, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            customerId: [customerId, string()],\n            groupId: [groupId, string()],\n        });\n        req.appendTemplatePath `/v2/customers/${mapped.customerId}/groups/${mapped.groupId}`;\n        return req.callAsJson(addGroupToCustomerResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=customersApi.js.map",
+      "start": 1709003846717,
+      "end": 1709003846799,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003846799,
+      "end": 1709003846799,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003846799,
+      "end": 1709003846800,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003846800,
+      "end": 1709003846800,
+      "order": "normal"
+    }
+  ]
+}

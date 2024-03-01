@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/primevue/usestyle/usestyle.esm.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { DomHandler } from 'primevue/utils';\nimport { ref, readonly, getCurrentInstance, onMounted, nextTick, watch } from 'vue';\n\nfunction _typeof(o) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && \"function\" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? \"symbol\" : typeof o; }, _typeof(o); }\nfunction ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }\nfunction _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }\nfunction _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\nfunction _toPropertyKey(t) { var i = _toPrimitive(t, \"string\"); return \"symbol\" == _typeof(i) ? i : String(i); }\nfunction _toPrimitive(t, r) { if (\"object\" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || \"default\"); if (\"object\" != _typeof(i)) return i; throw new TypeError(\"@@toPrimitive must return a primitive value.\"); } return (\"string\" === r ? String : Number)(t); }\nfunction tryOnMounted(fn) {\n  var sync = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;\n  if (getCurrentInstance()) onMounted(fn);else if (sync) fn();else nextTick(fn);\n}\nvar _id = 0;\nfunction useStyle(css) {\n  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};\n  var isLoaded = ref(false);\n  var cssRef = ref(css);\n  var styleRef = ref(null);\n  var defaultDocument = DomHandler.isClient() ? window.document : undefined;\n  var _options$document = options.document,\n    document = _options$document === void 0 ? defaultDocument : _options$document,\n    _options$immediate = options.immediate,\n    immediate = _options$immediate === void 0 ? true : _options$immediate,\n    _options$manual = options.manual,\n    manual = _options$manual === void 0 ? false : _options$manual,\n    _options$name = options.name,\n    name = _options$name === void 0 ? \"style_\".concat(++_id) : _options$name,\n    _options$id = options.id,\n    id = _options$id === void 0 ? undefined : _options$id,\n    _options$media = options.media,\n    media = _options$media === void 0 ? undefined : _options$media,\n    _options$nonce = options.nonce,\n    nonce = _options$nonce === void 0 ? undefined : _options$nonce,\n    _options$props = options.props,\n    props = _options$props === void 0 ? {} : _options$props;\n  var stop = function stop() {};\n\n  /* @todo: Improve _options params */\n  var load = function load(_css) {\n    var _props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};\n    if (!document) return;\n    var _styleProps = _objectSpread(_objectSpread({}, props), _props);\n    var _name = _styleProps.name || name,\n      _id = _styleProps.id || id,\n      _nonce = _styleProps.nonce || nonce;\n    styleRef.value = document.querySelector(\"style[data-primevue-style-id=\\\"\".concat(_name, \"\\\"]\")) || document.getElementById(_id) || document.createElement('style');\n    if (!styleRef.value.isConnected) {\n      cssRef.value = _css || css;\n      DomHandler.setAttributes(styleRef.value, {\n        type: 'text/css',\n        id: _id,\n        media: media,\n        nonce: _nonce\n      });\n      document.head.appendChild(styleRef.value);\n      DomHandler.setAttribute(styleRef.value, 'data-primevue-style-id', name);\n      DomHandler.setAttributes(styleRef.value, _styleProps);\n    }\n    if (isLoaded.value) return;\n    stop = watch(cssRef, function (value) {\n      styleRef.value.textContent = value;\n    }, {\n      immediate: true\n    });\n    isLoaded.value = true;\n  };\n  var unload = function unload() {\n    if (!document || !isLoaded.value) return;\n    stop();\n    DomHandler.isExist(styleRef.value) && document.head.removeChild(styleRef.value);\n    isLoaded.value = false;\n  };\n  if (immediate && !manual) tryOnMounted(load);\n\n  /*if (!manual)\n    tryOnScopeDispose(unload)*/\n\n  return {\n    id: id,\n    name: name,\n    css: cssRef,\n    unload: unload,\n    load: load,\n    isLoaded: readonly(isLoaded)\n  };\n}\n\nexport { useStyle };\n",
+      "start": 1709003846515,
+      "end": 1709003846665,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003846665,
+      "end": 1709003846665,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003846665,
+      "end": 1709003846666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003846666,
+      "end": 1709003846666,
+      "order": "normal"
+    }
+  ]
+}

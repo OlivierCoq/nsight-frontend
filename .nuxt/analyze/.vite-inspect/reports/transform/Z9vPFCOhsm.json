@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/libphonenumber-js/es6/parseIncompletePhoneNumber.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "function _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== \"undefined\" && o[Symbol.iterator] || o[\"@@iterator\"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === \"number\") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError(\"Invalid attempt to iterate non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nimport { parseDigit } from './helpers/parseDigits.js';\n/**\r\n * Parses phone number characters from a string.\r\n * Drops all punctuation leaving only digits and the leading `+` sign (if any).\r\n * Also converts wide-ascii and arabic-indic numerals to conventional numerals.\r\n * E.g. in Iraq they don't write `+442323234` but rather `+٤٤٢٣٢٣٢٣٤`.\r\n * @param  {string} string\r\n * @return {string}\r\n * @example\r\n * ```js\r\n * // Outputs '8800555'.\r\n * parseIncompletePhoneNumber('8 (800) 555')\r\n * // Outputs '+7800555'.\r\n * parseIncompletePhoneNumber('+7 800 555')\r\n * ```\r\n */\n\nexport default function parseIncompletePhoneNumber(string) {\n  var result = ''; // Using `.split('')` here instead of normal `for ... of`\n  // because the importing application doesn't neccessarily include an ES6 polyfill.\n  // The `.split('')` approach discards \"exotic\" UTF-8 characters\n  // (the ones consisting of four bytes) but digits\n  // (including non-European ones) don't fall into that range\n  // so such \"exotic\" characters would be discarded anyway.\n\n  for (var _iterator = _createForOfIteratorHelperLoose(string.split('')), _step; !(_step = _iterator()).done;) {\n    var character = _step.value;\n    result += parsePhoneNumberCharacter(character, result) || '';\n  }\n\n  return result;\n}\n/**\r\n * Parses next character while parsing phone number digits (including a `+`)\r\n * from text: discards everything except `+` and digits, and `+` is only allowed\r\n * at the start of a phone number.\r\n * For example, is used in `react-phone-number-input` where it uses\r\n * [`input-format`](https://gitlab.com/catamphetamine/input-format).\r\n * @param  {string} character - Yet another character from raw input string.\r\n * @param  {string?} prevParsedCharacters - Previous parsed characters.\r\n * @param  {function?} emitEvent - An optional \"emit event\" function.\r\n * @return {string?} The parsed character.\r\n */\n\nexport function parsePhoneNumberCharacter(character, prevParsedCharacters, emitEvent) {\n  // Only allow a leading `+`.\n  if (character === '+') {\n    // If this `+` is not the first parsed character\n    // then discard it.\n    if (prevParsedCharacters) {\n      // `emitEvent` argument was added to this `export`ed function on Dec 26th, 2023.\n      // Any 3rd-party code that used to `import` and call this function before that\n      // won't be passing any `emitEvent` argument.\n      //\n      // The addition of the `emitEvent` argument was to fix the slightly-weird behavior\n      // of parsing an input string when the user inputs something like `\"2+7\"\n      // https://github.com/catamphetamine/react-phone-number-input/issues/437\n      //\n      // If the parser encounters an unexpected `+` in a string being parsed\n      // then it simply discards that out-of-place `+` and any following characters.\n      //\n      if (typeof emitEvent === 'function') {\n        emitEvent('end');\n      }\n\n      return;\n    }\n\n    return '+';\n  } // Allow digits.\n\n\n  return parseDigit(character);\n}\n//# sourceMappingURL=parseIncompletePhoneNumber.js.map",
+      "start": 1709003848986,
+      "end": 1709003849034,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003849034,
+      "end": 1709003849034,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003849034,
+      "end": 1709003849035,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003849035,
+      "end": 1709003849035,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/primevue/tooltip/tooltip.esm.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { UniqueComponentId, ObjectUtils, ConnectedOverlayScrollHandler, DomHandler, ZIndexUtils } from 'primevue/utils';\nimport BaseDirective from 'primevue/basedirective';\nimport TooltipStyle from 'primevue/tooltip/style';\n\nvar BaseTooltip = BaseDirective.extend({\n  style: TooltipStyle\n});\n\nfunction _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }\nfunction _nonIterableRest() { throw new TypeError(\"Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }\nfunction _iterableToArrayLimit(r, l) { var t = null == r ? null : \"undefined\" != typeof Symbol && r[Symbol.iterator] || r[\"@@iterator\"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t[\"return\"] && (u = t[\"return\"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }\nfunction _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }\nfunction _typeof(o) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && \"function\" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? \"symbol\" : typeof o; }, _typeof(o); }\nvar Tooltip = BaseTooltip.extend('tooltip', {\n  beforeMount: function beforeMount(el, options) {\n    var _options$instance$$pr;\n    var target = this.getTarget(el);\n    target.$_ptooltipModifiers = this.getModifiers(options);\n    if (!options.value) return;else if (typeof options.value === 'string') {\n      target.$_ptooltipValue = options.value;\n      target.$_ptooltipDisabled = false;\n      target.$_ptooltipEscape = true;\n      target.$_ptooltipClass = null;\n      target.$_ptooltipFitContent = true;\n      target.$_ptooltipIdAttr = UniqueComponentId() + '_tooltip';\n      target.$_ptooltipShowDelay = 0;\n      target.$_ptooltipHideDelay = 0;\n      target.$_ptooltipAutoHide = true;\n    } else if (_typeof(options.value) === 'object' && options.value) {\n      if (ObjectUtils.isEmpty(options.value.value) || options.value.value.trim() === '') return;else {\n        target.$_ptooltipValue = options.value.value;\n        target.$_ptooltipDisabled = !!options.value.disabled === options.value.disabled ? options.value.disabled : false;\n        target.$_ptooltipEscape = !!options.value.escape === options.value.escape ? options.value.escape : true;\n        target.$_ptooltipClass = options.value[\"class\"] || '';\n        target.$_ptooltipFitContent = !!options.value.fitContent === options.value.fitContent ? options.value.fitContent : true;\n        target.$_ptooltipIdAttr = options.value.id || UniqueComponentId() + '_tooltip';\n        target.$_ptooltipShowDelay = options.value.showDelay || 0;\n        target.$_ptooltipHideDelay = options.value.hideDelay || 0;\n        target.$_ptooltipAutoHide = !!options.value.autoHide === options.value.autoHide ? options.value.autoHide : true;\n      }\n    }\n    target.$_ptooltipZIndex = (_options$instance$$pr = options.instance.$primevue) === null || _options$instance$$pr === void 0 || (_options$instance$$pr = _options$instance$$pr.config) === null || _options$instance$$pr === void 0 || (_options$instance$$pr = _options$instance$$pr.zIndex) === null || _options$instance$$pr === void 0 ? void 0 : _options$instance$$pr.tooltip;\n    this.bindEvents(target, options);\n    el.setAttribute('data-pd-tooltip', true);\n  },\n  updated: function updated(el, options) {\n    var target = this.getTarget(el);\n    target.$_ptooltipModifiers = this.getModifiers(options);\n    this.unbindEvents(target);\n    if (!options.value) {\n      return;\n    }\n    if (typeof options.value === 'string') {\n      target.$_ptooltipValue = options.value;\n      target.$_ptooltipDisabled = false;\n      target.$_ptooltipEscape = true;\n      target.$_ptooltipClass = null;\n      target.$_ptooltipIdAttr = target.$_ptooltipIdAttr || UniqueComponentId() + '_tooltip';\n      target.$_ptooltipShowDelay = 0;\n      target.$_ptooltipHideDelay = 0;\n      target.$_ptooltipAutoHide = true;\n      this.bindEvents(target, options);\n    } else if (_typeof(options.value) === 'object' && options.value) {\n      if (ObjectUtils.isEmpty(options.value.value) || options.value.value.trim() === '') {\n        this.unbindEvents(target, options);\n        return;\n      } else {\n        target.$_ptooltipValue = options.value.value;\n        target.$_ptooltipDisabled = !!options.value.disabled === options.value.disabled ? options.value.disabled : false;\n        target.$_ptooltipEscape = !!options.value.escape === options.value.escape ? options.value.escape : true;\n        target.$_ptooltipClass = options.value[\"class\"] || '';\n        target.$_ptooltipFitContent = !!options.value.fitContent === options.value.fitContent ? options.value.fitContent : true;\n        target.$_ptooltipIdAttr = options.value.id || target.$_ptooltipIdAttr || UniqueComponentId() + '_tooltip';\n        target.$_ptooltipShowDelay = options.value.showDelay || 0;\n        target.$_ptooltipHideDelay = options.value.hideDelay || 0;\n        target.$_ptooltipAutoHide = !!options.value.autoHide === options.value.autoHide ? options.value.autoHide : true;\n        this.bindEvents(target, options);\n      }\n    }\n  },\n  unmounted: function unmounted(el, options) {\n    var target = this.getTarget(el);\n    this.remove(target);\n    this.unbindEvents(target, options);\n    if (target.$_ptooltipScrollHandler) {\n      target.$_ptooltipScrollHandler.destroy();\n      target.$_ptooltipScrollHandler = null;\n    }\n  },\n  timer: undefined,\n  methods: {\n    bindEvents: function bindEvents(el, options) {\n      var _this = this;\n      var modifiers = el.$_ptooltipModifiers;\n      if (modifiers.focus) {\n        el.$_focusevent = function (event) {\n          return _this.onFocus(event, options);\n        };\n        el.addEventListener('focus', el.$_focusevent);\n        el.addEventListener('blur', this.onBlur.bind(this));\n      } else {\n        el.$_mouseenterevent = function (event) {\n          return _this.onMouseEnter(event, options);\n        };\n        el.addEventListener('mouseenter', el.$_mouseenterevent);\n        el.addEventListener('mouseleave', this.onMouseLeave.bind(this));\n        el.addEventListener('click', this.onClick.bind(this));\n      }\n      el.addEventListener('keydown', this.onKeydown.bind(this));\n    },\n    unbindEvents: function unbindEvents(el) {\n      var modifiers = el.$_ptooltipModifiers;\n      if (modifiers.focus) {\n        el.removeEventListener('focus', el.$_focusevent);\n        el.$_focusevent = null;\n        el.removeEventListener('blur', this.onBlur.bind(this));\n      } else {\n        el.removeEventListener('mouseenter', el.$_mouseenterevent);\n        el.$_mouseenterevent = null;\n        el.removeEventListener('mouseleave', this.onMouseLeave.bind(this));\n        el.removeEventListener('click', this.onClick.bind(this));\n      }\n      el.removeEventListener('keydown', this.onKeydown.bind(this));\n    },\n    bindScrollListener: function bindScrollListener(el) {\n      var _this2 = this;\n      if (!el.$_ptooltipScrollHandler) {\n        el.$_ptooltipScrollHandler = new ConnectedOverlayScrollHandler(el, function () {\n          _this2.hide(el);\n        });\n      }\n      el.$_ptooltipScrollHandler.bindScrollListener();\n    },\n    unbindScrollListener: function unbindScrollListener(el) {\n      if (el.$_ptooltipScrollHandler) {\n        el.$_ptooltipScrollHandler.unbindScrollListener();\n      }\n    },\n    onMouseEnter: function onMouseEnter(event, options) {\n      var el = event.currentTarget;\n      var showDelay = el.$_ptooltipShowDelay;\n      this.show(el, options, showDelay);\n    },\n    onMouseLeave: function onMouseLeave(event) {\n      var el = event.currentTarget;\n      var hideDelay = el.$_ptooltipHideDelay;\n      var autoHide = el.$_ptooltipAutoHide;\n      if (!autoHide) {\n        var valid = DomHandler.getAttribute(event.target, 'data-pc-name') === 'tooltip' || DomHandler.getAttribute(event.target, 'data-pc-section') === 'arrow' || DomHandler.getAttribute(event.target, 'data-pc-section') === 'text' || DomHandler.getAttribute(event.relatedTarget, 'data-pc-name') === 'tooltip' || DomHandler.getAttribute(event.relatedTarget, 'data-pc-section') === 'arrow' || DomHandler.getAttribute(event.relatedTarget, 'data-pc-section') === 'text';\n        !valid && this.hide(el, hideDelay);\n      } else {\n        this.hide(el, hideDelay);\n      }\n    },\n    onFocus: function onFocus(event, options) {\n      var el = event.currentTarget;\n      var showDelay = el.$_ptooltipShowDelay;\n      this.show(el, options, showDelay);\n    },\n    onBlur: function onBlur(event) {\n      var el = event.currentTarget;\n      var hideDelay = el.$_ptooltipHideDelay;\n      this.hide(el, hideDelay);\n    },\n    onClick: function onClick(event) {\n      var el = event.currentTarget;\n      var hideDelay = el.$_ptooltipHideDelay;\n      this.hide(el, hideDelay);\n    },\n    onKeydown: function onKeydown(event) {\n      var el = event.currentTarget;\n      var hideDelay = el.$_ptooltipHideDelay;\n      event.code === 'Escape' && this.hide(event.currentTarget, hideDelay);\n    },\n    tooltipActions: function tooltipActions(el, options) {\n      if (el.$_ptooltipDisabled || !DomHandler.isExist(el)) {\n        return;\n      }\n      var tooltipElement = this.create(el, options);\n      this.align(el);\n      !this.isUnstyled() && DomHandler.fadeIn(tooltipElement, 250);\n      var $this = this;\n      window.addEventListener('resize', function onWindowResize() {\n        if (!DomHandler.isTouchDevice()) {\n          $this.hide(el);\n        }\n        window.removeEventListener('resize', onWindowResize);\n      });\n      tooltipElement.addEventListener('mouseleave', function onTooltipLeave() {\n        $this.hide(el);\n        tooltipElement.removeEventListener('mouseleave', onTooltipLeave);\n      });\n      this.bindScrollListener(el);\n      ZIndexUtils.set('tooltip', tooltipElement, el.$_ptooltipZIndex);\n    },\n    show: function show(el, options, showDelay) {\n      var _this3 = this;\n      if (showDelay !== undefined) {\n        this.timer = setTimeout(function () {\n          return _this3.tooltipActions(el, options);\n        }, showDelay);\n      } else {\n        this.tooltipActions(el, options);\n      }\n    },\n    tooltipRemoval: function tooltipRemoval(el) {\n      this.remove(el);\n      this.unbindScrollListener(el);\n    },\n    hide: function hide(el, hideDelay) {\n      var _this4 = this;\n      clearTimeout(this.timer);\n      if (hideDelay !== undefined) {\n        setTimeout(function () {\n          return _this4.tooltipRemoval(el);\n        }, hideDelay);\n      } else {\n        this.tooltipRemoval(el);\n      }\n    },\n    getTooltipElement: function getTooltipElement(el) {\n      return document.getElementById(el.$_ptooltipId);\n    },\n    create: function create(el) {\n      var modifiers = el.$_ptooltipModifiers;\n      var tooltipArrow = DomHandler.createElement('div', {\n        \"class\": !this.isUnstyled() && this.cx('arrow'),\n        'p-bind': this.ptm('arrow', {\n          context: modifiers\n        })\n      });\n      var tooltipText = DomHandler.createElement('div', {\n        \"class\": !this.isUnstyled() && this.cx('text'),\n        'p-bind': this.ptm('text', {\n          context: modifiers\n        })\n      });\n      if (!el.$_ptooltipEscape) {\n        tooltipText.innerHTML = el.$_ptooltipValue;\n      } else {\n        tooltipText.innerHTML = '';\n        tooltipText.appendChild(document.createTextNode(el.$_ptooltipValue));\n      }\n      var container = DomHandler.createElement('div', {\n        id: el.$_ptooltipIdAttr,\n        role: 'tooltip',\n        style: {\n          display: 'inline-block',\n          width: el.$_ptooltipFitContent ? 'fit-content' : undefined,\n          pointerEvents: !this.isUnstyled() && el.$_ptooltipAutoHide && 'none'\n        },\n        \"class\": [!this.isUnstyled() && this.cx('root'), el.$_ptooltipClass],\n        'p-bind': this.ptm('root', {\n          context: modifiers\n        })\n      }, tooltipArrow, tooltipText);\n      document.body.appendChild(container);\n      el.$_ptooltipId = container.id;\n      this.$el = container;\n      return container;\n    },\n    remove: function remove(el) {\n      if (el) {\n        var tooltipElement = this.getTooltipElement(el);\n        if (tooltipElement && tooltipElement.parentElement) {\n          ZIndexUtils.clear(tooltipElement);\n          document.body.removeChild(tooltipElement);\n        }\n        el.$_ptooltipId = null;\n      }\n    },\n    align: function align(el) {\n      var modifiers = el.$_ptooltipModifiers;\n      if (modifiers.top) {\n        this.alignTop(el);\n        if (this.isOutOfBounds(el)) {\n          this.alignBottom(el);\n          if (this.isOutOfBounds(el)) {\n            this.alignTop(el);\n          }\n        }\n      } else if (modifiers.left) {\n        this.alignLeft(el);\n        if (this.isOutOfBounds(el)) {\n          this.alignRight(el);\n          if (this.isOutOfBounds(el)) {\n            this.alignTop(el);\n            if (this.isOutOfBounds(el)) {\n              this.alignBottom(el);\n              if (this.isOutOfBounds(el)) {\n                this.alignLeft(el);\n              }\n            }\n          }\n        }\n      } else if (modifiers.bottom) {\n        this.alignBottom(el);\n        if (this.isOutOfBounds(el)) {\n          this.alignTop(el);\n          if (this.isOutOfBounds(el)) {\n            this.alignBottom(el);\n          }\n        }\n      } else {\n        this.alignRight(el);\n        if (this.isOutOfBounds(el)) {\n          this.alignLeft(el);\n          if (this.isOutOfBounds(el)) {\n            this.alignTop(el);\n            if (this.isOutOfBounds(el)) {\n              this.alignBottom(el);\n              if (this.isOutOfBounds(el)) {\n                this.alignRight(el);\n              }\n            }\n          }\n        }\n      }\n    },\n    getHostOffset: function getHostOffset(el) {\n      var offset = el.getBoundingClientRect();\n      var targetLeft = offset.left + DomHandler.getWindowScrollLeft();\n      var targetTop = offset.top + DomHandler.getWindowScrollTop();\n      return {\n        left: targetLeft,\n        top: targetTop\n      };\n    },\n    alignRight: function alignRight(el) {\n      this.preAlign(el, 'right');\n      var tooltipElement = this.getTooltipElement(el);\n      var hostOffset = this.getHostOffset(el);\n      var left = hostOffset.left + DomHandler.getOuterWidth(el);\n      var top = hostOffset.top + (DomHandler.getOuterHeight(el) - DomHandler.getOuterHeight(tooltipElement)) / 2;\n      tooltipElement.style.left = left + 'px';\n      tooltipElement.style.top = top + 'px';\n    },\n    alignLeft: function alignLeft(el) {\n      this.preAlign(el, 'left');\n      var tooltipElement = this.getTooltipElement(el);\n      var hostOffset = this.getHostOffset(el);\n      var left = hostOffset.left - DomHandler.getOuterWidth(tooltipElement);\n      var top = hostOffset.top + (DomHandler.getOuterHeight(el) - DomHandler.getOuterHeight(tooltipElement)) / 2;\n      tooltipElement.style.left = left + 'px';\n      tooltipElement.style.top = top + 'px';\n    },\n    alignTop: function alignTop(el) {\n      this.preAlign(el, 'top');\n      var tooltipElement = this.getTooltipElement(el);\n      var hostOffset = this.getHostOffset(el);\n      var left = hostOffset.left + (DomHandler.getOuterWidth(el) - DomHandler.getOuterWidth(tooltipElement)) / 2;\n      var top = hostOffset.top - DomHandler.getOuterHeight(tooltipElement);\n      tooltipElement.style.left = left + 'px';\n      tooltipElement.style.top = top + 'px';\n    },\n    alignBottom: function alignBottom(el) {\n      this.preAlign(el, 'bottom');\n      var tooltipElement = this.getTooltipElement(el);\n      var hostOffset = this.getHostOffset(el);\n      var left = hostOffset.left + (DomHandler.getOuterWidth(el) - DomHandler.getOuterWidth(tooltipElement)) / 2;\n      var top = hostOffset.top + DomHandler.getOuterHeight(el);\n      tooltipElement.style.left = left + 'px';\n      tooltipElement.style.top = top + 'px';\n    },\n    preAlign: function preAlign(el, position) {\n      var tooltipElement = this.getTooltipElement(el);\n      tooltipElement.style.left = -999 + 'px';\n      tooltipElement.style.top = -999 + 'px';\n      DomHandler.removeClass(tooltipElement, \"p-tooltip-\".concat(tooltipElement.$_ptooltipPosition));\n      !this.isUnstyled() && DomHandler.addClass(tooltipElement, \"p-tooltip-\".concat(position));\n      tooltipElement.$_ptooltipPosition = position;\n      tooltipElement.setAttribute('data-p-position', position);\n      var arrowElement = DomHandler.findSingle(tooltipElement, '[data-pc-section=\"arrow\"]');\n      arrowElement.style.top = position === 'bottom' ? '0' : position === 'right' || position === 'left' || position !== 'right' && position !== 'left' && position !== 'top' && position !== 'bottom' ? '50%' : null;\n      arrowElement.style.bottom = position === 'top' ? '0' : null;\n      arrowElement.style.left = position === 'right' || position !== 'right' && position !== 'left' && position !== 'top' && position !== 'bottom' ? '0' : position === 'top' || position === 'bottom' ? '50%' : null;\n      arrowElement.style.right = position === 'left' ? '0' : null;\n    },\n    isOutOfBounds: function isOutOfBounds(el) {\n      var tooltipElement = this.getTooltipElement(el);\n      var offset = tooltipElement.getBoundingClientRect();\n      var targetTop = offset.top;\n      var targetLeft = offset.left;\n      var width = DomHandler.getOuterWidth(tooltipElement);\n      var height = DomHandler.getOuterHeight(tooltipElement);\n      var viewport = DomHandler.getViewport();\n      return targetLeft + width > viewport.width || targetLeft < 0 || targetTop < 0 || targetTop + height > viewport.height;\n    },\n    getTarget: function getTarget(el) {\n      return DomHandler.hasClass(el, 'p-inputwrapper') ? DomHandler.findSingle(el, 'input') : el;\n    },\n    getModifiers: function getModifiers(options) {\n      // modifiers\n      if (options.modifiers && Object.keys(options.modifiers).length) {\n        return options.modifiers;\n      }\n\n      // arg\n      if (options.arg && _typeof(options.arg) === 'object') {\n        return Object.entries(options.arg).reduce(function (acc, _ref) {\n          var _ref2 = _slicedToArray(_ref, 2),\n            key = _ref2[0],\n            val = _ref2[1];\n          if (key === 'event' || key === 'position') acc[val] = true;\n          return acc;\n        }, {});\n      }\n      return {};\n    }\n  }\n});\n\nexport { Tooltip as default };\n",
+      "start": 1709003844460,
+      "end": 1709003844865,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003844865,
+      "end": 1709003844865,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003844865,
+      "end": 1709003844867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003844867,
+      "end": 1709003844867,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003844867,
+      "end": 1709003844867,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003844867,
+      "end": 1709003844868,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003844868,
+      "end": 1709003844868,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003844868,
+      "end": 1709003844868,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003844868,
+      "end": 1709003844868,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003844868,
+      "end": 1709003844868,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003844868,
+      "end": 1709003844868,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003844868,
+      "end": 1709003844868,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003844868,
+      "end": 1709003844868,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003844868,
+      "end": 1709003844868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003844868,
+      "end": 1709003844868,
+      "order": "normal"
+    }
+  ]
+}

@@ -65,6 +65,9 @@
       "pinia": [
         "../node_modules/pinia/dist/pinia"
       ],
+      "#primevue-style": [
+        "./primevue-style.mjs"
+      ],
       "#well-known": [
         "./well-known"
       ],
@@ -90,7 +93,7 @@
     "../**/*",
     "../node_modules/@pinia/nuxt/runtime",
     "../node_modules/@pinia-plugin-persistedstate/nuxt/runtime",
-    "../node_modules/nuxt-medusa/runtime",
+    "../node_modules/nuxt-primevue/runtime",
     "../node_modules/@zadigetvoltaire/nuxt-well-known/runtime",
     "../node_modules/@nuxt/devtools/runtime",
     "../node_modules/@nuxt/telemetry/runtime",
@@ -101,7 +104,7 @@
     "../node_modules/nuxt/node_modules",
     "../node_modules/@pinia/nuxt/runtime/server",
     "../node_modules/@pinia-plugin-persistedstate/nuxt/runtime/server",
-    "../node_modules/nuxt-medusa/runtime/server",
+    "../node_modules/nuxt-primevue/runtime/server",
     "../node_modules/@zadigetvoltaire/nuxt-well-known/runtime/server",
     "../node_modules/@nuxt/devtools/runtime/server",
     "../node_modules/@nuxt/telemetry/runtime/server",

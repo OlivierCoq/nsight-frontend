@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/presets/nsight_style_presets/sidebar/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export default {\n    root: ({ props }) => ({\n        class: [\n            // Flexbox\n            'flex flex-col',\n\n            // Position\n            'relative',\n            { '!transition-none !transform-none !w-screen !h-screen !max-h-full !top-0 !left-0': props.position == 'full' },\n\n            // Size\n            {\n                'h-full w-80': props.position == 'left' || props.position == 'right',\n                'h-auto w-full': props.position == 'top' || props.position == 'bottom'\n            },\n\n            // Shape\n            'border-0 dark:border',\n            'shadow-lg',\n\n            // Colors\n            'bg-surface-0 dark:bg-surface-800',\n            'text-surface-700 dark:text-white/80',\n            'dark:border-surface-700',\n\n            // Transitions\n            'transition-transform',\n            'duration-300',\n\n            // Misc\n            'pointer-events-auto'\n        ]\n    }),\n    header: {\n        class: [\n            // Flexbox and Alignment\n            'flex items-center justify-between',\n            'shrink-0',\n\n            // Spacing\n            'p-5',\n\n            // Colors\n            'bg-surface-0 dark:bg-surface-800',\n            'text-surface-700 dark:text-surface-0/80'\n        ]\n    },\n    title: {\n        class: ['font-bold text-lg']\n    },\n    icons: {\n        class: ['flex items-center']\n    },\n    closeButton: {\n        class: [\n            'relative',\n\n            // Flexbox and Alignment\n            'flex items-center justify-center',\n\n            // Size and Spacing\n            'mr-2',\n            'last:mr-0',\n            'w-8 h-8',\n\n            // Shape\n            'border-0',\n            'rounded-full',\n\n            // Colors\n            'text-surface-500',\n            'bg-transparent',\n\n            // Transitions\n            'transition duration-200 ease-in-out',\n\n            // States\n            'hover:text-surface-700 dark:hover:text-white/80',\n            'hover:bg-surface-100 dark:hover:bg-surface-800/80',\n            'focus:outline-none focus:outline-offset-0 focus:ring focus:ring-inset',\n            'focus:ring-primary-400/50 dark:focus:ring-primary-300/50',\n\n            // Misc\n            'overflow-hidden'\n        ]\n    },\n    closeButtonIcon: {\n        class: [\n            // Display\n            'inline-block',\n\n            // Size\n            'w-4',\n            'h-4'\n        ]\n    },\n    content: {\n        class: [\n            // Spacing and Size\n            'p-5',\n            'pt-0',\n            'h-full',\n            'w-full',\n\n            // Growth and Overflow\n            'grow',\n            'overflow-y-auto'\n        ]\n    },\n    mask: ({ props }) => ({\n        class: [\n            // Transitions\n            'transition-all',\n            'duration-300',\n            { 'p-5': !props.position == 'full' },\n\n            // Background and Effects\n            { 'has-[.mask-active]:bg-transparent bg-black/40': props.modal, 'has-[.mask-active]:backdrop-blur-none backdrop-blur-sm': props.modal }\n        ]\n    }),\n    transition: ({ props }) => {\n        return props.position === 'top'\n            ? {\n                  enterFromClass: 'translate-x-0 -translate-y-full translate-z-0 mask-active',\n                  leaveToClass: 'translate-x-0 -translate-y-full translate-z-0 mask-active'\n              }\n            : props.position === 'bottom'\n            ? {\n                  enterFromClass: 'translate-x-0 translate-y-full translate-z-0 mask-active',\n                  leaveToClass: 'translate-x-0 translate-y-full translate-z-0 mask-active'\n              }\n            : props.position === 'left'\n            ? {\n                  enterFromClass: '-translate-x-full translate-y-0 translate-z-0 mask-active',\n                  leaveToClass: '-translate-x-full translate-y-0 translate-z-0 mask-active'\n              }\n            : props.position === 'right'\n            ? {\n                  enterFromClass: 'translate-x-full translate-y-0 translate-z-0 mask-active',\n                  leaveToClass: 'translate-x-full translate-y-0 translate-z-0 mask-active'\n              }\n            : {\n                  enterFromClass: 'opacity-0 mask-active',\n                  enterActiveClass: 'transition-opacity duration-400 ease-in',\n                  leaveActiveClass: 'transition-opacity duration-400 ease-in',\n                  leaveToClass: 'opacity-0 mask-active'\n              };\n    }\n};\n",
+      "start": 1709003846121,
+      "end": 1709003846187,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003846187,
+      "end": 1709003846187,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003846187,
+      "end": 1709003846188,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003846188,
+      "end": 1709003846188,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003846188,
+      "end": 1709003846188,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003846188,
+      "end": 1709003846188,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003846188,
+      "end": 1709003846188,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003846188,
+      "end": 1709003846188,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003846188,
+      "end": 1709003846188,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003846188,
+      "end": 1709003846188,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003846188,
+      "end": 1709003846188,
+      "order": "normal"
+    }
+  ]
+}

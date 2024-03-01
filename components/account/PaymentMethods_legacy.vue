@@ -175,6 +175,60 @@
       </v-row>
     </v-card-text>
   </v-card>
+
+
+
+
+<template>
+   <div
+      class="mt-5 py-3 px-5 ms-2 me-5 shadow-xl bg-zinc-300 dark:bg-zinc-900 min-h-[300px] rounded-md flex flex-col"
+    >
+    <div class="w-full flex flex-row justify-between items-center mb-3">
+      <h2 class="text-neutral-900 dark:text-white font-bold text-xl m-2">
+        Payment methods
+      </h2>
+      <button
+        class="nsight-btn-primary py-2 px-3 rounded-md"
+        @click="state.dialog = true"
+      >
+        ADD +
+
+         <!-- new method dialog: -->
+         <PrimeDialog
+          v-model:visible="state.dialog"
+          modal
+          header="Add New Payment Method"
+          :style="{
+            width: '70rem',
+            backgroundColor: auth.user.preferences[0].dark_mode ? '#18181a' : '#a1a1aa',
+            color: 'white',
+            padding: '1rem',
+          }"
+        >
+          <div class="w-full flex flex-col min-h-[25vh] bg-zinc-900 dark:bg-black">
+            <PrimeTabView>
+              <PrimeTabPanel v-for="(tab, index) in state.tabs" :key="index">
+                <template v-slot:header>
+                  <div class="flex flex-row items-center">
+                    <!-- <v-icon>{{ tab.icon }}</v-icon> -->
+                    <span class="ms-2">{{ tab.name }}</span>
+                  </div>
+                </template>
+                <div v-show="state.current_tab == 0" class="tab_window">
+                  <div class="ctr-card">
+                    <div id="card-element"></div>
+                  </div>
+                </div>
+              </PrimeTabPanel>
+            </PrimeTabView>
+          </div>
+        </PrimeDialog>
+
+      </button>
+    </div>
+  </div>
+</template>
+
 </template>
 <script>
 

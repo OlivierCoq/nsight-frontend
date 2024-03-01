@@ -1,225 +1,71 @@
 <template>
-  <v-card variant="tonal" class="mb-4">
-    <v-card-title class="d-flex flex-row justify-space-between mb-3">
-      Payment Methods
-      <v-spacer />
-      <v-btn
-        class="nsight-btn-primary"
-        size="small"
+   <div
+      class="mt-5 py-3 px-5 ms-2 me-5 shadow-xl bg-zinc-300 dark:bg-zinc-900 min-h-[300px] rounded-md flex flex-col"
+    >
+    <div class="w-full flex flex-row justify-between items-center mb-3">
+      <h2 class="text-neutral-900 dark:text-white font-bold text-xl m-2">
+        Payment methods
+      </h2>
+      <button
+        class="nsight-btn-primary py-2 px-3 rounded-md"
         @click="state.dialog = true"
       >
-        + Add
+        ADD +
 
-        <v-dialog v-model="state.dialog" max-width="700">
-          <v-card>
-            <v-card-title> Add new Payment Method </v-card-title>
-            <v-card-text>
-              <v-tabs
-                v-model="state.current_tab"
-                background-color="transparent"
-                show-arrows
-              >
-                <v-tab v-for="(tab, index) in state.tabs" :key="index">
-                  <v-icon>{{ tab.icon }}</v-icon>
-                  {{ tab.name }}
-                </v-tab>
-              </v-tabs>
-              <v-window v-model="state.current_tab">
-                <div v-show="state.current_tab == 0" class="tab_window">
-                  <!-- Credit card form: -->
-                  <v-card variant="tonal" class="mt-5">
-                    <v-card-title>Card Details</v-card-title>
-                    <v-card-text>
-                      <v-progress-circular
-                        v-if="!square_loaded"
-                        indeterminate
-                        color="primary"
-                      />
-
-                      <div class="ctr-card">
-                        <!-- <div id="card-element"></div> -->
-                        <form id="payment-form">
-                          <div id="card-container"></div>
-                          <v-btn
-                            id="card-button"
-                            type="button"
-                            block
-                            class="nsight-btn-primary btn"
-                          >
-                            Add card
-                          </v-btn>
-                        </form>
-                        <div id="payment-status-container"></div>
-                        <p v-if="state.success" class="text-success mt-2">
-                          {{ state.success }}
-                        </p>
-                      </div>
-                    </v-card-text>
-                  </v-card>
-                </div>
-                <div v-if="state.current_tab == 1" class="tab_window"></div>
-                <!-- <div v-if="state.current_tab == 0" class="tab_window">
-                  
-                </div>
-                <div v-if="state.current_tab == 0" class="tab_window">
-                  
-                </div> -->
-              </v-window>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                style="color: #9d9021 !important"
-                text
-                @click="state.dialog = false"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                style="color: #f6e232 !important"
-                text
-                @click="add_new"
-                :disabled="!state.success"
-              >
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-btn>
-    </v-card-title>
-    <v-card-text>
-      <v-row v-if="auth.user.payment_methods">
-        <v-col
-          cols="12"
-          md="6"
-          v-for="(payment_method, a) in auth.user.payment_methods.data"
-          :key="a"
+         <!-- new method dialog: -->
+         <PrimeDialog
+          v-model:visible="state.dialog"
+          modal
+          header="Add New Payment Method"
+          :style="{
+            width: '50rem',
+            backgroundColor: auth.user.preferences[0].dark_mode ? '#18181a' : '#a1a1aa',
+            color: 'white',
+            padding: '1rem',
+          }"
         >
-          <v-card
-            :variant="
-              auth.user.selected_payment_method.card &&
-              auth.user.selected_payment_method.card.id ==
-                payment_method.card.id
-                ? 'tonal'
-                : 'plain'
-            "
-            class="mb-0"
-          >
-            <v-card-title>
-              <font-awesome-icon
-                :icon="[
-                  'fab',
-                  format_card_brand(payment_method.card.cardBrand),
-                ]"
-              />
-              <small
-                v-if="
-                  auth.user.selected_payment_method &&
-                  auth.user.selected_payment_method.card.id ==
-                    payment_method.card.id
-                "
-                class="text-uppercase"
-              >
-                | Default</small
-              >
-            </v-card-title>
-            <v-card-text>
-              <v-row>
-                <v-col>
-                  <p class="text--white">
-                    <span class="text-uppercase">
-                      {{ payment_method.card.cardholderName }}
-                    </span>
-                    |
-                    <span class="text-uppercase">
-                      {{ payment_method.card.brand }} ...{{
-                        payment_method.card.last4
-                      }}
-                    </span>
-                  </p>
-                </v-col>
-              </v-row>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                color="info"
-                size="small"
-                text
-                @click="state.edit_method_dialog = true"
-              >
-                Edit
-
-                <v-dialog v-model="state.edit_method_dialog" width="500">
-                  <v-card>
-                    <v-card-title> Edit Payment Method </v-card-title>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
-              <v-btn
-                v-if="
-                  auth.user.selected_payment_method.card.id !==
-                  payment_method.card.id
-                "
-                color="primary"
-                size="small"
-                text
-                @click="set_default(payment_method)"
-              >
-                Set as Default
-              </v-btn>
-              <v-btn
-                color="error"
-                size="small"
-                text
-                :disabled="
-                  auth.user.selected_payment_method.card.id ===
-                  payment_method.card.id
-                "
-                @click="state.delete_method_dialog = true"
-              >
-                Delete
-
-                <v-dialog v-model="state.delete_method_dialog" width="500">
-                  <v-card>
-                    <v-card-title> Delete Payment Method </v-card-title>
-                    <v-card-text>
-                      <p class="text--white">
-                        Are you sure you want to delete this payment method?
-                      </p>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer />
-                      <v-btn
-                        color="primary"
-                        text
-                        @click="state.delete_method_dialog = false"
+          <div class="w-full flex flex-col min-h-[25vh] bg-zinc-900 dark:bg-black">
+            <PrimeTabView>
+              <PrimeTabPanel v-for="(tab, index) in state.tabs" :key="index" :header="tab.name">
+                <div v-show="index == 0" class="tab_window">
+                  <div class="ctr-card">
+                    <!-- <div id="card-element"></div> -->
+                    <form id="payment-form">
+                      <div id="card-container"></div>
+                      <button
+                        id="card-button"
+                        type="button"
+                        block
+                        class="nsight-btn-primary w-full rounded-md py-2 px-4"
                       >
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        color="error"
-                        text
-                        @click="delete_method(payment_method)"
-                      >
-                        Delete
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
-              <v-spacer />
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row v-else>
-        <p class="text--white text-start px-4 pb-6">
-          Add a payment method to use for your next order.
-        </p>
-      </v-row>
-    </v-card-text>
-  </v-card>
+                        Add card
+                    </button>
+                    </form>
+                    <div id="payment-status-container"></div>
+                    <p v-if="state.success" class="text-success mt-2 text-green-300">
+                      {{ state.success }}
+                    </p>
+                  </div>
+                </div>
+              </PrimeTabPanel>
+            </PrimeTabView>
+          </div>
+        </PrimeDialog>
+
+      </button>
+    </div>
+    <div class="w-full flex flex-row justify-between items-center">
+      <div v-if="auth.user.payment_methods.data.length" class="w-full grid grid-cols-1 lg:grid-cols-2 gap-3">
+        <div 
+          v-for="(payment_method, a) in auth?.user?.payment_methods?.data" 
+          :key="a" 
+          class="rounded-md shadow-md px-3 py-4  flex flex-col align-start justify-start"
+          :class="auth.user.selected_payment_method && (payment_method.card.id == auth.user.selected_payment_method.card.id) ? 'bg-zinc-400 dark:bg-zinc-800' : 'bg-zinc-400 dark:bg-zinc-700 opacity-50'"
+        >
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script setup>
 // Medusa
@@ -448,7 +294,7 @@ watch(
               // add payment method to Medusa
               auth.updateUser();
               state.success = "Payment method added successfully!";
-              // state.dialog = false;
+              state.dialog = false;
             });
 
             // const paymentResults = await createPayment(token);
@@ -506,4 +352,12 @@ const initializeCard = async (payments) => {
     background-color: #e4d22e !important;
   }
 }
+
+.p-tabview-header {
+  color: #8f8f8f !important;
+}
+.p-tabview-header.p-highlight {
+  color: white !important;
+}
+
 </style>

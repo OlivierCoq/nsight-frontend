@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/bookingsApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { bulkRetrieveBookingsRequestSchema, } from '../models/bulkRetrieveBookingsRequest';\nimport { bulkRetrieveBookingsResponseSchema, } from '../models/bulkRetrieveBookingsResponse';\nimport { bulkRetrieveTeamMemberBookingProfilesRequestSchema, } from '../models/bulkRetrieveTeamMemberBookingProfilesRequest';\nimport { bulkRetrieveTeamMemberBookingProfilesResponseSchema, } from '../models/bulkRetrieveTeamMemberBookingProfilesResponse';\nimport { cancelBookingRequestSchema, } from '../models/cancelBookingRequest';\nimport { cancelBookingResponseSchema, } from '../models/cancelBookingResponse';\nimport { createBookingRequestSchema, } from '../models/createBookingRequest';\nimport { createBookingResponseSchema, } from '../models/createBookingResponse';\nimport { listBookingsResponseSchema, } from '../models/listBookingsResponse';\nimport { listLocationBookingProfilesResponseSchema, } from '../models/listLocationBookingProfilesResponse';\nimport { listTeamMemberBookingProfilesResponseSchema, } from '../models/listTeamMemberBookingProfilesResponse';\nimport { retrieveBookingResponseSchema, } from '../models/retrieveBookingResponse';\nimport { retrieveBusinessBookingProfileResponseSchema, } from '../models/retrieveBusinessBookingProfileResponse';\nimport { retrieveLocationBookingProfileResponseSchema, } from '../models/retrieveLocationBookingProfileResponse';\nimport { retrieveTeamMemberBookingProfileResponseSchema, } from '../models/retrieveTeamMemberBookingProfileResponse';\nimport { searchAvailabilityRequestSchema, } from '../models/searchAvailabilityRequest';\nimport { searchAvailabilityResponseSchema, } from '../models/searchAvailabilityResponse';\nimport { updateBookingRequestSchema, } from '../models/updateBookingRequest';\nimport { updateBookingResponseSchema, } from '../models/updateBookingResponse';\nimport { boolean, number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class BookingsApi extends BaseApi {\n    /**\n     * Retrieve a collection of bookings.\n     *\n     * To call this endpoint with buyer-level permissions, set `APPOINTMENTS_READ` for the OAuth scope.\n     * To call this endpoint with seller-level permissions, set `APPOINTMENTS_ALL_READ` and\n     * `APPOINTMENTS_READ` for the OAuth scope.\n     *\n     * @param limit          The maximum number of results per page to return in a paged response.\n     * @param cursor         The pagination cursor from the preceding response to return the next page of the\n     *                                 results. Do not set this when retrieving the first page of the results.\n     * @param customerId     The [customer](entity:Customer) for whom to retrieve bookings. If this is not set,\n     *                                 bookings for all customers are retrieved.\n     * @param teamMemberId   The team member for whom to retrieve bookings. If this is not set, bookings of\n     *                                 all members are retrieved.\n     * @param locationId     The location for which to retrieve bookings. If this is not set, all locations'\n     *                                 bookings are retrieved.\n     * @param startAtMin     The RFC 3339 timestamp specifying the earliest of the start time. If this is not\n     *                                 set, the current time is used.\n     * @param startAtMax     The RFC 3339 timestamp specifying the latest of the start time. If this is not\n     *                                 set, the time of 31 days after `start_at_min` is used.\n     * @return Response from the API call\n     */\n    async listBookings(limit, cursor, customerId, teamMemberId, locationId, startAtMin, startAtMax, requestOptions) {\n        const req = this.createRequest('GET', '/v2/bookings');\n        const mapped = req.prepareArgs({\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n            customerId: [customerId, optional(string())],\n            teamMemberId: [teamMemberId, optional(string())],\n            locationId: [locationId, optional(string())],\n            startAtMin: [startAtMin, optional(string())],\n            startAtMax: [startAtMax, optional(string())],\n        });\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        req.query('customer_id', mapped.customerId);\n        req.query('team_member_id', mapped.teamMemberId);\n        req.query('location_id', mapped.locationId);\n        req.query('start_at_min', mapped.startAtMin);\n        req.query('start_at_max', mapped.startAtMax);\n        return req.callAsJson(listBookingsResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a booking.\n     *\n     * The required input must include the following:\n     * - `Booking.location_id`\n     * - `Booking.start_at`\n     * - `Booking.team_member_id`\n     * - `Booking.AppointmentSegment.service_variation_id`\n     * - `Booking.AppointmentSegment.service_variation_version`\n     *\n     * To call this endpoint with buyer-level permissions, set `APPOINTMENTS_WRITE` for the OAuth scope.\n     * To call this endpoint with seller-level permissions, set `APPOINTMENTS_ALL_WRITE` and\n     * `APPOINTMENTS_WRITE` for the OAuth scope.\n     *\n     * For calls to this endpoint with seller-level permissions to succeed, the seller must have subscribed\n     * to *Appointments Plus*\n     * or *Appointments Premium*.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createBooking(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/bookings');\n        const mapped = req.prepareArgs({\n            body: [body, createBookingRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createBookingResponseSchema, requestOptions);\n    }\n    /**\n     * Searches for availabilities for booking.\n     *\n     * To call this endpoint with buyer-level permissions, set `APPOINTMENTS_READ` for the OAuth scope.\n     * To call this endpoint with seller-level permissions, set `APPOINTMENTS_ALL_READ` and\n     * `APPOINTMENTS_READ` for the OAuth scope.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                         See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async searchAvailability(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/bookings/availability/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchAvailabilityRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchAvailabilityResponseSchema, requestOptions);\n    }\n    /**\n     * Bulk-Retrieves a list of bookings by booking IDs.\n     *\n     * To call this endpoint with buyer-level permissions, set `APPOINTMENTS_READ` for the OAuth scope.\n     * To call this endpoint with seller-level permissions, set `APPOINTMENTS_ALL_READ` and\n     * `APPOINTMENTS_READ` for the OAuth scope.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                           See the corresponding object definition for field\n     *                                                           details.\n     * @return Response from the API call\n     */\n    async bulkRetrieveBookings(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/bookings/bulk-retrieve');\n        const mapped = req.prepareArgs({\n            body: [body, bulkRetrieveBookingsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(bulkRetrieveBookingsResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a seller's booking profile.\n     *\n     * @return Response from the API call\n     */\n    async retrieveBusinessBookingProfile(requestOptions) {\n        const req = this.createRequest('GET', '/v2/bookings/business-booking-profile');\n        return req.callAsJson(retrieveBusinessBookingProfileResponseSchema, requestOptions);\n    }\n    /**\n     * Lists location booking profiles of a seller.\n     *\n     * @param limit  The maximum number of results to return in a paged response.\n     * @param cursor The pagination cursor from the preceding response to return the next page of the results.\n     *                         Do not set this when retrieving the first page of the results.\n     * @return Response from the API call\n     */\n    async listLocationBookingProfiles(limit, cursor, requestOptions) {\n        const req = this.createRequest('GET', '/v2/bookings/location-booking-profiles');\n        const mapped = req.prepareArgs({\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n        });\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        return req.callAsJson(listLocationBookingProfilesResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a seller's location booking profile.\n     *\n     * @param locationId  The ID of the location to retrieve the booking profile.\n     * @return Response from the API call\n     */\n    async retrieveLocationBookingProfile(locationId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ locationId: [locationId, string()] });\n        req.appendTemplatePath `/v2/bookings/location-booking-profiles/${mapped.locationId}`;\n        return req.callAsJson(retrieveLocationBookingProfileResponseSchema, requestOptions);\n    }\n    /**\n     * Lists booking profiles for team members.\n     *\n     * @param bookableOnly  Indicates whether to include only bookable team members in the returned result\n     *                                 (`true`) or not (`false`).\n     * @param limit         The maximum number of results to return in a paged response.\n     * @param cursor        The pagination cursor from the preceding response to return the next page of the\n     *                                 results. Do not set this when retrieving the first page of the results.\n     * @param locationId    Indicates whether to include only team members enabled at the given location in\n     *                                 the returned result.\n     * @return Response from the API call\n     */\n    async listTeamMemberBookingProfiles(bookableOnly, limit, cursor, locationId, requestOptions) {\n        const req = this.createRequest('GET', '/v2/bookings/team-member-booking-profiles');\n        const mapped = req.prepareArgs({\n            bookableOnly: [bookableOnly, optional(boolean())],\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n            locationId: [locationId, optional(string())],\n        });\n        req.query('bookable_only', mapped.bookableOnly);\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        req.query('location_id', mapped.locationId);\n        return req.callAsJson(listTeamMemberBookingProfilesResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves one or more team members' booking profiles.\n     *\n     * @param body         An object containing the fields to\n     *                                                                            POST for the request.  See the\n     *                                                                            corresponding object definition for\n     *                                                                            field details.\n     * @return Response from the API call\n     */\n    async bulkRetrieveTeamMemberBookingProfiles(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/bookings/team-member-booking-profiles/bulk-retrieve');\n        const mapped = req.prepareArgs({\n            body: [body, bulkRetrieveTeamMemberBookingProfilesRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(bulkRetrieveTeamMemberBookingProfilesResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a team member's booking profile.\n     *\n     * @param teamMemberId   The ID of the team member to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveTeamMemberBookingProfile(teamMemberId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ teamMemberId: [teamMemberId, string()] });\n        req.appendTemplatePath `/v2/bookings/team-member-booking-profiles/${mapped.teamMemberId}`;\n        return req.callAsJson(retrieveTeamMemberBookingProfileResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a booking.\n     *\n     * To call this endpoint with buyer-level permissions, set `APPOINTMENTS_READ` for the OAuth scope.\n     * To call this endpoint with seller-level permissions, set `APPOINTMENTS_ALL_READ` and\n     * `APPOINTMENTS_READ` for the OAuth scope.\n     *\n     * @param bookingId  The ID of the [Booking](entity:Booking) object representing the to-be-retrieved\n     *                             booking.\n     * @return Response from the API call\n     */\n    async retrieveBooking(bookingId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ bookingId: [bookingId, string()] });\n        req.appendTemplatePath `/v2/bookings/${mapped.bookingId}`;\n        return req.callAsJson(retrieveBookingResponseSchema, requestOptions);\n    }\n    /**\n     * Updates a booking.\n     *\n     * To call this endpoint with buyer-level permissions, set `APPOINTMENTS_WRITE` for the OAuth scope.\n     * To call this endpoint with seller-level permissions, set `APPOINTMENTS_ALL_WRITE` and\n     * `APPOINTMENTS_WRITE` for the OAuth scope.\n     *\n     * For calls to this endpoint with seller-level permissions to succeed, the seller must have subscribed\n     * to *Appointments Plus*\n     * or *Appointments Premium*.\n     *\n     * @param bookingId    The ID of the [Booking](entity:Booking) object representing\n     *                                                    the to-be-updated booking.\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async updateBooking(bookingId, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            bookingId: [bookingId, string()],\n            body: [body, updateBookingRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/bookings/${mapped.bookingId}`;\n        return req.callAsJson(updateBookingResponseSchema, requestOptions);\n    }\n    /**\n     * Cancels an existing booking.\n     *\n     * To call this endpoint with buyer-level permissions, set `APPOINTMENTS_WRITE` for the OAuth scope.\n     * To call this endpoint with seller-level permissions, set `APPOINTMENTS_ALL_WRITE` and\n     * `APPOINTMENTS_WRITE` for the OAuth scope.\n     *\n     * For calls to this endpoint with seller-level permissions to succeed, the seller must have subscribed\n     * to *Appointments Plus*\n     * or *Appointments Premium*.\n     *\n     * @param bookingId    The ID of the [Booking](entity:Booking) object representing\n     *                                                    the to-be-cancelled booking.\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async cancelBooking(bookingId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            bookingId: [bookingId, string()],\n            body: [body, cancelBookingRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/bookings/${mapped.bookingId}/cancel`;\n        return req.callAsJson(cancelBookingResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=bookingsApi.js.map",
+      "start": 1709003846700,
+      "end": 1709003846738,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003846738,
+      "end": 1709003846738,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003846738,
+      "end": 1709003846738,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003846738,
+      "end": 1709003846738,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003846738,
+      "end": 1709003846738,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003846738,
+      "end": 1709003846738,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003846738,
+      "end": 1709003846738,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003846738,
+      "end": 1709003846738,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003846738,
+      "end": 1709003846738,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003846738,
+      "end": 1709003846738,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846738,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003846739,
+      "end": 1709003846739,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003846739,
+      "end": 1709003846740,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003846740,
+      "end": 1709003846740,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003846740,
+      "end": 1709003846740,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003846740,
+      "end": 1709003846740,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003846740,
+      "end": 1709003846740,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003846740,
+      "end": 1709003846740,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003846740,
+      "end": 1709003846740,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003846740,
+      "end": 1709003846740,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003846740,
+      "end": 1709003846740,
+      "order": "normal"
+    }
+  ]
+}

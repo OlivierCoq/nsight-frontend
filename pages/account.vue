@@ -1,47 +1,32 @@
 <template>
-  <v-row v-if="auth.user" id="account" :class="auth.user.preferences[0].dark_mode ? 'bg-dark' : 'bg-light'">
-    <v-col class="h-100">
-      <v-card :theme="auth.user.preferences[0].dark_mode ? 'dark' : 'light'" class="mx-3 my-3 h-100 overflow-auto">
-        <v-card-title>account</v-card-title>
-        <v-card-text>
-          <v-container fluid>
-            <v-row>
-              <v-col cols="12" sm="12" md="6" lg="6" xl="6">
-                <AccountEditPersonal />
-                <AccountEditAddress />
-              </v-col>
-              <v-col cols="12" sm="12" md="6" lg="6" xl="6">
-                <AccountOrders />
-                <AccountPaymentMethods />
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-      </v-card>
-    </v-col>
-  </v-row>
+  <div
+    v-if="auth.user"
+    id="account"
+    class="h-100 w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col"
+  >
+    <div class="w-full p-4 flex flex-row align-start justify-start">
+      <h1 class="text-neutral-900 dark:text-white text-5xl mb-3">account</h1>
+    </div>
+    <div class="w-full flex flex-col md:flex-row">
+      <div class="w-full md:w-1/2">
+        <AccountEditPersonal />
+        <AccountEditAddress />
+      </div>
+      <div class="w-full md:w-1/2">
+        <AccountOrders />
+        <AccountPaymentMethods />
+      </div>
+    </div>
+  </div>
 </template>
-<script>
+<script setup>
+definePageMeta({
+  middleware: ["auth"],
+  layout: "inner",
+});
+// Add validation rules for state.address.new_address:
 
-export default {
-  name: 'Account',
-  setup() {
-    definePageMeta({
-      middleware: ['auth'],
-      layout: 'inner'
-    })
-    // Add validation rules for state.address.new_address:
-    const state = reactive({
-      user: false,
-    })
-    const auth = authStore()
-
-    return {
-      state,
-      auth
-    }
-  }
-}
+const auth = authStore();
 </script>
 <style lang="scss">
 #account {

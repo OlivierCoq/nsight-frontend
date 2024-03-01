@@ -1,14 +1,10 @@
 <template>
-  <v-app>
-    <v-main>
-      <CommonAppBar />
-      <slot />
-    </v-main>
-  </v-app>
+  <div id="nsight" class="relative" :class="settings?.dark_mode ? 'dark' : ''">
+    <CommonAppBar />
+    <slot />
+  </div>
 </template>
-<script>
-
-export default {
-  name: 'inner',
-}
+<script setup lang="ts">
+// Stores
+const settings = settingsStore();
 </script>

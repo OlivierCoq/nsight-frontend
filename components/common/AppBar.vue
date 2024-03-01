@@ -1,103 +1,111 @@
 <template>
   <div id="appBar">
-    <v-app-bar v-if="authData.user" :class="authData.user.preferences[0].dark_mode ? 'dark' : ''">
-      <!-- <v-app-bar-nav-icon @click="state.drawer = !state.drawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-app-bar-nav-icon> -->
-      <v-toolbar-title>
-        <NuxtLink to="/dashboard" class="text-decoration-none"
-          :class="authData.user.preferences[0].dark_mode ? 'text-white' : 'text-dark'">
-          <span class="fw-bold me-4">nSight</span>
+    <!-- mobile -->
+    <!-- Tablet & larger -->
+    <div class="w-full h-[50px] bg-zinc-400 dark:bg-zinc-900 flex flex-row">
+      <div
+        class="w-1/3 flex flex-row h-full justify-start align-center items-center"
+      >
+        <a href="/dashboard" class="w-[50px] p-2">
+          <img :src="logo" alt="nSight Logo" class="w-full h-full" />
+        </a>
+        <NuxtLink to="/shop/products" class="text-decoration-none ms-5">
+          <span class="fw-bold text-neutral-900 dark:text-white">Shop</span>
         </NuxtLink>
-        <NuxtLink to="/shop/products" class="text-decoration-none"
-          :class="authData.user.preferences[0].dark_mode ? 'text-white' : 'text-dark'">
-          <span class="fw-bold">Shop</span>
-        </NuxtLink>
-      </v-toolbar-title>
-      <v-spacer v-if="!state.search.searching" />
-      <v-text-field v-if="state.search.searching" v-model="state.search.query" class="ctr-search " flat density="compact"
-        hide-details :loading="state.search.loading" :disabled="state.search.loading"
-        :placeholder="state.search.loading ? 'Searching...' : 'Search...'" @input="doSearch" @focusout="toggleSearch" />
-      <font-awesome-icon :icon="['fas', 'magnifying-glass']" class="mx-4 btn-search" @click="toggleSearch">
-        <v-tooltip activator="parent" location="bottom" open-delay="500">Search products, users, and more</v-tooltip>
-      </font-awesome-icon>
-      <NuxtLink to="/account" class="text-decoration-none username"
-        :class="authData.user.preferences[0].dark_mode ? 'text-white' : 'text-dark'">
-        <span class="fw-bold">{{ authData.user.first_name }}</span>
-        <v-tooltip activator="parent" location="bottom" open-delay="500">{{ authData.user.email }}</v-tooltip>
-      </NuxtLink>
-      <font-awesome-icon :icon="['fas', 'cart-shopping']" class="me-4 btn-cart" @click="goToCart" />
-      <div v-if="authData.user && authData.user.cart && prodStore.cart && prodStore.cart.total_items"
-        class="num_count d-flex flex-row justify-center align-center">
-        {{ prodStore.cart.total_items }}
       </div>
-      <v-btn v-if="authData.loggedIn" text @click="sign_out">Sign Out</v-btn>
-    </v-app-bar>
+      <div
+        class="w-2/3 flex flex-row h-full justify-end align-start items-center"
+      >
+        <input
+          v-show="state.search.searching"
+          v-model="state.search.query"
+          class="w-full h-[30px] px-3 py-2 text-sm text-gray-700 placeholder-gray-400 bg-transparent text-neutral-900 dark:text-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          placeholder="Search..."
+          @input="doSearch"
+          @focusout="toggleSearch"
+        />
+        <font-awesome-icon
+          :icon="['fas', 'magnifying-glass']"
+          class="mx-4 btn-search cursor-pointer text-neutral-900 dark:text-white"
+          @click="toggleSearch"
+          v-tooltip.bottom="'Search products, users, and more'"
+        >
+        </font-awesome-icon>
+        <NuxtLink
+          to="/account"
+          class="text-decoration-none username ms-4"
+          :class="
+            authData?.user?.preferences[0].dark_mode
+              ? 'text-white'
+              : 'text-dark'
+          "
+        >
+          <span
+            class="fw-bold relative text-neutral-900 dark:text-white"
+            v-tooltip.bottom="authData?.user?.email"
+            >{{ authData?.user?.first_name }}</span
+          >
+        </NuxtLink>
+        <font-awesome-icon
+          :icon="['fas', 'cart-shopping']"
+          class="me-4 btn-cart cursor-pointer text-neutral-900 dark:text-white"
+          @click="goToCart"
+        />
+        <div
+          v-if="
+            authData.user &&
+            authData.user.cart &&
+            prodStore.cart &&
+            prodStore.cart.total_items
+          "
+          class="num_count d-flex flex-row justify-center align-center"
+        >
+          <span class="text-white" v-tooltip="'Items in cart'">{{
+            prodStore.cart.total_items
+          }}</span>
+        </div>
+        <button v-if="authData?.loggedIn" text @click="sign_out">
+          <span class="text-neutral-900 dark:text-white text-sm me-6 uppercase"
+            >Sign Out</span
+          >
+        </button>
+      </div>
+    </div>
   </div>
 </template>
-<script>
-import { reactive, computed, onBeforeMount } from 'vue'
-import { authStore } from '~/stores/auth'
-import { productsStore } from '~/stores/products'
+<script setup lang="ts">
+import logo from "~/assets/images/logo/nsight_clear.png";
 
-export default {
-  name: 'AppBar',
-  setup() {
-    const auth = authStore()
-    const state = reactive({
-      drawer: false,
-      search: {
-        query: '',
-        results: [],
-        searching: false,
-        loading: false
-      }
-    })
-    // computed
-    const authData = computed(() => authStore())
-    const prodStore = productsStore()
+const auth = authStore();
+const state = reactive({
+  drawer: false,
+  search: {
+    query: "",
+    results: [],
+    searching: false,
+    loading: false,
+  },
+});
+// computed
+const authData = computed(() => authStore());
+const prodStore = productsStore();
 
-    // methods
-    const sign_out = async () => {
-      await auth.logout()
-    }
-    const goToCart = () => {
-      navigateTo('/cart')
-    }
-    const toggleSearch = () => {
-      state.search.searching = !state.search.searching
-    }
-    const doSearch = () => {
-      // console.log('searching', state.search)
-    }
-
-    return {
-      // state/data
-      state,
-      // computed
-      authData,
-      prodStore,
-      // methods,
-      sign_out,
-      goToCart,
-      doSearch,
-      toggleSearch
-    }
-  }
-}
+// methods
+const sign_out = async () => {
+  await auth.logout();
+};
+const goToCart = () => {
+  navigateTo("/cart");
+};
+const toggleSearch = () => {
+  state.search.searching = !state.search.searching;
+};
+const doSearch = () => {
+  // console.log('searching', state.search)
+};
 </script>
-<style scoped lang="scss">
+<style lang="scss">
 #appBar {
-  .v-app-bar {
-    background-color: #fff;
-    color: #000;
-  }
-
-  .v-app-bar.dark {
-    background-color: #191818;
-    color: #fff;
-  }
-
   .username {
     margin-right: 1rem;
     text-transform: lowercase;
@@ -117,5 +125,18 @@ export default {
     border-radius: 14px;
     font-size: 12px;
   }
+}
+.p-tooltip {
+  background-color: #000000d9;
+  color: #fff;
+  padding: 0.2rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  text-align: center;
+  position: absolute;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
 }
 </style>

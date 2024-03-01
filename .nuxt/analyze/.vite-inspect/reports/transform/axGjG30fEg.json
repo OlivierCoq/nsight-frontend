@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/core/es/http/requestBuilder.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { __spreadArray, __read, __assign, __awaiter, __generator } from 'tslib';\nimport JSONBig from '@apimatic/json-bigint';\nimport { deprecated, sanitizeUrl, updateErrorMessage } from '../apiHelper.js';\nimport { ArgumentsValidationError } from '../errors/argumentsValidationError.js';\nimport { ResponseValidationError } from '../errors/responseValidationError.js';\nimport { validateAndUnmapXml, validateAndMap, validateAndMapXml } from '@apimatic/schema';\nimport { JSON_CONTENT_TYPE, setHeader, mergeHeaders, TEXT_CONTENT_TYPE, XML_CONTENT_TYPE, ACCEPT_HEADER, CONTENT_TYPE_HEADER, CONTENT_LENGTH_HEADER, setHeaderIfNotSet } from '@apimatic/http-headers';\nimport { callHttpInterceptors } from './httpInterceptor.js';\nimport { SkipEncode, pathTemplate } from './pathTemplate.js';\nimport { urlEncodeObject, filterFileWrapperFromKeyValuePairs, formDataEncodeObject } from '@apimatic/http-query';\nimport { prepareArgs } from './validate.js';\nimport { shouldRetryRequest, RequestRetryOption, getRetryWaitTime } from './retryConfiguration.js';\nimport { convertToStream } from '@apimatic/convert-to-stream';\nimport { XmlSerialization } from '../xml/xmlSerializer.js';\nvar JSON = /*#__PURE__*/JSONBig();\nfunction skipEncode(value) {\n  return new SkipEncode(value);\n}\nvar DefaultRequestBuilder =\n/*#__PURE__*/\n/** @class */\nfunction () {\n  function DefaultRequestBuilder(_httpClient, _baseUrlProvider, _apiErrorCtr, _authenticationProvider, _httpMethod, _xmlSerializer, _retryConfig, _path) {\n    this._httpClient = _httpClient;\n    this._baseUrlProvider = _baseUrlProvider;\n    this._apiErrorCtr = _apiErrorCtr;\n    this._authenticationProvider = _authenticationProvider;\n    this._httpMethod = _httpMethod;\n    this._xmlSerializer = _xmlSerializer;\n    this._retryConfig = _retryConfig;\n    this._path = _path;\n    this._headers = {};\n    this._query = [];\n    this._interceptors = [];\n    this._validateResponse = true;\n    this._apiErrorFactory = {\n      apiErrorCtor: _apiErrorCtr\n    };\n    this._addResponseValidator();\n    this._addAuthentication();\n    this._addRetryInterceptor();\n    this._retryOption = RequestRetryOption.Default;\n    this.prepareArgs = prepareArgs.bind(this);\n  }\n  DefaultRequestBuilder.prototype.authenticate = function (params) {\n    this._authParams = params;\n  };\n  DefaultRequestBuilder.prototype.requestRetryOption = function (option) {\n    this._retryOption = option;\n  };\n  DefaultRequestBuilder.prototype.deprecated = function (methodName, message) {\n    deprecated(methodName, message);\n  };\n  DefaultRequestBuilder.prototype.appendTemplatePath = function (strings) {\n    var args = [];\n    for (var _i = 1; _i < arguments.length; _i++) {\n      args[_i - 1] = arguments[_i];\n    }\n    var pathSegment = pathTemplate.apply(void 0, __spreadArray([strings], __read(args)));\n    this.appendPath(pathSegment);\n  };\n  DefaultRequestBuilder.prototype.method = function (httpMethodName) {\n    this._httpMethod = httpMethodName;\n  };\n  DefaultRequestBuilder.prototype.baseUrl = function (arg) {\n    this._baseUrlArg = arg;\n  };\n  DefaultRequestBuilder.prototype.appendPath = function (path) {\n    this._path = this._path ? mergePath(this._path, path) : path;\n  };\n  DefaultRequestBuilder.prototype.acceptJson = function () {\n    this._accept = JSON_CONTENT_TYPE;\n  };\n  DefaultRequestBuilder.prototype.accept = function (acceptHeaderValue) {\n    this._accept = acceptHeaderValue;\n  };\n  DefaultRequestBuilder.prototype.contentType = function (contentTypeHeaderValue) {\n    this._contentType = contentTypeHeaderValue;\n  };\n  DefaultRequestBuilder.prototype.header = function (name, value) {\n    if (value === undefined) {\n      return;\n    }\n    setHeader(this._headers, name, value.toString());\n  };\n  DefaultRequestBuilder.prototype.headers = function (headersToMerge) {\n    mergeHeaders(this._headers, headersToMerge);\n  };\n  DefaultRequestBuilder.prototype.query = function (nameOrParameters, value, prefixFormat) {\n    var _a;\n    if (nameOrParameters === null || nameOrParameters === undefined) {\n      return;\n    }\n    var queryString = typeof nameOrParameters === 'string' ? urlEncodeObject((_a = {}, _a[nameOrParameters] = value, _a), prefixFormat) : urlEncodeObject(nameOrParameters, prefixFormat);\n    if (queryString) {\n      this._query.push(queryString);\n    }\n  };\n  DefaultRequestBuilder.prototype.text = function (body) {\n    this._body = body;\n    this._setContentTypeIfNotSet(TEXT_CONTENT_TYPE);\n  };\n  DefaultRequestBuilder.prototype.json = function (data) {\n    this._body = JSON.stringify(data);\n    this._setContentTypeIfNotSet(JSON_CONTENT_TYPE);\n  };\n  DefaultRequestBuilder.prototype.xml = function (argName, data, rootName, schema) {\n    var _a;\n    var mappingResult = validateAndUnmapXml(data, schema);\n    if (mappingResult.errors) {\n      throw new ArgumentsValidationError((_a = {}, _a[argName] = mappingResult.errors, _a));\n    }\n    this._body = this._xmlSerializer.xmlSerialize(rootName, mappingResult.result);\n    this._setContentTypeIfNotSet(XML_CONTENT_TYPE);\n  };\n  DefaultRequestBuilder.prototype.stream = function (file) {\n    this._stream = file;\n  };\n  DefaultRequestBuilder.prototype.form = function (parameters, prefixFormat) {\n    this._form = filterFileWrapperFromKeyValuePairs(formDataEncodeObject(parameters, prefixFormat));\n  };\n  DefaultRequestBuilder.prototype.formData = function (parameters, prefixFormat) {\n    this._formData = formDataEncodeObject(parameters, prefixFormat);\n  };\n  DefaultRequestBuilder.prototype.toRequest = function () {\n    var request = {\n      method: this._httpMethod,\n      url: mergePath(this._baseUrlProvider(this._baseUrlArg), this._path)\n    };\n    if (this._query.length > 0) {\n      var queryString = this._query.join('&');\n      request.url += (request.url.indexOf('?') === -1 ? '?' : '&') + queryString;\n    }\n    request.url = sanitizeUrl(request.url);\n    // defensively copy headers\n    var headers = __assign({}, this._headers);\n    if (this._accept) {\n      setHeader(headers, ACCEPT_HEADER, this._accept);\n    }\n    if (this._contentType) {\n      setHeader(headers, CONTENT_TYPE_HEADER, this._contentType);\n    }\n    setHeader(headers, CONTENT_LENGTH_HEADER);\n    request.headers = headers;\n    if (this._body !== undefined) {\n      request.body = {\n        type: 'text',\n        content: this._body\n      };\n    } else if (this._form !== undefined) {\n      request.body = {\n        type: 'form',\n        content: this._form\n      };\n    } else if (this._formData !== undefined) {\n      request.body = {\n        type: 'form-data',\n        content: this._formData\n      };\n    } else if (this._stream !== undefined) {\n      request.body = {\n        type: 'stream',\n        content: this._stream\n      };\n    }\n    return request;\n  };\n  DefaultRequestBuilder.prototype.intercept = function (interceptor) {\n    this._interceptors.push(interceptor);\n  };\n  DefaultRequestBuilder.prototype.interceptRequest = function (interceptor) {\n    this.intercept(function (req, opt, next) {\n      return next(interceptor(req), opt);\n    });\n  };\n  DefaultRequestBuilder.prototype.interceptResponse = function (interceptor) {\n    var _this = this;\n    this.intercept(function (req, opt, next) {\n      return __awaiter(_this, void 0, void 0, function () {\n        var _a;\n        return __generator(this, function (_b) {\n          switch (_b.label) {\n            case 0:\n              _a = interceptor;\n              return [4 /*yield*/, next(req, opt)];\n            case 1:\n              return [2 /*return*/, _a.apply(void 0, [_b.sent()])];\n          }\n        });\n      });\n    });\n  };\n  DefaultRequestBuilder.prototype.defaultToError = function (apiErrorCtor, message) {\n    this._apiErrorFactory = {\n      apiErrorCtor: apiErrorCtor,\n      message: message\n    };\n  };\n  DefaultRequestBuilder.prototype.validateResponse = function (validate) {\n    this._validateResponse = validate;\n  };\n  DefaultRequestBuilder.prototype.throwOn = function (statusCode, errorConstructor, isTemplate) {\n    var args = [];\n    for (var _i = 3; _i < arguments.length; _i++) {\n      args[_i - 3] = arguments[_i];\n    }\n    this.interceptResponse(function (context) {\n      var response = context.response;\n      if (isTemplate && args.length > 0) {\n        args[0] = updateErrorMessage(args[0], response);\n      }\n      if (typeof statusCode === 'number' && response.statusCode === statusCode || typeof statusCode !== 'number' && response.statusCode >= statusCode[0] && response.statusCode <= statusCode[1]) {\n        throw new (errorConstructor.bind.apply(errorConstructor, __spreadArray([void 0, context], __read(args))))();\n      }\n      return context;\n    });\n  };\n  DefaultRequestBuilder.prototype.call = function (requestOptions) {\n    return __awaiter(this, void 0, void 0, function () {\n      var pipeline, _a, request, response;\n      var _this = this;\n      return __generator(this, function (_b) {\n        switch (_b.label) {\n          case 0:\n            pipeline = callHttpInterceptors(this._interceptors,\n            // tslint:disable-next-line:no-shadowed-variable\n            function (request, opt) {\n              return __awaiter(_this, void 0, void 0, function () {\n                var response;\n                return __generator(this, function (_a) {\n                  switch (_a.label) {\n                    case 0:\n                      return [4 /*yield*/, this._httpClient(request, opt)];\n                    case 1:\n                      response = _a.sent();\n                      return [2 /*return*/, {\n                        request: request,\n                        response: response\n                      }];\n                  }\n                });\n              });\n            });\n            return [4 /*yield*/, pipeline(this.toRequest(), requestOptions)];\n          case 1:\n            _a = _b.sent(), request = _a.request, response = _a.response;\n            return [2 /*return*/, __assign(__assign({}, response), {\n              request: request,\n              result: undefined\n            })];\n        }\n      });\n    });\n  };\n  DefaultRequestBuilder.prototype.callAsText = function (requestOptions) {\n    return __awaiter(this, void 0, void 0, function () {\n      var result;\n      return __generator(this, function (_a) {\n        switch (_a.label) {\n          case 0:\n            return [4 /*yield*/, this.call(requestOptions)];\n          case 1:\n            result = _a.sent();\n            if (typeof result.body !== 'string') {\n              throw new Error('Could not parse body as string.'); // TODO: Replace with SDK error\n            }\n\n            return [2 /*return*/, __assign(__assign({}, result), {\n              result: result.body\n            })];\n        }\n      });\n    });\n  };\n  DefaultRequestBuilder.prototype.callAsOptionalText = function (requestOptions) {\n    return __awaiter(this, void 0, void 0, function () {\n      var result;\n      return __generator(this, function (_a) {\n        switch (_a.label) {\n          case 0:\n            return [4 /*yield*/, this.call(requestOptions)];\n          case 1:\n            result = _a.sent();\n            if (typeof result.body !== 'string') {\n              return [2 /*return*/, __assign(__assign({}, result), {\n                result: undefined\n              })];\n            }\n            return [2 /*return*/, __assign(__assign({}, result), {\n              result: result.body\n            })];\n        }\n      });\n    });\n  };\n  DefaultRequestBuilder.prototype.callAsStream = function (requestOptions) {\n    return __awaiter(this, void 0, void 0, function () {\n      var result;\n      return __generator(this, function (_a) {\n        switch (_a.label) {\n          case 0:\n            this.interceptRequest(function (req) {\n              return __assign(__assign({}, req), {\n                responseType: 'stream'\n              });\n            });\n            return [4 /*yield*/, this.call(requestOptions)];\n          case 1:\n            result = _a.sent();\n            return [2 /*return*/, __assign(__assign({}, result), {\n              result: convertToStream(result.body)\n            })];\n        }\n      });\n    });\n  };\n  DefaultRequestBuilder.prototype.callAsJson = function (schema, requestOptions) {\n    return __awaiter(this, void 0, void 0, function () {\n      var result, parsed, mappingResult;\n      return __generator(this, function (_a) {\n        switch (_a.label) {\n          case 0:\n            this.interceptRequest(function (request) {\n              var headers = __assign({}, request.headers);\n              setHeaderIfNotSet(headers, ACCEPT_HEADER, JSON_CONTENT_TYPE);\n              return __assign(__assign({}, request), {\n                headers: headers\n              });\n            });\n            return [4 /*yield*/, this.call(requestOptions)];\n          case 1:\n            result = _a.sent();\n            if (result.body === '') {\n              throw new Error('Could not parse body as JSON. The response body is empty.');\n            }\n            if (typeof result.body !== 'string') {\n              throw new Error('Could not parse body as JSON. The response body is not a string.');\n            }\n            try {\n              parsed = JSON.parse(result.body);\n            } catch (error) {\n              throw new Error(\"Could not parse body as JSON.\\n\\n\" + error.message);\n            }\n            mappingResult = validateAndMap(parsed, schema);\n            if (mappingResult.errors) {\n              throw new ResponseValidationError(result, mappingResult.errors);\n            }\n            return [2 /*return*/, __assign(__assign({}, result), {\n              result: mappingResult.result\n            })];\n        }\n      });\n    });\n  };\n  DefaultRequestBuilder.prototype.callAsXml = function (rootName, schema, requestOptions) {\n    return __awaiter(this, void 0, void 0, function () {\n      var result, xmlObject, error_1, mappingResult;\n      return __generator(this, function (_a) {\n        switch (_a.label) {\n          case 0:\n            this.interceptRequest(function (request) {\n              var headers = __assign({}, request.headers);\n              setHeaderIfNotSet(headers, ACCEPT_HEADER, XML_CONTENT_TYPE);\n              return __assign(__assign({}, request), {\n                headers: headers\n              });\n            });\n            return [4 /*yield*/, this.call(requestOptions)];\n          case 1:\n            result = _a.sent();\n            if (result.body === '') {\n              throw new Error('Could not parse body as XML. The response body is empty.');\n            }\n            if (typeof result.body !== 'string') {\n              throw new Error('Could not parse body as XML. The response body is not a string.');\n            }\n            _a.label = 2;\n          case 2:\n            _a.trys.push([2, 4,, 5]);\n            return [4 /*yield*/, this._xmlSerializer.xmlDeserialize(rootName, result.body)];\n          case 3:\n            xmlObject = _a.sent();\n            return [3 /*break*/, 5];\n          case 4:\n            error_1 = _a.sent();\n            throw new Error(\"Could not parse body as XML.\\n\\n\" + error_1.message);\n          case 5:\n            mappingResult = validateAndMapXml(xmlObject, schema);\n            if (mappingResult.errors) {\n              throw new ResponseValidationError(result, mappingResult.errors);\n            }\n            return [2 /*return*/, __assign(__assign({}, result), {\n              result: mappingResult.result\n            })];\n        }\n      });\n    });\n  };\n  DefaultRequestBuilder.prototype._setContentTypeIfNotSet = function (contentType) {\n    if (!this._contentType) {\n      setHeaderIfNotSet(this._headers, CONTENT_TYPE_HEADER, contentType);\n    }\n  };\n  DefaultRequestBuilder.prototype._addResponseValidator = function () {\n    var _this = this;\n    this.interceptResponse(function (context) {\n      var _a;\n      var response = context.response;\n      if (_this._validateResponse && (response.statusCode < 200 || response.statusCode >= 300)) {\n        if (typeof ((_a = _this._apiErrorFactory) === null || _a === void 0 ? void 0 : _a.message) === 'undefined') {\n          _this._apiErrorFactory.message = \"Response status code was not ok: \" + response.statusCode + \".\";\n        }\n        throw new _this._apiErrorFactory.apiErrorCtor(context, _this._apiErrorFactory.message);\n      }\n      return context;\n    });\n  };\n  DefaultRequestBuilder.prototype._addAuthentication = function () {\n    var _this = this;\n    this.intercept(function () {\n      var args = [];\n      for (var _i = 0; _i < arguments.length; _i++) {\n        args[_i] = arguments[_i];\n      }\n      var handler = _this._authenticationProvider(_this._authParams);\n      return handler.apply(void 0, __spreadArray([], __read(args)));\n    });\n  };\n  DefaultRequestBuilder.prototype._addRetryInterceptor = function () {\n    var _this = this;\n    this.intercept(function (request, options, next) {\n      return __awaiter(_this, void 0, void 0, function () {\n        var context, allowedWaitTime, retryCount, waitTime, timeoutError, shouldRetry, error_2;\n        var _a, _b;\n        return __generator(this, function (_c) {\n          switch (_c.label) {\n            case 0:\n              allowedWaitTime = this._retryConfig.maximumRetryWaitTime;\n              retryCount = 0;\n              waitTime = 0;\n              shouldRetry = shouldRetryRequest(this._retryOption, this._retryConfig, this._httpMethod);\n              _c.label = 1;\n            case 1:\n              timeoutError = undefined;\n              if (!(retryCount > 0)) return [3 /*break*/, 3];\n              return [4 /*yield*/, new Promise(function (res) {\n                return setTimeout(res, waitTime * 1000);\n              })];\n            case 2:\n              _c.sent();\n              allowedWaitTime -= waitTime;\n              _c.label = 3;\n            case 3:\n              _c.trys.push([3, 5,, 6]);\n              return [4 /*yield*/, next(request, options)];\n            case 4:\n              context = _c.sent();\n              return [3 /*break*/, 6];\n            case 5:\n              error_2 = _c.sent();\n              timeoutError = error_2;\n              return [3 /*break*/, 6];\n            case 6:\n              if (shouldRetry) {\n                waitTime = getRetryWaitTime(this._retryConfig, allowedWaitTime, retryCount, (_a = context === null || context === void 0 ? void 0 : context.response) === null || _a === void 0 ? void 0 : _a.statusCode, (_b = context === null || context === void 0 ? void 0 : context.response) === null || _b === void 0 ? void 0 : _b.headers, timeoutError);\n                retryCount++;\n              }\n              _c.label = 7;\n            case 7:\n              if (waitTime > 0) return [3 /*break*/, 1];\n              _c.label = 8;\n            case 8:\n              if (timeoutError) {\n                throw timeoutError;\n              }\n              if (typeof (context === null || context === void 0 ? void 0 : context.response) === 'undefined') {\n                throw new Error('Response is undefined.');\n              }\n              return [2 /*return*/, {\n                request: request,\n                response: context.response\n              }];\n          }\n        });\n      });\n    });\n  };\n  return DefaultRequestBuilder;\n}();\nfunction createRequestBuilderFactory(httpClient, baseUrlProvider, apiErrorConstructor, authenticationProvider, retryConfig, xmlSerializer) {\n  if (xmlSerializer === void 0) {\n    xmlSerializer = new XmlSerialization();\n  }\n  return function (httpMethod, path) {\n    return new DefaultRequestBuilder(httpClient, baseUrlProvider, apiErrorConstructor, authenticationProvider, httpMethod, xmlSerializer, retryConfig, path);\n  };\n}\nfunction mergePath(left, right) {\n  if (!right || right === '') {\n    return left;\n  }\n  if (left[left.length - 1] === '/' && right[0] === '/') {\n    return left + right.substr(1);\n  } else if (left[left.length - 1] === '/' || right[0] === '/') {\n    return left + right;\n  } else {\n    return left + \"/\" + right;\n  }\n}\nexport { DefaultRequestBuilder, createRequestBuilderFactory, skipEncode };",
+      "start": 1709003847729,
+      "end": 1709003847758,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003847758,
+      "end": 1709003847758,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003847758,
+      "end": 1709003847759,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003847759,
+      "end": 1709003847759,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003847759,
+      "end": 1709003847759,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003847759,
+      "end": 1709003847759,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003847759,
+      "end": 1709003847759,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003847759,
+      "end": 1709003847759,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003847759,
+      "end": 1709003847759,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003847759,
+      "end": 1709003847760,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003847760,
+      "end": 1709003847760,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003847760,
+      "end": 1709003847760,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003847760,
+      "end": 1709003847760,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003847760,
+      "end": 1709003847760,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003847760,
+      "end": 1709003847760,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003847760,
+      "end": 1709003847760,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003847760,
+      "end": 1709003847760,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003847760,
+      "end": 1709003847760,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003847760,
+      "end": 1709003847760,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003847760,
+      "end": 1709003847761,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003847761,
+      "end": 1709003847761,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003847761,
+      "end": 1709003847761,
+      "order": "normal"
+    }
+  ]
+}

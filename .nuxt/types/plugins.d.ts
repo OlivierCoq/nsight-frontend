@@ -16,13 +16,12 @@ type NuxtAppInjections =
   InjectionType<typeof import("../../node_modules/nuxt/dist/pages/runtime/plugins/prefetch.client").default> &
   InjectionType<typeof import("../../node_modules/@nuxt/devtools/dist/runtime/plugins/devtools.server").default> &
   InjectionType<typeof import("../../node_modules/@nuxt/devtools/dist/runtime/plugins/devtools.client").default> &
-  InjectionType<typeof import("../../node_modules/nuxt-medusa/dist/runtime/plugin").default> &
+  InjectionType<typeof import("../../node_modules/nuxt-primevue/dist/runtime/plugin.client").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/chunk-reload.client").default> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/check-if-layout-used").default> &
   InjectionType<typeof import("../../node_modules/@pinia-plugin-persistedstate/nuxt/dist/runtime/plugin").default> &
   InjectionType<typeof import("../../plugins/font-awesome").default> &
-  InjectionType<typeof import("../../plugins/global_fetch").default> &
-  InjectionType<typeof import("../../plugins/vuetify").default>
+  InjectionType<typeof import("../../plugins/global_fetch").default>
 
 declare module '#app' {
   interface NuxtApp extends NuxtAppInjections { }

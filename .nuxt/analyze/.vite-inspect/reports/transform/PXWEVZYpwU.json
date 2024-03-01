@@ -1,0 +1,17 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/assets/style/main.scss",
+  "transforms": [
+    {
+      "name": "__load__",
+      "result": "",
+      "start": 1709003845334,
+      "end": 1709003845334
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003845334,
+      "end": 1709003845334,
+      "order": "normal"
+    }
+  ]
+}

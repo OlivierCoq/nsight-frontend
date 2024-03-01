@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/axios-client-adapter/es/httpClient.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { __assign, __values, __awaiter, __generator } from 'tslib';\nimport axios from 'axios';\nimport isNode from 'detect-node';\nimport FormData from 'form-data';\nimport { isFileWrapper } from '@apimatic/file-wrapper';\nimport { mergeHeaders, setHeader, CONTENT_TYPE_HEADER, FORM_URLENCODED_CONTENT_TYPE, setHeaderIfNotSet } from '@apimatic/http-headers';\nimport { urlEncodeKeyValuePairs } from '@apimatic/http-query';\nvar DEFAULT_AXIOS_CONFIG_OVERRIDES = {\n  transformResponse: []\n};\nvar DEFAULT_TIMEOUT = 30 * 1000;\n/**\r\n * HTTP client implementation.\r\n *\r\n * This implementation is a wrapper over the Axios client.\r\n */\nvar HttpClient =\n/*#__PURE__*/\n/** @class */\nfunction () {\n  function HttpClient(abortErrorFactory, _a) {\n    var _b = _a === void 0 ? {} : _a,\n      clientConfigOverrides = _b.clientConfigOverrides,\n      _c = _b.timeout,\n      timeout = _c === void 0 ? DEFAULT_TIMEOUT : _c,\n      httpAgent = _b.httpAgent,\n      httpsAgent = _b.httpsAgent;\n    this._timeout = timeout;\n    this._axiosInstance = axios.create(__assign(__assign(__assign({}, DEFAULT_AXIOS_CONFIG_OVERRIDES), clientConfigOverrides), {\n      httpAgent: httpAgent,\n      httpsAgent: httpsAgent\n    }));\n    this._abortErrorFactory = abortErrorFactory;\n  }\n  /** Converts an HttpRequest object to an Axios request. */\n  HttpClient.prototype.convertHttpRequest = function (req) {\n    var e_1, _a;\n    var _b, _c;\n    var newRequest = {\n      method: req.method,\n      url: req.url,\n      responseType: 'text',\n      headers: __assign({}, req.headers)\n    };\n    if (req.auth) {\n      // Set basic auth credentials if provided\n      newRequest.auth = {\n        username: req.auth.username,\n        password: req.auth.password || ''\n      };\n    }\n    var requestBody = req.body;\n    if ((requestBody === null || requestBody === void 0 ? void 0 : requestBody.type) === 'text') {\n      newRequest.data = requestBody.content;\n    } else if ((requestBody === null || requestBody === void 0 ? void 0 : requestBody.type) === 'form-data' && requestBody.content.some(function (item) {\n      return isFileWrapper(item.value);\n    })) {\n      // Create multipart request if a file is present\n      var form = new FormData();\n      try {\n        for (var _d = __values(requestBody.content), _e = _d.next(); !_e.done; _e = _d.next()) {\n          var iter = _e.value;\n          if (isFileWrapper(iter.value)) {\n            var fileData = iter.value.file;\n            // Make sure Blob has the correct content type if provided\n            if (isBlob(fileData) && ((_b = iter.value.options) === null || _b === void 0 ? void 0 : _b.contentType)) {\n              fileData = new Blob([fileData], {\n                type: iter.value.options.contentType\n              });\n            }\n            form.append(iter.key, fileData, iter.value.options);\n          } else {\n            form.append(iter.key, iter.value);\n          }\n        }\n      } catch (e_1_1) {\n        e_1 = {\n          error: e_1_1\n        };\n      } finally {\n        try {\n          if (_e && !_e.done && (_a = _d.return)) _a.call(_d);\n        } finally {\n          if (e_1) throw e_1.error;\n        }\n      }\n      newRequest.data = form;\n      mergeHeaders(newRequest.headers, form.getHeaders());\n    } else if ((requestBody === null || requestBody === void 0 ? void 0 : requestBody.type) === 'form-data' || (requestBody === null || requestBody === void 0 ? void 0 : requestBody.type) === 'form') {\n      // Create form-urlencoded request\n      setHeader(newRequest.headers, CONTENT_TYPE_HEADER, FORM_URLENCODED_CONTENT_TYPE);\n      newRequest.data = urlEncodeKeyValuePairs(requestBody.content);\n    } else if ((requestBody === null || requestBody === void 0 ? void 0 : requestBody.type) === 'stream') {\n      var contentType = 'application/octet-stream';\n      if (isBlob(requestBody.content.file) && requestBody.content.file.type) {\n        // Set Blob mime type as the content-type header if present\n        contentType = requestBody.content.file.type;\n      } else if ((_c = requestBody.content.options) === null || _c === void 0 ? void 0 : _c.contentType) {\n        // Otherwise, use the content type if available.\n        contentType = requestBody.content.options.contentType;\n      }\n      setHeaderIfNotSet(newRequest.headers, CONTENT_TYPE_HEADER, contentType);\n      newRequest.data = requestBody.content.file;\n    }\n    if (req.responseType === 'stream') {\n      newRequest.responseType = isNode ? 'stream' : 'blob';\n    }\n    // Prevent superagent from converting any status code to error\n    newRequest.validateStatus = function () {\n      return true;\n    };\n    // Set 30 seconds timeout\n    newRequest.timeout = this._timeout;\n    return newRequest;\n  };\n  /** Converts an Axios response to an HttpResponse object. */\n  HttpClient.prototype.convertHttpResponse = function (resp) {\n    return {\n      body: resp.data,\n      headers: resp.headers,\n      statusCode: resp.status\n    };\n  };\n  /**\r\n   * Executes the HttpRequest with the given options and returns the HttpResponse\r\n   * or throws an error.\r\n   */\n  HttpClient.prototype.executeRequest = function (request, requestOptions) {\n    return __awaiter(this, void 0, void 0, function () {\n      var axiosRequest, cancelToken_1, _a, error_1;\n      return __generator(this, function (_b) {\n        switch (_b.label) {\n          case 0:\n            axiosRequest = this.convertHttpRequest(request);\n            if (requestOptions === null || requestOptions === void 0 ? void 0 : requestOptions.abortSignal) {\n              // throw if already aborted; do not place HTTP call\n              if (requestOptions.abortSignal.aborted) {\n                throw this.abortError();\n              }\n              cancelToken_1 = axios.CancelToken.source();\n              axiosRequest.cancelToken = cancelToken_1.token;\n              // attach abort event handler\n              requestOptions.abortSignal.addEventListener('abort', function () {\n                cancelToken_1.cancel();\n              });\n            }\n            _b.label = 1;\n          case 1:\n            _b.trys.push([1, 3,, 4]);\n            _a = this.convertHttpResponse;\n            return [4 /*yield*/, this._axiosInstance(axiosRequest)];\n          case 2:\n            return [2 /*return*/, _a.apply(this, [_b.sent()])];\n          case 3:\n            error_1 = _b.sent();\n            // abort error should be thrown as the AbortError\n            if (axios.isCancel(error_1)) {\n              throw this.abortError();\n            }\n            throw error_1;\n          case 4:\n            return [2 /*return*/];\n        }\n      });\n    });\n  };\n\n  HttpClient.prototype.abortError = function () {\n    return new this._abortErrorFactory('The HTTP call was aborted.');\n  };\n  return HttpClient;\n}();\n/**\r\n * Check whether value is an instance of Blob\r\n *\r\n * @remark\r\n * Reference: https://github.com/sindresorhus/is-blob/blob/master/index.js\r\n *\r\n * @param value Value to check\r\n * @returns True if the value is a Blob instance\r\n */\nfunction isBlob(value) {\n  if (typeof Blob === 'undefined') {\n    return false;\n  }\n  return value instanceof Blob || Object.prototype.toString.call(value) === '[object Blob]';\n}\nexport { DEFAULT_AXIOS_CONFIG_OVERRIDES, DEFAULT_TIMEOUT, HttpClient, isBlob };",
+      "start": 1709003848071,
+      "end": 1709003848096,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003848096,
+      "end": 1709003848096,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003848096,
+      "end": 1709003848097,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003848097,
+      "end": 1709003848097,
+      "order": "normal"
+    }
+  ]
+}

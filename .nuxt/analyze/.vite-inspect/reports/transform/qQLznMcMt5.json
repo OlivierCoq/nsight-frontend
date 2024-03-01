@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/models/payment.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { array, lazy, nullable, object, optional, string, } from '../schema';\nimport { addressSchema } from './address';\nimport { applicationDetailsSchema, } from './applicationDetails';\nimport { bankAccountPaymentDetailsSchema, } from './bankAccountPaymentDetails';\nimport { buyNowPayLaterDetailsSchema, } from './buyNowPayLaterDetails';\nimport { cardPaymentDetailsSchema, } from './cardPaymentDetails';\nimport { cashPaymentDetailsSchema, } from './cashPaymentDetails';\nimport { deviceDetailsSchema } from './deviceDetails';\nimport { digitalWalletDetailsSchema, } from './digitalWalletDetails';\nimport { externalPaymentDetailsSchema, } from './externalPaymentDetails';\nimport { moneySchema } from './money';\nimport { processingFeeSchema } from './processingFee';\nimport { riskEvaluationSchema } from './riskEvaluation';\nimport { squareAccountDetailsSchema, } from './squareAccountDetails';\nexport const paymentSchema = object({\n    id: ['id', optional(string())],\n    createdAt: ['created_at', optional(string())],\n    updatedAt: ['updated_at', optional(string())],\n    amountMoney: ['amount_money', optional(lazy(() => moneySchema))],\n    tipMoney: ['tip_money', optional(lazy(() => moneySchema))],\n    totalMoney: ['total_money', optional(lazy(() => moneySchema))],\n    appFeeMoney: ['app_fee_money', optional(lazy(() => moneySchema))],\n    approvedMoney: ['approved_money', optional(lazy(() => moneySchema))],\n    processingFee: [\n        'processing_fee',\n        optional(array(lazy(() => processingFeeSchema))),\n    ],\n    refundedMoney: ['refunded_money', optional(lazy(() => moneySchema))],\n    status: ['status', optional(string())],\n    delayDuration: ['delay_duration', optional(string())],\n    delayAction: ['delay_action', optional(nullable(string()))],\n    delayedUntil: ['delayed_until', optional(string())],\n    sourceType: ['source_type', optional(string())],\n    cardDetails: ['card_details', optional(lazy(() => cardPaymentDetailsSchema))],\n    cashDetails: ['cash_details', optional(lazy(() => cashPaymentDetailsSchema))],\n    bankAccountDetails: [\n        'bank_account_details',\n        optional(lazy(() => bankAccountPaymentDetailsSchema)),\n    ],\n    externalDetails: [\n        'external_details',\n        optional(lazy(() => externalPaymentDetailsSchema)),\n    ],\n    walletDetails: [\n        'wallet_details',\n        optional(lazy(() => digitalWalletDetailsSchema)),\n    ],\n    buyNowPayLaterDetails: [\n        'buy_now_pay_later_details',\n        optional(lazy(() => buyNowPayLaterDetailsSchema)),\n    ],\n    squareAccountDetails: [\n        'square_account_details',\n        optional(lazy(() => squareAccountDetailsSchema)),\n    ],\n    locationId: ['location_id', optional(string())],\n    orderId: ['order_id', optional(string())],\n    referenceId: ['reference_id', optional(string())],\n    customerId: ['customer_id', optional(string())],\n    employeeId: ['employee_id', optional(string())],\n    teamMemberId: ['team_member_id', optional(string())],\n    refundIds: ['refund_ids', optional(array(string()))],\n    riskEvaluation: [\n        'risk_evaluation',\n        optional(lazy(() => riskEvaluationSchema)),\n    ],\n    buyerEmailAddress: ['buyer_email_address', optional(string())],\n    billingAddress: ['billing_address', optional(lazy(() => addressSchema))],\n    shippingAddress: ['shipping_address', optional(lazy(() => addressSchema))],\n    note: ['note', optional(string())],\n    statementDescriptionIdentifier: [\n        'statement_description_identifier',\n        optional(string()),\n    ],\n    capabilities: ['capabilities', optional(array(string()))],\n    receiptNumber: ['receipt_number', optional(string())],\n    receiptUrl: ['receipt_url', optional(string())],\n    deviceDetails: ['device_details', optional(lazy(() => deviceDetailsSchema))],\n    applicationDetails: [\n        'application_details',\n        optional(lazy(() => applicationDetailsSchema)),\n    ],\n    versionToken: ['version_token', optional(nullable(string()))],\n});\n//# sourceMappingURL=payment.js.map",
+      "start": 1709003847983,
+      "end": 1709003848038,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003848038,
+      "end": 1709003848038,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003848038,
+      "end": 1709003848039,
+      "order": "normal"
+    }
+  ]
+}

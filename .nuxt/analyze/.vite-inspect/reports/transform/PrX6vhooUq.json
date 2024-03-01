@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/libphonenumber-js/es6/helpers/extractCountryCallingCodeFromInternationalNumberWithoutPlusSign.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import Metadata from '../metadata.js';\nimport matchesEntirely from './matchesEntirely.js';\nimport extractNationalNumber from './extractNationalNumber.js';\nimport checkNumberLength from './checkNumberLength.js';\nimport getCountryCallingCode from '../getCountryCallingCode.js';\n/**\r\n * Sometimes some people incorrectly input international phone numbers\r\n * without the leading `+`. This function corrects such input.\r\n * @param  {string} number — Phone number digits.\r\n * @param  {string?} country\r\n * @param  {string?} callingCode\r\n * @param  {object} metadata\r\n * @return {object} `{ countryCallingCode: string?, number: string }`.\r\n */\n\nexport default function extractCountryCallingCodeFromInternationalNumberWithoutPlusSign(number, country, callingCode, metadata) {\n  var countryCallingCode = country ? getCountryCallingCode(country, metadata) : callingCode;\n\n  if (number.indexOf(countryCallingCode) === 0) {\n    metadata = new Metadata(metadata);\n    metadata.selectNumberingPlan(country, callingCode);\n    var possibleShorterNumber = number.slice(countryCallingCode.length);\n\n    var _extractNationalNumbe = extractNationalNumber(possibleShorterNumber, metadata),\n        possibleShorterNationalNumber = _extractNationalNumbe.nationalNumber;\n\n    var _extractNationalNumbe2 = extractNationalNumber(number, metadata),\n        nationalNumber = _extractNationalNumbe2.nationalNumber; // If the number was not valid before but is valid now,\n    // or if it was too long before, we consider the number\n    // with the country calling code stripped to be a better result\n    // and keep that instead.\n    // For example, in Germany (+49), `49` is a valid area code,\n    // so if a number starts with `49`, it could be both a valid\n    // national German number or an international number without\n    // a leading `+`.\n\n\n    if (!matchesEntirely(nationalNumber, metadata.nationalNumberPattern()) && matchesEntirely(possibleShorterNationalNumber, metadata.nationalNumberPattern()) || checkNumberLength(nationalNumber, metadata) === 'TOO_LONG') {\n      return {\n        countryCallingCode: countryCallingCode,\n        number: possibleShorterNumber\n      };\n    }\n  }\n\n  return {\n    number: number\n  };\n}\n//# sourceMappingURL=extractCountryCallingCodeFromInternationalNumberWithoutPlusSign.js.map",
+      "start": 1709003849100,
+      "end": 1709003849142,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003849142,
+      "end": 1709003849142,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003849142,
+      "end": 1709003849143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003849143,
+      "end": 1709003849143,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/libphonenumber-js/es6/legacy/isPossibleNumber.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { normalizeArguments } from './getNumberType.js';\nimport _isPossibleNumber from '../isPossible.js';\n/**\r\n * Checks if a given phone number is possible.\r\n * Which means it only checks phone number length\r\n * and doesn't test any regular expressions.\r\n *\r\n * Examples:\r\n *\r\n * ```js\r\n * isPossibleNumber('+78005553535', metadata)\r\n * isPossibleNumber('8005553535', 'RU', metadata)\r\n * isPossibleNumber('88005553535', 'RU', metadata)\r\n * isPossibleNumber({ phone: '8005553535', country: 'RU' }, metadata)\r\n * ```\r\n */\n\nexport default function isPossibleNumber() {\n  var _normalizeArguments = normalizeArguments(arguments),\n      input = _normalizeArguments.input,\n      options = _normalizeArguments.options,\n      metadata = _normalizeArguments.metadata; // `parseNumber()` would return `{}` when no phone number could be parsed from the input.\n\n\n  if (!input.phone && !(options && options.v2)) {\n    return false;\n  }\n\n  return _isPossibleNumber(input, options, metadata);\n}\n//# sourceMappingURL=isPossibleNumber.js.map",
+      "start": 1709003848989,
+      "end": 1709003849036,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003849036,
+      "end": 1709003849036,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003849036,
+      "end": 1709003849037,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003849037,
+      "end": 1709003849037,
+      "order": "normal"
+    }
+  ]
+}

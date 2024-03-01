@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/primevue/styleclass/styleclass.esm.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { DomHandler } from 'primevue/utils';\nimport BaseDirective from 'primevue/basedirective';\n\nvar BaseStyleClass = BaseDirective.extend({});\n\nvar StyleClass = BaseStyleClass.extend('styleclass', {\n  mounted: function mounted(el, binding) {\n    el.setAttribute('data-pd-styleclass', true);\n    this.bind(el, binding);\n  },\n  unmounted: function unmounted(el) {\n    this.unbind(el);\n  },\n  methods: {\n    bind: function bind(el, binding) {\n      var _this = this;\n      var target = this.resolveTarget(el, binding);\n      this.$el = target;\n      el.$_pstyleclass_clicklistener = function () {\n        if (binding.value.toggleClass) {\n          if (DomHandler.hasClass(target, binding.value.toggleClass)) DomHandler.removeClass(target, binding.value.toggleClass);else DomHandler.addClass(target, binding.value.toggleClass);\n        } else {\n          if (target.offsetParent === null) _this.enter(target, el, binding);else _this.leave(target, binding);\n        }\n      };\n      el.addEventListener('click', el.$_pstyleclass_clicklistener);\n    },\n    unbind: function unbind(el) {\n      if (el.$_pstyleclass_clicklistener) {\n        el.removeEventListener('click', el.$_pstyleclass_clicklistener);\n        el.$_pstyleclass_clicklistener = null;\n      }\n      this.unbindDocumentListener(el);\n    },\n    enter: function enter(target, el, binding) {\n      if (binding.value.enterActiveClass) {\n        if (!target.$_pstyleclass_animating) {\n          target.$_pstyleclass_animating = true;\n          if (binding.value.enterActiveClass === 'slidedown') {\n            target.style.height = '0px';\n            DomHandler.removeClass(target, 'hidden');\n            target.style.maxHeight = target.scrollHeight + 'px';\n            DomHandler.addClass(target, 'hidden');\n            target.style.height = '';\n          }\n          DomHandler.addClass(target, binding.value.enterActiveClass);\n\n          // enterClass will be deprecated, use enterFromClass\n          if (binding.value.enterClass) {\n            DomHandler.removeClass(target, binding.value.enterClass);\n          }\n          if (binding.value.enterFromClass) {\n            DomHandler.removeClass(target, binding.value.enterFromClass);\n          }\n          target.$p_styleclass_enterlistener = function () {\n            DomHandler.removeClass(target, binding.value.enterActiveClass);\n            if (binding.value.enterToClass) {\n              DomHandler.addClass(target, binding.value.enterToClass);\n            }\n            target.removeEventListener('animationend', target.$p_styleclass_enterlistener);\n            if (binding.value.enterActiveClass === 'slidedown') {\n              target.style.maxHeight = '';\n            }\n            target.$_pstyleclass_animating = false;\n          };\n          target.addEventListener('animationend', target.$p_styleclass_enterlistener);\n        }\n      } else {\n        // enterClass will be deprecated, use enterFromClass\n        if (binding.value.enterClass) {\n          DomHandler.removeClass(target, binding.value.enterClass);\n        }\n        if (binding.value.enterFromClass) {\n          DomHandler.removeClass(target, binding.value.enterFromClass);\n        }\n        if (binding.value.enterToClass) {\n          DomHandler.addClass(target, binding.value.enterToClass);\n        }\n      }\n      if (binding.value.hideOnOutsideClick) {\n        this.bindDocumentListener(target, el, binding);\n      }\n    },\n    leave: function leave(target, binding) {\n      if (binding.value.leaveActiveClass) {\n        if (!target.$_pstyleclass_animating) {\n          target.$_pstyleclass_animating = true;\n          DomHandler.addClass(target, binding.value.leaveActiveClass);\n\n          // leaveClass will be deprecated, use leaveFromClass\n          if (binding.value.leaveClass) {\n            DomHandler.removeClass(target, binding.value.leaveClass);\n          }\n          if (binding.value.leaveFromClass) {\n            DomHandler.removeClass(target, binding.value.leaveFromClass);\n          }\n          target.$p_styleclass_leavelistener = function () {\n            DomHandler.removeClass(target, binding.value.leaveActiveClass);\n            if (binding.value.leaveToClass) {\n              DomHandler.addClass(target, binding.value.leaveToClass);\n            }\n            target.removeEventListener('animationend', target.$p_styleclass_leavelistener);\n            target.$_pstyleclass_animating = false;\n          };\n          target.addEventListener('animationend', target.$p_styleclass_leavelistener);\n        }\n      } else {\n        // leaveClass will be deprecated, use leaveFromClass\n        if (binding.value.leaveClass) {\n          DomHandler.removeClass(target, binding.value.leaveClass);\n        }\n        if (binding.value.leaveFromClass) {\n          DomHandler.removeClass(target, binding.value.leaveFromClass);\n        }\n        if (binding.value.leaveToClass) {\n          DomHandler.addClass(target, binding.value.leaveToClass);\n        }\n      }\n      if (binding.value.hideOnOutsideClick) {\n        this.unbindDocumentListener(target);\n      }\n    },\n    resolveTarget: function resolveTarget(el, binding) {\n      switch (binding.value.selector) {\n        case '@next':\n          return el.nextElementSibling;\n        case '@prev':\n          return el.previousElementSibling;\n        case '@parent':\n          return el.parentElement;\n        case '@grandparent':\n          return el.parentElement.parentElement;\n        default:\n          return document.querySelector(binding.value.selector);\n      }\n    },\n    bindDocumentListener: function bindDocumentListener(target, el, binding) {\n      var _this2 = this;\n      if (!target.$p_styleclass_documentlistener) {\n        target.$p_styleclass_documentlistener = function (event) {\n          if (!_this2.isVisible(target) || getComputedStyle(target).getPropertyValue('position') === 'static') {\n            _this2.unbindDocumentListener(target);\n          } else if (_this2.isOutsideClick(event, target, el)) {\n            _this2.leave(target, binding);\n          }\n        };\n        target.ownerDocument.addEventListener('click', target.$p_styleclass_documentlistener);\n      }\n    },\n    unbindDocumentListener: function unbindDocumentListener(target) {\n      if (target.$p_styleclass_documentlistener) {\n        target.ownerDocument.removeEventListener('click', target.$p_styleclass_documentlistener);\n        target.$p_styleclass_documentlistener = null;\n      }\n    },\n    isVisible: function isVisible(target) {\n      return target.offsetParent !== null;\n    },\n    isOutsideClick: function isOutsideClick(event, target, el) {\n      return !el.isSameNode(event.target) && !el.contains(event.target) && !target.contains(event.target);\n    }\n  }\n});\n\nexport { StyleClass as default };\n",
+      "start": 1709003844465,
+      "end": 1709003844870,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003844870,
+      "end": 1709003844870,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003844870,
+      "end": 1709003844871,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003844871,
+      "end": 1709003844871,
+      "order": "normal"
+    }
+  ]
+}

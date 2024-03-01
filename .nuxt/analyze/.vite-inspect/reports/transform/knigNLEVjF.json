@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/libphonenumber-js/es6/legacy/findPhoneNumbersInitialImplementation.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, \"prototype\", { writable: false }); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\n// This is a legacy function.\n// Use `findNumbers()` instead.\nimport { PLUS_CHARS, VALID_PUNCTUATION, VALID_DIGITS, WHITESPACE } from '../constants.js';\nimport parse from '../parse.js';\nimport { VALID_PHONE_NUMBER_WITH_EXTENSION } from '../helpers/isViablePhoneNumber.js';\nimport createExtensionPattern from '../helpers/extension/createExtensionPattern.js';\nimport parsePreCandidate from '../findNumbers/parsePreCandidate.js';\nimport isValidPreCandidate from '../findNumbers/isValidPreCandidate.js';\nimport isValidCandidate from '../findNumbers/isValidCandidate.js';\n/**\r\n * Regexp of all possible ways to write extensions, for use when parsing. This\r\n * will be run as a case-insensitive regexp match. Wide character versions are\r\n * also provided after each ASCII version. There are three regular expressions\r\n * here. The first covers RFC 3966 format, where the extension is added using\r\n * ';ext='. The second more generic one starts with optional white space and\r\n * ends with an optional full stop (.), followed by zero or more spaces/tabs\r\n * /commas and then the numbers themselves. The other one covers the special\r\n * case of American numbers where the extension is written with a hash at the\r\n * end, such as '- 503#'. Note that the only capturing groups should be around\r\n * the digits that you want to capture as part of the extension, or else parsing\r\n * will fail! We allow two options for representing the accented o - the\r\n * character itself, and one in the unicode decomposed form with the combining\r\n * acute accent.\r\n */\n\nexport var EXTN_PATTERNS_FOR_PARSING = createExtensionPattern('parsing');\nvar WHITESPACE_IN_THE_BEGINNING_PATTERN = new RegExp('^[' + WHITESPACE + ']+');\nvar PUNCTUATION_IN_THE_END_PATTERN = new RegExp('[' + VALID_PUNCTUATION + ']+$'); // // Regular expression for getting opening brackets for a valid number\n// // found using `PHONE_NUMBER_START_PATTERN` for prepending those brackets to the number.\n// const BEFORE_NUMBER_DIGITS_PUNCTUATION = new RegExp('[' + OPENING_BRACKETS + ']+' + '[' + WHITESPACE + ']*' + '$')\n\nvar VALID_PRECEDING_CHARACTER_PATTERN = /[^a-zA-Z0-9]/;\nexport default function findPhoneNumbers(text, options, metadata) {\n  /* istanbul ignore if */\n  if (options === undefined) {\n    options = {};\n  }\n\n  var search = new PhoneNumberSearch(text, options, metadata);\n  var phones = [];\n\n  while (search.hasNext()) {\n    phones.push(search.next());\n  }\n\n  return phones;\n}\n/**\r\n * @return ES6 `for ... of` iterator.\r\n */\n\nexport function searchPhoneNumbers(text, options, metadata) {\n  /* istanbul ignore if */\n  if (options === undefined) {\n    options = {};\n  }\n\n  var search = new PhoneNumberSearch(text, options, metadata);\n  return _defineProperty({}, Symbol.iterator, function () {\n    return {\n      next: function next() {\n        if (search.hasNext()) {\n          return {\n            done: false,\n            value: search.next()\n          };\n        }\n\n        return {\n          done: true\n        };\n      }\n    };\n  });\n}\n/**\r\n * Extracts a parseable phone number including any opening brackets, etc.\r\n * @param  {string} text - Input.\r\n * @return {object} `{ ?number, ?startsAt, ?endsAt }`.\r\n */\n\nexport var PhoneNumberSearch = /*#__PURE__*/function () {\n  function PhoneNumberSearch(text, options, metadata) {\n    _classCallCheck(this, PhoneNumberSearch);\n\n    this.text = text; // If assigning the `{}` default value is moved to the arguments above,\n    // code coverage would decrease for some weird reason.\n\n    this.options = options || {};\n    this.metadata = metadata; // Iteration tristate.\n\n    this.state = 'NOT_READY';\n    this.regexp = new RegExp(VALID_PHONE_NUMBER_WITH_EXTENSION, 'ig');\n  }\n\n  _createClass(PhoneNumberSearch, [{\n    key: \"find\",\n    value: function find() {\n      var matches = this.regexp.exec(this.text);\n\n      if (!matches) {\n        return;\n      }\n\n      var number = matches[0];\n      var startsAt = matches.index;\n      number = number.replace(WHITESPACE_IN_THE_BEGINNING_PATTERN, '');\n      startsAt += matches[0].length - number.length; // Fixes not parsing numbers with whitespace in the end.\n      // Also fixes not parsing numbers with opening parentheses in the end.\n      // https://github.com/catamphetamine/libphonenumber-js/issues/252\n\n      number = number.replace(PUNCTUATION_IN_THE_END_PATTERN, '');\n      number = parsePreCandidate(number);\n      var result = this.parseCandidate(number, startsAt);\n\n      if (result) {\n        return result;\n      } // Tail recursion.\n      // Try the next one if this one is not a valid phone number.\n\n\n      return this.find();\n    }\n  }, {\n    key: \"parseCandidate\",\n    value: function parseCandidate(number, startsAt) {\n      if (!isValidPreCandidate(number, startsAt, this.text)) {\n        return;\n      } // Don't parse phone numbers which are non-phone numbers\n      // due to being part of something else (e.g. a UUID).\n      // https://github.com/catamphetamine/libphonenumber-js/issues/213\n      // Copy-pasted from Google's `PhoneNumberMatcher.js` (`.parseAndValidate()`).\n\n\n      if (!isValidCandidate(number, startsAt, this.text, this.options.extended ? 'POSSIBLE' : 'VALID')) {\n        return;\n      } // // Prepend any opening brackets left behind by the\n      // // `PHONE_NUMBER_START_PATTERN` regexp.\n      // const text_before_number = text.slice(this.searching_from, startsAt)\n      // const full_number_starts_at = text_before_number.search(BEFORE_NUMBER_DIGITS_PUNCTUATION)\n      // if (full_number_starts_at >= 0)\n      // {\n      // \tnumber   = text_before_number.slice(full_number_starts_at) + number\n      // \tstartsAt = full_number_starts_at\n      // }\n      //\n      // this.searching_from = matches.lastIndex\n\n\n      var result = parse(number, this.options, this.metadata);\n\n      if (!result.phone) {\n        return;\n      }\n\n      result.startsAt = startsAt;\n      result.endsAt = startsAt + number.length;\n      return result;\n    }\n  }, {\n    key: \"hasNext\",\n    value: function hasNext() {\n      if (this.state === 'NOT_READY') {\n        this.last_match = this.find();\n\n        if (this.last_match) {\n          this.state = 'READY';\n        } else {\n          this.state = 'DONE';\n        }\n      }\n\n      return this.state === 'READY';\n    }\n  }, {\n    key: \"next\",\n    value: function next() {\n      // Check the state and find the next match as a side-effect if necessary.\n      if (!this.hasNext()) {\n        throw new Error('No next element');\n      } // Don't retain that memory any longer than necessary.\n\n\n      var result = this.last_match;\n      this.last_match = null;\n      this.state = 'NOT_READY';\n      return result;\n    }\n  }]);\n\n  return PhoneNumberSearch;\n}();\n//# sourceMappingURL=findPhoneNumbersInitialImplementation.js.map",
+      "start": 1709003848846,
+      "end": 1709003848896,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003848896,
+      "end": 1709003848896,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003848896,
+      "end": 1709003848897,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003848897,
+      "end": 1709003848897,
+      "order": "normal"
+    }
+  ]
+}

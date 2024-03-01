@@ -1162,7 +1162,7 @@
     which "^3.0.1"
     ws "^8.16.0"
 
-"@nuxt/kit@^3.5.0", "@nuxt/kit@^3.5.1", "@nuxt/kit@^3.6.5", "@nuxt/kit@^3.8.0", "@nuxt/kit@^3.8.2", "@nuxt/kit@^3.9.1", "@nuxt/kit@3.9.3":
+"@nuxt/kit@^3.5.0", "@nuxt/kit@^3.5.1", "@nuxt/kit@^3.6.5", "@nuxt/kit@^3.7.3", "@nuxt/kit@^3.8.0", "@nuxt/kit@^3.8.2", "@nuxt/kit@^3.9.1", "@nuxt/kit@3.9.3":
   version "3.9.3"
   resolved "https://registry.npmjs.org/@nuxt/kit/-/kit-3.9.3.tgz"
   integrity sha512-bHGXpTB6E+YJCC1L9tTwrP7txgLZzyuFes/tgy1ZM4dlfrCsGqLK/K4mddROMdC3D81scnH84u7yQsN0JRgoTg==
@@ -6886,6 +6886,14 @@ nuxt-medusa@^0.5.0:
     "@nuxt/kit" "^3.8.0"
     defu "^6.1.2"
 
+nuxt-primevue@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.npmjs.org/nuxt-primevue/-/nuxt-primevue-0.3.0.tgz"
+  integrity sha512-sx5JZjqQ7H96FH5nWsL4Ypk4amkUz5nHsoxAiyc7oI3sSP54wfXPo5rjB4GKI50Ky7HPdE2CIWs137jRl6RkMw==
+  dependencies:
+    "@nuxt/kit" "^3.7.3"
+    primevue "~3.48.1"
+
 nuxt@^3.0.0, nuxt@^3.6.5, nuxt@^3.9.0:
   version "3.9.3"
   resolved "https://registry.npmjs.org/nuxt/-/nuxt-3.9.3.tgz"
@@ -7813,6 +7821,16 @@ pretty-bytes@^6.1.1:
   version "6.1.1"
   resolved "https://registry.npmjs.org/pretty-bytes/-/pretty-bytes-6.1.1.tgz"
   integrity sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ==
+
+primevue@^3.49.0:
+  version "3.49.0"
+  resolved "https://registry.npmjs.org/primevue/-/primevue-3.49.0.tgz"
+  integrity sha512-1lFTU/WK1wcjaaKqce7XldrH4MGPySXxH9Nyoj0d9QiGehePw9JUQrGhVgfjx3I/MD/VgE85wF1HihqtPJehbw==
+
+primevue@~3.48.1:
+  version "3.48.1"
+  resolved "https://registry.npmjs.org/primevue/-/primevue-3.48.1.tgz"
+  integrity sha512-lyJ+E0ZCv2pR9jIpdPLBysU8zB2hOKrN7q78orloWelPx05zSYoMVKAWaqKTHNpunD52xffjaqovt1y6B/9XoQ==
 
 proc-log@^3.0.0:
   version "3.0.0"
@@ -9710,11 +9728,6 @@ vue@latest:
     "@vue/runtime-dom" "3.4.15"
     "@vue/server-renderer" "3.4.15"
     "@vue/shared" "3.4.15"
-
-vuetify@^3.3.11:
-  version "3.5.1"
-  resolved "https://registry.npmjs.org/vuetify/-/vuetify-3.5.1.tgz"
-  integrity sha512-fkhU4UFnX/lBARXg+n9mBCDPTaEDHoYGx9SZ5A/1LlzM7LohoqldmrNgza4WgpPTLIWqr6NvYp2NvT2IrcTfhg==
 
 wait-on@^7.0.1:
   version "7.2.0"

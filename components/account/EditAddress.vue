@@ -1,377 +1,308 @@
 <template>
-  <v-card variant="tonal">
-    <v-card-title class="d-flex flex-row justify-space-between">
-      Addresses
-      <v-spacer />
-      <v-btn
-        class="nsight-btn-primary"
-        size="small"
-        @click="state.address.add_address = true"
+  <div
+    class="py-3 px-5 m-5 shadow-xl bg-zinc-300 dark:bg-zinc-900 min-h-[300px] rounded-md flex flex-col"
+  >
+    <div class="w-full flex flex-row justify-between items-center mb-3">
+      <h2 class="text-neutral-900 dark:text-white font-bold text-xl m-2">
+        Address info
+      </h2>
+      <button
+        class="nsight-btn-primary py-2 px-3 rounded-md"
+        @click="state.address.add_modal = true"
       >
-        + Add
+        ADD +
 
-        <v-dialog v-model="state.address.add_address" max-width="500">
-          <v-card>
-            <v-card-title> Add Address </v-card-title>
-            <v-card-text>
-              <v-col>
-                <v-form>
-                  <v-row>
-                    <v-col cols="6" sm="6" md="6" lg="6" xl="6">
-                      <v-text-field
-                        v-model="state.address.new_address.first_name"
-                        label="First Name"
-                        outlined
-                        dense
-                        hide-details
-                        @keydown="validate($event, 'text')"
-                      />
-                    </v-col>
-                    <v-col cols="6" sm="6" md="6" lg="6" xl="6">
-                      <v-text-field
-                        v-model="state.address.new_address.last_name"
-                        label="Last Name"
-                        outlined
-                        dense
-                        hide-details
-                        @keydown="validate($event, 'text')"
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                      <v-text-field
-                        v-model="state.address.new_address.street"
-                        label="Street"
-                        outlined
-                        dense
-                        @keydown="validate($event, 'text')"
-                        hide-details
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                      <v-text-field
-                        v-model="state.address.new_address.street_2"
-                        label="Street 2 (Optional)"
-                        outlined
-                        @keydown="validate($event, 'text')"
-                        dense
-                        hide-details
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                      <v-text-field
-                        v-model="state.address.new_address.town_city"
-                        label="City"
-                        outlined
-                        dense
-                        @keydown="validate($event, 'text')"
-                        hide-details
-                      />
-                    </v-col>
-                    <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                      <v-text-field
-                        v-model="state.address.new_address.county_state"
-                        label="State"
-                        outlined
-                        dense
-                        @keydown="validate($event, 'text')"
-                        hide-details
-                      />
-                    </v-col>
-                    <v-col cols="7" sm="7" md="7" lg="7" xl="7">
-                      <v-autocomplete
-                        label="Country"
-                        v-model="state.address.new_address.country"
-                        :items="state.country_codes"
-                        outlined
-                        dense
-                        item-title="name"
-                        item-value="code"
-                        @keydown="validate($event, 'country')"
-                        return-object
-                      ></v-autocomplete>
-                    </v-col>
-                    <v-col cols="5">
-                      <v-text-field
-                        v-model="state.address.new_address.postal_zip_code"
-                        label="Zip"
-                        outlined
-                        dense
-                        @keyup="validate($event, 'zip')"
-                        hide-details
-                      />
-                      <small v-if="state.address.new_address.zip_error"
-                        >Please enter a valid zip code.</small
-                      >
-                    </v-col>
-                  </v-row>
-                </v-form>
-              </v-col>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn class="mt-3" @click="state.address.add_address = false">
-                Cancel
-              </v-btn>
-              <v-btn
-                style="color: #9d9021"
-                class="mt-3 ms-3"
-                :disabled="!state.validated"
-                @click="add_address()"
+        <!-- add dialog: -->
+        <PrimeDialog
+          v-model:visible="state.address.add_modal"
+          modal
+          header="Add Address"
+          :style="{
+            width: '50rem',
+            backgroundColor: auth.user.preferences[0].dark_mode ? '#18181a' : '#a1a1aa',
+            color: 'white',
+            padding: '1rem',
+          }"
+        >
+          <div class="w-full flex flex-col min-h-[25vh] bg-zinc-900 dark:bg-black">
+
+            <div class="input_group w-full flex flex-row mt-3">
+              <div class="w-full md:w-1/2 px-2">
+                <input
+                  type="text"
+                  class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder:text-white dark:text-white"
+                  :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                  placeholder="First Name"
+                  v-model="state.address.new_address.first_name"
+                  @keydown="validate($event, 'text')"
+                />
+              </div>
+              <div class="w-full md:w-1/2 px-2">
+                <input
+                  type="text"
+                  class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                  :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                  placeholder="Last Name"
+                  v-model="state.address.new_address.last_name"
+                  @keydown="validate($event, 'text')"
+                />
+              </div>
+            </div>
+
+            <div class="input_group w-full flex flex-row mt-3">
+              <div class="w-full px-2">
+                <input
+                  type="text"
+                  class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                  :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                  placeholder="Street 1"
+                  v-model="state.address.new_address.street"
+                  @keydown="validate($event, 'text')"
+                />
+              </div>
+            </div>
+
+            <div class="input_group w-full flex flex-row mt-3">
+              <div class="w-full px-2">
+                <input
+                  type="text"
+                  class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                  :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                  placeholder="Street 2 (optional)"
+                  v-model="state.address.new_address.street_2"
+                />
+              </div>
+            </div>
+
+            <div class="input_group w-full flex flex-row mt-3">
+              <div class="w-full md:w-1/2 px-2">
+                <input
+                  type="text"
+                  class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                  :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                  placeholder="City"
+                  v-model="state.address.new_address.town_city"
+                  @keydown="validate($event, 'text')"
+                />
+              </div>
+              <div class="w-full md:w-1/2 px-2">
+                <input
+                  type="text"
+                  class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                  :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                  placeholder="State (Ex. CA)"
+                  v-model="state.address.new_address.county_state"
+                  @keydown="validate($event, 'text')"
+                />
+              </div>
+            </div>
+
+            <div class="input_group w-full flex flex-row mt-3">
+              <div class="w-full md:w-1/3 px-2">
+                <PrimeAutoComplete v-model="state.address.new_address.country" class="w-full" optionLabel="name" :suggestions="filteredCountries" @complete="search" />
+              </div>
+              <div class="w-full md:w-1/3 px-2">
+                <input
+                  type="text"
+                  class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                  :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                  placeholder="Postal/Zip Code"
+                  v-model="state.address.new_address.postal_zip_code"
+                  @keyup="validate($event, 'zip')"
+                />
+                <small class="text-red-500" v-if="state.address.new_address?.zip_error"
+                        >{{state.address.new_address?.zip_error}}</small>
+              </div>
+              <div class="w-full md:w-1/3 px-2">
+                <button class="nsight-btn-primary h-full w-full rounded-md px-3" :disabled="!state.validated"
+                @click="add_address()">
+                  Add new Address
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </PrimeDialog>
+      </button>
+    </div>
+    <div class="w-full flex flex-row justify-between items-center">
+      <div v-if="auth.user.addresses.shipping.length" class="w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3">
+        <div 
+          v-for="(address, a) in auth?.user?.addresses?.shipping" 
+          :key="a" 
+          class="rounded-md shadow-md px-3 py-4  flex flex-col align-start justify-start"
+          :class="auth.user.selected_addresses && (address.street === auth.user.selected_addresses.street) ? 'bg-zinc-400 dark:bg-zinc-800' : 'bg-zinc-400 dark:bg-zinc-700 opacity-50'"
+        >
+          <h3 class="text-neutral-200 dark:text-white font-bold me-2">{{ address.first_name }} {{ address.last_name }}</h3> 
+          <p class="text-neutral-200 dark:text-white">{{ address.street }}</p>
+          <p v-if="address.street_2.length" class="text-neutral-900 dark:text-white">{{ address.street_2 }}</p>
+          <p class="text-neutral-200 dark:text-white">{{ address.town_city }}, {{ address.county_state }} {{ address.postal_zip_code }}</p>
+          <p class="text-neutral-200 dark:text-white">{{ address.country }}</p>
+          <div class="w-full flex flex-row py-2">
+
+            <button class="px-3 py-1 me-2 bg-sky-600 hover:bg-sky-700 text-white text-xs rounded-sm" @click=" state.address.edit_address = address; state.address.edit_modal = true;">
+              Edit
+
+              <!-- edit dialog: -->
+              <PrimeDialog
+                v-model:visible="state.address.edit_modal"
+                modal
+                header="Add Address"
+                :style="{
+                  width: '50rem',
+                  backgroundColor: auth.user.preferences[0].dark_mode ? '#18181a' : '#a1a1aa',
+                  color: 'white',
+                  padding: '1rem',
+                }"
               >
-                Add Address
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-btn>
-    </v-card-title>
-    <v-card-text>
-      <v-row>
-        <v-col
-          v-if="!auth.user.addresses || !auth.user.addresses.shipping.length"
-        >
-          <p class="text-start">
-            No addresses found. Please add a default address for your products.
-          </p>
-        </v-col>
-        <v-col
-          v-else
-          v-for="(address, a) in auth.user.addresses.shipping"
-          :key="a"
-          cols="12"
-          sm="12"
-          md="5"
-          lg="5"
-          xl="5"
-        >
-          <div
-            class="ctr-address px-3 w-100 py-4 me-3 d-flex flex-column align-start justify-start"
-            :class="
-              auth.user.selected_addresses &&
-              address.street === auth.user.selected_addresses.street
-                ? 'selected'
-                : ''
-            "
-          >
-            <h3
-              v-if="
-                auth.user.selected_addresses &&
-                address.street === auth.user.selected_addresses.street
-              "
-              class="fw-bold mb-3"
+                <div class="w-full flex flex-col min-h-[25vh] bg-zinc-900 dark:bg-black">
+
+                  <div class="input_group w-full flex flex-row mt-3">
+                    <div class="w-full md:w-1/2 px-2">
+                      <input
+                        type="text"
+                        class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder:text-white dark:text-white"
+                        :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                        placeholder="First Name"
+                        v-model="state.address.edit_address.first_name"
+                        @keydown="validate($event, 'text')"
+                      />
+                    </div>
+                    <div class="w-full md:w-1/2 px-2">
+                      <input
+                        type="text"
+                        class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                        :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                        placeholder="Last Name"
+                        v-model="state.address.edit_address.last_name"
+                        @keydown="validate($event, 'text')"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="input_group w-full flex flex-row mt-3">
+                    <div class="w-full px-2">
+                      <input
+                        type="text"
+                        class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                        :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                        placeholder="Street 1"
+                        v-model="state.address.edit_address.street"
+                        @keydown="validate($event, 'text')"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="input_group w-full flex flex-row mt-3">
+                    <div class="w-full px-2">
+                      <input
+                        type="text"
+                        class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                        :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                        placeholder="Street 2 (optional)"
+                        v-model="state.address.edit_address.street_2"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="input_group w-full flex flex-row mt-3">
+                    <div class="w-full md:w-1/2 px-2">
+                      <input
+                        type="text"
+                        class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                        :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                        placeholder="City"
+                        v-model="state.address.edit_address.town_city"
+                        @keydown="validate($event, 'text')"
+                      />
+                    </div>
+                    <div class="w-full md:w-1/2 px-2">
+                      <input
+                        type="text"
+                        class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                        :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                        placeholder="State (Ex. CA)"
+                        v-model="state.address.edit_address.county_state"
+                        @keydown="validate($event, 'text')"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="input_group w-full flex flex-row mt-3">
+                    <div class="w-full md:w-1/3 px-2">
+                      <PrimeAutoComplete v-model="state.address.edit_address.country" class="w-full" optionLabel="name" :suggestions="filteredCountries" @complete="search" />
+                    </div>
+                    <div class="w-full md:w-1/3 px-2">
+                      <input
+                        type="text"
+                        class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                        :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                        placeholder="Postal/Zip Code"
+                        v-model="state.address.edit_address.postal_zip_code"
+                        @keyup="validate($event, 'zip')"
+                      />
+                      <small class="text-red-500" v-if="state.address.edit_address?.zip_error"
+                              >{{state.address.edit_address?.zip_error}}</small>
+                    </div>
+                    <div class="w-full md:w-1/3 px-2">
+                      <button class="nsight-btn-primary h-full w-full rounded-md px-3 uppercase" :disabled="!state.validated"
+                      @click="edit_address(address)">
+                        Update
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </PrimeDialog>
+
+            </button>
+
+            <button 
+              v-if="auth.user.selected_addresses && (address.street !== auth.user.selected_addresses.street)" 
+              class="px-3 py-1 me-2 bg-green-400 hover:bg-green-500 text-white text-xs rounded-sm"
+              @click="set_address_default(address)"
             >
               Default
-            </h3>
-            <div class="info">
-              <p class="fw-bold">
-                <strong>Name:</strong> {{ address.first_name }}
-                {{ address.last_name }}
-              </p>
-              <p class="fw-bold">
-                <strong>Street:</strong> {{ address.street }}
-              </p>
-              <p class="fw-bold">
-                <strong>Street:</strong> {{ address.street_2 }}
-              </p>
-              <p class="fw-bold">
-                <strong>City:</strong> {{ address.town_city }}
-              </p>
-              <p class="fw-bold">
-                <strong>State:</strong> {{ address.county_state }}
-              </p>
-              <p class="fw-bold">
-                <strong>Zip:</strong> {{ address.postal_zip_code }}
-              </p>
-            </div>
-            <div class="w-100 d-flex flex-row justify-start align-start">
-              <v-btn
-                color="info"
-                size="x-small"
-                text
-                class="mt-3"
-                @click="
-                  state.address.edit_address = address;
-                  state.address.edit_modal = true;
-                "
-              >
-                Edit
+            </button>
 
-                <v-dialog v-model="state.address.edit_modal" max-width="500">
-                  <v-card>
-                    <v-card-title> Edit Address </v-card-title>
-                    <v-card-text>
-                      <v-col>
-                        <v-form>
-                          <v-row>
-                            <v-col cols="6" sm="6" md="6" lg="6" xl="6">
-                              <v-text-field
-                                v-model="state.address.edit_address.first_name"
-                                label="First"
-                                outlined
-                                dense
-                                hide-details
-                                @keydown="validate($event, 'text')"
-                              />
-                            </v-col>
-                            <v-col cols="6" sm="6" md="6" lg="6" xl="6">
-                              <v-text-field
-                                v-model="state.address.edit_address.last_name"
-                                label="Last"
-                                outlined
-                                dense
-                                hide-details
-                                @keydown="validate($event, 'text')"
-                              />
-                            </v-col>
-                            <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                              <v-text-field
-                                v-model="state.address.edit_address.street"
-                                label="Street"
-                                outlined
-                                dense
-                                @keydown="validate($event, 'text')"
-                                hide-details
-                              />
-                            </v-col>
-                            <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                              <v-text-field
-                                v-model="state.address.edit_address.street_2"
-                                label="Street 2 (Optional)"
-                                outlined
-                                @keydown="validate($event, 'text')"
-                                dense
-                                hide-details
-                              />
-                            </v-col>
-                            <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                              <v-text-field
-                                v-model="state.address.edit_address.town_city"
-                                label="City"
-                                outlined
-                                dense
-                                @keydown="validate($event, 'text')"
-                                hide-details
-                              />
-                            </v-col>
-                            <v-col cols="12" sm="12" md="12" lg="12" xl="12">
-                              <v-text-field
-                                v-model="
-                                  state.address.edit_address.county_state
-                                "
-                                label="State"
-                                outlined
-                                dense
-                                @keydown="validate($event, 'text')"
-                                hide-details
-                              />
-                            </v-col>
-                            <v-col cols="7" sm="7" md="7" lg="7" xl="7">
-                              <v-autocomplete
-                                label="Country"
-                                v-model="state.address.edit_address.country"
-                                :items="state.country_codes"
-                                outlined
-                                dense
-                                item-title="name"
-                                item-value="code"
-                                @keydown="validate($event, 'country')"
-                                return-object
-                              ></v-autocomplete>
-                            </v-col>
-                            <v-col cols="5">
-                              <v-text-field
-                                v-model="
-                                  state.address.edit_address.postal_zip_code
-                                "
-                                label="Zip"
-                                outlined
-                                dense
-                                @keyup="validate($event, 'zip')"
-                                hide-details
-                              />
-                              <small v-if="state.address.edit_address.zip_error"
-                                >Please enter a valid zip code.</small
-                              >
-                            </v-col>
-                          </v-row>
-                        </v-form>
-                      </v-col>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-col>
-                        <v-btn
-                          class="mt-3"
-                          @click="state.address.edit_address = false"
-                        >
-                          Cancel
-                        </v-btn>
-                        <v-btn
-                          color="info"
-                          class="mt-3 ms-3"
-                          @click="edit_address(address)"
-                        >
-                          Save
-                        </v-btn>
-                      </v-col>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
-              <v-btn
-                color="error"
-                size="x-small"
-                class="mt-3 ms-3"
-                text
-                @click="state.address.delete_address = true"
-              >
-                Delete
+            <button class="px-3 py-1 me-2 bg-red-600 hover:bg-red-700 text-white text-xs rounded-sm" @click="state.address.delete_address = true">
+              Delete
 
-                <v-dialog
-                  v-model="state.address.delete_address"
-                  max-width="500"
-                >
-                  <v-card>
-                    <v-card-title> Delete Address </v-card-title>
-                    <v-card-text>
-                      <p>Are you sure you want to delete this address?</p>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-btn
-                        class="mt-3"
-                        style="color: #9d9021"
-                        @click="state.address.delete_address = false"
-                      >
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        color="error"
-                        class="mt-3 ms-3"
-                        @click="delete_address(address)"
-                      >
-                        Delete Address
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
-              </v-btn>
-              <v-btn
-                v-if="
-                  auth.user.selected_addresses &&
-                  address.street !== auth.user.selected_addresses.street
-                "
-                color="primary"
-                size="x-small"
-                class="mt-3 ms-3"
-                text
-                @click="set_address_default(address)"
+              <!-- delete dialog: -->
+              <PrimeDialog
+                v-model:visible="state.address.delete_address"
+                modal
+                header="Are you sure you want to delete this address?"
+                :style="{
+                  width: '50rem',
+                  backgroundColor: auth.user.preferences[0].dark_mode ? '#18181a' : '#a1a1aa',
+                  color: 'white',
+                  padding: '1rem',
+                }"
               >
-                Default
-              </v-btn>
-            </div>
+                <div class="w-full flex flex-col min-h-[15vh] p-3 bg-zinc-900 dark:bg-black">
+                  <div class="w-3/4 flex flex-row">
+                    <button class="bg-neutral-600 hover:bg-neutral-700 rounded-md p-3 me-3 text-white w-1/2" @click="state.address.delete_address = false">
+                      Cancel
+                    </button>
+                    <button class="bg-red-600 hover:bg-red-700 rounded-md p-3 text-white w-1/2" @click="delete_address(address)">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </PrimeDialog>
+
+              
+            </button>
+
           </div>
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+        </div>
+      </div>
+      <div v-else>
+        <p class="text-neutral-900 dark:text-white">No addresses found yet. Add an address to make sure your items get sent to the right place!</p>
+      </div>
+    </div>
+  </div>
 </template>
 <script setup lang="ts">
 // Libraries + Config
@@ -384,9 +315,6 @@ const runtimeConfig = useRuntimeConfig();
 
 // Stores
 const settings = settingsStore();
-
-// Medusa
-const medusa_client = useMedusaClient();
 
 const state = reactive({
   address: {
@@ -404,12 +332,14 @@ const state = reactive({
         dial_code: "+1",
         code: "US",
       },
+      zip_error: "" || false
     },
     validate: false,
     edit_address: false,
     edit_modal: false,
     delete_address: false,
     set_default: false,
+    add_modal: false,
   },
   validated: false,
   country_codes: [
@@ -1628,49 +1558,52 @@ const state = reactive({
 const auth = authStore();
 
 // methods:
-const edit_address = async (address) => {
-  const medusa_address = {
-    first_name: auth.user.first_name,
-    last_name: auth.user.last_name,
-    address_1: address.street,
-    address_2: address.street_2,
-    city: address.town_city,
-    country_code: address.country,
-    postal_code: address.postal_zip_code,
-    province: address.county_state,
-  };
+const countries = ref();
+const selectedCountry = ref();
+const filteredCountries = ref();
 
-  // Update Medusa
-  medusa_client.customers.addresses
-    .updateAddress(address.n_id, medusa_address)
-    .then(({ customer }) => {
-      auth.user.addresses.shipping.forEach((a, i) => {
-        if (a.n_id === address.n_id) {
-          auth.user.addresses.shipping[i] = address;
+const search = (event) => {
+    setTimeout(() => {
+        if (!event?.query?.trim().length) {
+            filteredCountries.value = [...state.country_codes];
+        } else {
+            filteredCountries.value = state.country_codes.filter((country: Object) => {
+                return country?.name?.toLowerCase()?.includes(event.query.toLowerCase());
+            });
         }
-      });
-      state.address.edit_modal = false;
-      state.address.edit_address = false;
-      auth.updateUser();
-    });
+    }, 250);
+}
+
+const edit_address = async (address) => {
+  // const medusa_address = {
+  //   first_name: auth.user.first_name,
+  //   last_name: auth.user.last_name,
+  //   address_1: address.street,
+  //   address_2: address.street_2,
+  //   city: address.town_city,
+  //   country_code: address.country,
+  //   postal_code: address.postal_zip_code,
+  //   province: address.county_state,
+  // };
+  
+
+  auth.user.addresses.shipping.forEach((a, i) => {
+    if (a.n_id === address.n_id) {
+      auth.user.addresses.shipping[i] = address;
+    }
+  });
+  state.address.edit_modal = false;
+  state.address.edit_address = false;
+  auth.updateUser();
 };
 const delete_address = async (address) => {
-  // Delete from medusa
-  medusa_client.customers.addresses
-    .deleteAddress(address.n_id)
-    .then((res) => {
-      console.log("address deleted from medusa", res);
-      auth.user.addresses.shipping.forEach((a, i) => {
-        if (a.n_id === address.n_id) {
-          auth.user.addresses.shipping.splice(i, 1);
-        }
-      });
-      auth.updateUser();
-      state.address.delete_address = false;
-    })
-    .catch((error) => {
-      console.log("error deleting address from medusa", error);
-    });
+  auth.user.addresses.shipping.forEach((a, i) => {
+    if (a.n_id === address.n_id) {
+      auth.user.addresses.shipping.splice(i, 1);
+    }
+  });
+  auth.updateUser();
+  state.address.delete_address = false;
 };
 const set_address_default = async (address) => {
   auth.user.selected_addresses = address;
@@ -1678,7 +1611,9 @@ const set_address_default = async (address) => {
 };
 const add_address = async () => {
   const address = {
-    name: state.address.new_address.name,
+    first_name: state.address.new_address.first_name,
+    last_name: state.address.new_address.last_name,
+    full_name: `${state.address.new_address.first_name} ${state.address.new_address.last_name}`,
     street: state.address.new_address.street,
     street_2: state.address.new_address.street_2,
     town_city: state.address.new_address.town_city,
@@ -1690,7 +1625,7 @@ const add_address = async () => {
   auth.user.addresses.shipping.push(address);
   nextTick(() => {
     auth.updateUser();
-    state.address.add_address = false;
+    state.address.add_modal = false;
   });
 
   // update Medusa
@@ -1762,10 +1697,10 @@ const validate = (entry, type) => {
         state.address.new_address.country.code
       );
       // console.log('validating zip', postcodeValidator(val, state.address.new_address.country.code))
-      state.address.new_address["zip_error"] = state.validated
+      state.address.new_address.zip_error = state.validated
         ? false
         : "Please enter a valid zip code.";
-      state.address.edit_address["zip_error"] = state.validated
+      state.address.edit_address.zip_error = state.validated
         ? false
         : "Please enter a valid zip code.";
       break;
@@ -1780,7 +1715,8 @@ watch(
   () => state.address.new_address,
   (newAddress) => {
     const requiredFields = [
-      "name",
+      "first_name",
+      "last_name",
       "street",
       "town_city",
       "county_state",
@@ -1802,4 +1738,55 @@ watch(
 .ctr-address {
   height: auto !important;
 }
+
+input::placeholder {
+  color: #ffffff9c !important;
+}
+
+input {
+  color: #ffffff !important;
+
+}
+
+// Placeholder light and dark mode:
+.border-dark {
+  border: 1px solid #ffffff2e;
+}
+.border-light {
+  border: 1px solid #0000002e;
+}
+.p-autocomplete {
+  
+  
+  input::placeholder {
+    color: #ffffff9c !important;
+  }
+  input {
+    color: #ffffff !important;
+    height: 90%;
+    width: 100%;
+    background-color: transparent;
+    border: 1px solid #ffffff2e;
+    border-radius: 5px;
+  }
+
+
+}
+  .p-autocomplete-panel {
+    background-color: #18181a !important;
+    color: #ffffff !important;
+    border-radius: 5px;
+
+    .p-autocomplete-items {
+      // background-color: #000000 !important;
+      color: #ffffff !important;
+      border-radius: 5px;
+
+      .p-autocomplete-item {
+
+        color: #ffffff !important;
+        border-radius: 5px;
+      }
+    }
+  }
 </style>

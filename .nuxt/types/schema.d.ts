@@ -3,11 +3,11 @@ declare module 'nuxt/schema' {
   interface NuxtConfig {
     ["pinia"]?: typeof import("@pinia/nuxt").default extends NuxtModule<infer O> ? Partial<O> : Record<string, any>
     ["piniaPersistedstate"]?: typeof import("@pinia-plugin-persistedstate/nuxt").default extends NuxtModule<infer O> ? Partial<O> : Record<string, any>
-    ["medusa"]?: typeof import("nuxt-medusa").default extends NuxtModule<infer O> ? Partial<O> : Record<string, any>
+    ["primevue"]?: typeof import("nuxt-primevue").default extends NuxtModule<infer O> ? Partial<O> : Record<string, any>
     ["wellKnown"]?: typeof import("@zadigetvoltaire/nuxt-well-known").default extends NuxtModule<infer O> ? Partial<O> : Record<string, any>
     ["devtools"]?: typeof import("@nuxt/devtools").default extends NuxtModule<infer O> ? Partial<O> : Record<string, any>
     ["telemetry"]?: typeof import("@nuxt/telemetry").default extends NuxtModule<infer O> ? Partial<O> : Record<string, any>
-    modules?: (undefined | null | false | NuxtModule | string | [NuxtModule | string, Record<string, any>] | ["@pinia/nuxt", Exclude<NuxtConfig["pinia"], boolean>] | ["@pinia-plugin-persistedstate/nuxt", Exclude<NuxtConfig["piniaPersistedstate"], boolean>] | ["nuxt-medusa", Exclude<NuxtConfig["medusa"], boolean>] | ["@zadigetvoltaire/nuxt-well-known", Exclude<NuxtConfig["wellKnown"], boolean>] | ["@nuxt/devtools", Exclude<NuxtConfig["devtools"], boolean>] | ["@nuxt/telemetry", Exclude<NuxtConfig["telemetry"], boolean>])[],
+    modules?: (undefined | null | false | NuxtModule | string | [NuxtModule | string, Record<string, any>] | ["@pinia/nuxt", Exclude<NuxtConfig["pinia"], boolean>] | ["@pinia-plugin-persistedstate/nuxt", Exclude<NuxtConfig["piniaPersistedstate"], boolean>] | ["nuxt-primevue", Exclude<NuxtConfig["primevue"], boolean>] | ["@zadigetvoltaire/nuxt-well-known", Exclude<NuxtConfig["wellKnown"], boolean>] | ["@nuxt/devtools", Exclude<NuxtConfig["devtools"], boolean>] | ["@nuxt/telemetry", Exclude<NuxtConfig["telemetry"], boolean>])[],
   }
   interface RuntimeConfig {
    app: {
@@ -28,10 +28,6 @@ declare module 'nuxt/schema' {
       accessToken: string,
 
       environment: string,
-   },
-
-   private: {
-      apiKey: any,
    },
   }
   interface PublicRuntimeConfig {
@@ -55,14 +51,54 @@ declare module 'nuxt/schema' {
       cookieOptions: any,
    },
 
-   medusa: {
-      baseUrl: string,
+   primevue: {
+      usePrimeVue: boolean,
 
-      maxRetries: number,
+      resolvePath: any,
 
-      publishableApiKey: any,
+      cssLayerOrder: string,
 
-      global: boolean,
+      importPT: {
+         as: string,
+
+         from: string,
+      },
+
+      options: {
+         unstyled: boolean,
+
+         importPT: {
+            from: string,
+         },
+
+         ripple: boolean,
+      },
+
+      components: Array<{
+
+      }>,
+
+      directives: Array<{
+
+      }>,
+
+      composables: Array<{
+
+      }>,
+
+      config: Array<{
+
+      }>,
+
+      services: Array<any>,
+
+      styles: Array<{
+
+      }>,
+
+      injectStylesAsString: Array<any>,
+
+      injectStylesAsStringToTop: Array<string>,
    },
 
    wellKnown: {

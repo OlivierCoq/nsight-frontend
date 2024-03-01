@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/loyaltyApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { accumulateLoyaltyPointsRequestSchema, } from '../models/accumulateLoyaltyPointsRequest';\nimport { accumulateLoyaltyPointsResponseSchema, } from '../models/accumulateLoyaltyPointsResponse';\nimport { adjustLoyaltyPointsRequestSchema, } from '../models/adjustLoyaltyPointsRequest';\nimport { adjustLoyaltyPointsResponseSchema, } from '../models/adjustLoyaltyPointsResponse';\nimport { calculateLoyaltyPointsRequestSchema, } from '../models/calculateLoyaltyPointsRequest';\nimport { calculateLoyaltyPointsResponseSchema, } from '../models/calculateLoyaltyPointsResponse';\nimport { cancelLoyaltyPromotionResponseSchema, } from '../models/cancelLoyaltyPromotionResponse';\nimport { createLoyaltyAccountRequestSchema, } from '../models/createLoyaltyAccountRequest';\nimport { createLoyaltyAccountResponseSchema, } from '../models/createLoyaltyAccountResponse';\nimport { createLoyaltyPromotionRequestSchema, } from '../models/createLoyaltyPromotionRequest';\nimport { createLoyaltyPromotionResponseSchema, } from '../models/createLoyaltyPromotionResponse';\nimport { createLoyaltyRewardRequestSchema, } from '../models/createLoyaltyRewardRequest';\nimport { createLoyaltyRewardResponseSchema, } from '../models/createLoyaltyRewardResponse';\nimport { deleteLoyaltyRewardResponseSchema, } from '../models/deleteLoyaltyRewardResponse';\nimport { listLoyaltyProgramsResponseSchema, } from '../models/listLoyaltyProgramsResponse';\nimport { listLoyaltyPromotionsResponseSchema, } from '../models/listLoyaltyPromotionsResponse';\nimport { redeemLoyaltyRewardRequestSchema, } from '../models/redeemLoyaltyRewardRequest';\nimport { redeemLoyaltyRewardResponseSchema, } from '../models/redeemLoyaltyRewardResponse';\nimport { retrieveLoyaltyAccountResponseSchema, } from '../models/retrieveLoyaltyAccountResponse';\nimport { retrieveLoyaltyProgramResponseSchema, } from '../models/retrieveLoyaltyProgramResponse';\nimport { retrieveLoyaltyPromotionResponseSchema, } from '../models/retrieveLoyaltyPromotionResponse';\nimport { retrieveLoyaltyRewardResponseSchema, } from '../models/retrieveLoyaltyRewardResponse';\nimport { searchLoyaltyAccountsRequestSchema, } from '../models/searchLoyaltyAccountsRequest';\nimport { searchLoyaltyAccountsResponseSchema, } from '../models/searchLoyaltyAccountsResponse';\nimport { searchLoyaltyEventsRequestSchema, } from '../models/searchLoyaltyEventsRequest';\nimport { searchLoyaltyEventsResponseSchema, } from '../models/searchLoyaltyEventsResponse';\nimport { searchLoyaltyRewardsRequestSchema, } from '../models/searchLoyaltyRewardsRequest';\nimport { searchLoyaltyRewardsResponseSchema, } from '../models/searchLoyaltyRewardsResponse';\nimport { number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class LoyaltyApi extends BaseApi {\n    /**\n     * Creates a loyalty account. To create a loyalty account, you must provide the `program_id` and a\n     * `mapping` with the `phone_number` of the buyer.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                           See the corresponding object definition for field\n     *                                                           details.\n     * @return Response from the API call\n     */\n    async createLoyaltyAccount(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/loyalty/accounts');\n        const mapped = req.prepareArgs({\n            body: [body, createLoyaltyAccountRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createLoyaltyAccountResponseSchema, requestOptions);\n    }\n    /**\n     * Searches for loyalty accounts in a loyalty program.\n     *\n     * You can search for a loyalty account using the phone number or customer ID associated with the\n     * account. To return all loyalty accounts, specify an empty `query` object or omit it entirely.\n     *\n     * Search results are sorted by `created_at` in ascending order.\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                            request.  See the corresponding object definition for\n     *                                                            field details.\n     * @return Response from the API call\n     */\n    async searchLoyaltyAccounts(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/loyalty/accounts/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchLoyaltyAccountsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchLoyaltyAccountsResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a loyalty account.\n     *\n     * @param accountId  The ID of the [loyalty account](entity:LoyaltyAccount) to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveLoyaltyAccount(accountId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ accountId: [accountId, string()] });\n        req.appendTemplatePath `/v2/loyalty/accounts/${mapped.accountId}`;\n        return req.callAsJson(retrieveLoyaltyAccountResponseSchema, requestOptions);\n    }\n    /**\n     * Adds points earned from a purchase to a [loyalty account]($m/LoyaltyAccount).\n     *\n     * - If you are using the Orders API to manage orders, provide the `order_id`. Square reads the order\n     * to compute the points earned from both the base loyalty program and an associated\n     * [loyalty promotion]($m/LoyaltyPromotion). For purchases that qualify for multiple accrual\n     * rules, Square computes points based on the accrual rule that grants the most points.\n     * For purchases that qualify for multiple promotions, Square computes points based on the most\n     * recently created promotion. A purchase must first qualify for program points to be eligible for\n     * promotion points.\n     *\n     * - If you are not using the Orders API to manage orders, provide `points` with the number of points\n     * to add.\n     * You must first perform a client-side computation of the points earned from the loyalty program and\n     * loyalty promotion. For spend-based and visit-based programs, you can call\n     * [CalculateLoyaltyPoints]($e/Loyalty/CalculateLoyaltyPoints)\n     * to compute the points earned from the base loyalty program. For information about computing points\n     * earned from a loyalty promotion, see\n     * [Calculating promotion points](https://developer.squareup.com/docs/loyalty-api/loyalty-\n     * promotions#calculate-promotion-points).\n     *\n     * @param accountId    The ID of the target [loyalty account](entity:\n     *                                                              LoyaltyAccount).\n     * @param body         An object containing the fields to POST for the\n     *                                                              request.  See the corresponding object definition for\n     *                                                              field details.\n     * @return Response from the API call\n     */\n    async accumulateLoyaltyPoints(accountId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            accountId: [accountId, string()],\n            body: [body, accumulateLoyaltyPointsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/loyalty/accounts/${mapped.accountId}/accumulate`;\n        return req.callAsJson(accumulateLoyaltyPointsResponseSchema, requestOptions);\n    }\n    /**\n     * Adds points to or subtracts points from a buyer's account.\n     *\n     * Use this endpoint only when you need to manually adjust points. Otherwise, in your application flow,\n     * you call\n     * [AccumulateLoyaltyPoints]($e/Loyalty/AccumulateLoyaltyPoints)\n     * to add points when a buyer pays for the purchase.\n     *\n     * @param accountId    The ID of the target [loyalty account](entity:\n     *                                                          LoyaltyAccount).\n     * @param body         An object containing the fields to POST for the request.\n     *                                                          See the corresponding object definition for field\n     *                                                          details.\n     * @return Response from the API call\n     */\n    async adjustLoyaltyPoints(accountId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            accountId: [accountId, string()],\n            body: [body, adjustLoyaltyPointsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/loyalty/accounts/${mapped.accountId}/adjust`;\n        return req.callAsJson(adjustLoyaltyPointsResponseSchema, requestOptions);\n    }\n    /**\n     * Searches for loyalty events.\n     *\n     * A Square loyalty program maintains a ledger of events that occur during the lifetime of a\n     * buyer's loyalty account. Each change in the point balance\n     * (for example, points earned, points redeemed, and points expired) is\n     * recorded in the ledger. Using this endpoint, you can search the ledger for events.\n     *\n     * Search results are sorted by `created_at` in descending order.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                          See the corresponding object definition for field\n     *                                                          details.\n     * @return Response from the API call\n     */\n    async searchLoyaltyEvents(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/loyalty/events/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchLoyaltyEventsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchLoyaltyEventsResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a list of loyalty programs in the seller's account.\n     * Loyalty programs define how buyers can earn points and redeem points for rewards. Square sellers can\n     * have only one loyalty program, which is created and managed from the Seller Dashboard. For more\n     * information, see [Loyalty Program Overview](https://developer.squareup.com/docs/loyalty/overview).\n     *\n     *\n     * Replaced with [RetrieveLoyaltyProgram](api-endpoint:Loyalty-RetrieveLoyaltyProgram) when used with\n     * the keyword `main`.\n     *\n     * @return Response from the API call\n     * @deprecated\n     */\n    async listLoyaltyPrograms(requestOptions) {\n        const req = this.createRequest('GET', '/v2/loyalty/programs');\n        req.deprecated('LoyaltyApi.listLoyaltyPrograms');\n        return req.callAsJson(listLoyaltyProgramsResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves the loyalty program in a seller's account, specified by the program ID or the keyword\n     * `main`.\n     *\n     * Loyalty programs define how buyers can earn points and redeem points for rewards. Square sellers can\n     * have only one loyalty program, which is created and managed from the Seller Dashboard. For more\n     * information, see [Loyalty Program Overview](https://developer.squareup.com/docs/loyalty/overview).\n     *\n     * @param programId  The ID of the loyalty program or the keyword `main`. Either value can be used to\n     *                             retrieve the single loyalty program that belongs to the seller.\n     * @return Response from the API call\n     */\n    async retrieveLoyaltyProgram(programId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ programId: [programId, string()] });\n        req.appendTemplatePath `/v2/loyalty/programs/${mapped.programId}`;\n        return req.callAsJson(retrieveLoyaltyProgramResponseSchema, requestOptions);\n    }\n    /**\n     * Calculates the number of points a buyer can earn from a purchase. Applications might call this\n     * endpoint\n     * to display the points to the buyer.\n     *\n     * - If you are using the Orders API to manage orders, provide the `order_id` and (optional)\n     * `loyalty_account_id`.\n     * Square reads the order to compute the points earned from the base loyalty program and an associated\n     * [loyalty promotion]($m/LoyaltyPromotion).\n     *\n     * - If you are not using the Orders API to manage orders, provide `transaction_amount_money` with the\n     * purchase amount. Square uses this amount to calculate the points earned from the base loyalty\n     * program,\n     * but not points earned from a loyalty promotion. For spend-based and visit-based programs, the\n     * `tax_mode`\n     * setting of the accrual rule indicates how taxes should be treated for loyalty points accrual.\n     * If the purchase qualifies for program points, call\n     * [ListLoyaltyPromotions]($e/Loyalty/ListLoyaltyPromotions) and perform a client-side computation\n     * to calculate whether the purchase also qualifies for promotion points. For more information, see\n     * [Calculating promotion points](https://developer.squareup.com/docs/loyalty-api/loyalty-\n     * promotions#calculate-promotion-points).\n     *\n     * @param programId    The ID of the [loyalty program](entity:\n     *                                                             LoyaltyProgram), which defines the rules for accruing\n     *                                                             points.\n     * @param body         An object containing the fields to POST for the\n     *                                                             request.  See the corresponding object definition for\n     *                                                             field details.\n     * @return Response from the API call\n     */\n    async calculateLoyaltyPoints(programId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            programId: [programId, string()],\n            body: [body, calculateLoyaltyPointsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/loyalty/programs/${mapped.programId}/calculate`;\n        return req.callAsJson(calculateLoyaltyPointsResponseSchema, requestOptions);\n    }\n    /**\n     * Lists the loyalty promotions associated with a [loyalty program]($m/LoyaltyProgram).\n     * Results are sorted by the `created_at` date in descending order (newest to oldest).\n     *\n     * @param programId  The ID of the base [loyalty program](entity:LoyaltyProgram). To get the program ID,\n     *                             call [RetrieveLoyaltyProgram](api-endpoint:Loyalty-RetrieveLoyaltyProgram) using the\n     *                             `main` keyword.\n     * @param status     The status to filter the results by. If a status is provided, only loyalty promotions\n     *                             with the specified status are returned. Otherwise, all loyalty promotions associated\n     *                             with the loyalty program are returned.\n     * @param cursor     The cursor returned in the paged response from the previous call to this endpoint.\n     *                             Provide this cursor to retrieve the next page of results for your original request.\n     *                             For more information, see [Pagination](https://developer.squareup.com/docs/build-\n     *                             basics/common-api-patterns/pagination).\n     * @param limit      The maximum number of results to return in a single paged response. The minimum value\n     *                             is 1 and the maximum value is 30. The default value is 30. For more information, see\n     *                             [Pagination](https://developer.squareup.com/docs/build-basics/common-api-\n     *                             patterns/pagination).\n     * @return Response from the API call\n     */\n    async listLoyaltyPromotions(programId, status, cursor, limit, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            programId: [programId, string()],\n            status: [status, optional(string())],\n            cursor: [cursor, optional(string())],\n            limit: [limit, optional(number())],\n        });\n        req.query('status', mapped.status);\n        req.query('cursor', mapped.cursor);\n        req.query('limit', mapped.limit);\n        req.appendTemplatePath `/v2/loyalty/programs/${mapped.programId}/promotions`;\n        return req.callAsJson(listLoyaltyPromotionsResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a loyalty promotion for a [loyalty program]($m/LoyaltyProgram). A loyalty promotion\n     * enables buyers to earn points in addition to those earned from the base loyalty program.\n     *\n     * This endpoint sets the loyalty promotion to the `ACTIVE` or `SCHEDULED` status, depending on the\n     * `available_time` setting. A loyalty program can have a maximum of 10 loyalty promotions with an\n     * `ACTIVE` or `SCHEDULED` status.\n     *\n     * @param programId    The ID of the [loyalty program](entity:\n     *                                                             LoyaltyProgram) to associate with the promotion. To\n     *                                                             get the program ID, call [RetrieveLoyaltyProgram](api-\n     *                                                             endpoint:Loyalty-RetrieveLoyaltyProgram) using the\n     *                                                             `main` keyword.\n     * @param body         An object containing the fields to POST for the\n     *                                                             request.  See the corresponding object definition for\n     *                                                             field details.\n     * @return Response from the API call\n     */\n    async createLoyaltyPromotion(programId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            programId: [programId, string()],\n            body: [body, createLoyaltyPromotionRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/loyalty/programs/${mapped.programId}/promotions`;\n        return req.callAsJson(createLoyaltyPromotionResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a loyalty promotion.\n     *\n     * @param promotionId  The ID of the [loyalty promotion](entity:LoyaltyPromotion) to retrieve.\n     * @param programId    The ID of the base [loyalty program](entity:LoyaltyProgram). To get the program ID,\n     *                               call [RetrieveLoyaltyProgram](api-endpoint:Loyalty-RetrieveLoyaltyProgram) using the\n     *                               `main` keyword.\n     * @return Response from the API call\n     */\n    async retrieveLoyaltyPromotion(promotionId, programId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({\n            promotionId: [promotionId, string()],\n            programId: [programId, string()],\n        });\n        req.appendTemplatePath `/v2/loyalty/programs/${mapped.programId}/promotions/${mapped.promotionId}`;\n        return req.callAsJson(retrieveLoyaltyPromotionResponseSchema, requestOptions);\n    }\n    /**\n     * Cancels a loyalty promotion. Use this endpoint to cancel an `ACTIVE` promotion earlier than the\n     * end date, cancel an `ACTIVE` promotion when an end date is not specified, or cancel a `SCHEDULED`\n     * promotion.\n     * Because updating a promotion is not supported, you can also use this endpoint to cancel a promotion\n     * before\n     * you create a new one.\n     *\n     * This endpoint sets the loyalty promotion to the `CANCELED` state\n     *\n     * @param promotionId  The ID of the [loyalty promotion](entity:LoyaltyPromotion) to cancel. You can\n     *                               cancel a promotion that has an `ACTIVE` or `SCHEDULED` status.\n     * @param programId    The ID of the base [loyalty program](entity:LoyaltyProgram).\n     * @return Response from the API call\n     */\n    async cancelLoyaltyPromotion(promotionId, programId, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            promotionId: [promotionId, string()],\n            programId: [programId, string()],\n        });\n        req.appendTemplatePath `/v2/loyalty/programs/${mapped.programId}/promotions/${mapped.promotionId}/cancel`;\n        return req.callAsJson(cancelLoyaltyPromotionResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a loyalty reward. In the process, the endpoint does following:\n     *\n     * - Uses the `reward_tier_id` in the request to determine the number of points\n     * to lock for this reward.\n     * - If the request includes `order_id`, it adds the reward and related discount to the order.\n     *\n     * After a reward is created, the points are locked and\n     * not available for the buyer to redeem another reward.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                          See the corresponding object definition for field\n     *                                                          details.\n     * @return Response from the API call\n     */\n    async createLoyaltyReward(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/loyalty/rewards');\n        const mapped = req.prepareArgs({\n            body: [body, createLoyaltyRewardRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createLoyaltyRewardResponseSchema, requestOptions);\n    }\n    /**\n     * Searches for loyalty rewards. This endpoint accepts a request with no query filters and returns\n     * results for all loyalty accounts.\n     * If you include a `query` object, `loyalty_account_id` is required and `status` is  optional.\n     *\n     * If you know a reward ID, use the\n     * [RetrieveLoyaltyReward]($e/Loyalty/RetrieveLoyaltyReward) endpoint.\n     *\n     * Search results are sorted by `updated_at` in descending order.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                           See the corresponding object definition for field\n     *                                                           details.\n     * @return Response from the API call\n     */\n    async searchLoyaltyRewards(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/loyalty/rewards/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchLoyaltyRewardsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchLoyaltyRewardsResponseSchema, requestOptions);\n    }\n    /**\n     * Deletes a loyalty reward by doing the following:\n     *\n     * - Returns the loyalty points back to the loyalty account.\n     * - If an order ID was specified when the reward was created\n     * (see [CreateLoyaltyReward]($e/Loyalty/CreateLoyaltyReward)),\n     * it updates the order by removing the reward and related\n     * discounts.\n     *\n     * You cannot delete a reward that has reached the terminal state (REDEEMED).\n     *\n     * @param rewardId  The ID of the [loyalty reward](entity:LoyaltyReward) to delete.\n     * @return Response from the API call\n     */\n    async deleteLoyaltyReward(rewardId, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({ rewardId: [rewardId, string()] });\n        req.appendTemplatePath `/v2/loyalty/rewards/${mapped.rewardId}`;\n        return req.callAsJson(deleteLoyaltyRewardResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a loyalty reward.\n     *\n     * @param rewardId  The ID of the [loyalty reward](entity:LoyaltyReward) to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveLoyaltyReward(rewardId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ rewardId: [rewardId, string()] });\n        req.appendTemplatePath `/v2/loyalty/rewards/${mapped.rewardId}`;\n        return req.callAsJson(retrieveLoyaltyRewardResponseSchema, requestOptions);\n    }\n    /**\n     * Redeems a loyalty reward.\n     *\n     * The endpoint sets the reward to the `REDEEMED` terminal state.\n     *\n     * If you are using your own order processing system (not using the\n     * Orders API), you call this endpoint after the buyer paid for the\n     * purchase.\n     *\n     * After the reward reaches the terminal state, it cannot be deleted.\n     * In other words, points used for the reward cannot be returned\n     * to the account.\n     *\n     * @param rewardId     The ID of the [loyalty reward](entity:LoyaltyReward) to\n     *                                                          redeem.\n     * @param body         An object containing the fields to POST for the request.\n     *                                                          See the corresponding object definition for field\n     *                                                          details.\n     * @return Response from the API call\n     */\n    async redeemLoyaltyReward(rewardId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            rewardId: [rewardId, string()],\n            body: [body, redeemLoyaltyRewardRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/loyalty/rewards/${mapped.rewardId}/redeem`;\n        return req.callAsJson(redeemLoyaltyRewardResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=loyaltyApi.js.map",
+      "start": 1709003846734,
+      "end": 1709003846815,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003846815,
+      "end": 1709003846815,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003846815,
+      "end": 1709003846816,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846816,
+      "end": 1709003846816,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003846816,
+      "end": 1709003846816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003846816,
+      "end": 1709003846816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003846816,
+      "end": 1709003846816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003846816,
+      "end": 1709003846816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003846816,
+      "end": 1709003846816,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003846816,
+      "end": 1709003846816,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003846816,
+      "end": 1709003846817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003846817,
+      "end": 1709003846817,
+      "order": "normal"
+    }
+  ]
+}

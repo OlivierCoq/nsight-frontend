@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/models/invoice.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { array, boolean, lazy, nullable, number, object, optional, string, } from '../schema';\nimport { invoiceAcceptedPaymentMethodsSchema, } from './invoiceAcceptedPaymentMethods';\nimport { invoiceAttachmentSchema } from './invoiceAttachment';\nimport { invoiceCustomFieldSchema, } from './invoiceCustomField';\nimport { invoicePaymentRequestSchema, } from './invoicePaymentRequest';\nimport { invoiceRecipientSchema } from './invoiceRecipient';\nimport { moneySchema } from './money';\nexport const invoiceSchema = object({\n    id: ['id', optional(string())],\n    version: ['version', optional(number())],\n    locationId: ['location_id', optional(nullable(string()))],\n    orderId: ['order_id', optional(nullable(string()))],\n    primaryRecipient: [\n        'primary_recipient',\n        optional(lazy(() => invoiceRecipientSchema)),\n    ],\n    paymentRequests: [\n        'payment_requests',\n        optional(nullable(array(lazy(() => invoicePaymentRequestSchema)))),\n    ],\n    deliveryMethod: ['delivery_method', optional(string())],\n    invoiceNumber: ['invoice_number', optional(nullable(string()))],\n    title: ['title', optional(nullable(string()))],\n    description: ['description', optional(nullable(string()))],\n    scheduledAt: ['scheduled_at', optional(nullable(string()))],\n    publicUrl: ['public_url', optional(string())],\n    nextPaymentAmountMoney: [\n        'next_payment_amount_money',\n        optional(lazy(() => moneySchema)),\n    ],\n    status: ['status', optional(string())],\n    timezone: ['timezone', optional(string())],\n    createdAt: ['created_at', optional(string())],\n    updatedAt: ['updated_at', optional(string())],\n    acceptedPaymentMethods: [\n        'accepted_payment_methods',\n        optional(lazy(() => invoiceAcceptedPaymentMethodsSchema)),\n    ],\n    customFields: [\n        'custom_fields',\n        optional(nullable(array(lazy(() => invoiceCustomFieldSchema)))),\n    ],\n    subscriptionId: ['subscription_id', optional(string())],\n    saleOrServiceDate: ['sale_or_service_date', optional(nullable(string()))],\n    paymentConditions: ['payment_conditions', optional(nullable(string()))],\n    storePaymentMethodEnabled: [\n        'store_payment_method_enabled',\n        optional(nullable(boolean())),\n    ],\n    attachments: [\n        'attachments',\n        optional(array(lazy(() => invoiceAttachmentSchema))),\n    ],\n});\n//# sourceMappingURL=invoice.js.map",
+      "start": 1709003847849,
+      "end": 1709003847908,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003847908,
+      "end": 1709003847908,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003847908,
+      "end": 1709003847909,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003847909,
+      "end": 1709003847909,
+      "order": "normal"
+    }
+  ]
+}

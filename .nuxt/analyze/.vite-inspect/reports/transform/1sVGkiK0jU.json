@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/presets/nsight_style_presets/button/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "export default {\n    root: ({ props, context, parent }) => ({\n        class: [\n            'relative',\n\n            // Alignments\n            'items-center inline-flex text-center align-bottom justify-center',\n\n            // Sizes & Spacing\n            'leading-[normal]',\n            {\n                'px-4 py-3': props.size === null,\n                'text-sm py-2 px-3': props.size === 'small',\n                'text-xl py-3 px-4': props.size === 'large'\n            },\n            {\n                'w-12 p-0 py-3': props.label == null && props.icon !== null\n            },\n\n            // Shapes\n            { 'shadow-lg': props.raised },\n            { 'rounded-md': !props.rounded, 'rounded-full': props.rounded },\n            { 'rounded-none first:rounded-l-md last:rounded-r-md': parent.instance.$name == 'InputGroup' },\n\n            // Link Button\n            { 'text-primary-600 bg-transparent border-transparent': props.link },\n\n            // Plain Button\n            { 'text-white bg-gray-500 border border-gray-500': props.plain && !props.outlined && !props.text },\n            // Plain Text Button\n            { 'text-surface-500': props.plain && props.text },\n            // Plain Outlined Button\n            { 'text-surface-500 border border-gray-500': props.plain && props.outlined },\n\n            // Text Button\n            { 'bg-transparent border-transparent': props.text && !props.plain },\n\n            // Outlined Button\n            { 'bg-transparent border': props.outlined && !props.plain },\n\n            // --- Severity Buttons ---\n\n            // Primary Button\n            {\n                'text-white dark:text-surface-900': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain,\n                'bg-primary-500 dark:bg-primary-400': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain,\n                'border border-primary-500 dark:border-primary-400': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain\n            },\n            // Primary Text Button\n            { 'text-primary-500 dark:text-primary-400': props.text && props.severity === null && !props.plain },\n            // Primary Outlined Button\n            { 'text-primary-500 border border-primary-500 hover:bg-primary-300/20': props.outlined && props.severity === null && !props.plain },\n\n            // Secondary Button\n            {\n                'text-white dark:text-surface-900': props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,\n                'bg-surface-500 dark:bg-surface-400': props.severity === 'secondary' && !props.text && !props.outlined && !props.plain,\n                'border border-surface-500 dark:border-surface-400': props.severity === 'secondary' && !props.text && !props.outlined && !props.plain\n            },\n            // Secondary Text Button\n            { 'text-surface-500 dark:text-surface-300': props.text && props.severity === 'secondary' && !props.plain },\n            // Secondary Outlined Button\n            { 'text-surface-500 dark:text-surface-300 border border-surface-500 hover:bg-surface-300/20': props.outlined && props.severity === 'secondary' && !props.plain },\n\n            // Success Button\n            {\n                'text-white dark:text-green-900': props.severity === 'success' && !props.text && !props.outlined && !props.plain,\n                'bg-green-500 dark:bg-green-400': props.severity === 'success' && !props.text && !props.outlined && !props.plain,\n                'border border-green-500 dark:border-green-400': props.severity === 'success' && !props.text && !props.outlined && !props.plain\n            },\n            // Success Text Button\n            { 'text-green-500 dark:text-green-400': props.text && props.severity === 'success' && !props.plain },\n            // Success Outlined Button\n            { 'text-green-500 border border-green-500 hover:bg-green-300/20': props.outlined && props.severity === 'success' && !props.plain },\n\n            // Info Button\n            {\n                'text-white dark:text-surface-900': props.severity === 'info' && !props.text && !props.outlined && !props.plain,\n                'bg-blue-500 dark:bg-blue-400': props.severity === 'info' && !props.text && !props.outlined && !props.plain,\n                'border border-blue-500 dark:border-blue-400': props.severity === 'info' && !props.text && !props.outlined && !props.plain\n            },\n            // Info Text Button\n            { 'text-blue-500 dark:text-blue-400': props.text && props.severity === 'info' && !props.plain },\n            // Info Outlined Button\n            { 'text-blue-500 border border-blue-500 hover:bg-blue-300/20 ': props.outlined && props.severity === 'info' && !props.plain },\n\n            // Warning Button\n            {\n                'text-white dark:text-surface-900': props.severity === 'warning' && !props.text && !props.outlined && !props.plain,\n                'bg-orange-500 dark:bg-orange-400': props.severity === 'warning' && !props.text && !props.outlined && !props.plain,\n                'border border-orange-500 dark:border-orange-400': props.severity === 'warning' && !props.text && !props.outlined && !props.plain\n            },\n            // Warning Text Button\n            { 'text-orange-500 dark:text-orange-400': props.text && props.severity === 'warning' && !props.plain },\n            // Warning Outlined Button\n            { 'text-orange-500 border border-orange-500 hover:bg-orange-300/20': props.outlined && props.severity === 'warning' && !props.plain },\n\n            // Help Button\n            {\n                'text-white dark:text-surface-900': props.severity === 'help' && !props.text && !props.outlined && !props.plain,\n                'bg-purple-500 dark:bg-purple-400': props.severity === 'help' && !props.text && !props.outlined && !props.plain,\n                'border border-purple-500 dark:border-purple-400': props.severity === 'help' && !props.text && !props.outlined && !props.plain\n            },\n            // Help Text Button\n            { 'text-purple-500 dark:text-purple-400': props.text && props.severity === 'help' && !props.plain },\n            // Help Outlined Button\n            { 'text-purple-500 border border-purple-500 hover:bg-purple-300/20': props.outlined && props.severity === 'help' && !props.plain },\n\n            // Danger Button\n            {\n                'text-white dark:text-surface-900': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,\n                'bg-red-500 dark:bg-red-400': props.severity === 'danger' && !props.text && !props.outlined && !props.plain,\n                'border border-red-500 dark:border-red-400': props.severity === 'danger' && !props.text && !props.outlined && !props.plain\n            },\n            // Danger Text Button\n            { 'text-red-500 dark:text-red-400': props.text && props.severity === 'danger' && !props.plain },\n            // Danger Outlined Button\n            { 'text-red-500 border border-red-500 hover:bg-red-300/20': props.outlined && props.severity === 'danger' && !props.plain },\n\n            // --- Severity Button States ---\n            'focus:outline-none focus:outline-offset-0 focus:ring',\n\n            // Link\n            { 'focus:ring-primary-400/50 dark:focus:ring-primary-300/50': props.link },\n\n            // Plain\n            { 'hover:bg-gray-600 hover:border-gray-600': props.plain && !props.outlined && !props.text },\n            // Text & Outlined Button\n            { 'hover:bg-surface-300/20': props.plain && (props.text || props.outlined) },\n\n            // Primary\n            { 'hover:bg-primary-600 dark:hover:bg-primary-300 hover:border-primary-600 dark:hover:border-primary-300': !props.link && props.severity === null && !props.text && !props.outlined && !props.plain },\n            { 'focus:ring-primary-400/50 dark:focus:ring-primary-300/50': props.severity === null },\n            // Text & Outlined Button\n            { 'hover:bg-primary-300/20': (props.text || props.outlined) && props.severity === null && !props.plain },\n\n            // Secondary\n            { 'hover:bg-surface-600 dark:hover:bg-surface-300 hover:border-surface-600 dark:hover:border-surface-300': props.severity === 'secondary' && !props.text && !props.outlined && !props.plain },\n            { 'focus:ring-surface-400/50 dark:focus:ring-surface-300/50': props.severity === 'secondary' },\n            // Text & Outlined Button\n            { 'hover:bg-surface-300/20': (props.text || props.outlined) && props.severity === 'secondary' && !props.plain },\n\n            // Success\n            { 'hover:bg-green-600 dark:hover:bg-green-300 hover:border-green-600 dark:hover:border-green-300': props.severity === 'success' && !props.text && !props.outlined && !props.plain },\n            { 'focus:ring-green-400/50 dark:focus:ring-green-300/50': props.severity === 'success' },\n            // Text & Outlined Button\n            { 'hover:bg-green-300/20': (props.text || props.outlined) && props.severity === 'success' && !props.plain },\n\n            // Info\n            { 'hover:bg-blue-600 dark:hover:bg-blue-300 hover:border-blue-600 dark:hover:border-blue-300': props.severity === 'info' && !props.text && !props.outlined && !props.plain },\n            { 'focus:ring-blue-400/50 dark:focus:ring-blue-300/50': props.severity === 'info' },\n            // Text & Outlined Button\n            { 'hover:bg-blue-300/20': (props.text || props.outlined) && props.severity === 'info' && !props.plain },\n\n            // Warning\n            { 'hover:bg-orange-600 dark:hover:bg-orange-300 hover:border-orange-600 dark:hover:border-orange-300': props.severity === 'warning' && !props.text && !props.outlined && !props.plain },\n            { 'focus:ring-orange-400/50 dark:focus:ring-orange-300/50': props.severity === 'warning' },\n            // Text & Outlined Button\n            { 'hover:bg-orange-300/20': (props.text || props.outlined) && props.severity === 'warning' && !props.plain },\n\n            // Help\n            { 'hover:bg-purple-600 dark:hover:bg-purple-300 hover:border-purple-600 dark:hover:border-purple-300': props.severity === 'help' && !props.text && !props.outlined && !props.plain },\n            { 'focus:ring-purple-400/50 dark:focus:ring-purple-300/50': props.severity === 'help' },\n            // Text & Outlined Button\n            { 'hover:bg-purple-300/20': (props.text || props.outlined) && props.severity === 'help' && !props.plain },\n\n            // Danger\n            { 'hover:bg-red-600 dark:hover:bg-red-300 hover:border-red-600 dark:hover:border-red-300': props.severity === 'danger' && !props.text && !props.outlined && !props.plain },\n            { 'focus:ring-red-400/50 dark:focus:ring-red-300/50': props.severity === 'danger' },\n            // Text & Outlined Button\n            { 'hover:bg-red-300/20': (props.text || props.outlined) && props.severity === 'danger' && !props.plain },\n\n            // Disabled\n            { 'opacity-60 pointer-events-none cursor-default': context.disabled },\n\n            // Transitions\n            'transition duration-200 ease-in-out',\n\n            // Misc\n            'cursor-pointer overflow-hidden select-none'\n        ]\n    }),\n    label: ({ props }) => ({\n        class: [\n            'duration-200',\n            'font-bold',\n            {\n                'hover:underline': props.link\n            },\n            { 'flex-1': props.label !== null, 'invisible w-0': props.label == null }\n        ]\n    }),\n    icon: ({ props }) => ({\n        class: [\n            'mx-0',\n            {\n                'mr-2': props.iconPos == 'left' && props.label != null,\n                'ml-2 order-1': props.iconPos == 'right' && props.label != null,\n                'mb-2': props.iconPos == 'top' && props.label != null,\n                'mt-2': props.iconPos == 'bottom' && props.label != null\n            }\n        ]\n    }),\n    loadingicon: ({ props }) => ({\n        class: [\n            'h-4 w-4',\n            'mx-0',\n            {\n                'mr-2': props.iconPos == 'left' && props.label != null,\n                'ml-2 order-1': props.iconPos == 'right' && props.label != null,\n                'mb-2': props.iconPos == 'top' && props.label != null,\n                'mt-2': props.iconPos == 'bottom' && props.label != null\n            },\n            'animate-spin'\n        ]\n    }),\n    badge: ({ props }) => ({\n        class: [{ 'ml-2 w-4 h-4 leading-none flex items-center justify-center': props.badge }]\n    })\n};\n",
+      "start": 1709003846037,
+      "end": 1709003846081,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003846081,
+      "end": 1709003846081,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003846081,
+      "end": 1709003846084,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003846084,
+      "end": 1709003846084,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003846084,
+      "end": 1709003846084,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003846084,
+      "end": 1709003846084,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003846084,
+      "end": 1709003846084,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003846084,
+      "end": 1709003846084,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003846084,
+      "end": 1709003846084,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003846084,
+      "end": 1709003846084,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003846084,
+      "end": 1709003846084,
+      "order": "normal"
+    }
+  ]
+}

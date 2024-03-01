@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
 // const path = require('path');
+import path from "path";
 
 export default defineNuxtConfig({
   devtools: {
@@ -29,9 +30,39 @@ export default defineNuxtConfig({
   modules: [
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
-    "nuxt-medusa",
+    "nuxt-primevue",
     "@zadigetvoltaire/nuxt-well-known",
   ],
+  primevue: {
+    usePrimeVue: true,
+    options: {
+      unstyled: false,
+      importPT: {
+        from: path.resolve(__dirname, "./presets/nsight_style_presets/"),
+      },
+      ripple: true,
+    },
+    importPT: { as: "Tailwind", from: "primevue/passthrough/tailwind" },
+    cssLayerOrder: "tailwind-base, primvevue, tailwind-utilities",
+    components: {
+      prefix: "Prime",
+      name: undefined,
+      include: ["Tooltip", "Dialog", "AutoComplete", "TabView", "TabPanel"],
+      exclude: undefined,
+    },
+    directives: {
+      prefix: "",
+      name: undefined,
+      exclude: undefined,
+      include: ["Tooltip"],
+    },
+    composables: {
+      prefix: "",
+      name: undefined,
+      exclude: undefined,
+      include: undefined,
+    },
+  },
   imports: {
     // import all stores from store directory
     dirs: ["stores"],
@@ -48,18 +79,6 @@ export default defineNuxtConfig({
   },
   pinia: {
     autoImports: ["defineStore", ["defineStore", "definePiniaStore"]],
-  },
-  vuetify: {
-    theme: {
-      themes: {
-        light: {
-          primary: "#f6e232",
-        },
-        dark: {
-          primary: "#f6e232",
-        },
-      },
-    },
   },
   // Tailwind:
   postcss: {
@@ -102,9 +121,8 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: [
-      "vuetify",
       "@fortawesome/fontawesome-svg-core",
-      "@fortawesome/free-solid-svg-icons",
+      "@fortawesome/free-solid-svg-icns",
       "@fortawesome/vue-fontawesome",
       //       process.env.NODE_ENV === "development" ? '' : 'element-plus',
     ],

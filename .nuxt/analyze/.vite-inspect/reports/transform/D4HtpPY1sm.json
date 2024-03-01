@@ -1,0 +1,219 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/set-function-length/index.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "'use strict';\n\nvar GetIntrinsic = require('get-intrinsic');\nvar define = require('define-data-property');\nvar hasDescriptors = require('has-property-descriptors')();\nvar gOPD = require('gopd');\n\nvar $TypeError = GetIntrinsic('%TypeError%');\nvar $floor = GetIntrinsic('%Math.floor%');\n\n/** @typedef {(...args: unknown[]) => unknown} Func */\n\n/** @type {<T extends Func = Func>(fn: T, length: number, loose?: boolean) => T} */\nmodule.exports = function setFunctionLength(fn, length) {\n\tif (typeof fn !== 'function') {\n\t\tthrow new $TypeError('`fn` is not a function');\n\t}\n\tif (typeof length !== 'number' || length < 0 || length > 0xFFFFFFFF || $floor(length) !== length) {\n\t\tthrow new $TypeError('`length` must be a positive 32-bit integer');\n\t}\n\n\tvar loose = arguments.length > 2 && !!arguments[2];\n\n\tvar functionLengthIsConfigurable = true;\n\tvar functionLengthIsWritable = true;\n\tif ('length' in fn && gOPD) {\n\t\tvar desc = gOPD(fn, 'length');\n\t\tif (desc && !desc.configurable) {\n\t\t\tfunctionLengthIsConfigurable = false;\n\t\t}\n\t\tif (desc && !desc.writable) {\n\t\t\tfunctionLengthIsWritable = false;\n\t\t}\n\t}\n\n\tif (functionLengthIsConfigurable || functionLengthIsWritable || !loose) {\n\t\tif (hasDescriptors) {\n\t\t\tdefine(/** @type {Parameters<define>[0]} */ (fn), 'length', length, true, true);\n\t\t} else {\n\t\t\tdefine(/** @type {Parameters<define>[0]} */ (fn), 'length', length);\n\t\t}\n\t}\n\treturn fn;\n};\n",
+      "start": 1709003849176,
+      "end": 1709003849192,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003849192,
+      "end": 1709003849192,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003849192,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003849193,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003849193,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003849193,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003849193,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003849193,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003849193,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003849193,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003849193,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003849193,
+      "end": 1709003849193,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\nimport require$$0 from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/get-intrinsic/index.js?commonjs-proxy\";\nimport require$$1 from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/define-data-property/index.js?commonjs-proxy\";\nimport require$$2 from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/has-property-descriptors/index.js?commonjs-proxy\";\nimport require$$3 from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/gopd/index.js?commonjs-proxy\";\n\n'use strict';\n\nvar GetIntrinsic = require$$0;\nvar define = require$$1;\nvar hasDescriptors = require$$2();\nvar gOPD = require$$3;\n\nvar $TypeError = GetIntrinsic('%TypeError%');\nvar $floor = GetIntrinsic('%Math.floor%');\n\n/** @typedef {(...args: unknown[]) => unknown} Func */\n\n/** @type {<T extends Func = Func>(fn: T, length: number, loose?: boolean) => T} */\nvar setFunctionLength = function setFunctionLength(fn, length) {\n\tif (typeof fn !== 'function') {\n\t\tthrow new $TypeError('`fn` is not a function');\n\t}\n\tif (typeof length !== 'number' || length < 0 || length > 0xFFFFFFFF || $floor(length) !== length) {\n\t\tthrow new $TypeError('`length` must be a positive 32-bit integer');\n\t}\n\n\tvar loose = arguments.length > 2 && !!arguments[2];\n\n\tvar functionLengthIsConfigurable = true;\n\tvar functionLengthIsWritable = true;\n\tif ('length' in fn && gOPD) {\n\t\tvar desc = gOPD(fn, 'length');\n\t\tif (desc && !desc.configurable) {\n\t\t\tfunctionLengthIsConfigurable = false;\n\t\t}\n\t\tif (desc && !desc.writable) {\n\t\t\tfunctionLengthIsWritable = false;\n\t\t}\n\t}\n\n\tif (functionLengthIsConfigurable || functionLengthIsWritable || !loose) {\n\t\tif (hasDescriptors) {\n\t\t\tdefine(/** @type {Parameters<define>[0]} */ (fn), 'length', length, true, true);\n\t\t} else {\n\t\t\tdefine(/** @type {Parameters<define>[0]} */ (fn), 'length', length);\n\t\t}\n\t}\n\treturn fn;\n};\n\nexport default /*@__PURE__*/commonjsHelpers.getDefaultExportFromCjs(setFunctionLength);\nexport { setFunctionLength as __moduleExports };",
+      "start": 1709003849193,
+      "end": 1709003849218,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": ";;;;;;AAAA,YAAY,CAAC;AACb;AACA,IAAI,YAAY,GAAG,UAAwB,CAAC;AAC5C,IAAI,MAAM,GAAG,UAA+B,CAAC;AAC7C,IAAI,cAAc,GAAG,UAAmC,EAAE,CAAC;AAC3D,IAAI,IAAI,GAAG,UAAe,CAAC;AAC3B;AACA,IAAI,UAAU,GAAG,YAAY,CAAC,aAAa,CAAC,CAAC;AAC7C,IAAI,MAAM,GAAG,YAAY,CAAC,cAAc,CAAC,CAAC;AAC1C;AACA;AACA;AACA;IACA,iBAAc,GAAG,SAAS,iBAAiB,CAAC,EAAE,EAAE,MAAM,EAAE;AACxD,CAAC,IAAI,OAAO,EAAE,KAAK,UAAU,EAAE;AAC/B,EAAE,MAAM,IAAI,UAAU,CAAC,wBAAwB,CAAC,CAAC;AACjD,EAAE;AACF,CAAC,IAAI,OAAO,MAAM,KAAK,QAAQ,IAAI,MAAM,GAAG,CAAC,IAAI,MAAM,GAAG,UAAU,IAAI,MAAM,CAAC,MAAM,CAAC,KAAK,MAAM,EAAE;AACnG,EAAE,MAAM,IAAI,UAAU,CAAC,4CAA4C,CAAC,CAAC;AACrE,EAAE;AACF;AACA,CAAC,IAAI,KAAK,GAAG,SAAS,CAAC,MAAM,GAAG,CAAC,IAAI,CAAC,CAAC,SAAS,CAAC,CAAC,CAAC,CAAC;AACpD;AACA,CAAC,IAAI,4BAA4B,GAAG,IAAI,CAAC;AACzC,CAAC,IAAI,wBAAwB,GAAG,IAAI,CAAC;AACrC,CAAC,IAAI,QAAQ,IAAI,EAAE,IAAI,IAAI,EAAE;AAC7B,EAAE,IAAI,IAAI,GAAG,IAAI,CAAC,EAAE,EAAE,QAAQ,CAAC,CAAC;AAChC,EAAE,IAAI,IAAI,IAAI,CAAC,IAAI,CAAC,YAAY,EAAE;AAClC,GAAG,4BAA4B,GAAG,KAAK,CAAC;AACxC,GAAG;AACH,EAAE,IAAI,IAAI,IAAI,CAAC,IAAI,CAAC,QAAQ,EAAE;AAC9B,GAAG,wBAAwB,GAAG,KAAK,CAAC;AACpC,GAAG;AACH,EAAE;AACF;AACA,CAAC,IAAI,4BAA4B,IAAI,wBAAwB,IAAI,CAAC,KAAK,EAAE;AACzE,EAAE,IAAI,cAAc,EAAE;AACtB,GAAG,MAAM,uCAAuC,EAAE,GAAG,QAAQ,EAAE,MAAM,EAAE,IAAI,EAAE,IAAI,CAAC,CAAC;AACnF,GAAG,MAAM;AACT,GAAG,MAAM,uCAAuC,EAAE,GAAG,QAAQ,EAAE,MAAM,CAAC,CAAC;AACvE,GAAG;AACH,EAAE;AACF,CAAC,OAAO,EAAE,CAAC;AACX,CAAC"
+      }
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003849218,
+      "end": 1709003849218,
+      "order": "normal"
+    }
+  ]
+}

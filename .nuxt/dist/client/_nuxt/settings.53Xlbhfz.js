@@ -1,0 +1,1 @@
+import{a2 as e,a3 as t,a4 as s}from"./entry.3c5cgt-_.js";const a=e();a.use(t);const o=s({id:"settingsStore",state:()=>({dark_mode:!0,account:{}}),actions:{toggleDarkMode(){this.dark_mode=!this.dark_mode}},getters:{},persist:{enabled:!0}});export{o as s};

@@ -1,0 +1,231 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/composables/custom_fetch.ts",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "const opts = {\n  async onRequest({ request, options }: any) {\n    const runtimeConfig = useRuntimeConfig()\n    options.headers = { 'X-Authorization': runtimeConfig.apiSecret }\n  },\n}\n\nexport const customFetch = () => $fetch.create(opts)",
+      "start": 1709003846544,
+      "end": 1709003846675,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003846675,
+      "end": 1709003846675,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003846675,
+      "end": 1709003846675,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003846675,
+      "end": 1709003846675,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003846675,
+      "end": 1709003846675,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "result": "const opts = {\n  async onRequest({ request, options }) {\n    const runtimeConfig = useRuntimeConfig();\n    options.headers = { \"X-Authorization\": runtimeConfig.apiSecret };\n  }\n};\nexport const customFetch = () => $fetch.create(opts);\n",
+      "start": 1709003846675,
+      "end": 1709003847868,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/composables/custom_fetch.ts"
+        ],
+        "sourcesContent": [
+          "const opts = {\n  async onRequest({ request, options }: any) {\n    const runtimeConfig = useRuntimeConfig()\n    options.headers = { 'X-Authorization': runtimeConfig.apiSecret }\n  },\n}\n\nexport const customFetch = () => $fetch.create(opts)"
+        ],
+        "mappings": "AAAA,MAAM,OAAO;AAAA,EACX,MAAM,UAAU,EAAE,SAAS,QAAQ,GAAQ;AACzC,UAAM,gBAAgB,iBAAiB;AACvC,YAAQ,UAAU,EAAE,mBAAmB,cAAc,UAAU;AAAA,EACjE;AACF;AAEO,aAAM,cAAc,MAAM,OAAO,OAAO,IAAI;",
+        "names": []
+      }
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003847868,
+      "end": 1709003847868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003847868,
+      "end": 1709003847868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003847868,
+      "end": 1709003847868,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003847868,
+      "end": 1709003847868,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003847888,
+      "end": 1709003847888,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003847888,
+      "end": 1709003847888,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003847888,
+      "end": 1709003847888,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003847888,
+      "end": 1709003847888,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003847889,
+      "end": 1709003847889,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003847889,
+      "end": 1709003847889,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003847889,
+      "end": 1709003847889,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003847889,
+      "end": 1709003847889,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003847889,
+      "end": 1709003847889,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003847889,
+      "end": 1709003847889,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003847890,
+      "end": 1709003847890,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003847890,
+      "end": 1709003847890,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003847890,
+      "end": 1709003847890,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003847890,
+      "end": 1709003847890,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003847890,
+      "end": 1709003847890,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "result": "import { useRuntimeConfig } from '#app/nuxt';\nconst opts = {\n  async onRequest({ request, options }) {\n    const runtimeConfig = useRuntimeConfig();\n    options.headers = { \"X-Authorization\": runtimeConfig.apiSecret };\n  }\n};\nexport const customFetch = () => $fetch.create(opts);\n",
+      "start": 1709003847890,
+      "end": 1709003847892,
+      "order": "post",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": ";AAAA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACd,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACzC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAC7C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACrE,CAAC,CAAC,CAAC;AACH,CAAC,CAAC;AACF,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;"
+      }
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003847892,
+      "end": 1709003847892,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003847892,
+      "end": 1709003847892,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003847892,
+      "end": 1709003847892,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003847892,
+      "end": 1709003847892,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003847892,
+      "end": 1709003847892,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003847892,
+      "end": 1709003847892,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003847892,
+      "end": 1709003847892,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003847892,
+      "end": 1709003847892,
+      "order": "normal"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+import{s as a}from"./settings.53Xlbhfz.js";import{u as o,o as r,c as n,N as l,y as i,v as c}from"./entry.3c5cgt-_.js";const u=o({__name:"default",setup(d){const s=a();return(t,m)=>{var e;return r(),n("div",{id:"nsight",class:i(["relative",(e=c(s))!=null&&e.dark_mode?"dark":""])},[l(t.$slots,"default")],2)}}});export{u as default};

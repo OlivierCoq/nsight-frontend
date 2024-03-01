@@ -1,0 +1,210 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/esm/api/giftCardActivitiesApi.js",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import { createGiftCardActivityRequestSchema, } from '../models/createGiftCardActivityRequest';\nimport { createGiftCardActivityResponseSchema, } from '../models/createGiftCardActivityResponse';\nimport { listGiftCardActivitiesResponseSchema, } from '../models/listGiftCardActivitiesResponse';\nimport { number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class GiftCardActivitiesApi extends BaseApi {\n    /**\n     * Lists gift card activities. By default, you get gift card activities for all\n     * gift cards in the seller's account. You can optionally specify query parameters to\n     * filter the list. For example, you can get a list of gift card activities for a gift card,\n     * for all gift cards in a specific region, or for activities within a time window.\n     *\n     * @param giftCardId   If a gift card ID is provided, the endpoint returns activities related  to the\n     *                               specified gift card. Otherwise, the endpoint returns all gift card activities for\n     *                               the seller.\n     * @param type         If a [type](entity:GiftCardActivityType) is provided, the endpoint returns gift\n     *                               card activities of the specified type.  Otherwise, the endpoint returns all types of\n     *                               gift card activities.\n     * @param locationId   If a location ID is provided, the endpoint returns gift card activities for the\n     *                               specified location.  Otherwise, the endpoint returns gift card activities for all\n     *                               locations.\n     * @param beginTime    The timestamp for the beginning of the reporting period, in RFC 3339 format. This\n     *                               start time is inclusive. The default value is the current time minus one year.\n     * @param endTime      The timestamp for the end of the reporting period, in RFC 3339 format. This end\n     *                               time is inclusive. The default value is the current time.\n     * @param limit        If a limit is provided, the endpoint returns the specified number  of results (or\n     *                               fewer) per page. The maximum value is 100. The default value is 50. For more\n     *                               information, see [Pagination](https://developer.squareup.com/docs/working-with-\n     *                               apis/pagination).\n     * @param cursor       A pagination cursor returned by a previous call to this endpoint. Provide this\n     *                               cursor to retrieve the next set of results for the original query. If a cursor is\n     *                               not provided, the endpoint returns the first page of the results. For more\n     *                               information, see [Pagination](https://developer.squareup.com/docs/working-with-\n     *                               apis/pagination).\n     * @param sortOrder    The order in which the endpoint returns the activities, based on `created_at`. -\n     *                               `ASC` - Oldest to newest. - `DESC` - Newest to oldest (default).\n     * @return Response from the API call\n     */\n    async listGiftCardActivities(giftCardId, type, locationId, beginTime, endTime, limit, cursor, sortOrder, requestOptions) {\n        const req = this.createRequest('GET', '/v2/gift-cards/activities');\n        const mapped = req.prepareArgs({\n            giftCardId: [giftCardId, optional(string())],\n            type: [type, optional(string())],\n            locationId: [locationId, optional(string())],\n            beginTime: [beginTime, optional(string())],\n            endTime: [endTime, optional(string())],\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n            sortOrder: [sortOrder, optional(string())],\n        });\n        req.query('gift_card_id', mapped.giftCardId);\n        req.query('type', mapped.type);\n        req.query('location_id', mapped.locationId);\n        req.query('begin_time', mapped.beginTime);\n        req.query('end_time', mapped.endTime);\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        req.query('sort_order', mapped.sortOrder);\n        return req.callAsJson(listGiftCardActivitiesResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a gift card activity to manage the balance or state of a [gift card]($m/GiftCard).\n     * For example, you create an `ACTIVATE` activity to activate a gift card with an initial balance\n     * before the gift card can be used.\n     *\n     * @param body         An object containing the fields to POST for the\n     *                                                             request.  See the corresponding object definition for\n     *                                                             field details.\n     * @return Response from the API call\n     */\n    async createGiftCardActivity(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/gift-cards/activities');\n        const mapped = req.prepareArgs({\n            body: [body, createGiftCardActivityRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createGiftCardActivityResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=giftCardActivitiesApi.js.map",
+      "start": 1709003846727,
+      "end": 1709003846806,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709003846806,
+      "end": 1709003846806,
+      "order": "normal"
+    }
+  ]
+}
