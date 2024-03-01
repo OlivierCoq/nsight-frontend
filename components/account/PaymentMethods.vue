@@ -62,7 +62,74 @@
           class="rounded-md shadow-md px-3 py-4  flex flex-col align-start justify-start"
           :class="auth.user.selected_payment_method && (payment_method.card.id == auth.user.selected_payment_method.card.id) ? 'bg-zinc-400 dark:bg-zinc-800' : 'bg-zinc-400 dark:bg-zinc-700 opacity-50'"
         >
+
+          <div v-if="payment_method.card" class="w-full flex flex-col px-3 h-[120px]">
+            <div class="w-full flex flex-row justify-between">
+              <h3 class="text-neutral-200 dark:text-white font-bold me-2 uppercase">{{ payment_method.card.cardholderName }}</h3>
+              <div class="w-8 h-8">
+                <font-awesome-icon class="text-white text-2xl" :icon="[ 'fab', format_card_brand(payment_method.card.cardBrand)]"/>
+              </div> 
+            </div>
+            <div class="w-full flex flex-row my-3">
+              <p class="text-neutral-200 dark:text-white opacity-75 me-3">{{ payment_method.card.last4 }}</p>
+              <p class="text-neutral-200 dark:text-white opacity-75">{{ payment_method.card.expMonth }}/{{ payment_method.card.expYear }}</p>
+            </div>
+            <div class="w-full flex flex-row my-3">
+
+              <!-- <button
+                class="px-3 py-1 me-2 bg-sky-600 hover:bg-sky-700 text-white text-xs rounded-sm"
+                @click="state.edit_method_dialog = true"
+              >
+                Edit
+              </button> -->
+              <button
+                class="px-3 py-1 me-2 bg-green-400 hover:bg-green-500 text-white text-xs rounded-sm"
+                @click="set_default(payment_method)"
+              >
+                Default
+              </button>
+              <button
+                class="px-3 py-1 me-2 bg-red-600 hover:bg-red-700 text-white text-xs rounded-sm"
+                @click="state.delete_method_dialog = true"
+              >
+                Delete
+
+                <!-- delete method dialog: -->
+                <PrimeDialog
+                v-model:visible="state.delete_method_dialog"
+                modal
+                header="Are you sure you want to delete this payment method?"
+                :style="{
+                  width: '50rem',
+                  backgroundColor: auth.user.preferences[0].dark_mode ? '#18181a' : '#a1a1aa',
+                  color: 'white',
+                  padding: '1rem',
+                }"
+              >
+                <div class="w-full flex flex-col min-h-[15vh] p-3 bg-zinc-900 dark:bg-black">
+                  <div class="w-3/4 flex flex-row">
+                    <button class="bg-neutral-600 hover:bg-neutral-700 rounded-md p-3 me-3 text-white w-1/2" @click="state.delete_method_dialog = false">
+                      Cancel
+                    </button>
+                    <button class="bg-red-600 hover:bg-red-700 rounded-md p-3 text-white w-1/2" @click="delete_method(payment_method)">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </PrimeDialog>
+
+
+              </button>
+
+
+
+            </div>
+          </div>
+
         </div>
+      </div>
+      <div v-else class="w-full flex flex-col mx-2">
+        <p class="text-neutral-900 dark:text-white">No Payment methods found! Add a payment method to use for your next order.</p>
       </div>
     </div>
   </div>
