@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import extractPhoneContext, { isPhoneContextValid, PLUS_SIGN, RFC3966_PREFIX_, RFC3966_PHONE_CONTEXT_, RFC3966_ISDN_SUBADDRESS_ } from './extractPhoneContext.js';\nimport ParseError from '../ParseError.js';\n/**\r\n * @param  {string} numberToParse\r\n * @param  {string} nationalNumber\r\n * @return {}\r\n */\n\nexport default function extractFormattedPhoneNumberFromPossibleRfc3966NumberUri(numberToParse, _ref) {\n  var extractFormattedPhoneNumber = _ref.extractFormattedPhoneNumber;\n  var phoneContext = extractPhoneContext(numberToParse);\n\n  if (!isPhoneContextValid(phoneContext)) {\n    throw new ParseError('NOT_A_NUMBER');\n  }\n\n  var phoneNumberString;\n\n  if (phoneContext === null) {\n    // Extract a possible number from the string passed in.\n    // (this strips leading characters that could not be the start of a phone number)\n    phoneNumberString = extractFormattedPhoneNumber(numberToParse) || '';\n  } else {\n    phoneNumberString = ''; // If the phone context contains a phone number prefix, we need to capture\n    // it, whereas domains will be ignored.\n\n    if (phoneContext.charAt(0) === PLUS_SIGN) {\n      phoneNumberString += phoneContext;\n    } // Now append everything between the \"tel:\" prefix and the phone-context.\n    // This should include the national number, an optional extension or\n    // isdn-subaddress component. Note we also handle the case when \"tel:\" is\n    // missing, as we have seen in some of the phone number inputs.\n    // In that case, we append everything from the beginning.\n\n\n    var indexOfRfc3966Prefix = numberToParse.indexOf(RFC3966_PREFIX_);\n    var indexOfNationalNumber; // RFC 3966 \"tel:\" prefix is preset at this stage because\n    // `isPhoneContextValid()` requires it to be present.\n\n    /* istanbul ignore else */\n\n    if (indexOfRfc3966Prefix >= 0) {\n      indexOfNationalNumber = indexOfRfc3966Prefix + RFC3966_PREFIX_.length;\n    } else {\n      indexOfNationalNumber = 0;\n    }\n\n    var indexOfPhoneContext = numberToParse.indexOf(RFC3966_PHONE_CONTEXT_);\n    phoneNumberString += numberToParse.substring(indexOfNationalNumber, indexOfPhoneContext);\n  } // Delete the isdn-subaddress and everything after it if it is present.\n  // Note extension won't appear at the same time with isdn-subaddress\n  // according to paragraph 5.3 of the RFC3966 spec.\n\n\n  var indexOfIsdn = phoneNumberString.indexOf(RFC3966_ISDN_SUBADDRESS_);\n\n  if (indexOfIsdn > 0) {\n    phoneNumberString = phoneNumberString.substring(0, indexOfIsdn);\n  } // If both phone context and isdn-subaddress are absent but other\n  // parameters are present, the parameters are left in nationalNumber.\n  // This is because we are concerned about deleting content from a potential\n  // number string when there is no strong evidence that the number is\n  // actually written in RFC3966.\n\n\n  if (phoneNumberString !== '') {\n    return phoneNumberString;\n  }\n}\n//# sourceMappingURL=extractFormattedPhoneNumberFromPossibleRfc3966NumberUri.js.map",
-      "start": 1709003849092,
-      "end": 1709003849139,
+      "start": 1709272110672,
+      "end": 1709272110713,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110713,
+      "end": 1709272110713,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110713,
+      "end": 1709272110713,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003849139,
-      "end": 1709003849139,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003849139,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003849140,
-      "end": 1709003849140,
+      "start": 1709272110714,
+      "end": 1709272110714,
       "order": "normal"
     }
   ]

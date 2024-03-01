@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "function replace(source, find, repl) {\r\n    let res = '';\r\n    let rem = source;\r\n    let beg = 0;\r\n    let end = -1;\r\n    while ((end = rem.indexOf(find)) > -1) {\r\n        res += source.substring(beg, beg + end) + repl;\r\n        rem = rem.substring(end + find.length, rem.length);\r\n        beg += end + find.length;\r\n    }\r\n    if (rem.length > 0) {\r\n        res += source.substring(source.length - rem.length, source.length);\r\n    }\r\n    return res;\r\n}\r\nfunction decodeFragmentSegments(segments) {\r\n    let i = -1;\r\n    const len = segments.length;\r\n    const res = new Array(len);\r\n    while (++i < len) {\r\n        if (typeof segments[i] === 'string') {\r\n            res[i] = replace(replace(decodeURIComponent(segments[i]), '~1', '/'), '~0', '~');\r\n        }\r\n        else {\r\n            res[i] = segments[i];\r\n        }\r\n    }\r\n    return res;\r\n}\r\nfunction encodeFragmentSegments(segments) {\r\n    let i = -1;\r\n    const len = segments.length;\r\n    const res = new Array(len);\r\n    while (++i < len) {\r\n        if (typeof segments[i] === 'string') {\r\n            res[i] = encodeURIComponent(replace(replace(segments[i], '~', '~0'), '/', '~1'));\r\n        }\r\n        else {\r\n            res[i] = segments[i];\r\n        }\r\n    }\r\n    return res;\r\n}\r\nfunction decodePointerSegments(segments) {\r\n    let i = -1;\r\n    const len = segments.length;\r\n    const res = new Array(len);\r\n    while (++i < len) {\r\n        if (typeof segments[i] === 'string') {\r\n            res[i] = replace(replace(segments[i], '~1', '/'), '~0', '~');\r\n        }\r\n        else {\r\n            res[i] = segments[i];\r\n        }\r\n    }\r\n    return res;\r\n}\r\nfunction encodePointerSegments(segments) {\r\n    let i = -1;\r\n    const len = segments.length;\r\n    const res = new Array(len);\r\n    while (++i < len) {\r\n        if (typeof segments[i] === 'string') {\r\n            res[i] = replace(replace(segments[i], '~', '~0'), '/', '~1');\r\n        }\r\n        else {\r\n            res[i] = segments[i];\r\n        }\r\n    }\r\n    return res;\r\n}\r\nfunction decodePointer(ptr) {\r\n    if (typeof ptr !== 'string') {\r\n        throw new TypeError('Invalid type: JSON Pointers are represented as strings.');\r\n    }\r\n    if (ptr.length === 0) {\r\n        return [];\r\n    }\r\n    if (ptr[0] !== '/') {\r\n        throw new ReferenceError('Invalid JSON Pointer syntax. Non-empty pointer must begin with a solidus `/`.');\r\n    }\r\n    return decodePointerSegments(ptr.substring(1).split('/'));\r\n}\r\nfunction encodePointer(path) {\r\n    if (!path || (path && !Array.isArray(path))) {\r\n        throw new TypeError('Invalid type: path must be an array of segments.');\r\n    }\r\n    if (path.length === 0) {\r\n        return '';\r\n    }\r\n    return '/'.concat(encodePointerSegments(path).join('/'));\r\n}\r\nfunction decodeUriFragmentIdentifier(ptr) {\r\n    if (typeof ptr !== 'string') {\r\n        throw new TypeError('Invalid type: JSON Pointers are represented as strings.');\r\n    }\r\n    if (ptr.length === 0 || ptr[0] !== '#') {\r\n        throw new ReferenceError('Invalid JSON Pointer syntax; URI fragment identifiers must begin with a hash.');\r\n    }\r\n    if (ptr.length === 1) {\r\n        return [];\r\n    }\r\n    if (ptr[1] !== '/') {\r\n        throw new ReferenceError('Invalid JSON Pointer syntax.');\r\n    }\r\n    return decodeFragmentSegments(ptr.substring(2).split('/'));\r\n}\r\nfunction encodeUriFragmentIdentifier(path) {\r\n    if (!path || (path && !Array.isArray(path))) {\r\n        throw new TypeError('Invalid type: path must be an array of segments.');\r\n    }\r\n    if (path.length === 0) {\r\n        return '#';\r\n    }\r\n    return '#/'.concat(encodeFragmentSegments(path).join('/'));\r\n}\r\nconst InvalidRelativePointerError = 'Invalid Relative JSON Pointer syntax. Relative pointer must begin with a non-negative integer, followed by either the number sign (#), or a JSON Pointer.';\r\nfunction decodeRelativePointer(ptr) {\r\n    if (typeof ptr !== 'string') {\r\n        throw new TypeError('Invalid type: Relative JSON Pointers are represented as strings.');\r\n    }\r\n    if (ptr.length === 0) {\r\n        // https://tools.ietf.org/id/draft-handrews-relative-json-pointer-00.html#rfc.section.3\r\n        throw new ReferenceError(InvalidRelativePointerError);\r\n    }\r\n    const segments = ptr.split('/');\r\n    let first = segments[0];\r\n    // It is a name reference; strip the hash.\r\n    if (first[first.length - 1] == '#') {\r\n        if (segments.length > 1) {\r\n            throw new ReferenceError(InvalidRelativePointerError);\r\n        }\r\n        first = first.substr(0, first.length - 1);\r\n    }\r\n    let i = -1;\r\n    const len = first.length;\r\n    while (++i < len) {\r\n        if (first[i] < '0' || first[i] > '9') {\r\n            throw new ReferenceError(InvalidRelativePointerError);\r\n        }\r\n    }\r\n    const path = decodePointerSegments(segments.slice(1));\r\n    path.unshift(segments[0]);\r\n    return path;\r\n}\r\nfunction toArrayIndexReference(arr, idx) {\r\n    if (typeof idx === 'number')\r\n        return idx;\r\n    const len = idx.length;\r\n    if (!len)\r\n        return -1;\r\n    let cursor = 0;\r\n    if (len === 1 && idx[0] === '-') {\r\n        if (!Array.isArray(arr)) {\r\n            return 0;\r\n        }\r\n        return arr.length;\r\n    }\r\n    while (++cursor < len) {\r\n        if (idx[cursor] < '0' || idx[cursor] > '9') {\r\n            return -1;\r\n        }\r\n    }\r\n    return parseInt(idx, 10);\r\n}\r\nfunction compilePointerDereference(path) {\r\n    let body = \"if (typeof(it) !== 'undefined'\";\r\n    if (path.length === 0) {\r\n        return (it) => it;\r\n    }\r\n    body = path.reduce((body, _, i) => {\r\n        return (body +\r\n            \"\\n\\t&& it !== null && typeof((it = it['\" +\r\n            replace(replace(path[i] + '', '\\\\', '\\\\\\\\'), \"'\", \"\\\\'\") +\r\n            \"'])) !== 'undefined'\");\r\n    }, \"if (typeof(it) !== 'undefined'\");\r\n    body = body + ') {\\n\\treturn it;\\n }';\r\n    // eslint-disable-next-line no-new-func\r\n    return new Function('it', body);\r\n}\r\nfunction setValueAtPath(target, val, path, force = false) {\r\n    if (path.length === 0) {\r\n        throw new Error('Cannot set the root object; assign it directly.');\r\n    }\r\n    if (typeof target === 'undefined') {\r\n        throw new TypeError('Cannot set values on undefined');\r\n    }\r\n    // eslint-disable-next-line @typescript-eslint/no-explicit-any\r\n    let it = target;\r\n    const len = path.length;\r\n    const end = path.length - 1;\r\n    let step;\r\n    let cursor = -1;\r\n    let rem;\r\n    let p;\r\n    while (++cursor < len) {\r\n        step = path[cursor];\r\n        if (typeof step !== 'string' && typeof step !== 'number') {\r\n            throw new TypeError('PathSegments must be a string or a number.');\r\n        }\r\n        if (\r\n        // Reconsider this strategy. It disallows legitimate structures on\r\n        // non - objects, or more precisely, on objects not derived from a class\r\n        // or constructor function.\r\n        step === '__proto__' ||\r\n            step === 'constructor' ||\r\n            step === 'prototype') {\r\n            throw new Error('Attempted prototype pollution disallowed.');\r\n        }\r\n        if (Array.isArray(it)) {\r\n            if (step === '-' && cursor === end) {\r\n                it.push(val);\r\n                return undefined;\r\n            }\r\n            p = toArrayIndexReference(it, step);\r\n            if (it.length > p) {\r\n                if (cursor === end) {\r\n                    rem = it[p];\r\n                    it[p] = val;\r\n                    break;\r\n                }\r\n                it = it[p];\r\n            }\r\n            else if (cursor === end && p === it.length) {\r\n                if (force) {\r\n                    it.push(val);\r\n                    return undefined;\r\n                }\r\n            }\r\n            else if (force) {\r\n                it = it[p] = cursor === end ? val : {};\r\n            }\r\n        }\r\n        else {\r\n            if (typeof it[step] === 'undefined') {\r\n                if (force) {\r\n                    if (cursor === end) {\r\n                        it[step] = val;\r\n                        return undefined;\r\n                    }\r\n                    // if the next step is an array index, this step should be an array.\r\n                    const n = Number(path[cursor + 1]);\r\n                    if (Number.isInteger(n) &&\r\n                        toArrayIndexReference(it[step], n) !== -1) {\r\n                        it = it[step] = [];\r\n                        continue;\r\n                    }\r\n                    it = it[step] = {};\r\n                    continue;\r\n                }\r\n                return undefined;\r\n            }\r\n            if (cursor === end) {\r\n                rem = it[step];\r\n                it[step] = val;\r\n                break;\r\n            }\r\n            it = it[step];\r\n        }\r\n    }\r\n    return rem;\r\n}\r\nfunction unsetValueAtPath(target, path) {\r\n    if (path.length === 0) {\r\n        throw new Error('Cannot unset the root object; assign it directly.');\r\n    }\r\n    if (typeof target === 'undefined') {\r\n        throw new TypeError('Cannot unset values on undefined');\r\n    }\r\n    // eslint-disable-next-line @typescript-eslint/no-explicit-any\r\n    let it = target;\r\n    const len = path.length;\r\n    const end = path.length - 1;\r\n    let step;\r\n    let cursor = -1;\r\n    let rem;\r\n    let p;\r\n    while (++cursor < len) {\r\n        step = path[cursor];\r\n        if (typeof step !== 'string' && typeof step !== 'number') {\r\n            throw new TypeError('PathSegments must be a string or a number.');\r\n        }\r\n        if (step === '__proto__' ||\r\n            step === 'constructor' ||\r\n            step === 'prototype') {\r\n            throw new Error('Attempted prototype pollution disallowed.');\r\n        }\r\n        if (Array.isArray(it)) {\r\n            p = toArrayIndexReference(it, step);\r\n            if (p >= it.length)\r\n                return undefined;\r\n            if (cursor === end) {\r\n                rem = it[p];\r\n                delete it[p];\r\n                break;\r\n            }\r\n            it = it[p];\r\n        }\r\n        else {\r\n            if (typeof it[step] === 'undefined') {\r\n                return undefined;\r\n            }\r\n            if (cursor === end) {\r\n                rem = it[step];\r\n                delete it[step];\r\n                break;\r\n            }\r\n            it = it[step];\r\n        }\r\n    }\r\n    return rem;\r\n}\r\nfunction looksLikeFragment(ptr) {\r\n    return typeof ptr === 'string' && ptr.length > 0 && ptr[0] === '#';\r\n}\r\nfunction pickDecoder(ptr) {\r\n    return looksLikeFragment(ptr) ? decodeUriFragmentIdentifier : decodePointer;\r\n}\r\nfunction decodePtrInit(ptr) {\r\n    return Array.isArray(ptr)\r\n        ? ptr.slice(0)\r\n        : pickDecoder(ptr)(ptr);\r\n}\n\n/**\r\n * Determines if the value is an object (not null)\r\n * @param value the value\r\n * @returns true if the value is a non-null object; otherwise false.\r\n *\r\n * @hidden\r\n */\r\nfunction isObject(value) {\r\n    return typeof value === 'object' && value !== null;\r\n}\r\n/** @hidden */\r\nfunction shouldDescend(obj) {\r\n    return isObject(obj) && !JsonReference.isReference(obj);\r\n}\r\n/** @hidden */\r\nfunction descendingVisit(target, visitor, encoder) {\r\n    const distinctObjects = new Map();\r\n    const q = [{ obj: target, path: [] }];\r\n    while (q.length) {\r\n        const { obj, path } = q.shift();\r\n        visitor(encoder(path), obj);\r\n        if (shouldDescend(obj)) {\r\n            distinctObjects.set(obj, new JsonPointer(encodeUriFragmentIdentifier(path)));\r\n            if (!Array.isArray(obj)) {\r\n                const keys = Object.keys(obj);\r\n                const len = keys.length;\r\n                let i = -1;\r\n                while (++i < len) {\r\n                    const it = obj[keys[i]];\r\n                    if (isObject(it) && distinctObjects.has(it)) {\r\n                        q.push({\r\n                            obj: new JsonReference(distinctObjects.get(it)),\r\n                            path: path.concat(keys[i]),\r\n                        });\r\n                    }\r\n                    else {\r\n                        q.push({\r\n                            obj: it,\r\n                            path: path.concat(keys[i]),\r\n                        });\r\n                    }\r\n                }\r\n            }\r\n            else {\r\n                // handleArray\r\n                let j = -1;\r\n                const len = obj.length;\r\n                while (++j < len) {\r\n                    const it = obj[j];\r\n                    if (isObject(it) && distinctObjects.has(it)) {\r\n                        q.push({\r\n                            obj: new JsonReference(distinctObjects.get(it)),\r\n                            path: path.concat([j + '']),\r\n                        });\r\n                    }\r\n                    else {\r\n                        q.push({\r\n                            obj: it,\r\n                            path: path.concat([j + '']),\r\n                        });\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n/** @hidden */\r\nconst $ptr = Symbol('pointer');\r\n/** @hidden */\r\nconst $frg = Symbol('fragmentId');\r\n/** @hidden */\r\nconst $get = Symbol('getter');\r\n/**\r\n * Represents a JSON Pointer, capable of getting and setting the value on target\r\n * objects at the pointer's location.\r\n *\r\n * While there are static variants for most operations, our recommendation is\r\n * to use the instance level methods, which enables you avoid repeated\r\n * compiling/emitting transient accessors. Take a look at the speed comparisons\r\n * for our justification.\r\n *\r\n * In most cases, you should create and reuse instances of JsonPointer within\r\n * scope that makes sense for your app. We often create constants for frequently\r\n * used pointers, but your use case may vary.\r\n *\r\n * The following is a contrived example showing a function that uses pointers to\r\n * deal with changes in the structure of data (a version independent function):\r\n *\r\n * ```ts\r\n * import { JsonPointer } from 'json-ptr';\r\n *\r\n * export type SupportedVersion = '1.0' | '1.1';\r\n *\r\n * interface PrimaryGuestNamePointers {\r\n *   name: JsonPointer;\r\n *   surname: JsonPointer;\r\n *   honorific: JsonPointer;\r\n * }\r\n * const versions: Record<SupportedVersion, PrimaryGuestNamePointers> = {\r\n *   '1.0': {\r\n *     name: JsonPointer.create('/guests/0/name'),\r\n *     surname: JsonPointer.create('/guests/0/surname'),\r\n *     honorific: JsonPointer.create('/guests/0/honorific'),\r\n *   },\r\n *   '1.1': {\r\n *     name: JsonPointer.create('/primary/primaryGuest/name'),\r\n *     surname: JsonPointer.create('/primary/primaryGuest/surname'),\r\n *     honorific: JsonPointer.create('/primary/primaryGuest/honorific'),\r\n *   }\r\n * };\r\n *\r\n * interface Reservation extends Record<string, unknown> {\r\n *   version?: SupportedVersion;\r\n * }\r\n *\r\n * function primaryGuestName(reservation: Reservation): string {\r\n *   const pointers = versions[reservation.version || '1.0'];\r\n *   const name = pointers.name.get(reservation) as string;\r\n *   const surname = pointers.surname.get(reservation) as string;\r\n *   const honorific = pointers.honorific.get(reservation) as string;\r\n *   const names: string[] = [];\r\n *   if (honorific) names.push(honorific);\r\n *   if (name) names.push(name);\r\n *   if (surname) names.push(surname);\r\n *   return names.join(' ');\r\n * }\r\n *\r\n * // The original layout of a reservation (only the parts relevant to our example)\r\n * const reservationV1: Reservation = {\r\n *   guests: [{\r\n *     name: 'Wilbur',\r\n *     surname: 'Finkle',\r\n *     honorific: 'Mr.'\r\n *   }, {\r\n *     name: 'Wanda',\r\n *     surname: 'Finkle',\r\n *     honorific: 'Mrs.'\r\n *   }, {\r\n *     name: 'Wilma',\r\n *     surname: 'Finkle',\r\n *     honorific: 'Miss',\r\n *     child: true,\r\n *     age: 12\r\n *   }]\r\n *   // ...\r\n * };\r\n *\r\n * // The new layout of a reservation (only the parts relevant to our example)\r\n * const reservationV1_1: Reservation = {\r\n *   version: '1.1',\r\n *   primary: {\r\n *     primaryGuest: {\r\n *       name: 'Wilbur',\r\n *       surname: 'Finkle',\r\n *       honorific: 'Mr.'\r\n *     },\r\n *     additionalGuests: [{\r\n *       name: 'Wanda',\r\n *       surname: 'Finkle',\r\n *       honorific: 'Mrs.'\r\n *     }, {\r\n *       name: 'Wilma',\r\n *       surname: 'Finkle',\r\n *       honorific: 'Miss',\r\n *       child: true,\r\n *       age: 12\r\n *     }]\r\n *     // ...\r\n *   }\r\n *   // ...\r\n * };\r\n *\r\n * console.log(primaryGuestName(reservationV1));\r\n * console.log(primaryGuestName(reservationV1_1));\r\n *\r\n * ```\r\n *\r\n * There are many uses for pointers.\r\n */\r\nclass JsonPointer {\r\n    /**\r\n     * Creates a new instance.\r\n     * @param ptr a string representation of a JSON Pointer, or a decoded array of path segments.\r\n     */\r\n    constructor(ptr) {\r\n        this.path = decodePtrInit(ptr);\r\n    }\r\n    /**\r\n     * Factory function that creates a JsonPointer instance.\r\n     *\r\n     * ```ts\r\n     * const ptr = JsonPointer.create('/deeply/nested/data/0/here');\r\n     * ```\r\n     * _or_\r\n     * ```ts\r\n     * const ptr = JsonPointer.create(['deeply', 'nested', 'data', 0, 'here']);\r\n     * ```\r\n     * @param pointer the pointer or path.\r\n     */\r\n    static create(pointer) {\r\n        return new JsonPointer(pointer);\r\n    }\r\n    /**\r\n     * Determines if the specified `target`'s object graph has a value at the `pointer`'s location.\r\n     *\r\n     * ```ts\r\n     * const target = {\r\n     *   first: 'second',\r\n     *   third: ['fourth', 'fifth', { sixth: 'seventh' }],\r\n     *   eighth: 'ninth'\r\n     * };\r\n     *\r\n     * console.log(JsonPointer.has(target, '/third/0'));\r\n     * // true\r\n     * console.log(JsonPointer.has(target, '/tenth'));\r\n     * // false\r\n     * ```\r\n     *\r\n     * @param target the target of the operation\r\n     * @param pointer the pointer or path\r\n     */\r\n    static has(target, pointer) {\r\n        if (typeof pointer === 'string' || Array.isArray(pointer)) {\r\n            pointer = new JsonPointer(pointer);\r\n        }\r\n        return pointer.has(target);\r\n    }\r\n    /**\r\n     * Gets the `target` object's value at the `pointer`'s location.\r\n     *\r\n     * ```ts\r\n     * const target = {\r\n     *   first: 'second',\r\n     *   third: ['fourth', 'fifth', { sixth: 'seventh' }],\r\n     *   eighth: 'ninth'\r\n     * };\r\n     *\r\n     * console.log(JsonPointer.get(target, '/third/2/sixth'));\r\n     * // seventh\r\n     * console.log(JsonPointer.get(target, '/tenth'));\r\n     * // undefined\r\n     * ```\r\n     *\r\n     * @param target the target of the operation\r\n     * @param pointer the pointer or path.\r\n     */\r\n    static get(target, pointer) {\r\n        if (typeof pointer === 'string' || Array.isArray(pointer)) {\r\n            pointer = new JsonPointer(pointer);\r\n        }\r\n        return pointer.get(target);\r\n    }\r\n    /**\r\n     * Sets the `target` object's value, as specified, at the `pointer`'s location.\r\n     *\r\n     * ```ts\r\n     * const target = {\r\n     *   first: 'second',\r\n     *   third: ['fourth', 'fifth', { sixth: 'seventh' }],\r\n     *   eighth: 'ninth'\r\n     * };\r\n     *\r\n     * console.log(JsonPointer.set(target, '/third/2/sixth', 'tenth'));\r\n     * // seventh\r\n     * console.log(JsonPointer.set(target, '/tenth', 'eleventh', true));\r\n     * // undefined\r\n     * console.log(JSON.stringify(target, null, ' '));\r\n     * // {\r\n     * // \"first\": \"second\",\r\n     * // \"third\": [\r\n     * //  \"fourth\",\r\n     * //  \"fifth\",\r\n     * //  {\r\n     * //   \"sixth\": \"tenth\"\r\n     * //  }\r\n     * // ],\r\n     * // \"eighth\": \"ninth\",\r\n     * // \"tenth\": \"eleventh\"\r\n     * // }\r\n     * ```\r\n     *\r\n     * @param target the target of the operation\r\n     * @param pointer the pointer or path\r\n     * @param val a value to write into the object graph at the specified pointer location\r\n     * @param force indications whether the operation should force the pointer's location into existence in the object graph.\r\n     *\r\n     * @returns the prior value at the pointer's location in the object graph.\r\n     */\r\n    static set(target, pointer, val, force = false) {\r\n        if (typeof pointer === 'string' || Array.isArray(pointer)) {\r\n            pointer = new JsonPointer(pointer);\r\n        }\r\n        return pointer.set(target, val, force);\r\n    }\r\n    /**\r\n     * Removes the `target` object's value at the `pointer`'s location.\r\n     *\r\n     * ```ts\r\n     * const target = {\r\n     *   first: 'second',\r\n     *   third: ['fourth', 'fifth', { sixth: 'seventh' }],\r\n     *   eighth: 'ninth'\r\n     * };\r\n     *\r\n     * console.log(JsonPointer.unset(target, '/third/2/sixth'));\r\n     * // seventh\r\n     * console.log(JsonPointer.unset(target, '/tenth'));\r\n     * // undefined\r\n     * console.log(JSON.stringify(target, null, ' '));\r\n     * // {\r\n     * // \"first\": \"second\",\r\n     * // \"third\": [\r\n     * //  \"fourth\",\r\n     * //  \"fifth\",\r\n     * //  {}\r\n     * // ],\r\n     * // \"eighth\": \"ninth\",\r\n     * // }\r\n     * ```\r\n     * @param target the target of the operation\r\n     * @param pointer the pointer or path\r\n     *\r\n     * @returns the value that was removed from the object graph.\r\n     */\r\n    static unset(target, pointer) {\r\n        if (typeof pointer === 'string' || Array.isArray(pointer)) {\r\n            pointer = new JsonPointer(pointer);\r\n        }\r\n        return pointer.unset(target);\r\n    }\r\n    /**\r\n     * Decodes the specified pointer into path segments.\r\n     * @param pointer a string representation of a JSON Pointer\r\n     */\r\n    static decode(pointer) {\r\n        return pickDecoder(pointer)(pointer);\r\n    }\r\n    /**\r\n     * Evaluates the target's object graph, calling the specified visitor for every unique pointer location discovered while walking the graph.\r\n     * @param target the target of the operation\r\n     * @param visitor a callback function invoked for each unique pointer location in the object graph\r\n     * @param fragmentId indicates whether the visitor should receive fragment identifiers or regular pointers\r\n     */\r\n    static visit(target, visitor, fragmentId = false) {\r\n        descendingVisit(target, visitor, fragmentId ? encodeUriFragmentIdentifier : encodePointer);\r\n    }\r\n    /**\r\n     * Evaluates the target's object graph, returning a [[JsonStringPointerListItem]] for each location in the graph.\r\n     * @param target the target of the operation\r\n     */\r\n    static listPointers(target) {\r\n        const res = [];\r\n        descendingVisit(target, (pointer, value) => {\r\n            res.push({ pointer, value });\r\n        }, encodePointer);\r\n        return res;\r\n    }\r\n    /**\r\n     * Evaluates the target's object graph, returning a [[UriFragmentIdentifierPointerListItem]] for each location in the graph.\r\n     * @param target the target of the operation\r\n     */\r\n    static listFragmentIds(target) {\r\n        const res = [];\r\n        descendingVisit(target, (fragmentId, value) => {\r\n            res.push({ fragmentId, value });\r\n        }, encodeUriFragmentIdentifier);\r\n        return res;\r\n    }\r\n    /**\r\n     * Evaluates the target's object graph, returning a Record&lt;Pointer, unknown> populated with pointers and the corresponding values from the graph.\r\n     * @param target the target of the operation\r\n     * @param fragmentId indicates whether the results are populated with fragment identifiers rather than regular pointers\r\n     */\r\n    static flatten(target, fragmentId = false) {\r\n        const res = {};\r\n        descendingVisit(target, (p, v) => {\r\n            res[p] = v;\r\n        }, fragmentId ? encodeUriFragmentIdentifier : encodePointer);\r\n        return res;\r\n    }\r\n    /**\r\n     * Evaluates the target's object graph, returning a Map&lt;Pointer,unknown>  populated with pointers and the corresponding values form the graph.\r\n     * @param target the target of the operation\r\n     * @param fragmentId indicates whether the results are populated with fragment identifiers rather than regular pointers\r\n     */\r\n    static map(target, fragmentId = false) {\r\n        const res = new Map();\r\n        descendingVisit(target, res.set.bind(res), fragmentId ? encodeUriFragmentIdentifier : encodePointer);\r\n        return res;\r\n    }\r\n    /**\r\n     * Gets the target object's value at the pointer's location.\r\n     * @param target the target of the operation\r\n     */\r\n    get(target) {\r\n        if (!this[$get]) {\r\n            this[$get] = compilePointerDereference(this.path);\r\n        }\r\n        return this[$get](target);\r\n    }\r\n    /**\r\n     * Sets the target object's value, as specified, at the pointer's location.\r\n     *\r\n     * If any part of the pointer's path does not exist, the operation aborts\r\n     * without modification, unless the caller indicates that pointer's location\r\n     * should be created.\r\n     *\r\n     * @param target the target of the operation\r\n     * @param value the value to set\r\n     * @param force indicates whether the pointer's location should be created if it doesn't already exist.\r\n     */\r\n    set(target, value, force = false) {\r\n        return setValueAtPath(target, value, this.path, force);\r\n    }\r\n    /**\r\n     * Removes the target object's value at the pointer's location.\r\n     * @param target the target of the operation\r\n     *\r\n     * @returns the value that was removed from the object graph.\r\n     */\r\n    unset(target) {\r\n        return unsetValueAtPath(target, this.path);\r\n    }\r\n    /**\r\n     * Determines if the specified target's object graph has a value at the pointer's location.\r\n     * @param target the target of the operation\r\n     */\r\n    has(target) {\r\n        return typeof this.get(target) !== 'undefined';\r\n    }\r\n    /**\r\n     * Gets the value in the object graph that is the parent of the pointer location.\r\n     * @param target the target of the operation\r\n     */\r\n    parent(target) {\r\n        const p = this.path;\r\n        if (p.length == 1)\r\n            return undefined;\r\n        const parent = new JsonPointer(p.slice(0, p.length - 1));\r\n        return parent.get(target);\r\n    }\r\n    /**\r\n     * Creates a new JsonPointer instance, pointing to the specified relative location in the object graph.\r\n     * @param ptr the relative pointer (relative to this)\r\n     * @returns A new instance that points to the relative location.\r\n     */\r\n    relative(ptr) {\r\n        const p = this.path;\r\n        const decoded = decodeRelativePointer(ptr);\r\n        const n = parseInt(decoded[0]);\r\n        if (n > p.length)\r\n            throw new Error('Relative location does not exist.');\r\n        const r = p.slice(0, p.length - n).concat(decoded.slice(1));\r\n        if (decoded[0][decoded[0].length - 1] == '#') {\r\n            // It references the path segment/name, not the value\r\n            const name = r[r.length - 1];\r\n            throw new Error(`We won't compile a pointer that will always return '${name}'. Use JsonPointer.rel(target, ptr) instead.`);\r\n        }\r\n        return new JsonPointer(r);\r\n    }\r\n    /**\r\n     * Resolves the specified relative pointer path against the specified target object, and gets the target object's value at the relative pointer's location.\r\n     * @param target the target of the operation\r\n     * @param ptr the relative pointer (relative to this)\r\n     * @returns the value at the relative pointer's resolved path; otherwise undefined.\r\n     */\r\n    rel(target, ptr) {\r\n        const p = this.path;\r\n        const decoded = decodeRelativePointer(ptr);\r\n        const n = parseInt(decoded[0]);\r\n        if (n > p.length) {\r\n            // out of bounds\r\n            return undefined;\r\n        }\r\n        const r = p.slice(0, p.length - n).concat(decoded.slice(1));\r\n        const other = new JsonPointer(r);\r\n        if (decoded[0][decoded[0].length - 1] == '#') {\r\n            // It references the path segment/name, not the value\r\n            const name = r[r.length - 1];\r\n            const parent = other.parent(target);\r\n            return Array.isArray(parent) ? parseInt(name, 10) : name;\r\n        }\r\n        return other.get(target);\r\n    }\r\n    /**\r\n     * Creates a new instance by concatenating the specified pointer's path onto this pointer's path.\r\n     * @param ptr the string representation of a pointer, it's decoded path, or an instance of JsonPointer indicating the additional path to concatenate onto the pointer.\r\n     */\r\n    concat(ptr) {\r\n        return new JsonPointer(this.path.concat(ptr instanceof JsonPointer ? ptr.path : decodePtrInit(ptr)));\r\n    }\r\n    /**\r\n     * This pointer's JSON Pointer encoded string representation.\r\n     */\r\n    get pointer() {\r\n        if (this[$ptr] === undefined) {\r\n            this[$ptr] = encodePointer(this.path);\r\n        }\r\n        return this[$ptr];\r\n    }\r\n    /**\r\n     * This pointer's URI fragment identifier encoded string representation.\r\n     */\r\n    get uriFragmentIdentifier() {\r\n        if (!this[$frg]) {\r\n            this[$frg] = encodeUriFragmentIdentifier(this.path);\r\n        }\r\n        return this[$frg];\r\n    }\r\n    /**\r\n     * Emits the JSON Pointer encoded string representation.\r\n     */\r\n    toString() {\r\n        return this.pointer;\r\n    }\r\n}\r\n/** @hidden */\r\nconst $pointer = Symbol('pointer');\r\n/**\r\n * A reference to a location in an object graph.\r\n *\r\n * This type is used by this module to break cycles in an object graph and to\r\n * reference locations that have already been visited when enumerating pointers.\r\n */\r\nclass JsonReference {\r\n    /**\r\n     * Creates a new instance.\r\n     * @param pointer a JSON Pointer for the reference.\r\n     */\r\n    constructor(pointer) {\r\n        this[$pointer] =\r\n            pointer instanceof JsonPointer ? pointer : new JsonPointer(pointer);\r\n        this.$ref = this[$pointer].uriFragmentIdentifier;\r\n    }\r\n    /**\r\n     * Determines if the specified `candidate` is a JsonReference.\r\n     * @param candidate the candidate\r\n     */\r\n    static isReference(candidate) {\r\n        if (!candidate)\r\n            return false;\r\n        const ref = candidate;\r\n        return typeof ref.$ref === 'string' && typeof ref.resolve === 'function';\r\n    }\r\n    /**\r\n     * Resolves the reference against the `target` object, returning the value at\r\n     * the referenced pointer's location.\r\n     * @param target the target object\r\n     */\r\n    resolve(target) {\r\n        return this[$pointer].get(target);\r\n    }\r\n    /**\r\n     * Gets the reference's pointer.\r\n     */\r\n    pointer() {\r\n        return this[$pointer];\r\n    }\r\n    /**\r\n     * Gets the reference pointer's string representation (a URI fragment identifier).\r\n     */\r\n    toString() {\r\n        return this.$ref;\r\n    }\r\n}\n\nexport { JsonPointer, JsonReference, compilePointerDereference, decodeFragmentSegments, decodePointer, decodePointerSegments, decodePtrInit, decodeRelativePointer, decodeUriFragmentIdentifier, encodeFragmentSegments, encodePointer, encodePointerSegments, encodeUriFragmentIdentifier, looksLikeFragment, pickDecoder, replace, setValueAtPath, toArrayIndexReference, unsetValueAtPath };\n//# sourceMappingURL=index.js.map\n",
-      "start": 1709003848420,
-      "end": 1709003848445,
+      "start": 1709272109736,
+      "end": 1709272109799,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003848445,
-      "end": 1709003848445,
+      "start": 1709272109799,
+      "end": 1709272109799,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003848445,
-      "end": 1709003848447,
+      "start": 1709272109799,
+      "end": 1709272109801,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003848447,
-      "end": 1709003848447,
+      "start": 1709272109801,
+      "end": 1709272109801,
       "order": "normal"
     }
   ]

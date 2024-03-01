@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import isViablePhoneNumber from '../helpers/isViablePhoneNumber.js';\nimport parseNumber from '../parse.js';\nimport _isValidNumberForRegion from './isValidNumberForRegion_.js'; // This function has been deprecated and is not exported as\n// `isValidPhoneNumberForCountry()` or `isValidPhoneNumberForRegion()`.\n//\n// The rationale is:\n//\n// * We don't use the \"region\" word, so \"country\" would be better.\n//\n// * It could be substituted with:\n//\n// ```js\n// export default function isValidPhoneNumberForCountry(phoneNumberString, country) {\n// \tconst phoneNumber = parsePhoneNumber(phoneNumberString, {\n// \t\tdefaultCountry: country,\n// \t\t// Demand that the entire input string must be a phone number.\n// \t\t// Otherwise, it would \"extract\" a phone number from an input string.\n// \t\textract: false\n// \t})\n// \tif (!phoneNumber) {\n// \t\treturn false\n// \t}\n// \tif (phoneNumber.country !== country) {\n// \t\treturn false\n// \t}\n// \treturn phoneNumber.isValid()\n// }\n// ```\n//\n// * Same function could be used for `isPossiblePhoneNumberForCountry()`\n//   by replacing `isValid()` with `isPossible()`.\n//\n// * The reason why this function is not exported is because its result is ambiguous.\n//   Suppose `false` is returned. It could mean any of:\n//   * Not a phone number.\n//   * The phone number is valid but belongs to another country or another calling code.\n//   * The phone number belongs to the correct country but is not valid digit-wise.\n//   All those three cases should be handled separately from a \"User Experience\" standpoint.\n//   Simply showing \"Invalid phone number\" error in all of those cases would be lazy UX.\n\nexport default function isValidNumberForRegion(number, country, metadata) {\n  if (typeof number !== 'string') {\n    throw new TypeError('number must be a string');\n  }\n\n  if (typeof country !== 'string') {\n    throw new TypeError('country must be a string');\n  } // `parse` extracts phone numbers from raw text,\n  // therefore it will cut off all \"garbage\" characters,\n  // while this `validate` function needs to verify\n  // that the phone number contains no \"garbage\"\n  // therefore the explicit `isViablePhoneNumber` check.\n\n\n  var input;\n\n  if (isViablePhoneNumber(number)) {\n    input = parseNumber(number, {\n      defaultCountry: country\n    }, metadata);\n  } else {\n    input = {};\n  }\n\n  return _isValidNumberForRegion(input, country, undefined, metadata);\n}\n//# sourceMappingURL=isValidNumberForRegion.js.map",
-      "start": 1709003848989,
-      "end": 1709003849037,
+      "start": 1709272110575,
+      "end": 1709272110622,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003849037,
-      "end": 1709003849037,
+      "start": 1709272110622,
+      "end": 1709272110622,
       "order": "normal"
     }
   ]

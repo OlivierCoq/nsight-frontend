@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import { cancelInvoiceRequestSchema, } from '../models/cancelInvoiceRequest';\nimport { cancelInvoiceResponseSchema, } from '../models/cancelInvoiceResponse';\nimport { createInvoiceAttachmentRequestSchema, } from '../models/createInvoiceAttachmentRequest';\nimport { createInvoiceAttachmentResponseSchema, } from '../models/createInvoiceAttachmentResponse';\nimport { createInvoiceRequestSchema, } from '../models/createInvoiceRequest';\nimport { createInvoiceResponseSchema, } from '../models/createInvoiceResponse';\nimport { deleteInvoiceAttachmentResponseSchema, } from '../models/deleteInvoiceAttachmentResponse';\nimport { deleteInvoiceResponseSchema, } from '../models/deleteInvoiceResponse';\nimport { getInvoiceResponseSchema, } from '../models/getInvoiceResponse';\nimport { listInvoicesResponseSchema, } from '../models/listInvoicesResponse';\nimport { publishInvoiceRequestSchema, } from '../models/publishInvoiceRequest';\nimport { publishInvoiceResponseSchema, } from '../models/publishInvoiceResponse';\nimport { searchInvoicesRequestSchema, } from '../models/searchInvoicesRequest';\nimport { searchInvoicesResponseSchema, } from '../models/searchInvoicesResponse';\nimport { updateInvoiceRequestSchema, } from '../models/updateInvoiceRequest';\nimport { updateInvoiceResponseSchema, } from '../models/updateInvoiceResponse';\nimport { number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class InvoicesApi extends BaseApi {\n    /**\n     * Returns a list of invoices for a given location. The response\n     * is paginated. If truncated, the response includes a `cursor` that you\n     * use in a subsequent request to retrieve the next set of invoices.\n     *\n     * @param locationId  The ID of the location for which to list invoices.\n     * @param cursor      A pagination cursor returned by a previous call to this endpoint.  Provide this\n     *                              cursor to retrieve the next set of results for your original query.  For more\n     *                              information, see [Pagination](https://developer.squareup.com/docs/build-basics/common-\n     *                              api-patterns/pagination).\n     * @param limit       The maximum number of invoices to return (200 is the maximum `limit`).  If not\n     *                              provided, the server uses a default limit of 100 invoices.\n     * @return Response from the API call\n     */\n    async listInvoices(locationId, cursor, limit, requestOptions) {\n        const req = this.createRequest('GET', '/v2/invoices');\n        const mapped = req.prepareArgs({\n            locationId: [locationId, string()],\n            cursor: [cursor, optional(string())],\n            limit: [limit, optional(number())],\n        });\n        req.query('location_id', mapped.locationId);\n        req.query('cursor', mapped.cursor);\n        req.query('limit', mapped.limit);\n        return req.callAsJson(listInvoicesResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a draft [invoice]($m/Invoice)\n     * for an order created using the Orders API.\n     *\n     * A draft invoice remains in your account and no action is taken.\n     * You must publish the invoice before Square can process it (send it to the customer's email address\n     * or charge the customer’s card on file).\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createInvoice(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/invoices');\n        const mapped = req.prepareArgs({\n            body: [body, createInvoiceRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createInvoiceResponseSchema, requestOptions);\n    }\n    /**\n     * Searches for invoices from a location specified in\n     * the filter. You can optionally specify customers in the filter for whom to\n     * retrieve invoices. In the current implementation, you can only specify one location and\n     * optionally one customer.\n     *\n     * The response is paginated. If truncated, the response includes a `cursor`\n     * that you use in a subsequent request to retrieve the next set of invoices.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                     the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async searchInvoices(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/invoices/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchInvoicesRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchInvoicesResponseSchema, requestOptions);\n    }\n    /**\n     * Deletes the specified invoice. When an invoice is deleted, the\n     * associated order status changes to CANCELED. You can only delete a draft\n     * invoice (you cannot delete a published invoice, including one that is scheduled for processing).\n     *\n     * @param invoiceId  The ID of the invoice to delete.\n     * @param version    The version of the [invoice](entity:Invoice) to delete. If you do not know the\n     *                             version, you can call [GetInvoice](api-endpoint:Invoices-GetInvoice) or\n     *                             [ListInvoices](api-endpoint:Invoices-ListInvoices).\n     * @return Response from the API call\n     */\n    async deleteInvoice(invoiceId, version, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({\n            invoiceId: [invoiceId, string()],\n            version: [version, optional(number())],\n        });\n        req.query('version', mapped.version);\n        req.appendTemplatePath `/v2/invoices/${mapped.invoiceId}`;\n        return req.callAsJson(deleteInvoiceResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves an invoice by invoice ID.\n     *\n     * @param invoiceId  The ID of the invoice to retrieve.\n     * @return Response from the API call\n     */\n    async getInvoice(invoiceId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ invoiceId: [invoiceId, string()] });\n        req.appendTemplatePath `/v2/invoices/${mapped.invoiceId}`;\n        return req.callAsJson(getInvoiceResponseSchema, requestOptions);\n    }\n    /**\n     * Updates an invoice by modifying fields, clearing fields, or both. For most updates, you can use a\n     * sparse\n     * `Invoice` object to add fields or change values and use the `fields_to_clear` field to specify\n     * fields to clear.\n     * However, some restrictions apply. For example, you cannot change the `order_id` or `location_id`\n     * field and you\n     * must provide the complete `custom_fields` list to update a custom field. Published invoices have\n     * additional restrictions.\n     *\n     * @param invoiceId    The ID of the invoice to update.\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async updateInvoice(invoiceId, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            invoiceId: [invoiceId, string()],\n            body: [body, updateInvoiceRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/invoices/${mapped.invoiceId}`;\n        return req.callAsJson(updateInvoiceResponseSchema, requestOptions);\n    }\n    /**\n     * Uploads a file and attaches it to an invoice. This endpoint accepts HTTP multipart/form-data file\n     * uploads\n     * with a JSON `request` part and a `file` part. The `file` part must be a `readable stream` that\n     * contains a file\n     * in a supported format: GIF, JPEG, PNG, TIFF, BMP, or PDF.\n     *\n     * Invoices can have up to 10 attachments with a total file size of 25 MB. Attachments can be added\n     * only to invoices\n     * in the `DRAFT`, `SCHEDULED`, `UNPAID`, or `PARTIALLY_PAID` state.\n     *\n     * @param invoiceId  The ID of the [invoice](entity:Invoice) to attach the\n     *                                                            file to.\n     * @param request    Represents a\n     *                                                            [CreateInvoiceAttachment]($e/Invoices/CreateInvoiceAtta\n     *                                                            chment) request.\n     * @param imageFile\n     * @return Response from the API call\n     */\n    async createInvoiceAttachment(invoiceId, request, imageFile, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            invoiceId: [invoiceId, string()],\n            request: [request, optional(createInvoiceAttachmentRequestSchema)],\n        });\n        req.formData({\n            request: JSON.stringify(mapped.request),\n            image_file: imageFile,\n        });\n        req.appendTemplatePath `/v2/invoices/${mapped.invoiceId}/attachments`;\n        return req.callAsJson(createInvoiceAttachmentResponseSchema, requestOptions);\n    }\n    /**\n     * Removes an attachment from an invoice and permanently deletes the file. Attachments can be removed\n     * only\n     * from invoices in the `DRAFT`, `SCHEDULED`, `UNPAID`, or `PARTIALLY_PAID` state.\n     *\n     * @param invoiceId     The ID of the [invoice](entity:Invoice) to delete the attachment from.\n     * @param attachmentId  The ID of the [attachment](entity:InvoiceAttachment) to delete.\n     * @return Response from the API call\n     */\n    async deleteInvoiceAttachment(invoiceId, attachmentId, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({\n            invoiceId: [invoiceId, string()],\n            attachmentId: [attachmentId, string()],\n        });\n        req.appendTemplatePath `/v2/invoices/${mapped.invoiceId}/attachments/${mapped.attachmentId}`;\n        return req.callAsJson(deleteInvoiceAttachmentResponseSchema, requestOptions);\n    }\n    /**\n     * Cancels an invoice. The seller cannot collect payments for\n     * the canceled invoice.\n     *\n     * You cannot cancel an invoice in the `DRAFT` state or in a terminal state: `PAID`, `REFUNDED`,\n     * `CANCELED`, or `FAILED`.\n     *\n     * @param invoiceId    The ID of the [invoice](entity:Invoice) to cancel.\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async cancelInvoice(invoiceId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            invoiceId: [invoiceId, string()],\n            body: [body, cancelInvoiceRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/invoices/${mapped.invoiceId}/cancel`;\n        return req.callAsJson(cancelInvoiceResponseSchema, requestOptions);\n    }\n    /**\n     * Publishes the specified draft invoice.\n     *\n     * After an invoice is published, Square\n     * follows up based on the invoice configuration. For example, Square\n     * sends the invoice to the customer's email address, charges the customer's card on file, or does\n     * nothing. Square also makes the invoice available on a Square-hosted invoice page.\n     *\n     * The invoice `status` also changes from `DRAFT` to a status\n     * based on the invoice configuration. For example, the status changes to `UNPAID` if\n     * Square emails the invoice or `PARTIALLY_PAID` if Square charge a card on file for a portion of the\n     * invoice amount.\n     *\n     * @param invoiceId    The ID of the invoice to publish.\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                     the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async publishInvoice(invoiceId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            invoiceId: [invoiceId, string()],\n            body: [body, publishInvoiceRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/invoices/${mapped.invoiceId}/publish`;\n        return req.callAsJson(publishInvoiceResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=invoicesApi.js.map",
-      "start": 1709003846731,
-      "end": 1709003846808,
+      "start": 1709272108449,
+      "end": 1709272108537,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003846808,
-      "end": 1709003846808,
+      "start": 1709272108537,
+      "end": 1709272108537,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003846808,
-      "end": 1709003846809,
+      "start": 1709272108537,
+      "end": 1709272108538,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003846809,
-      "end": 1709003846809,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "normal"
     }
   ]

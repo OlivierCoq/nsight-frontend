@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import { createBreakTypeRequestSchema, } from '../models/createBreakTypeRequest';\nimport { createBreakTypeResponseSchema, } from '../models/createBreakTypeResponse';\nimport { createShiftRequestSchema, } from '../models/createShiftRequest';\nimport { createShiftResponseSchema, } from '../models/createShiftResponse';\nimport { deleteBreakTypeResponseSchema, } from '../models/deleteBreakTypeResponse';\nimport { deleteShiftResponseSchema, } from '../models/deleteShiftResponse';\nimport { getBreakTypeResponseSchema, } from '../models/getBreakTypeResponse';\nimport { getEmployeeWageResponseSchema, } from '../models/getEmployeeWageResponse';\nimport { getShiftResponseSchema, } from '../models/getShiftResponse';\nimport { getTeamMemberWageResponseSchema, } from '../models/getTeamMemberWageResponse';\nimport { listBreakTypesResponseSchema, } from '../models/listBreakTypesResponse';\nimport { listEmployeeWagesResponseSchema, } from '../models/listEmployeeWagesResponse';\nimport { listTeamMemberWagesResponseSchema, } from '../models/listTeamMemberWagesResponse';\nimport { listWorkweekConfigsResponseSchema, } from '../models/listWorkweekConfigsResponse';\nimport { searchShiftsRequestSchema, } from '../models/searchShiftsRequest';\nimport { searchShiftsResponseSchema, } from '../models/searchShiftsResponse';\nimport { updateBreakTypeRequestSchema, } from '../models/updateBreakTypeRequest';\nimport { updateBreakTypeResponseSchema, } from '../models/updateBreakTypeResponse';\nimport { updateShiftRequestSchema, } from '../models/updateShiftRequest';\nimport { updateShiftResponseSchema, } from '../models/updateShiftResponse';\nimport { updateWorkweekConfigRequestSchema, } from '../models/updateWorkweekConfigRequest';\nimport { updateWorkweekConfigResponseSchema, } from '../models/updateWorkweekConfigResponse';\nimport { number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class LaborApi extends BaseApi {\n    /**\n     * Returns a paginated list of `BreakType` instances for a business.\n     *\n     * @param locationId  Filter the returned `BreakType` results to only those that are associated with the\n     *                              specified location.\n     * @param limit       The maximum number of `BreakType` results to return per page. The number can range\n     *                              between 1 and 200. The default is 200.\n     * @param cursor      A pointer to the next page of `BreakType` results to fetch.\n     * @return Response from the API call\n     */\n    async listBreakTypes(locationId, limit, cursor, requestOptions) {\n        const req = this.createRequest('GET', '/v2/labor/break-types');\n        const mapped = req.prepareArgs({\n            locationId: [locationId, optional(string())],\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n        });\n        req.query('location_id', mapped.locationId);\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        return req.callAsJson(listBreakTypesResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a new `BreakType`.\n     *\n     * A `BreakType` is a template for creating `Break` objects.\n     * You must provide the following values in your request to this\n     * endpoint:\n     *\n     * - `location_id`\n     * - `break_name`\n     * - `expected_duration`\n     * - `is_paid`\n     *\n     * You can only have three `BreakType` instances per location. If you attempt to add a fourth\n     * `BreakType` for a location, an `INVALID_REQUEST_ERROR` \"Exceeded limit of 3 breaks per location.\"\n     * is returned.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                      See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createBreakType(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/labor/break-types');\n        const mapped = req.prepareArgs({\n            body: [body, createBreakTypeRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createBreakTypeResponseSchema, requestOptions);\n    }\n    /**\n     * Deletes an existing `BreakType`.\n     *\n     * A `BreakType` can be deleted even if it is referenced from a `Shift`.\n     *\n     * @param id The UUID for the `BreakType` being deleted.\n     * @return Response from the API call\n     */\n    async deleteBreakType(id, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({ id: [id, string()] });\n        req.appendTemplatePath `/v2/labor/break-types/${mapped.id}`;\n        return req.callAsJson(deleteBreakTypeResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a single `BreakType` specified by `id`.\n     *\n     * @param id The UUID for the `BreakType` being retrieved.\n     * @return Response from the API call\n     */\n    async getBreakType(id, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ id: [id, string()] });\n        req.appendTemplatePath `/v2/labor/break-types/${mapped.id}`;\n        return req.callAsJson(getBreakTypeResponseSchema, requestOptions);\n    }\n    /**\n     * Updates an existing `BreakType`.\n     *\n     * @param id           The UUID for the `BreakType` being updated.\n     * @param body         An object containing the fields to POST for the request.\n     *                                                      See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async updateBreakType(id, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            id: [id, string()],\n            body: [body, updateBreakTypeRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/labor/break-types/${mapped.id}`;\n        return req.callAsJson(updateBreakTypeResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a paginated list of `EmployeeWage` instances for a business.\n     *\n     * @param employeeId  Filter the returned wages to only those that are associated with the specified\n     *                              employee.\n     * @param limit       The maximum number of `EmployeeWage` results to return per page. The number can\n     *                              range between 1 and 200. The default is 200.\n     * @param cursor      A pointer to the next page of `EmployeeWage` results to fetch.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async listEmployeeWages(employeeId, limit, cursor, requestOptions) {\n        const req = this.createRequest('GET', '/v2/labor/employee-wages');\n        const mapped = req.prepareArgs({\n            employeeId: [employeeId, optional(string())],\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n        });\n        req.query('employee_id', mapped.employeeId);\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        req.deprecated('LaborApi.listEmployeeWages');\n        return req.callAsJson(listEmployeeWagesResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a single `EmployeeWage` specified by `id`.\n     *\n     * @param id The UUID for the `EmployeeWage` being retrieved.\n     * @return Response from the API call\n     * @deprecated\n     */\n    async getEmployeeWage(id, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ id: [id, string()] });\n        req.appendTemplatePath `/v2/labor/employee-wages/${mapped.id}`;\n        req.deprecated('LaborApi.getEmployeeWage');\n        return req.callAsJson(getEmployeeWageResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a new `Shift`.\n     *\n     * A `Shift` represents a complete workday for a single employee.\n     * You must provide the following values in your request to this\n     * endpoint:\n     *\n     * - `location_id`\n     * - `employee_id`\n     * - `start_at`\n     *\n     * An attempt to create a new `Shift` can result in a `BAD_REQUEST` error when:\n     * - The `status` of the new `Shift` is `OPEN` and the employee has another\n     * shift with an `OPEN` status.\n     * - The `start_at` date is in the future.\n     * - The `start_at` or `end_at` date overlaps another shift for the same employee.\n     * - The `Break` instances are set in the request and a break `start_at`\n     * is before the `Shift.start_at`, a break `end_at` is after\n     * the `Shift.end_at`, or both.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                  the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createShift(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/labor/shifts');\n        const mapped = req.prepareArgs({ body: [body, createShiftRequestSchema] });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createShiftResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a paginated list of `Shift` records for a business.\n     * The list to be returned can be filtered by:\n     * - Location IDs.\n     * - Employee IDs.\n     * - Shift status (`OPEN` and `CLOSED`).\n     * - Shift start.\n     * - Shift end.\n     * - Workday details.\n     *\n     * The list can be sorted by:\n     * - `start_at`.\n     * - `end_at`.\n     * - `created_at`.\n     * - `updated_at`.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                   the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async searchShifts(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/labor/shifts/search');\n        const mapped = req.prepareArgs({ body: [body, searchShiftsRequestSchema] });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchShiftsResponseSchema, requestOptions);\n    }\n    /**\n     * Deletes a `Shift`.\n     *\n     * @param id The UUID for the `Shift` being deleted.\n     * @return Response from the API call\n     */\n    async deleteShift(id, requestOptions) {\n        const req = this.createRequest('DELETE');\n        const mapped = req.prepareArgs({ id: [id, string()] });\n        req.appendTemplatePath `/v2/labor/shifts/${mapped.id}`;\n        return req.callAsJson(deleteShiftResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a single `Shift` specified by `id`.\n     *\n     * @param id The UUID for the `Shift` being retrieved.\n     * @return Response from the API call\n     */\n    async getShift(id, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ id: [id, string()] });\n        req.appendTemplatePath `/v2/labor/shifts/${mapped.id}`;\n        return req.callAsJson(getShiftResponseSchema, requestOptions);\n    }\n    /**\n     * Updates an existing `Shift`.\n     *\n     * When adding a `Break` to a `Shift`, any earlier `Break` instances in the `Shift` have\n     * the `end_at` property set to a valid RFC-3339 datetime string.\n     *\n     * When closing a `Shift`, all `Break` instances in the `Shift` must be complete with `end_at`\n     * set on each `Break`.\n     *\n     * @param id           The ID of the object being updated.\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                  the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async updateShift(id, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            id: [id, string()],\n            body: [body, updateShiftRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/labor/shifts/${mapped.id}`;\n        return req.callAsJson(updateShiftResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a paginated list of `TeamMemberWage` instances for a business.\n     *\n     * @param teamMemberId   Filter the returned wages to only those that are associated with the specified\n     *                                 team member.\n     * @param limit          The maximum number of `TeamMemberWage` results to return per page. The number can\n     *                                 range between 1 and 200. The default is 200.\n     * @param cursor         A pointer to the next page of `EmployeeWage` results to fetch.\n     * @return Response from the API call\n     */\n    async listTeamMemberWages(teamMemberId, limit, cursor, requestOptions) {\n        const req = this.createRequest('GET', '/v2/labor/team-member-wages');\n        const mapped = req.prepareArgs({\n            teamMemberId: [teamMemberId, optional(string())],\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n        });\n        req.query('team_member_id', mapped.teamMemberId);\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        return req.callAsJson(listTeamMemberWagesResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a single `TeamMemberWage` specified by `id `.\n     *\n     * @param id The UUID for the `TeamMemberWage` being retrieved.\n     * @return Response from the API call\n     */\n    async getTeamMemberWage(id, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ id: [id, string()] });\n        req.appendTemplatePath `/v2/labor/team-member-wages/${mapped.id}`;\n        return req.callAsJson(getTeamMemberWageResponseSchema, requestOptions);\n    }\n    /**\n     * Returns a list of `WorkweekConfig` instances for a business.\n     *\n     * @param limit  The maximum number of `WorkweekConfigs` results to return per page.\n     * @param cursor A pointer to the next page of `WorkweekConfig` results to fetch.\n     * @return Response from the API call\n     */\n    async listWorkweekConfigs(limit, cursor, requestOptions) {\n        const req = this.createRequest('GET', '/v2/labor/workweek-configs');\n        const mapped = req.prepareArgs({\n            limit: [limit, optional(number())],\n            cursor: [cursor, optional(string())],\n        });\n        req.query('limit', mapped.limit);\n        req.query('cursor', mapped.cursor);\n        return req.callAsJson(listWorkweekConfigsResponseSchema, requestOptions);\n    }\n    /**\n     * Updates a `WorkweekConfig`.\n     *\n     * @param id           The UUID for the `WorkweekConfig` object being updated.\n     * @param body         An object containing the fields to POST for the request.\n     *                                                           See the corresponding object definition for field\n     *                                                           details.\n     * @return Response from the API call\n     */\n    async updateWorkweekConfig(id, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            id: [id, string()],\n            body: [body, updateWorkweekConfigRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/labor/workweek-configs/${mapped.id}`;\n        return req.callAsJson(updateWorkweekConfigResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=laborApi.js.map",
-      "start": 1709003846732,
-      "end": 1709003846813,
+      "start": 1709272108450,
+      "end": 1709272108538,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108538,
+      "end": 1709272108538,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108538,
+      "end": 1709272108539,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003846813,
-      "end": 1709003846813,
+      "start": 1709272108539,
+      "end": 1709272108539,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003846813,
-      "end": 1709003846814,
+      "start": 1709272108539,
+      "end": 1709272108540,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003846814,
-      "end": 1709003846814,
+      "start": 1709272108540,
+      "end": 1709272108540,
       "order": "normal"
     }
   ]

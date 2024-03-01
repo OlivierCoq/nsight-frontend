@@ -4,57 +4,57 @@
     {
       "name": "vite:load-fallback",
       "result": "<template>\n  <v-row class=\"h-100 mb-5\">\n    <v-col cols=\"6\" md=\"3\" lg=\"3\" xl=\"3\" class=\"h-100\">\n      <v-img :src=\"state.product.image.url\" />\n    </v-col>\n    <v-col cols=\"6\" md=\"9\" lg=\"9\" xl=\"9\" class=\"h-100\">\n      <v-row class=\"h-100\">\n        <v-col cols=\"12\" md=\"6\" lg=\"6\" xl=\"6\" class=\"h-100\">\n          <div class=\"d-flex flex-column justify-space-between align-start w-100 h-100\">\n            <h3 class=\"fw-bold\">{{ state.product.name }}</h3>\n            <span v-if=\"state.product.selected_options.length\">\n              <span v-for=\"(option, index) in state.product.selected_options\" :key=\"index\">\n                {{ option.group_name }} - {{ option.option_name }}\n              </span>\n            </span>\n            <span class=\"my-2\">{{ state.product.price.formatted_with_symbol }}</span>\n            <v-spacer />\n            <v-row>\n              <v-col style=\"height: 10px;\" class=\"my-3\">\n                <div class=\"d-flex flex-row w-100 h-100\">\n                  <v-text-field v-model=\"state.product.quantity\" style=\"width: 100px !important;\" label=\"Qty\"\n                    density=\"compact\" type=\"number\" :disabled=\"state.loading\" />\n                  <v-progress-circular v-if=\"state.loading\" indeterminate color=\"error\" size=\"50\" class=\"mx-5\"\n                    style=\"margin-top: -3em;\" />\n                  <v-snackbar v-model=\"state.snackbar\" :timeout=\"3000\" :top=\"true\" :right=\"true\" location=\"top\"\n                    :multi-line=\"true\" :vertical=\"true\" color=\"success\">\n                    {{ state.snackbar_text }}\n                  </v-snackbar>\n                </div>\n              </v-col>\n            </v-row>\n          </div>\n        </v-col>\n        <v-col cols=\"12\" md=\"6\" lg=\"6\" xl=\"6\" class=\"h-100\">\n          <div class=\"d-flex flex-row align-end justify-center\">\n            <font-awesome-icon :icon=\"['fas', 'x']\" cursor=\"pointer\" @click=\"remove_from_cart\" />\n          </div>\n        </v-col>\n      </v-row>\n    </v-col>\n  </v-row>\n</template> \n<script setup>\n\nimport { reactive } from 'vue'\n\n// Lord have mercy upon my soul for this:\nimport { ofetch } from 'ofetch'\nconst runtimeConfig = useRuntimeConfig()\nglobalThis.$fetch = ofetch.create({\n  headers: {\n    'Content-Type': 'application/json',\n    'X-Authorization': runtimeConfig.apiSecret\n  }\n})\n\nconst props = defineProps(['product'])\nconst state = reactive({\n  product: props.product,\n  snackbar: false,\n  snackbar_text: '',\n  num_select: 1,\n  loading: false\n})\nconst prodStore = productsStore()\nconst remove_from_cart = () => {\n\n  state.loading = true\n  // Remove from Medusa cart:\n} \n</script>",
-      "start": 1709003846264,
-      "end": 1709003846447,
+      "start": 1709272107952,
+      "end": 1709272108155,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003846447,
-      "end": 1709003846447,
+      "start": 1709272108155,
+      "end": 1709272108155,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003846447,
-      "end": 1709003846447,
+      "start": 1709272108155,
+      "end": 1709272108155,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003846447,
-      "end": 1709003846447,
+      "start": 1709272108155,
+      "end": 1709272108155,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003846447,
-      "end": 1709003846447,
+      "start": 1709272108155,
+      "end": 1709272108155,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003846447,
-      "end": 1709003846447,
+      "start": 1709272108155,
+      "end": 1709272108155,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003846447,
-      "end": 1709003846447,
+      "start": 1709272108155,
+      "end": 1709272108156,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003846447,
-      "end": 1709003846447,
+      "start": 1709272108156,
+      "end": 1709272108156,
       "order": "normal"
     },
     {
       "name": "vite:vue",
       "result": "import { resolveComponent as _resolveComponent, createVNode as _createVNode, withCtx as _withCtx, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createBlock as _createBlock, createTextVNode as _createTextVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"d-flex flex-column justify-space-between align-start w-100 h-100\" }\nconst _hoisted_2 = { class: \"fw-bold\" }\nconst _hoisted_3 = { key: 0 }\nconst _hoisted_4 = { class: \"my-2\" }\nconst _hoisted_5 = { class: \"d-flex flex-row w-100 h-100\" }\nconst _hoisted_6 = { class: \"d-flex flex-row align-end justify-center\" }\n\nimport { reactive } from 'vue'\n\n// Lord have mercy upon my soul for this:\nimport { ofetch } from 'ofetch'\n\nconst _sfc_main = {\n  __name: 'CartCard',\n  props: ['product'],\n  setup(__props) {\n\n\nconst runtimeConfig = useRuntimeConfig()\nglobalThis.$fetch = ofetch.create({\n  headers: {\n    'Content-Type': 'application/json',\n    'X-Authorization': runtimeConfig.apiSecret\n  }\n})\n\nconst props = __props\nconst state = reactive({\n  product: props.product,\n  snackbar: false,\n  snackbar_text: '',\n  num_select: 1,\n  loading: false\n})\nconst prodStore = productsStore()\nconst remove_from_cart = () => {\n\n  state.loading = true\n  // Remove from Medusa cart:\n} \n\nreturn (_ctx, _cache) => {\n  const _component_v_img = _resolveComponent(\"v-img\")\n  const _component_v_col = _resolveComponent(\"v-col\")\n  const _component_v_spacer = _resolveComponent(\"v-spacer\")\n  const _component_v_text_field = _resolveComponent(\"v-text-field\")\n  const _component_v_progress_circular = _resolveComponent(\"v-progress-circular\")\n  const _component_v_snackbar = _resolveComponent(\"v-snackbar\")\n  const _component_v_row = _resolveComponent(\"v-row\")\n  const _component_font_awesome_icon = _resolveComponent(\"font-awesome-icon\")\n\n  return (_openBlock(), _createBlock(_component_v_row, { class: \"h-100 mb-5\" }, {\n    default: _withCtx(() => [\n      _createVNode(_component_v_col, {\n        cols: \"6\",\n        md: \"3\",\n        lg: \"3\",\n        xl: \"3\",\n        class: \"h-100\"\n      }, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_img, {\n            src: state.product.image.url\n          }, null, 8, [\"src\"])\n        ]),\n        _: 1\n      }),\n      _createVNode(_component_v_col, {\n        cols: \"6\",\n        md: \"9\",\n        lg: \"9\",\n        xl: \"9\",\n        class: \"h-100\"\n      }, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_row, { class: \"h-100\" }, {\n            default: _withCtx(() => [\n              _createVNode(_component_v_col, {\n                cols: \"12\",\n                md: \"6\",\n                lg: \"6\",\n                xl: \"6\",\n                class: \"h-100\"\n              }, {\n                default: _withCtx(() => [\n                  _createElementVNode(\"div\", _hoisted_1, [\n                    _createElementVNode(\"h3\", _hoisted_2, _toDisplayString(state.product.name), 1),\n                    (state.product.selected_options.length)\n                      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_3, [\n                          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(state.product.selected_options, (option, index) => {\n                            return (_openBlock(), _createElementBlock(\"span\", { key: index }, _toDisplayString(option.group_name) + \" - \" + _toDisplayString(option.option_name), 1))\n                          }), 128))\n                        ]))\n                      : _createCommentVNode(\"\", true),\n                    _createElementVNode(\"span\", _hoisted_4, _toDisplayString(state.product.price.formatted_with_symbol), 1),\n                    _createVNode(_component_v_spacer),\n                    _createVNode(_component_v_row, null, {\n                      default: _withCtx(() => [\n                        _createVNode(_component_v_col, {\n                          style: {\"height\":\"10px\"},\n                          class: \"my-3\"\n                        }, {\n                          default: _withCtx(() => [\n                            _createElementVNode(\"div\", _hoisted_5, [\n                              _createVNode(_component_v_text_field, {\n                                modelValue: state.product.quantity,\n                                \"onUpdate:modelValue\": _cache[0] || (_cache[0] = $event => ((state.product.quantity) = $event)),\n                                style: {\"width\":\"100px !important\"},\n                                label: \"Qty\",\n                                density: \"compact\",\n                                type: \"number\",\n                                disabled: state.loading\n                              }, null, 8, [\"modelValue\", \"disabled\"]),\n                              (state.loading)\n                                ? (_openBlock(), _createBlock(_component_v_progress_circular, {\n                                    key: 0,\n                                    indeterminate: \"\",\n                                    color: \"error\",\n                                    size: \"50\",\n                                    class: \"mx-5\",\n                                    style: {\"margin-top\":\"-3em\"}\n                                  }))\n                                : _createCommentVNode(\"\", true),\n                              _createVNode(_component_v_snackbar, {\n                                modelValue: state.snackbar,\n                                \"onUpdate:modelValue\": _cache[1] || (_cache[1] = $event => ((state.snackbar) = $event)),\n                                timeout: 3000,\n                                top: true,\n                                right: true,\n                                location: \"top\",\n                                \"multi-line\": true,\n                                vertical: true,\n                                color: \"success\"\n                              }, {\n                                default: _withCtx(() => [\n                                  _createTextVNode(_toDisplayString(state.snackbar_text), 1)\n                                ]),\n                                _: 1\n                              }, 8, [\"modelValue\"])\n                            ])\n                          ]),\n                          _: 1\n                        })\n                      ]),\n                      _: 1\n                    })\n                  ])\n                ]),\n                _: 1\n              }),\n              _createVNode(_component_v_col, {\n                cols: \"12\",\n                md: \"6\",\n                lg: \"6\",\n                xl: \"6\",\n                class: \"h-100\"\n              }, {\n                default: _withCtx(() => [\n                  _createElementVNode(\"div\", _hoisted_6, [\n                    _createVNode(_component_font_awesome_icon, {\n                      icon: ['fas', 'x'],\n                      cursor: \"pointer\",\n                      onClick: remove_from_cart\n                    })\n                  ])\n                ]),\n                _: 1\n              })\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      })\n    ]),\n    _: 1\n  }))\n}\n}\n\n}\n\n\n\nexport default _sfc_main",
-      "start": 1709003846447,
-      "end": 1709003846450,
+      "start": 1709272108156,
+      "end": 1709272108159,
       "order": "normal",
       "sourcemaps": {
         "mappings": ""
@@ -62,105 +62,105 @@
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003846450,
-      "end": 1709003846450,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003846450,
-      "end": 1709003846451,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003846451,
-      "end": 1709003846451,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003846451,
-      "end": 1709003846451,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003846451,
-      "end": 1709003846451,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003846451,
-      "end": 1709003846451,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003846451,
-      "end": 1709003846451,
+      "start": 1709272108159,
+      "end": 1709272108159,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
       "result": "import { useRuntimeConfig } from '#app/nuxt';\nimport { productsStore } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/stores/products.js';\nimport { resolveComponent as _resolveComponent, createVNode as _createVNode, withCtx as _withCtx, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, createBlock as _createBlock, createTextVNode as _createTextVNode } from \"vue\"\n\nconst _hoisted_1 = { class: \"d-flex flex-column justify-space-between align-start w-100 h-100\" }\nconst _hoisted_2 = { class: \"fw-bold\" }\nconst _hoisted_3 = { key: 0 }\nconst _hoisted_4 = { class: \"my-2\" }\nconst _hoisted_5 = { class: \"d-flex flex-row w-100 h-100\" }\nconst _hoisted_6 = { class: \"d-flex flex-row align-end justify-center\" }\n\nimport { reactive } from 'vue'\n\n// Lord have mercy upon my soul for this:\nimport { ofetch } from 'ofetch'\n\nconst _sfc_main = {\n  __name: 'CartCard',\n  props: ['product'],\n  setup(__props) {\n\n\nconst runtimeConfig = useRuntimeConfig()\nglobalThis.$fetch = ofetch.create({\n  headers: {\n    'Content-Type': 'application/json',\n    'X-Authorization': runtimeConfig.apiSecret\n  }\n})\n\nconst props = __props\nconst state = reactive({\n  product: props.product,\n  snackbar: false,\n  snackbar_text: '',\n  num_select: 1,\n  loading: false\n})\nconst prodStore = productsStore()\nconst remove_from_cart = () => {\n\n  state.loading = true\n  // Remove from Medusa cart:\n} \n\nreturn (_ctx, _cache) => {\n  const _component_v_img = _resolveComponent(\"v-img\")\n  const _component_v_col = _resolveComponent(\"v-col\")\n  const _component_v_spacer = _resolveComponent(\"v-spacer\")\n  const _component_v_text_field = _resolveComponent(\"v-text-field\")\n  const _component_v_progress_circular = _resolveComponent(\"v-progress-circular\")\n  const _component_v_snackbar = _resolveComponent(\"v-snackbar\")\n  const _component_v_row = _resolveComponent(\"v-row\")\n  const _component_font_awesome_icon = _resolveComponent(\"font-awesome-icon\")\n\n  return (_openBlock(), _createBlock(_component_v_row, { class: \"h-100 mb-5\" }, {\n    default: _withCtx(() => [\n      _createVNode(_component_v_col, {\n        cols: \"6\",\n        md: \"3\",\n        lg: \"3\",\n        xl: \"3\",\n        class: \"h-100\"\n      }, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_img, {\n            src: state.product.image.url\n          }, null, 8, [\"src\"])\n        ]),\n        _: 1\n      }),\n      _createVNode(_component_v_col, {\n        cols: \"6\",\n        md: \"9\",\n        lg: \"9\",\n        xl: \"9\",\n        class: \"h-100\"\n      }, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_row, { class: \"h-100\" }, {\n            default: _withCtx(() => [\n              _createVNode(_component_v_col, {\n                cols: \"12\",\n                md: \"6\",\n                lg: \"6\",\n                xl: \"6\",\n                class: \"h-100\"\n              }, {\n                default: _withCtx(() => [\n                  _createElementVNode(\"div\", _hoisted_1, [\n                    _createElementVNode(\"h3\", _hoisted_2, _toDisplayString(state.product.name), 1),\n                    (state.product.selected_options.length)\n                      ? (_openBlock(), _createElementBlock(\"span\", _hoisted_3, [\n                          (_openBlock(true), _createElementBlock(_Fragment, null, _renderList(state.product.selected_options, (option, index) => {\n                            return (_openBlock(), _createElementBlock(\"span\", { key: index }, _toDisplayString(option.group_name) + \" - \" + _toDisplayString(option.option_name), 1))\n                          }), 128))\n                        ]))\n                      : _createCommentVNode(\"\", true),\n                    _createElementVNode(\"span\", _hoisted_4, _toDisplayString(state.product.price.formatted_with_symbol), 1),\n                    _createVNode(_component_v_spacer),\n                    _createVNode(_component_v_row, null, {\n                      default: _withCtx(() => [\n                        _createVNode(_component_v_col, {\n                          style: {\"height\":\"10px\"},\n                          class: \"my-3\"\n                        }, {\n                          default: _withCtx(() => [\n                            _createElementVNode(\"div\", _hoisted_5, [\n                              _createVNode(_component_v_text_field, {\n                                modelValue: state.product.quantity,\n                                \"onUpdate:modelValue\": _cache[0] || (_cache[0] = $event => ((state.product.quantity) = $event)),\n                                style: {\"width\":\"100px !important\"},\n                                label: \"Qty\",\n                                density: \"compact\",\n                                type: \"number\",\n                                disabled: state.loading\n                              }, null, 8, [\"modelValue\", \"disabled\"]),\n                              (state.loading)\n                                ? (_openBlock(), _createBlock(_component_v_progress_circular, {\n                                    key: 0,\n                                    indeterminate: \"\",\n                                    color: \"error\",\n                                    size: \"50\",\n                                    class: \"mx-5\",\n                                    style: {\"margin-top\":\"-3em\"}\n                                  }))\n                                : _createCommentVNode(\"\", true),\n                              _createVNode(_component_v_snackbar, {\n                                modelValue: state.snackbar,\n                                \"onUpdate:modelValue\": _cache[1] || (_cache[1] = $event => ((state.snackbar) = $event)),\n                                timeout: 3000,\n                                top: true,\n                                right: true,\n                                location: \"top\",\n                                \"multi-line\": true,\n                                vertical: true,\n                                color: \"success\"\n                              }, {\n                                default: _withCtx(() => [\n                                  _createTextVNode(_toDisplayString(state.snackbar_text), 1)\n                                ]),\n                                _: 1\n                              }, 8, [\"modelValue\"])\n                            ])\n                          ]),\n                          _: 1\n                        })\n                      ]),\n                      _: 1\n                    })\n                  ])\n                ]),\n                _: 1\n              }),\n              _createVNode(_component_v_col, {\n                cols: \"12\",\n                md: \"6\",\n                lg: \"6\",\n                xl: \"6\",\n                class: \"h-100\"\n              }, {\n                default: _withCtx(() => [\n                  _createElementVNode(\"div\", _hoisted_6, [\n                    _createVNode(_component_font_awesome_icon, {\n                      icon: ['fas', 'x'],\n                      cursor: \"pointer\",\n                      onClick: remove_from_cart\n                    })\n                  ])\n                ]),\n                _: 1\n              })\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      })\n    ]),\n    _: 1\n  }))\n}\n}\n\n}\n\n\n\nexport default _sfc_main",
-      "start": 1709003846451,
-      "end": 1709003846456,
+      "start": 1709272108159,
+      "end": 1709272108161,
       "order": "post",
       "sourcemaps": {
         "version": 3,
@@ -173,50 +173,50 @@
     },
     {
       "name": "unctx:transform",
-      "start": 1709003846456,
-      "end": 1709003846456,
+      "start": 1709272108161,
+      "end": 1709272108161,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003846456,
-      "end": 1709003846456,
+      "start": 1709272108161,
+      "end": 1709272108161,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003846456,
-      "end": 1709003846456,
+      "start": 1709272108161,
+      "end": 1709272108161,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003846456,
-      "end": 1709003846456,
+      "start": 1709272108161,
+      "end": 1709272108161,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003846456,
-      "end": 1709003846456,
+      "start": 1709272108161,
+      "end": 1709272108161,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003846456,
-      "end": 1709003846456,
+      "start": 1709272108161,
+      "end": 1709272108161,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003846456,
-      "end": 1709003846456,
+      "start": 1709272108161,
+      "end": 1709272108162,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003846456,
-      "end": 1709003846456,
+      "start": 1709272108162,
+      "end": 1709272108162,
       "order": "normal"
     }
   ]

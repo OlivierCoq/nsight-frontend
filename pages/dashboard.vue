@@ -1,5 +1,119 @@
 <template>
-  <div class="w-full"></div>
+  <div
+    v-if="auth?.user"
+    id="dashboard"
+    class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col"
+  >
+    <div class="h-full w-full flex flex-row">
+
+      <div class="h-full w-1/5 invisible md:visible px-3 pt-10 pb-4">
+        <!-- shadow-xl rounded-md bg-zinc-300 dark:bg-zinc-900 -->
+        <div class="h-full w-full flex flex-col">
+          <div v-for="(tab, a) in state.tabs" :key="a" 
+            class="w-full py-4 px-8 hover:shadow-xl mb-2 hover:cursor-pointer hover:bg-zinc-400 dark:hover:bg-zinc-700 rounded-lg"
+            :class="tab == state.current_tab ? 'bg-zinc-400 dark:bg-zinc-700 shadow-xl' : ''"
+            @click="state.current_tab = tab"
+          >
+              <span class=" text-neutral-900 dark:text-white">
+                {{ tab.name }}
+              </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-[95%] my-auto me-4 rounded-lg w-full md:w-4/5 px-3 pb-4 bg-zinc-400 dark:bg-zinc-700 shadow-xl">
+
+        <div v-if="state?.current_tab?.name == 'My Friends'" class="w-full flex flex-col p-4">
+          <div class="w-full flex flex-row justify-between">
+            <h1 class="text-neutral-900 dark:text-white text-5xl mt-2 mb-3 font-thin">My friends</h1>
+            <button
+              class="nsight-btn-primary w-1/5 h-[40px] text-neutral-900 dark:text-white px-2 rounded uppercase"
+              @click="state.tabs[0].data.adding_new = !state.tabs[0].data.adding_new"
+            >
+              invite
+
+            <!-- Invite dialog -->
+            <PrimeDialog v-model:visible="state.tabs[0].data.adding_new"
+              modal
+              header="invite a friend"
+              :style="{
+                width: '50rem',
+                backgroundColor: auth?.user?.preferences[0]?.dark_mode ? '#18181a' : '#a1a1aa',
+                color: 'white',
+                padding: '1rem',
+              }">  
+                <div class="w-full flex flex-col min-h-[25vh] bg-zinc-900 dark:bg-black">
+
+                    <div class="input_group w-full flex flex-row mt-3">
+                      <div class="w-full md:w-1/2 px-2">
+                        <input
+                          type="text"
+                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder:text-white dark:text-white"
+                          :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                          placeholder="First Name"
+                          v-model="state.tabs[0].data.new_member.first_name"
+                        />
+                      </div>
+                      <div class="w-full md:w-1/2 px-2">
+                        <input
+                          type="text"
+                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                          :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                          placeholder="Last Name"
+                          v-model="state.tabs[0].data.new_member.last_name"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="input_group w-full flex flex-row mt-3">
+                      <div class="w-full md:w-2/3 px-2">
+                        <input
+                          type="email"
+                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder:text-white dark:text-white"
+                          :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                          placeholder="Email"
+                          v-model="state.tabs[0].data.new_member.email"
+                        />
+                      </div>
+                      <div class="w-full md:w-1/3 px-2">
+                        <input
+                          type="text"
+                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                          :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                          v-model="state.tabs[0].data.new_member.phone_number"
+                          pattern="[0-9\-]*"
+                                          placeholder="+1-123-456-7890"
+                                          @keydown="
+                                            () => {
+                                              state.tabs[0].data.new_member.phone_number =
+                                                new AsYouType()
+                                                  .input(state.tabs[0].data.new_member.phone_number)
+                                                  .replace(/\s/g, '-');
+                                            }
+                                          "
+                        />
+                      </div>
+                    </div>
+
+                    <div class="input_group w-full flex flex-row mt-3">
+                      <button class="nsight-btn-primary px-4 py-2 text-neutral-900 dark:text-white w-full rounded-md mx-2 shadow-xl" :disabled="!state.validate" @click="post_new_member">
+                        <span :class="!state.validate ? 'opacity-50' : 'opacity-1'">invite friend</span>
+                      </button>
+                    </div>
+
+                  </div>
+
+            </PrimeDialog>
+            
+            </button>
+          </div>
+
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
 </template>
 <script setup lang="ts">
 // Page meta
@@ -40,11 +154,7 @@ const state = reactive({
   use_the_force: false,
   tabs: [
     {
-      name: "My Profile",
-      data: {},
-    },
-    {
-      name: "My Members",
+      name: "My Friends",
       data: {
         adding_new: false,
         posting_new: false,
@@ -58,8 +168,17 @@ const state = reactive({
         },
       },
     },
+    {
+      name: "My Profile",
+      data: {},
+    },
   ],
   validate: false,
+});
+
+// Mounted
+onMounted(() => {
+  state.current_tab = state.tabs[0];
 });
 
 // Methods
@@ -117,7 +236,7 @@ const validatePhone = (number: string) => {
 */
 
 const post_new_member = async () => {
-  let active_tab = state.tabs[1];
+  let active_tab = state.tabs[0];
   active_tab.data.posting_new = true;
 
   const headers_obj = {
@@ -129,7 +248,7 @@ const post_new_member = async () => {
   active_tab.post = $fetch(
     `${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids?${qs.stringify({
       filters: {
-        nsight_id: state.tabs[1].data.new_member.n_id,
+        nsight_id: state.tabs[0].data.new_member.n_id,
       },
     })}`,
     {
@@ -315,6 +434,8 @@ const post_new_member = async () => {
                                     data
                                   );
                                   active_tab.data.posting_new = false;
+                                  state.tabs[0].data.adding_new = false
+
 
                                   // Send email confirmation to new member. Let's refrain for now. SendGrid doesn't like it.
                                   // $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/send-email-confirmation`, {
@@ -378,7 +499,7 @@ const post_new_member = async () => {
 // Watch
 // watch all attributes of new_member:
 watch(
-  () => state.tabs[1].data.new_member,
+  () => state.tabs[0].data.new_member,
   (val: object) => {
     state.validate =
       val.email.length > 0 &&
@@ -408,7 +529,21 @@ watch(
 // })
 </script>
 <style lang="scss" scoped>
-#dashboard {
-  height: 100vh;
+
+input::placeholder {
+  color: #ffffff9c !important;
+}
+
+input {
+  color: #ffffff !important;
+
+}
+
+// Placeholder light and dark mode:
+.border-dark {
+  border: 1px solid #ffffff2e;
+}
+.border-light {
+  border: 1px solid #0000002e;
 }
 </style>

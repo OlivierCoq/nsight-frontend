@@ -4,57 +4,57 @@
     {
       "name": "vite:load-fallback",
       "result": "<template>\n  <div></div>\n</template>\n<script>\n  import { reactive } from 'vue'\n  export default {\n    name: 'Member',\n    setup() {\n      definePageMeta({\n        middleware: ['auth'],\n        layout: 'inner'\n      })\n\n      const state = reactive({\n\n      })\n\n      return {\n        // meta\n        definePageMeta,\n        // state\n        state,\n        // methods\n      }\n    },\n  }\n</script>",
-      "start": 1709003845338,
-      "end": 1709003845798,
+      "start": 1709272107168,
+      "end": 1709272107630,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003845798,
-      "end": 1709003845798,
+      "start": 1709272107630,
+      "end": 1709272107630,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003845798,
-      "end": 1709003845798,
+      "start": 1709272107630,
+      "end": 1709272107630,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003845798,
-      "end": 1709003845798,
+      "start": 1709272107630,
+      "end": 1709272107630,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003845798,
-      "end": 1709003845798,
+      "start": 1709272107630,
+      "end": 1709272107630,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003845798,
-      "end": 1709003845798,
+      "start": 1709272107630,
+      "end": 1709272107630,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003845798,
-      "end": 1709003845798,
+      "start": 1709272107630,
+      "end": 1709272107630,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003845798,
-      "end": 1709003845798,
+      "start": 1709272107630,
+      "end": 1709272107630,
       "order": "normal"
     },
     {
       "name": "vite:vue",
       "result": "\n  import { reactive } from 'vue'\n  const _sfc_main = {\n    name: 'Member',\n    setup() {\n      definePageMeta({\n        middleware: ['auth'],\n        layout: 'inner'\n      })\n\n      const state = reactive({\n\n      })\n\n      return {\n        // meta\n        definePageMeta,\n        // state\n        state,\n        // methods\n      }\n    },\n  }\n\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nfunction _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {\n  return (_openBlock(), _createElementBlock(\"div\"))\n}\n\n\nimport _export_sfc from '\u0000plugin-vue:export-helper'\nexport default /*#__PURE__*/_export_sfc(_sfc_main, [['render',_sfc_render]])",
-      "start": 1709003845798,
-      "end": 1709003845800,
+      "start": 1709272107630,
+      "end": 1709272107631,
       "order": "normal",
       "sourcemaps": {
         "mappings": ""
@@ -62,105 +62,105 @@
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107631,
+      "end": 1709272107631,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107631,
+      "end": 1709272107631,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107631,
+      "end": 1709272107631,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107631,
+      "end": 1709272107631,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107631,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003845800,
-      "end": 1709003845800,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
       "result": "import { definePageMeta } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/nuxt/dist/pages/runtime/composables';\n\n  import { reactive } from 'vue'\n  const _sfc_main = {\n    name: 'Member',\n    setup() {\n      definePageMeta({\n        middleware: ['auth'],\n        layout: 'inner'\n      })\n\n      const state = reactive({\n\n      })\n\n      return {\n        // meta\n        definePageMeta,\n        // state\n        state,\n        // methods\n      }\n    },\n  }\n\nimport { openBlock as _openBlock, createElementBlock as _createElementBlock } from \"vue\"\n\nfunction _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {\n  return (_openBlock(), _createElementBlock(\"div\"))\n}\n\n\nimport _export_sfc from '\u0000plugin-vue:export-helper'\nexport default /*#__PURE__*/_export_sfc(_sfc_main, [['render',_sfc_render]])",
-      "start": 1709003845800,
-      "end": 1709003845801,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "post",
       "sourcemaps": {
         "version": 3,
@@ -173,15 +173,15 @@
     },
     {
       "name": "unctx:transform",
-      "start": 1709003845801,
-      "end": 1709003845802,
+      "start": 1709272107632,
+      "end": 1709272107632,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
       "result": "const __nuxt_page_meta = {\n        middleware: ['auth'],\n        layout: 'inner'\n      }\nexport default __nuxt_page_meta",
-      "start": 1709003845802,
-      "end": 1709003845803,
+      "start": 1709272107632,
+      "end": 1709272107633,
       "order": "post",
       "sourcemaps": {
         "version": 3,
@@ -194,38 +194,38 @@
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003845803,
-      "end": 1709003845803,
+      "start": 1709272107633,
+      "end": 1709272107633,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003845803,
-      "end": 1709003845803,
+      "start": 1709272107633,
+      "end": 1709272107633,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003845803,
-      "end": 1709003845803,
+      "start": 1709272107633,
+      "end": 1709272107633,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003845803,
-      "end": 1709003845803,
+      "start": 1709272107633,
+      "end": 1709272107633,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003845803,
-      "end": 1709003845803,
+      "start": 1709272107633,
+      "end": 1709272107633,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003845803,
-      "end": 1709003845803,
+      "start": 1709272107633,
+      "end": 1709272107633,
       "order": "normal"
     }
   ]

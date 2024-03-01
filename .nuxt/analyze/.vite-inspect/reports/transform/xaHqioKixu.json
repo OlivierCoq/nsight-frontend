@@ -1,0 +1,214 @@
+{
+  "resolvedId": "/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/primevue/dialog/dialog.esm.js?nuxt_component=async&nuxt_component_name=PrimeDialog",
+  "transforms": [
+    {
+      "name": "vite:load-fallback",
+      "result": "import FocusTrap from 'primevue/focustrap';\nimport TimesIcon from 'primevue/icons/times';\nimport WindowMaximizeIcon from 'primevue/icons/windowmaximize';\nimport WindowMinimizeIcon from 'primevue/icons/windowminimize';\nimport Portal from 'primevue/portal';\nimport Ripple from 'primevue/ripple';\nimport { UniqueComponentId, ZIndexUtils, DomHandler } from 'primevue/utils';\nimport { computed, resolveComponent, resolveDirective, openBlock, createBlock, withCtx, createElementBlock, mergeProps, createVNode, Transition, withDirectives, renderSlot, Fragment, normalizeClass, toDisplayString, createCommentVNode, createElementVNode, resolveDynamicComponent, createTextVNode } from 'vue';\nimport BaseComponent from 'primevue/basecomponent';\nimport DialogStyle from 'primevue/dialog/style';\n\nvar script$1 = {\n  name: 'BaseDialog',\n  \"extends\": BaseComponent,\n  props: {\n    header: {\n      type: null,\n      \"default\": null\n    },\n    footer: {\n      type: null,\n      \"default\": null\n    },\n    visible: {\n      type: Boolean,\n      \"default\": false\n    },\n    modal: {\n      type: Boolean,\n      \"default\": null\n    },\n    contentStyle: {\n      type: null,\n      \"default\": null\n    },\n    contentClass: {\n      type: String,\n      \"default\": null\n    },\n    contentProps: {\n      type: null,\n      \"default\": null\n    },\n    rtl: {\n      type: Boolean,\n      \"default\": null\n    },\n    maximizable: {\n      type: Boolean,\n      \"default\": false\n    },\n    dismissableMask: {\n      type: Boolean,\n      \"default\": false\n    },\n    closable: {\n      type: Boolean,\n      \"default\": true\n    },\n    closeOnEscape: {\n      type: Boolean,\n      \"default\": true\n    },\n    showHeader: {\n      type: Boolean,\n      \"default\": true\n    },\n    blockScroll: {\n      type: Boolean,\n      \"default\": false\n    },\n    baseZIndex: {\n      type: Number,\n      \"default\": 0\n    },\n    autoZIndex: {\n      type: Boolean,\n      \"default\": true\n    },\n    position: {\n      type: String,\n      \"default\": 'center'\n    },\n    breakpoints: {\n      type: Object,\n      \"default\": null\n    },\n    draggable: {\n      type: Boolean,\n      \"default\": true\n    },\n    keepInViewport: {\n      type: Boolean,\n      \"default\": true\n    },\n    minX: {\n      type: Number,\n      \"default\": 0\n    },\n    minY: {\n      type: Number,\n      \"default\": 0\n    },\n    appendTo: {\n      type: [String, Object],\n      \"default\": 'body'\n    },\n    closeIcon: {\n      type: String,\n      \"default\": undefined\n    },\n    maximizeIcon: {\n      type: String,\n      \"default\": undefined\n    },\n    minimizeIcon: {\n      type: String,\n      \"default\": undefined\n    },\n    closeButtonProps: {\n      type: null,\n      \"default\": null\n    },\n    _instance: null\n  },\n  style: DialogStyle,\n  provide: function provide() {\n    return {\n      $parentInstance: this\n    };\n  }\n};\n\nvar script = {\n  name: 'Dialog',\n  \"extends\": script$1,\n  inheritAttrs: false,\n  emits: ['update:visible', 'show', 'hide', 'after-hide', 'maximize', 'unmaximize', 'dragend'],\n  provide: function provide() {\n    var _this = this;\n    return {\n      dialogRef: computed(function () {\n        return _this._instance;\n      })\n    };\n  },\n  data: function data() {\n    return {\n      id: this.$attrs.id,\n      containerVisible: this.visible,\n      maximized: false,\n      focusableMax: null,\n      focusableClose: null\n    };\n  },\n  watch: {\n    '$attrs.id': function $attrsId(newValue) {\n      this.id = newValue || UniqueComponentId();\n    }\n  },\n  documentKeydownListener: null,\n  container: null,\n  mask: null,\n  content: null,\n  headerContainer: null,\n  footerContainer: null,\n  maximizableButton: null,\n  closeButton: null,\n  styleElement: null,\n  dragging: null,\n  documentDragListener: null,\n  documentDragEndListener: null,\n  lastPageX: null,\n  lastPageY: null,\n  updated: function updated() {\n    if (this.visible) {\n      this.containerVisible = this.visible;\n    }\n  },\n  beforeUnmount: function beforeUnmount() {\n    this.unbindDocumentState();\n    this.unbindGlobalListeners();\n    this.destroyStyle();\n    if (this.mask && this.autoZIndex) {\n      ZIndexUtils.clear(this.mask);\n    }\n    this.container = null;\n    this.mask = null;\n  },\n  mounted: function mounted() {\n    this.id = this.id || UniqueComponentId();\n    if (this.breakpoints) {\n      this.createStyle();\n    }\n  },\n  methods: {\n    close: function close() {\n      this.$emit('update:visible', false);\n    },\n    onBeforeEnter: function onBeforeEnter(el) {\n      el.setAttribute(this.attributeSelector, '');\n    },\n    onEnter: function onEnter() {\n      this.$emit('show');\n      this.focus();\n      this.enableDocumentSettings();\n      this.bindGlobalListeners();\n      if (this.autoZIndex) {\n        ZIndexUtils.set('modal', this.mask, this.baseZIndex + this.$primevue.config.zIndex.modal);\n      }\n    },\n    onBeforeLeave: function onBeforeLeave() {\n      if (this.modal) {\n        !this.isUnstyled && DomHandler.addClass(this.mask, 'p-component-overlay-leave');\n      }\n    },\n    onLeave: function onLeave() {\n      this.$emit('hide');\n      this.focusableClose = null;\n      this.focusableMax = null;\n    },\n    onAfterLeave: function onAfterLeave() {\n      if (this.autoZIndex) {\n        ZIndexUtils.clear(this.mask);\n      }\n      this.containerVisible = false;\n      this.unbindDocumentState();\n      this.unbindGlobalListeners();\n      this.$emit('after-hide');\n    },\n    onMaskClick: function onMaskClick(event) {\n      if (this.dismissableMask && this.modal && this.mask === event.target) {\n        this.close();\n      }\n    },\n    focus: function focus() {\n      var findFocusableElement = function findFocusableElement(container) {\n        return container && container.querySelector('[autofocus]');\n      };\n      var focusTarget = this.$slots.footer && findFocusableElement(this.footerContainer);\n      if (!focusTarget) {\n        focusTarget = this.$slots.header && findFocusableElement(this.headerContainer);\n        if (!focusTarget) {\n          focusTarget = this.$slots[\"default\"] && findFocusableElement(this.content);\n          if (!focusTarget) {\n            if (this.maximizable) {\n              this.focusableMax = true;\n              focusTarget = this.maximizableButton;\n            } else {\n              this.focusableClose = true;\n              focusTarget = this.closeButton;\n            }\n          }\n        }\n      }\n      if (focusTarget) {\n        DomHandler.focus(focusTarget, {\n          focusVisible: true\n        });\n      }\n    },\n    maximize: function maximize(event) {\n      if (this.maximized) {\n        this.maximized = false;\n        this.$emit('unmaximize', event);\n      } else {\n        this.maximized = true;\n        this.$emit('maximize', event);\n      }\n      if (!this.modal) {\n        this.maximized ? DomHandler.blockBodyScroll() : DomHandler.unblockBodyScroll();\n      }\n    },\n    enableDocumentSettings: function enableDocumentSettings() {\n      if (this.modal || !this.modal && this.blockScroll || this.maximizable && this.maximized) {\n        DomHandler.blockBodyScroll();\n      }\n    },\n    unbindDocumentState: function unbindDocumentState() {\n      if (this.modal || !this.modal && this.blockScroll || this.maximizable && this.maximized) {\n        DomHandler.unblockBodyScroll();\n      }\n    },\n    onKeyDown: function onKeyDown(event) {\n      if (event.code === 'Escape' && this.closeOnEscape) {\n        this.close();\n      }\n    },\n    bindDocumentKeyDownListener: function bindDocumentKeyDownListener() {\n      if (!this.documentKeydownListener) {\n        this.documentKeydownListener = this.onKeyDown.bind(this);\n        window.document.addEventListener('keydown', this.documentKeydownListener);\n      }\n    },\n    unbindDocumentKeyDownListener: function unbindDocumentKeyDownListener() {\n      if (this.documentKeydownListener) {\n        window.document.removeEventListener('keydown', this.documentKeydownListener);\n        this.documentKeydownListener = null;\n      }\n    },\n    containerRef: function containerRef(el) {\n      this.container = el;\n    },\n    maskRef: function maskRef(el) {\n      this.mask = el;\n    },\n    contentRef: function contentRef(el) {\n      this.content = el;\n    },\n    headerContainerRef: function headerContainerRef(el) {\n      this.headerContainer = el;\n    },\n    footerContainerRef: function footerContainerRef(el) {\n      this.footerContainer = el;\n    },\n    maximizableRef: function maximizableRef(el) {\n      this.maximizableButton = el;\n    },\n    closeButtonRef: function closeButtonRef(el) {\n      this.closeButton = el;\n    },\n    createStyle: function createStyle() {\n      if (!this.styleElement && !this.isUnstyled) {\n        var _this$$primevue;\n        this.styleElement = document.createElement('style');\n        this.styleElement.type = 'text/css';\n        DomHandler.setAttribute(this.styleElement, 'nonce', (_this$$primevue = this.$primevue) === null || _this$$primevue === void 0 || (_this$$primevue = _this$$primevue.config) === null || _this$$primevue === void 0 || (_this$$primevue = _this$$primevue.csp) === null || _this$$primevue === void 0 ? void 0 : _this$$primevue.nonce);\n        document.head.appendChild(this.styleElement);\n        var innerHTML = '';\n        for (var breakpoint in this.breakpoints) {\n          innerHTML += \"\\n                        @media screen and (max-width: \".concat(breakpoint, \") {\\n                            .p-dialog[\").concat(this.attributeSelector, \"] {\\n                                width: \").concat(this.breakpoints[breakpoint], \" !important;\\n                            }\\n                        }\\n                    \");\n        }\n        this.styleElement.innerHTML = innerHTML;\n      }\n    },\n    destroyStyle: function destroyStyle() {\n      if (this.styleElement) {\n        document.head.removeChild(this.styleElement);\n        this.styleElement = null;\n      }\n    },\n    initDrag: function initDrag(event) {\n      if (event.target.closest('div').getAttribute('data-pc-section') === 'icons') {\n        return;\n      }\n      if (this.draggable) {\n        this.dragging = true;\n        this.lastPageX = event.pageX;\n        this.lastPageY = event.pageY;\n        this.container.style.margin = '0';\n        document.body.setAttribute('data-p-unselectable-text', 'true');\n        !this.isUnstyled && DomHandler.addClass(document.body, 'p-unselectable-text');\n      }\n    },\n    bindGlobalListeners: function bindGlobalListeners() {\n      if (this.draggable) {\n        this.bindDocumentDragListener();\n        this.bindDocumentDragEndListener();\n      }\n      if (this.closeOnEscape && this.closable) {\n        this.bindDocumentKeyDownListener();\n      }\n    },\n    unbindGlobalListeners: function unbindGlobalListeners() {\n      this.unbindDocumentDragListener();\n      this.unbindDocumentDragEndListener();\n      this.unbindDocumentKeyDownListener();\n    },\n    bindDocumentDragListener: function bindDocumentDragListener() {\n      var _this2 = this;\n      this.documentDragListener = function (event) {\n        if (_this2.dragging) {\n          var width = DomHandler.getOuterWidth(_this2.container);\n          var height = DomHandler.getOuterHeight(_this2.container);\n          var deltaX = event.pageX - _this2.lastPageX;\n          var deltaY = event.pageY - _this2.lastPageY;\n          var offset = _this2.container.getBoundingClientRect();\n          var leftPos = offset.left + deltaX;\n          var topPos = offset.top + deltaY;\n          var viewport = DomHandler.getViewport();\n          var containerComputedStyle = getComputedStyle(_this2.container);\n          var marginLeft = parseFloat(containerComputedStyle.marginLeft);\n          var marginTop = parseFloat(containerComputedStyle.marginTop);\n          _this2.container.style.position = 'fixed';\n          if (_this2.keepInViewport) {\n            if (leftPos >= _this2.minX && leftPos + width < viewport.width) {\n              _this2.lastPageX = event.pageX;\n              _this2.container.style.left = leftPos - marginLeft + 'px';\n            }\n            if (topPos >= _this2.minY && topPos + height < viewport.height) {\n              _this2.lastPageY = event.pageY;\n              _this2.container.style.top = topPos - marginTop + 'px';\n            }\n          } else {\n            _this2.lastPageX = event.pageX;\n            _this2.container.style.left = leftPos - marginLeft + 'px';\n            _this2.lastPageY = event.pageY;\n            _this2.container.style.top = topPos - marginTop + 'px';\n          }\n        }\n      };\n      window.document.addEventListener('mousemove', this.documentDragListener);\n    },\n    unbindDocumentDragListener: function unbindDocumentDragListener() {\n      if (this.documentDragListener) {\n        window.document.removeEventListener('mousemove', this.documentDragListener);\n        this.documentDragListener = null;\n      }\n    },\n    bindDocumentDragEndListener: function bindDocumentDragEndListener() {\n      var _this3 = this;\n      this.documentDragEndListener = function (event) {\n        if (_this3.dragging) {\n          _this3.dragging = false;\n          document.body.removeAttribute('data-p-unselectable-text');\n          !_this3.isUnstyled && DomHandler.removeClass(document.body, 'p-unselectable-text');\n          _this3.$emit('dragend', event);\n        }\n      };\n      window.document.addEventListener('mouseup', this.documentDragEndListener);\n    },\n    unbindDocumentDragEndListener: function unbindDocumentDragEndListener() {\n      if (this.documentDragEndListener) {\n        window.document.removeEventListener('mouseup', this.documentDragEndListener);\n        this.documentDragEndListener = null;\n      }\n    }\n  },\n  computed: {\n    maximizeIconComponent: function maximizeIconComponent() {\n      return this.maximized ? this.minimizeIcon ? 'span' : 'WindowMinimizeIcon' : this.maximizeIcon ? 'span' : 'WindowMaximizeIcon';\n    },\n    ariaLabelledById: function ariaLabelledById() {\n      return this.header != null || this.$attrs['aria-labelledby'] !== null ? this.id + '_header' : null;\n    },\n    closeAriaLabel: function closeAriaLabel() {\n      return this.$primevue.config.locale.aria ? this.$primevue.config.locale.aria.close : undefined;\n    },\n    attributeSelector: function attributeSelector() {\n      return UniqueComponentId();\n    }\n  },\n  directives: {\n    ripple: Ripple,\n    focustrap: FocusTrap\n  },\n  components: {\n    Portal: Portal,\n    WindowMinimizeIcon: WindowMinimizeIcon,\n    WindowMaximizeIcon: WindowMaximizeIcon,\n    TimesIcon: TimesIcon\n  }\n};\n\nfunction _typeof(o) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && \"function\" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? \"symbol\" : typeof o; }, _typeof(o); }\nfunction ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }\nfunction _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }\nfunction _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\nfunction _toPropertyKey(t) { var i = _toPrimitive(t, \"string\"); return \"symbol\" == _typeof(i) ? i : String(i); }\nfunction _toPrimitive(t, r) { if (\"object\" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || \"default\"); if (\"object\" != _typeof(i)) return i; throw new TypeError(\"@@toPrimitive must return a primitive value.\"); } return (\"string\" === r ? String : Number)(t); }\nvar _hoisted_1 = [\"aria-labelledby\", \"aria-modal\"];\nvar _hoisted_2 = [\"id\"];\nvar _hoisted_3 = [\"autofocus\", \"tabindex\"];\nvar _hoisted_4 = [\"autofocus\", \"aria-label\"];\nfunction render(_ctx, _cache, $props, $setup, $data, $options) {\n  var _component_Portal = resolveComponent(\"Portal\");\n  var _directive_ripple = resolveDirective(\"ripple\");\n  var _directive_focustrap = resolveDirective(\"focustrap\");\n  return openBlock(), createBlock(_component_Portal, {\n    appendTo: _ctx.appendTo\n  }, {\n    \"default\": withCtx(function () {\n      return [$data.containerVisible ? (openBlock(), createElementBlock(\"div\", mergeProps({\n        key: 0,\n        ref: $options.maskRef,\n        \"class\": _ctx.cx('mask'),\n        style: _ctx.sx('mask', true, {\n          position: _ctx.position,\n          modal: _ctx.modal\n        }),\n        onClick: _cache[3] || (_cache[3] = function () {\n          return $options.onMaskClick && $options.onMaskClick.apply($options, arguments);\n        })\n      }, _ctx.ptm('mask')), [createVNode(Transition, mergeProps({\n        name: \"p-dialog\",\n        onBeforeEnter: $options.onBeforeEnter,\n        onEnter: $options.onEnter,\n        onBeforeLeave: $options.onBeforeLeave,\n        onLeave: $options.onLeave,\n        onAfterLeave: $options.onAfterLeave,\n        appear: \"\"\n      }, _ctx.ptm('transition')), {\n        \"default\": withCtx(function () {\n          return [_ctx.visible ? withDirectives((openBlock(), createElementBlock(\"div\", mergeProps({\n            key: 0,\n            ref: $options.containerRef,\n            \"class\": _ctx.cx('root'),\n            style: _ctx.sx('root'),\n            role: \"dialog\",\n            \"aria-labelledby\": $options.ariaLabelledById,\n            \"aria-modal\": _ctx.modal\n          }, _ctx.ptmi('root')), [_ctx.$slots.container ? renderSlot(_ctx.$slots, \"container\", {\n            key: 0,\n            onClose: $options.close,\n            onMaximize: function onMaximize(event) {\n              return $options.maximize(event);\n            },\n            closeCallback: $options.close,\n            maximizeCallback: function maximizeCallback(event) {\n              return $options.maximize(event);\n            }\n          }) : (openBlock(), createElementBlock(Fragment, {\n            key: 1\n          }, [_ctx.showHeader ? (openBlock(), createElementBlock(\"div\", mergeProps({\n            key: 0,\n            ref: $options.headerContainerRef,\n            \"class\": _ctx.cx('header'),\n            onMousedown: _cache[2] || (_cache[2] = function () {\n              return $options.initDrag && $options.initDrag.apply($options, arguments);\n            })\n          }, _ctx.ptm('header')), [renderSlot(_ctx.$slots, \"header\", {\n            \"class\": normalizeClass(_ctx.cx('title'))\n          }, function () {\n            return [_ctx.header ? (openBlock(), createElementBlock(\"span\", mergeProps({\n              key: 0,\n              id: $options.ariaLabelledById,\n              \"class\": _ctx.cx('title')\n            }, _ctx.ptm('title')), toDisplayString(_ctx.header), 17, _hoisted_2)) : createCommentVNode(\"\", true)];\n          }), createElementVNode(\"div\", mergeProps({\n            \"class\": _ctx.cx('icons')\n          }, _ctx.ptm('icons')), [_ctx.maximizable ? withDirectives((openBlock(), createElementBlock(\"button\", mergeProps({\n            key: 0,\n            ref: $options.maximizableRef,\n            autofocus: $data.focusableMax,\n            \"class\": _ctx.cx('maximizableButton'),\n            onClick: _cache[0] || (_cache[0] = function () {\n              return $options.maximize && $options.maximize.apply($options, arguments);\n            }),\n            type: \"button\",\n            tabindex: _ctx.maximizable ? '0' : '-1'\n          }, _ctx.ptm('maximizableButton'), {\n            \"data-pc-group-section\": \"headericon\"\n          }), [renderSlot(_ctx.$slots, \"maximizeicon\", {\n            maximized: $data.maximized,\n            \"class\": normalizeClass(_ctx.cx('maximizableIcon'))\n          }, function () {\n            return [(openBlock(), createBlock(resolveDynamicComponent($options.maximizeIconComponent), mergeProps({\n              \"class\": [_ctx.cx('maximizableIcon'), $data.maximized ? _ctx.minimizeIcon : _ctx.maximizeIcon]\n            }, _ctx.ptm('maximizableIcon')), null, 16, [\"class\"]))];\n          })], 16, _hoisted_3)), [[_directive_ripple]]) : createCommentVNode(\"\", true), _ctx.closable ? withDirectives((openBlock(), createElementBlock(\"button\", mergeProps({\n            key: 1,\n            ref: $options.closeButtonRef,\n            autofocus: $data.focusableClose,\n            \"class\": _ctx.cx('closeButton'),\n            onClick: _cache[1] || (_cache[1] = function () {\n              return $options.close && $options.close.apply($options, arguments);\n            }),\n            \"aria-label\": $options.closeAriaLabel,\n            type: \"button\"\n          }, _objectSpread(_objectSpread({}, _ctx.closeButtonProps), _ctx.ptm('closeButton')), {\n            \"data-pc-group-section\": \"headericon\"\n          }), [renderSlot(_ctx.$slots, \"closeicon\", {\n            \"class\": normalizeClass(_ctx.cx('closeButtonIcon'))\n          }, function () {\n            return [(openBlock(), createBlock(resolveDynamicComponent(_ctx.closeIcon ? 'span' : 'TimesIcon'), mergeProps({\n              \"class\": [_ctx.cx('closeButtonIcon'), _ctx.closeIcon]\n            }, _ctx.ptm('closeButtonIcon')), null, 16, [\"class\"]))];\n          })], 16, _hoisted_4)), [[_directive_ripple]]) : createCommentVNode(\"\", true)], 16)], 16)) : createCommentVNode(\"\", true), createElementVNode(\"div\", mergeProps({\n            ref: $options.contentRef,\n            \"class\": [_ctx.cx('content'), _ctx.contentClass],\n            style: _ctx.contentStyle\n          }, _objectSpread(_objectSpread({}, _ctx.contentProps), _ctx.ptm('content'))), [renderSlot(_ctx.$slots, \"default\")], 16), _ctx.footer || _ctx.$slots.footer ? (openBlock(), createElementBlock(\"div\", mergeProps({\n            key: 1,\n            ref: $options.footerContainerRef,\n            \"class\": _ctx.cx('footer')\n          }, _ctx.ptm('footer')), [renderSlot(_ctx.$slots, \"footer\", {}, function () {\n            return [createTextVNode(toDisplayString(_ctx.footer), 1)];\n          })], 16)) : createCommentVNode(\"\", true)], 64))], 16, _hoisted_1)), [[_directive_focustrap, {\n            disabled: !_ctx.modal\n          }]]) : createCommentVNode(\"\", true)];\n        }),\n        _: 3\n      }, 16, [\"onBeforeEnter\", \"onEnter\", \"onBeforeLeave\", \"onLeave\", \"onAfterLeave\"])], 16)) : createCommentVNode(\"\", true)];\n    }),\n    _: 3\n  }, 8, [\"appendTo\"]);\n}\n\nscript.render = render;\n\nexport { script as default };\n",
+      "start": 1709272106301,
+      "end": 1709272106690,
+      "sourcemaps": null
+    },
+    {
+      "name": "nuxt:layer-aliasing",
+      "start": 1709272106690,
+      "end": 1709272106690,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:server-devonly:transform",
+      "start": 1709272106690,
+      "end": 1709272106690,
+      "order": "pre"
+    },
+    {
+      "name": "nuxt:client-fallback-auto-id",
+      "start": 1709272106690,
+      "end": 1709272106690,
+      "order": "pre"
+    },
+    {
+      "name": "vite:css",
+      "start": 1709272106690,
+      "end": 1709272106690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:esbuild",
+      "start": 1709272106690,
+      "end": 1709272106690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:json",
+      "start": 1709272106690,
+      "end": 1709272106690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker",
+      "start": 1709272106690,
+      "end": 1709272106690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue",
+      "start": 1709272106690,
+      "end": 1709272106690,
+      "order": "normal"
+    },
+    {
+      "name": "vite:vue-jsx",
+      "start": 1709272106690,
+      "end": 1709272106690,
+      "order": "normal"
+    },
+    {
+      "name": "replace",
+      "start": 1709272106690,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:remove-plugin-metadata",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:chunk-error",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:components:imports",
+      "result": "import { defineAsyncComponent } from \"vue\"\nexport default defineAsyncComponent(() => import(\"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/primevue/dialog/dialog.esm.js\").then(r => r.default))",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "replace",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "ssr-styles",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:define",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:css-post",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:build-html",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:worker-import-meta-url",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:asset-import-meta-url",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "commonjs",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:dynamic-import-vars",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "vite:import-glob",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    },
+    {
+      "name": "nuxt:composable-keys",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:imports-transform",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "post"
+    },
+    {
+      "name": "unctx:transform",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:pages-macros-transform",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:runtime-paths-dep",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:route-injection-plugin",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:components-loader",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "post"
+    },
+    {
+      "name": "nuxt:tree-shake-composables:transform",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "post"
+    },
+    {
+      "name": "vite:build-import-analysis",
+      "result": "import { __vitePreload } from \"\u0000vite/preload-helper.js\";import { defineAsyncComponent } from \"vue\"\nexport default defineAsyncComponent(() => __vitePreload(() => import(\"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/primevue/dialog/dialog.esm.js\"),__VITE_IS_MODERN__?\"__VITE_PRELOAD__\":void 0,import.meta.url).then(r => r.default))",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal",
+      "sourcemaps": null
+    },
+    {
+      "name": "vite:reporter",
+      "start": 1709272106691,
+      "end": 1709272106691,
+      "order": "normal"
+    }
+  ]
+}

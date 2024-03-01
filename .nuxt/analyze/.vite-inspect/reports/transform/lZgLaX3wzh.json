@@ -4,38 +4,38 @@
     {
       "name": "vite:vue",
       "result": "import { defineComponent as _defineComponent } from 'vue'\nimport { createElementVNode as _createElementVNode, unref as _unref, vModelText as _vModelText, withDirectives as _withDirectives, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\"\n\nconst _hoisted_1 = { class: \"w-full h-[100vh] bg-zinc-800 dark:bg-black\" }\nconst _hoisted_2 = { class: \"w-1/2 mx-auto h-100 flex flex-col items-center justify-center\" }\nconst _hoisted_3 = /*#__PURE__*/_createElementVNode(\"img\", {\n  src: \"https://res.cloudinary.com/nsight/image/upload/v1708400678/n_Sight_logo_dark_dd6d0a819c.jpg\",\n  class: \"w-100 mt-5 mb-4\",\n  alt: \"PS/nSight Logo\"\n}, null, -1)\nconst _hoisted_4 = { class: \"w-3/4 mx-auto mb-4\" }\nconst _hoisted_5 = [\"disabled\"]\nconst _hoisted_6 = {\n  key: 0,\n  class: \"animate-spin h-5 w-5 mr-3 text-white\",\n  viewBox: \"0 0 24 24\"\n}\nconst _hoisted_7 = /*#__PURE__*/_createElementVNode(\"span\", { class: \"text-center\" }, \" let's get it \", -1)\n\n\nexport default /*#__PURE__*/_defineComponent({\n  __name: 'index',\n  setup(__props) {\n\n// Meta\ndefinePageMeta({\n  middleware: [\"guest\"],\n  layout: \"default\",\n});\n\n// State\nconst state = reactive({\n  input: {\n    email: \"\",\n    password: \"\",\n    nsight_id: \"\",\n    strapi_data: false,\n  },\n  quotes: false,\n  quote: false,\n  nsight_ids: false,\n  errors: [],\n  loading: false,\n});\nconst auth = authStore();\nconst runtimeConfig = useRuntimeConfig();\n\n// Methods\nconst pull_quote = () => {\n  if (state.quotes) {\n    let random = Math.floor(Math.random() * state.quotes.data.length);\n    state.quote = state.quotes.data[random];\n  }\n};\nconst quotes = async () => {\n  const res = await $fetch(\n    `${runtimeConfig.public.NUXT_STRAPI_URL}/api/quotes?populate=*`,\n    { method: \"GET\" }\n  )\n    .then((res) => {\n      state.quotes = res;\n      pull_quote();\n    })\n    .catch((err) => {\n      console.log(err);\n    });\n};\nconst sign_in = async () => {\n  console.log(\"Signing in nSight member!\");\n  state.loading = true;\n  await auth\n    .login({\n      identifier: state.input.email,\n      password: state.input.password,\n    })\n    .catch((err) => {\n      console.log(\"err\", err);\n      state.errors.push(\"Incorrect email, username, or password.\");\n      state.loading = false;\n    });\n};\n\n// Once created:\nquotes();\n\nreturn (_ctx: any,_cache: any) => {\n  return (_openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n    _createElementVNode(\"div\", _hoisted_2, [\n      _hoisted_3,\n      _createElementVNode(\"div\", _hoisted_4, [\n        _withDirectives(_createElementVNode(\"input\", {\n          type: \"email\",\n          class: \"w-full shadow-xl border-0 rounded-md h-[40px] my-2 px-4\",\n          \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event: any) => ((_unref(state).input.email) = $event)),\n          placeholder: \"Email\"\n        }, null, 512), [\n          [_vModelText, _unref(state).input.email]\n        ]),\n        _withDirectives(_createElementVNode(\"input\", {\n          type: \"password\",\n          class: \"w-full shadow-xl border-0 rounded-md h-[40px] my-2 px-4\",\n          \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event: any) => ((_unref(state).input.password) = $event)),\n          placeholder: \"Password\"\n        }, null, 512), [\n          [_vModelText, _unref(state).input.password]\n        ]),\n        _createElementVNode(\"button\", {\n          class: _normalizeClass([\"rounded-md shadow-xl w-full flex flex-row text-neutral-800 justify-center nsight-btn-primary my-2 py-2\", _unref(state).loading ? 'opacity-25' : 'opacity-1']),\n          onClick: sign_in,\n          disabled: _unref(state).loading\n        }, [\n          (_unref(state).loading)\n            ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_6))\n            : _createCommentVNode(\"\", true),\n          _hoisted_7\n        ], 10, _hoisted_5)\n      ])\n    ])\n  ]))\n}\n}\n\n})",
-      "start": 1709003847766,
-      "end": 1709003847766
+      "start": 1709272109456,
+      "end": 1709272109456
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003847766,
-      "end": 1709003847766,
+      "start": 1709272109456,
+      "end": 1709272109456,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003847766,
-      "end": 1709003847766,
+      "start": 1709272109456,
+      "end": 1709272109456,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003847766,
-      "end": 1709003847766,
+      "start": 1709272109456,
+      "end": 1709272109456,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003847766,
-      "end": 1709003847766,
+      "start": 1709272109456,
+      "end": 1709272109456,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
       "result": "import { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, unref as _unref, vModelText as _vModelText, withDirectives as _withDirectives, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"w-full h-[100vh] bg-zinc-800 dark:bg-black\" };\nconst _hoisted_2 = { class: \"w-1/2 mx-auto h-100 flex flex-col items-center justify-center\" };\nconst _hoisted_3 = /* @__PURE__ */ _createElementVNode(\"img\", {\n  src: \"https://res.cloudinary.com/nsight/image/upload/v1708400678/n_Sight_logo_dark_dd6d0a819c.jpg\",\n  class: \"w-100 mt-5 mb-4\",\n  alt: \"PS/nSight Logo\"\n}, null, -1);\nconst _hoisted_4 = { class: \"w-3/4 mx-auto mb-4\" };\nconst _hoisted_5 = [\"disabled\"];\nconst _hoisted_6 = {\n  key: 0,\n  class: \"animate-spin h-5 w-5 mr-3 text-white\",\n  viewBox: \"0 0 24 24\"\n};\nconst _hoisted_7 = /* @__PURE__ */ _createElementVNode(\"span\", { class: \"text-center\" }, \" let's get it \", -1);\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"index\",\n  setup(__props) {\n    definePageMeta({\n      middleware: [\"guest\"],\n      layout: \"default\"\n    });\n    const state = reactive({\n      input: {\n        email: \"\",\n        password: \"\",\n        nsight_id: \"\",\n        strapi_data: false\n      },\n      quotes: false,\n      quote: false,\n      nsight_ids: false,\n      errors: [],\n      loading: false\n    });\n    const auth = authStore();\n    const runtimeConfig = useRuntimeConfig();\n    const pull_quote = () => {\n      if (state.quotes) {\n        let random = Math.floor(Math.random() * state.quotes.data.length);\n        state.quote = state.quotes.data[random];\n      }\n    };\n    const quotes = async () => {\n      const res = await $fetch(\n        `${runtimeConfig.public.NUXT_STRAPI_URL}/api/quotes?populate=*`,\n        { method: \"GET\" }\n      ).then((res2) => {\n        state.quotes = res2;\n        pull_quote();\n      }).catch((err) => {\n        console.log(err);\n      });\n    };\n    const sign_in = async () => {\n      console.log(\"Signing in nSight member!\");\n      state.loading = true;\n      await auth.login({\n        identifier: state.input.email,\n        password: state.input.password\n      }).catch((err) => {\n        console.log(\"err\", err);\n        state.errors.push(\"Incorrect email, username, or password.\");\n        state.loading = false;\n      });\n    };\n    quotes();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _hoisted_3,\n          _createElementVNode(\"div\", _hoisted_4, [\n            _withDirectives(_createElementVNode(\"input\", {\n              type: \"email\",\n              class: \"w-full shadow-xl border-0 rounded-md h-[40px] my-2 px-4\",\n              \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event) => _unref(state).input.email = $event),\n              placeholder: \"Email\"\n            }, null, 512), [\n              [_vModelText, _unref(state).input.email]\n            ]),\n            _withDirectives(_createElementVNode(\"input\", {\n              type: \"password\",\n              class: \"w-full shadow-xl border-0 rounded-md h-[40px] my-2 px-4\",\n              \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event) => _unref(state).input.password = $event),\n              placeholder: \"Password\"\n            }, null, 512), [\n              [_vModelText, _unref(state).input.password]\n            ]),\n            _createElementVNode(\"button\", {\n              class: _normalizeClass([\"rounded-md shadow-xl w-full flex flex-row text-neutral-800 justify-center nsight-btn-primary my-2 py-2\", _unref(state).loading ? \"opacity-25\" : \"opacity-1\"]),\n              onClick: sign_in,\n              disabled: _unref(state).loading\n            }, [\n              _unref(state).loading ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_6)) : _createCommentVNode(\"\", true),\n              _hoisted_7\n            ], 10, _hoisted_5)\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
-      "start": 1709003847766,
-      "end": 1709003848179,
+      "start": 1709272109456,
+      "end": 1709272109748,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
@@ -53,123 +53,123 @@
     },
     {
       "name": "vite:json",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109748,
+      "end": 1709272109748,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109748,
+      "end": 1709272109748,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109748,
+      "end": 1709272109748,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109748,
+      "end": 1709272109748,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109748,
+      "end": 1709272109748,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109748,
+      "end": 1709272109748,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109748,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003848179,
-      "end": 1709003848179,
+      "start": 1709272109749,
+      "end": 1709272109749,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
       "result": "import { definePageMeta } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/nuxt/dist/pages/runtime/composables';\nimport { reactive } from 'vue';\nimport { authStore } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/stores/auth.js';\nimport { useRuntimeConfig } from '#app/nuxt';\nimport { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, unref as _unref, vModelText as _vModelText, withDirectives as _withDirectives, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"w-full h-[100vh] bg-zinc-800 dark:bg-black\" };\nconst _hoisted_2 = { class: \"w-1/2 mx-auto h-100 flex flex-col items-center justify-center\" };\nconst _hoisted_3 = /* @__PURE__ */ _createElementVNode(\"img\", {\n  src: \"https://res.cloudinary.com/nsight/image/upload/v1708400678/n_Sight_logo_dark_dd6d0a819c.jpg\",\n  class: \"w-100 mt-5 mb-4\",\n  alt: \"PS/nSight Logo\"\n}, null, -1);\nconst _hoisted_4 = { class: \"w-3/4 mx-auto mb-4\" };\nconst _hoisted_5 = [\"disabled\"];\nconst _hoisted_6 = {\n  key: 0,\n  class: \"animate-spin h-5 w-5 mr-3 text-white\",\n  viewBox: \"0 0 24 24\"\n};\nconst _hoisted_7 = /* @__PURE__ */ _createElementVNode(\"span\", { class: \"text-center\" }, \" let's get it \", -1);\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"index\",\n  setup(__props) {\n    definePageMeta({\n      middleware: [\"guest\"],\n      layout: \"default\"\n    });\n    const state = reactive({\n      input: {\n        email: \"\",\n        password: \"\",\n        nsight_id: \"\",\n        strapi_data: false\n      },\n      quotes: false,\n      quote: false,\n      nsight_ids: false,\n      errors: [],\n      loading: false\n    });\n    const auth = authStore();\n    const runtimeConfig = useRuntimeConfig();\n    const pull_quote = () => {\n      if (state.quotes) {\n        let random = Math.floor(Math.random() * state.quotes.data.length);\n        state.quote = state.quotes.data[random];\n      }\n    };\n    const quotes = async () => {\n      const res = await $fetch(\n        `${runtimeConfig.public.NUXT_STRAPI_URL}/api/quotes?populate=*`,\n        { method: \"GET\" }\n      ).then((res2) => {\n        state.quotes = res2;\n        pull_quote();\n      }).catch((err) => {\n        console.log(err);\n      });\n    };\n    const sign_in = async () => {\n      console.log(\"Signing in nSight member!\");\n      state.loading = true;\n      await auth.login({\n        identifier: state.input.email,\n        password: state.input.password\n      }).catch((err) => {\n        console.log(\"err\", err);\n        state.errors.push(\"Incorrect email, username, or password.\");\n        state.loading = false;\n      });\n    };\n    quotes();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _hoisted_3,\n          _createElementVNode(\"div\", _hoisted_4, [\n            _withDirectives(_createElementVNode(\"input\", {\n              type: \"email\",\n              class: \"w-full shadow-xl border-0 rounded-md h-[40px] my-2 px-4\",\n              \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event) => _unref(state).input.email = $event),\n              placeholder: \"Email\"\n            }, null, 512), [\n              [_vModelText, _unref(state).input.email]\n            ]),\n            _withDirectives(_createElementVNode(\"input\", {\n              type: \"password\",\n              class: \"w-full shadow-xl border-0 rounded-md h-[40px] my-2 px-4\",\n              \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event) => _unref(state).input.password = $event),\n              placeholder: \"Password\"\n            }, null, 512), [\n              [_vModelText, _unref(state).input.password]\n            ]),\n            _createElementVNode(\"button\", {\n              class: _normalizeClass([\"rounded-md shadow-xl w-full flex flex-row text-neutral-800 justify-center nsight-btn-primary my-2 py-2\", _unref(state).loading ? \"opacity-25\" : \"opacity-1\"]),\n              onClick: sign_in,\n              disabled: _unref(state).loading\n            }, [\n              _unref(state).loading ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_6)) : _createCommentVNode(\"\", true),\n              _hoisted_7\n            ], 10, _hoisted_5)\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
-      "start": 1709003848179,
-      "end": 1709003848181,
+      "start": 1709272109749,
+      "end": 1709272109750,
       "order": "post",
       "sourcemaps": {
         "version": 3,
@@ -182,51 +182,51 @@
     },
     {
       "name": "unctx:transform",
-      "start": 1709003848181,
-      "end": 1709003848182,
+      "start": 1709272109750,
+      "end": 1709272109751,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003848182,
-      "end": 1709003848182,
+      "start": 1709272109751,
+      "end": 1709272109751,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003848182,
-      "end": 1709003848182,
+      "start": 1709272109751,
+      "end": 1709272109751,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003848182,
-      "end": 1709003848182,
+      "start": 1709272109751,
+      "end": 1709272109751,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003848182,
-      "end": 1709003848182,
+      "start": 1709272109751,
+      "end": 1709272109751,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
       "result": "import { definePageMeta } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/nuxt/dist/pages/runtime/composables';\nimport { reactive } from 'vue';\nimport { authStore } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/stores/auth.js';\nimport { useRuntimeConfig } from '#app/nuxt';\nimport { defineComponent as _defineComponent } from \"vue\";\nimport { createElementVNode as _createElementVNode, unref as _unref, vModelText as _vModelText, withDirectives as _withDirectives, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, normalizeClass as _normalizeClass } from \"vue\";\nconst _hoisted_1 = { class: \"w-full h-[100vh] bg-zinc-800 dark:bg-black\" };\nconst _hoisted_2 = { class: \"w-1/2 mx-auto h-100 flex flex-col items-center justify-center\" };\nconst _hoisted_3 = /* @__PURE__ */ _createElementVNode(\"img\", {\n  src: \"https://res.cloudinary.com/nsight/image/upload/v1708400678/n_Sight_logo_dark_dd6d0a819c.jpg\",\n  class: \"w-100 mt-5 mb-4\",\n  alt: \"PS/nSight Logo\"\n}, null, -1);\nconst _hoisted_4 = { class: \"w-3/4 mx-auto mb-4\" };\nconst _hoisted_5 = [\"disabled\"];\nconst _hoisted_6 = {\n  key: 0,\n  class: \"animate-spin h-5 w-5 mr-3 text-white\",\n  viewBox: \"0 0 24 24\"\n};\nconst _hoisted_7 = /* @__PURE__ */ _createElementVNode(\"span\", { class: \"text-center\" }, \" let's get it \", -1);\nexport default /* @__PURE__ */ _defineComponent({\n  __name: \"index\",\n  setup(__props) {\n     false && /*@__PURE__*/ definePageMeta({\n      middleware: [\"guest\"],\n      layout: \"default\"\n    });\n    const state = reactive({\n      input: {\n        email: \"\",\n        password: \"\",\n        nsight_id: \"\",\n        strapi_data: false\n      },\n      quotes: false,\n      quote: false,\n      nsight_ids: false,\n      errors: [],\n      loading: false\n    });\n    const auth = authStore();\n    const runtimeConfig = useRuntimeConfig();\n    const pull_quote = () => {\n      if (state.quotes) {\n        let random = Math.floor(Math.random() * state.quotes.data.length);\n        state.quote = state.quotes.data[random];\n      }\n    };\n    const quotes = async () => {\n      const res = await $fetch(\n        `${runtimeConfig.public.NUXT_STRAPI_URL}/api/quotes?populate=*`,\n        { method: \"GET\" }\n      ).then((res2) => {\n        state.quotes = res2;\n        pull_quote();\n      }).catch((err) => {\n        console.log(err);\n      });\n    };\n    const sign_in = async () => {\n      console.log(\"Signing in nSight member!\");\n      state.loading = true;\n      await auth.login({\n        identifier: state.input.email,\n        password: state.input.password\n      }).catch((err) => {\n        console.log(\"err\", err);\n        state.errors.push(\"Incorrect email, username, or password.\");\n        state.loading = false;\n      });\n    };\n    quotes();\n    return (_ctx, _cache) => {\n      return _openBlock(), _createElementBlock(\"div\", _hoisted_1, [\n        _createElementVNode(\"div\", _hoisted_2, [\n          _hoisted_3,\n          _createElementVNode(\"div\", _hoisted_4, [\n            _withDirectives(_createElementVNode(\"input\", {\n              type: \"email\",\n              class: \"w-full shadow-xl border-0 rounded-md h-[40px] my-2 px-4\",\n              \"onUpdate:modelValue\": _cache[0] || (_cache[0] = ($event) => _unref(state).input.email = $event),\n              placeholder: \"Email\"\n            }, null, 512), [\n              [_vModelText, _unref(state).input.email]\n            ]),\n            _withDirectives(_createElementVNode(\"input\", {\n              type: \"password\",\n              class: \"w-full shadow-xl border-0 rounded-md h-[40px] my-2 px-4\",\n              \"onUpdate:modelValue\": _cache[1] || (_cache[1] = ($event) => _unref(state).input.password = $event),\n              placeholder: \"Password\"\n            }, null, 512), [\n              [_vModelText, _unref(state).input.password]\n            ]),\n            _createElementVNode(\"button\", {\n              class: _normalizeClass([\"rounded-md shadow-xl w-full flex flex-row text-neutral-800 justify-center nsight-btn-primary my-2 py-2\", _unref(state).loading ? \"opacity-25\" : \"opacity-1\"]),\n              onClick: sign_in,\n              disabled: _unref(state).loading\n            }, [\n              _unref(state).loading ? (_openBlock(), _createElementBlock(\"svg\", _hoisted_6)) : _createCommentVNode(\"\", true),\n              _hoisted_7\n            ], 10, _hoisted_5)\n          ])\n        ])\n      ]);\n    };\n  }\n});\n",
-      "start": 1709003848182,
-      "end": 1709003848183,
+      "start": 1709272109751,
+      "end": 1709272109752,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003848183,
-      "end": 1709003848183,
+      "start": 1709272109752,
+      "end": 1709272109752,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003848183,
-      "end": 1709003848183,
+      "start": 1709272109752,
+      "end": 1709272109752,
       "order": "normal"
     }
   ]

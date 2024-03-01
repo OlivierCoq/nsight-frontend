@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import { array, dict, lazy, nullable, number, object, optional, string, } from '../schema';\nimport { fulfillmentSchema } from './fulfillment';\nimport { moneySchema } from './money';\nimport { orderLineItemSchema } from './orderLineItem';\nimport { orderLineItemDiscountSchema, } from './orderLineItemDiscount';\nimport { orderLineItemTaxSchema } from './orderLineItemTax';\nimport { orderMoneyAmountsSchema } from './orderMoneyAmounts';\nimport { orderPricingOptionsSchema, } from './orderPricingOptions';\nimport { orderReturnSchema } from './orderReturn';\nimport { orderRewardSchema } from './orderReward';\nimport { orderRoundingAdjustmentSchema, } from './orderRoundingAdjustment';\nimport { orderServiceChargeSchema, } from './orderServiceCharge';\nimport { orderSourceSchema } from './orderSource';\nimport { refundSchema } from './refund';\nimport { tenderSchema } from './tender';\nexport const orderSchema = object({\n    id: ['id', optional(string())],\n    locationId: ['location_id', string()],\n    referenceId: ['reference_id', optional(nullable(string()))],\n    source: ['source', optional(lazy(() => orderSourceSchema))],\n    customerId: ['customer_id', optional(nullable(string()))],\n    lineItems: [\n        'line_items',\n        optional(nullable(array(lazy(() => orderLineItemSchema)))),\n    ],\n    taxes: [\n        'taxes',\n        optional(nullable(array(lazy(() => orderLineItemTaxSchema)))),\n    ],\n    discounts: [\n        'discounts',\n        optional(nullable(array(lazy(() => orderLineItemDiscountSchema)))),\n    ],\n    serviceCharges: [\n        'service_charges',\n        optional(nullable(array(lazy(() => orderServiceChargeSchema)))),\n    ],\n    fulfillments: [\n        'fulfillments',\n        optional(nullable(array(lazy(() => fulfillmentSchema)))),\n    ],\n    returns: ['returns', optional(array(lazy(() => orderReturnSchema)))],\n    returnAmounts: [\n        'return_amounts',\n        optional(lazy(() => orderMoneyAmountsSchema)),\n    ],\n    netAmounts: ['net_amounts', optional(lazy(() => orderMoneyAmountsSchema))],\n    roundingAdjustment: [\n        'rounding_adjustment',\n        optional(lazy(() => orderRoundingAdjustmentSchema)),\n    ],\n    tenders: ['tenders', optional(array(lazy(() => tenderSchema)))],\n    refunds: ['refunds', optional(array(lazy(() => refundSchema)))],\n    metadata: ['metadata', optional(nullable(dict(string())))],\n    createdAt: ['created_at', optional(string())],\n    updatedAt: ['updated_at', optional(string())],\n    closedAt: ['closed_at', optional(string())],\n    state: ['state', optional(string())],\n    version: ['version', optional(number())],\n    totalMoney: ['total_money', optional(lazy(() => moneySchema))],\n    totalTaxMoney: ['total_tax_money', optional(lazy(() => moneySchema))],\n    totalDiscountMoney: [\n        'total_discount_money',\n        optional(lazy(() => moneySchema)),\n    ],\n    totalTipMoney: ['total_tip_money', optional(lazy(() => moneySchema))],\n    totalServiceChargeMoney: [\n        'total_service_charge_money',\n        optional(lazy(() => moneySchema)),\n    ],\n    ticketName: ['ticket_name', optional(nullable(string()))],\n    pricingOptions: [\n        'pricing_options',\n        optional(lazy(() => orderPricingOptionsSchema)),\n    ],\n    rewards: ['rewards', optional(array(lazy(() => orderRewardSchema)))],\n    netAmountDueMoney: [\n        'net_amount_due_money',\n        optional(lazy(() => moneySchema)),\n    ],\n});\n//# sourceMappingURL=order.js.map",
-      "start": 1709003847789,
-      "end": 1709003847821,
+      "start": 1709272109523,
+      "end": 1709272109550,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003847821,
-      "end": 1709003847821,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003847821,
-      "end": 1709003847821,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003847821,
-      "end": 1709003847821,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003847821,
-      "end": 1709003847821,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109550,
+      "end": 1709272109550,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109550,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003847822,
-      "end": 1709003847822,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003847822,
-      "end": 1709003847823,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003847823,
-      "end": 1709003847823,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003847823,
-      "end": 1709003847823,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003847823,
-      "end": 1709003847823,
+      "start": 1709272109551,
+      "end": 1709272109551,
       "order": "normal"
     }
   ]

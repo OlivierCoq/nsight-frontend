@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import { createDeviceCodeRequestSchema, } from '../models/createDeviceCodeRequest';\nimport { createDeviceCodeResponseSchema, } from '../models/createDeviceCodeResponse';\nimport { getDeviceCodeResponseSchema, } from '../models/getDeviceCodeResponse';\nimport { getDeviceResponseSchema, } from '../models/getDeviceResponse';\nimport { listDeviceCodesResponseSchema, } from '../models/listDeviceCodesResponse';\nimport { listDevicesResponseSchema, } from '../models/listDevicesResponse';\nimport { number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class DevicesApi extends BaseApi {\n    /**\n     * List devices associated with the merchant. Currently, only Terminal API\n     * devices are supported.\n     *\n     * @param cursor      A pagination cursor returned by a previous call to this endpoint. Provide this\n     *                              cursor to retrieve the next set of results for the original query. See\n     *                              [Pagination](https://developer.squareup.com/docs/build-basics/common-api-\n     *                              patterns/pagination) for more information.\n     * @param sortOrder   The order in which results are listed. - `ASC` - Oldest to newest. - `DESC` - Newest\n     *                              to oldest (default).\n     * @param limit       The number of results to return in a single page.\n     * @param locationId  If present, only returns devices at the target location.\n     * @return Response from the API call\n     */\n    async listDevices(cursor, sortOrder, limit, locationId, requestOptions) {\n        const req = this.createRequest('GET', '/v2/devices');\n        const mapped = req.prepareArgs({\n            cursor: [cursor, optional(string())],\n            sortOrder: [sortOrder, optional(string())],\n            limit: [limit, optional(number())],\n            locationId: [locationId, optional(string())],\n        });\n        req.query('cursor', mapped.cursor);\n        req.query('sort_order', mapped.sortOrder);\n        req.query('limit', mapped.limit);\n        req.query('location_id', mapped.locationId);\n        return req.callAsJson(listDevicesResponseSchema, requestOptions);\n    }\n    /**\n     * Lists all DeviceCodes associated with the merchant.\n     *\n     * @param cursor       A pagination cursor returned by a previous call to this endpoint. Provide this to\n     *                               retrieve the next set of results for your original query.  See [Paginating\n     *                               results](https://developer.squareup.com/docs/working-with-apis/pagination) for more\n     *                               information.\n     * @param locationId   If specified, only returns DeviceCodes of the specified location. Returns\n     *                               DeviceCodes of all locations if empty.\n     * @param productType  If specified, only returns DeviceCodes targeting the specified product type.\n     *                               Returns DeviceCodes of all product types if empty.\n     * @param status       If specified, returns DeviceCodes with the specified statuses. Returns DeviceCodes\n     *                               of status `PAIRED` and `UNPAIRED` if empty.\n     * @return Response from the API call\n     */\n    async listDeviceCodes(cursor, locationId, productType, status, requestOptions) {\n        const req = this.createRequest('GET', '/v2/devices/codes');\n        const mapped = req.prepareArgs({\n            cursor: [cursor, optional(string())],\n            locationId: [locationId, optional(string())],\n            productType: [productType, optional(string())],\n            status: [status, optional(string())],\n        });\n        req.query('cursor', mapped.cursor);\n        req.query('location_id', mapped.locationId);\n        req.query('product_type', mapped.productType);\n        req.query('status', mapped.status);\n        return req.callAsJson(listDeviceCodesResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a DeviceCode that can be used to login to a Square Terminal device to enter the connected\n     * terminal mode.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                       See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createDeviceCode(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/devices/codes');\n        const mapped = req.prepareArgs({\n            body: [body, createDeviceCodeRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createDeviceCodeResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves DeviceCode with the associated ID.\n     *\n     * @param id The unique identifier for the device code.\n     * @return Response from the API call\n     */\n    async getDeviceCode(id, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ id: [id, string()] });\n        req.appendTemplatePath `/v2/devices/codes/${mapped.id}`;\n        return req.callAsJson(getDeviceCodeResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves Device with the associated `device_id`.\n     *\n     * @param deviceId  The unique ID for the desired `Device`.\n     * @return Response from the API call\n     */\n    async getDevice(deviceId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ deviceId: [deviceId, string()] });\n        req.appendTemplatePath `/v2/devices/${mapped.deviceId}`;\n        return req.callAsJson(getDeviceResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=devicesApi.js.map",
-      "start": 1709003846719,
-      "end": 1709003846800,
+      "start": 1709272108424,
+      "end": 1709272108470,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108470,
+      "end": 1709272108470,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108470,
+      "end": 1709272108470,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108470,
+      "end": 1709272108470,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108470,
+      "end": 1709272108470,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108470,
+      "end": 1709272108470,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108470,
+      "end": 1709272108470,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108470,
+      "end": 1709272108470,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108470,
+      "end": 1709272108470,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108470,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003846800,
-      "end": 1709003846800,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003846800,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003846801,
-      "end": 1709003846801,
+      "start": 1709272108471,
+      "end": 1709272108471,
       "order": "normal"
     }
   ]

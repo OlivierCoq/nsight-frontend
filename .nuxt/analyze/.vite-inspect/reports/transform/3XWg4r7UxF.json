@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import { cancelPaymentByIdempotencyKeyRequestSchema, } from '../models/cancelPaymentByIdempotencyKeyRequest';\nimport { cancelPaymentByIdempotencyKeyResponseSchema, } from '../models/cancelPaymentByIdempotencyKeyResponse';\nimport { cancelPaymentResponseSchema, } from '../models/cancelPaymentResponse';\nimport { completePaymentRequestSchema, } from '../models/completePaymentRequest';\nimport { completePaymentResponseSchema, } from '../models/completePaymentResponse';\nimport { createPaymentRequestSchema, } from '../models/createPaymentRequest';\nimport { createPaymentResponseSchema, } from '../models/createPaymentResponse';\nimport { getPaymentResponseSchema, } from '../models/getPaymentResponse';\nimport { listPaymentsResponseSchema, } from '../models/listPaymentsResponse';\nimport { updatePaymentRequestSchema, } from '../models/updatePaymentRequest';\nimport { updatePaymentResponseSchema, } from '../models/updatePaymentResponse';\nimport { bigint, number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class PaymentsApi extends BaseApi {\n    /**\n     * Retrieves a list of payments taken by the account making the request.\n     *\n     * Results are eventually consistent, and new payments or changes to payments might take several\n     * seconds to appear.\n     *\n     * The maximum results per page is 100.\n     *\n     * @param beginTime   Indicates the start of the time range to retrieve payments for, in RFC 3339 format.\n     *                              The range is determined using the `created_at` field for each Payment. Inclusive.\n     *                              Default: The current time minus one year.\n     * @param endTime     Indicates the end of the time range to retrieve payments for, in RFC 3339 format.\n     *                              The  range is determined using the `created_at` field for each Payment.  Default: The\n     *                              current time.\n     * @param sortOrder   The order in which results are listed by `Payment.created_at`: - `ASC` - Oldest to\n     *                              newest. - `DESC` - Newest to oldest (default).\n     * @param cursor      A pagination cursor returned by a previous call to this endpoint. Provide this\n     *                              cursor to retrieve the next set of results for the original query.  For more\n     *                              information, see [Pagination](https://developer.squareup.com/docs/build-basics/common-\n     *                              api-patterns/pagination).\n     * @param locationId  Limit results to the location supplied. By default, results are returned for the\n     *                              default (main) location associated with the seller.\n     * @param total       The exact amount in the `total_money` for a payment.\n     * @param last4       The last four digits of a payment card.\n     * @param cardBrand   The brand of the payment card (for example, VISA).\n     * @param limit       The maximum number of results to be returned in a single page. It is possible to\n     *                              receive fewer results than the specified limit on a given page.  The default value of\n     *                              100 is also the maximum allowed value. If the provided value is  greater than 100, it\n     *                              is ignored and the default value is used instead.  Default: `100`\n     * @return Response from the API call\n     */\n    async listPayments(beginTime, endTime, sortOrder, cursor, locationId, total, last4, cardBrand, limit, requestOptions) {\n        const req = this.createRequest('GET', '/v2/payments');\n        const mapped = req.prepareArgs({\n            beginTime: [beginTime, optional(string())],\n            endTime: [endTime, optional(string())],\n            sortOrder: [sortOrder, optional(string())],\n            cursor: [cursor, optional(string())],\n            locationId: [locationId, optional(string())],\n            total: [total, optional(bigint())],\n            last4: [last4, optional(string())],\n            cardBrand: [cardBrand, optional(string())],\n            limit: [limit, optional(number())],\n        });\n        req.query('begin_time', mapped.beginTime);\n        req.query('end_time', mapped.endTime);\n        req.query('sort_order', mapped.sortOrder);\n        req.query('cursor', mapped.cursor);\n        req.query('location_id', mapped.locationId);\n        req.query('total', mapped.total);\n        req.query('last_4', mapped.last4);\n        req.query('card_brand', mapped.cardBrand);\n        req.query('limit', mapped.limit);\n        return req.callAsJson(listPaymentsResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a payment using the provided source. You can use this endpoint\n     * to charge a card (credit/debit card or\n     * Square gift card) or record a payment that the seller received outside of Square\n     * (cash payment from a buyer or a payment that an external entity\n     * processed on behalf of the seller).\n     *\n     * The endpoint creates a\n     * `Payment` object and returns it in the response.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createPayment(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/payments');\n        const mapped = req.prepareArgs({\n            body: [body, createPaymentRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createPaymentResponseSchema, requestOptions);\n    }\n    /**\n     * Cancels (voids) a payment identified by the idempotency key that is specified in the\n     * request.\n     *\n     * Use this method when the status of a `CreatePayment` request is unknown (for example, after you send\n     * a\n     * `CreatePayment` request, a network error occurs and you do not get a response). In this case, you\n     * can\n     * direct Square to cancel the payment using this endpoint. In the request, you provide the same\n     * idempotency key that you provided in your `CreatePayment` request that you want to cancel. After\n     * canceling the payment, you can submit your `CreatePayment` request again.\n     *\n     * Note that if no payment with the specified idempotency key is found, no action is taken and the\n     * endpoint\n     * returns successfully.\n     *\n     * @param body         An object containing the fields to POST for\n     *                                                                    the request.  See the corresponding object\n     *                                                                    definition for field details.\n     * @return Response from the API call\n     */\n    async cancelPaymentByIdempotencyKey(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/payments/cancel');\n        const mapped = req.prepareArgs({\n            body: [body, cancelPaymentByIdempotencyKeyRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(cancelPaymentByIdempotencyKeyResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves details for a specific payment.\n     *\n     * @param paymentId  A unique ID for the desired payment.\n     * @return Response from the API call\n     */\n    async getPayment(paymentId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ paymentId: [paymentId, string()] });\n        req.appendTemplatePath `/v2/payments/${mapped.paymentId}`;\n        return req.callAsJson(getPaymentResponseSchema, requestOptions);\n    }\n    /**\n     * Updates a payment with the APPROVED status.\n     * You can update the `amount_money` and `tip_money` using this endpoint.\n     *\n     * @param paymentId    The ID of the payment to update.\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async updatePayment(paymentId, body, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            paymentId: [paymentId, string()],\n            body: [body, updatePaymentRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/payments/${mapped.paymentId}`;\n        return req.callAsJson(updatePaymentResponseSchema, requestOptions);\n    }\n    /**\n     * Cancels (voids) a payment. You can use this endpoint to cancel a payment with\n     * the APPROVED `status`.\n     *\n     * @param paymentId  The ID of the payment to cancel.\n     * @return Response from the API call\n     */\n    async cancelPayment(paymentId, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({ paymentId: [paymentId, string()] });\n        req.appendTemplatePath `/v2/payments/${mapped.paymentId}/cancel`;\n        return req.callAsJson(cancelPaymentResponseSchema, requestOptions);\n    }\n    /**\n     * Completes (captures) a payment.\n     * By default, payments are set to complete immediately after they are created.\n     *\n     * You can use this endpoint to complete a payment with the APPROVED `status`.\n     *\n     * @param paymentId    The unique ID identifying the payment to be completed.\n     * @param body         An object containing the fields to POST for the request.\n     *                                                      See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async completePayment(paymentId, body, requestOptions) {\n        const req = this.createRequest('POST');\n        const mapped = req.prepareArgs({\n            paymentId: [paymentId, string()],\n            body: [body, completePaymentRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/payments/${mapped.paymentId}/complete`;\n        return req.callAsJson(completePaymentResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=paymentsApi.js.map",
-      "start": 1709003846797,
-      "end": 1709003846894,
+      "start": 1709272108462,
+      "end": 1709272108551,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003846894,
-      "end": 1709003846894,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003846894,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108551,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108551,
+      "end": 1709272108552,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003846895,
-      "end": 1709003846895,
+      "start": 1709272108552,
+      "end": 1709272108552,
       "order": "normal"
     }
   ]

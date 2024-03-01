@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }\n\nfunction _nonIterableRest() { throw new TypeError(\"Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== \"undefined\" && arr[Symbol.iterator] || arr[\"@@iterator\"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i[\"return\"] != null) _i[\"return\"](); } finally { if (_d) throw _e; } } return _arr; }\n\nfunction _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }\n\nfunction _createForOfIteratorHelperLoose(o, allowArrayLike) { var it = typeof Symbol !== \"undefined\" && o[Symbol.iterator] || o[\"@@iterator\"]; if (it) return (it = it.call(o)).next.bind(it); if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === \"number\") { if (it) o = it; var i = 0; return function () { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }; } throw new TypeError(\"Invalid attempt to iterate non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.\"); }\n\nfunction _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === \"string\") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === \"Object\" && o.constructor) n = o.constructor.name; if (n === \"Map\" || n === \"Set\") return Array.from(o); if (n === \"Arguments\" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }\n\nfunction _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }\n\nimport isViablePhoneNumber from './isViablePhoneNumber.js'; // https://www.ietf.org/rfc/rfc3966.txt\n\n/**\r\n * @param  {string} text - Phone URI (RFC 3966).\r\n * @return {object} `{ ?number, ?ext }`.\r\n */\n\nexport function parseRFC3966(text) {\n  var number;\n  var ext; // Replace \"tel:\" with \"tel=\" for parsing convenience.\n\n  text = text.replace(/^tel:/, 'tel=');\n\n  for (var _iterator = _createForOfIteratorHelperLoose(text.split(';')), _step; !(_step = _iterator()).done;) {\n    var part = _step.value;\n\n    var _part$split = part.split('='),\n        _part$split2 = _slicedToArray(_part$split, 2),\n        name = _part$split2[0],\n        value = _part$split2[1];\n\n    switch (name) {\n      case 'tel':\n        number = value;\n        break;\n\n      case 'ext':\n        ext = value;\n        break;\n\n      case 'phone-context':\n        // Only \"country contexts\" are supported.\n        // \"Domain contexts\" are ignored.\n        if (value[0] === '+') {\n          number = value + number;\n        }\n\n        break;\n    }\n  } // If the phone number is not viable, then abort.\n\n\n  if (!isViablePhoneNumber(number)) {\n    return {};\n  }\n\n  var result = {\n    number: number\n  };\n\n  if (ext) {\n    result.ext = ext;\n  }\n\n  return result;\n}\n/**\r\n * @param  {object} - `{ ?number, ?extension }`.\r\n * @return {string} Phone URI (RFC 3966).\r\n */\n\nexport function formatRFC3966(_ref) {\n  var number = _ref.number,\n      ext = _ref.ext;\n\n  if (!number) {\n    return '';\n  }\n\n  if (number[0] !== '+') {\n    throw new Error(\"\\\"formatRFC3966()\\\" expects \\\"number\\\" to be in E.164 format.\");\n  }\n\n  return \"tel:\".concat(number).concat(ext ? ';ext=' + ext : '');\n}\n//# sourceMappingURL=RFC3966.js.map",
-      "start": 1709003848987,
-      "end": 1709003849035,
+      "start": 1709272110574,
+      "end": 1709272110620,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003849035,
-      "end": 1709003849035,
+      "start": 1709272110620,
+      "end": 1709272110620,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003849035,
-      "end": 1709003849036,
+      "start": 1709272110620,
+      "end": 1709272110621,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003849036,
-      "end": 1709003849036,
+      "start": 1709272110621,
+      "end": 1709272110621,
       "order": "normal"
     }
   ]

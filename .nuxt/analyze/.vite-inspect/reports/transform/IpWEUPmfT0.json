@@ -4,57 +4,57 @@
     {
       "name": "vite:load-fallback",
       "result": "<template>\n  <v-row\n    v-if=\"auth.user\"\n    id=\"dashboard\"\n    :class=\"auth.user.preferences[0].dark_mode ? 'bg-dark' : 'bg-light'\"\n  >\n    <v-col class=\"h-100\">\n      <v-card\n        :theme=\"auth.user.preferences[0].dark_mode ? 'dark' : 'light'\"\n        class=\"mx-3 my-3 h-100 overflow-auto\"\n      >\n        <v-card-title>let's get it</v-card-title>\n\n        <!-- Tabs -->\n        <v-card-text>\n          <v-tabs v-model=\"state.current_tab\">\n            <v-tab v-for=\"(tab, a) in state.tabs\" :key=\"a\">\n              {{ tab.name }}\n            </v-tab>\n          </v-tabs>\n\n          <!-- Tab content -->\n          <v-window v-model=\"state.current_tab\">\n            <div v-if=\"state.current_tab == 1\">\n              <v-row class=\"my-3\">\n                <!-- Member cards -->\n                <v-col\n                  v-for=\"(user, b) in auth.user.friends\"\n                  :key=\"b\"\n                  cols=\"12\"\n                  sm=\"6\"\n                  md=\"3\"\n                  lg=\"2\"\n                  xl=\"1\"\n                >\n                  <DashboardMemberCard :member=\"user\" />\n                </v-col>\n\n                <!-- Add new member card -->\n                <v-col cols=\"12\" sm=\"6\" md=\"3\" lg=\"2\" xl=\"1\">\n                  <v-card variant=\"tonal\" class=\"w-100 h-100\">\n                    <v-card-text\n                      class=\"d-flex w-100 h-100 justify-center align-center\"\n                    >\n                      <v-btn @click=\"state.tabs[1].data.adding_new = true\" flat>\n                        <strong style=\"font-size: 200%\">+</strong>\n                        <v-tooltip\n                          activator=\"parent\"\n                          location=\"top\"\n                          open-delay=\"500\"\n                          >Invite new member</v-tooltip\n                        >\n\n                        <!-- Add new member dialog -->\n                        <v-dialog\n                          v-model=\"state.tabs[1].data.adding_new\"\n                          width=\"600\"\n                        >\n                          <v-row>\n                            <v-col>\n                              <v-card flat variant=\"flat\">\n                                <v-card-title>\n                                  <span class=\"headline\"\n                                    >invite new member</span\n                                  >\n                                </v-card-title>\n                                <v-card-text>\n                                  <!-- Make rows and columns thin: -->\n                                  <v-form>\n                                    <v-row dense>\n                                      <v-col dense>\n                                        <v-text-field\n                                          v-model=\"\n                                            state.tabs[1].data.new_member\n                                              .first_name\n                                          \"\n                                          label=\"First Name\"\n                                          required\n                                        />\n                                      </v-col>\n                                      <v-col dense>\n                                        <v-text-field\n                                          v-model=\"\n                                            state.tabs[1].data.new_member\n                                              .last_name\n                                          \"\n                                          label=\"Last Name\"\n                                          required\n                                        />\n                                      </v-col>\n                                    </v-row>\n                                    <v-row dense>\n                                      <v-col cols=\"7\" dense>\n                                        <v-text-field\n                                          v-model=\"\n                                            state.tabs[1].data.new_member.email\n                                          \"\n                                          label=\"Email\"\n                                          required\n                                        ></v-text-field>\n                                      </v-col>\n                                      <v-col cols=\"5\" dense>\n                                        <v-text-field\n                                          v-model=\"\n                                            state.tabs[1].data.new_member\n                                              .phone_number\n                                          \"\n                                          label=\"Phone Number\"\n                                          required\n                                          pattern=\"[0-9\\-]*\"\n                                          placeholder=\"+1-123-456-7890\"\n                                          @keydown=\"\n                                            () => {\n                                              state.tabs[1].data.new_member.phone_number =\n                                                new AsYouType()\n                                                  .input(\n                                                    state.tabs[1].data\n                                                      .new_member.phone_number\n                                                  )\n                                                  .replace(/\\s/g, '-');\n                                            }\n                                          \"\n                                        ></v-text-field>\n                                      </v-col>\n                                    </v-row>\n                                  </v-form>\n                                </v-card-text>\n                                <v-card-actions>\n                                  <v-spacer></v-spacer>\n                                  <v-btn\n                                    color=\"blue darken-1\"\n                                    text\n                                    @click=\"\n                                      state.tabs[1].data.adding_new = false\n                                    \"\n                                    >Cancel</v-btn\n                                  >\n                                  <v-btn\n                                    :disabled=\"!state.validate\"\n                                    color=\"blue darken-1\"\n                                    text\n                                    @click=\"post_new_member\"\n                                    >Invite</v-btn\n                                  >\n                                </v-card-actions>\n                              </v-card>\n                            </v-col>\n                          </v-row>\n                        </v-dialog>\n                      </v-btn>\n                    </v-card-text>\n                  </v-card>\n                </v-col>\n              </v-row>\n            </div>\n          </v-window>\n        </v-card-text>\n      </v-card>\n    </v-col>\n  </v-row>\n</template>\n<script setup lang=\"ts\">\n// Page meta\ndefinePageMeta({\n  title: \"Dashboard\",\n  description: \"Dashboard\",\n  url: \"/dashboard\",\n  middleware: [\"auth\"],\n  layout: \"inner\",\n});\n\n// necessary imports\nimport moment from \"moment\";\nimport qs from \"qs\";\nimport { parsePhoneNumber, AsYouType } from \"libphonenumber-js\";\n\n// oFetch\nimport { ofetch } from \"ofetch\";\nconst runtimeConfig = useRuntimeConfig();\n\n// globalThis.$fetch = ofetch.create({\n//   headers: {\n//     'Content-Type': 'application/json',\n//     'X-Authorization': runtimeConfig.apiSecret\n//   }\n// })\n\n// Medusa\nconst medusa_client = useMedusaClient();\n\n// Stores\nconst auth = authStore();\nconst prodStore = productsStore();\n\n// State\nconst state = reactive({\n  current_user: authStore.user,\n  current_tab: null,\n  dark_mode: false,\n  error: false,\n  use_the_force: false,\n  tabs: [\n    {\n      name: \"My Profile\",\n      data: {},\n    },\n    {\n      name: \"My Members\",\n      data: {\n        adding_new: false,\n        posting_new: false,\n        post: null,\n        new_member: {\n          email: \"\",\n          first_name: \"\",\n          last_name: \"\",\n          phone_number: \"\",\n          n_id: `nsight-${auth.user.id}-${moment().format(\"MMDDYYYY-hmmss\")}`,\n        },\n      },\n    },\n  ],\n  validate: false,\n});\n\n// Methods\nconst generate_random_password = () => {\n  let pass = ``,\n    str = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$`;\n  for (let i = 1; i <= 8; i++) {\n    var char = Math.floor(Math.random() * str.length + 1);\n    pass += str.charAt(char);\n  }\n  return pass;\n};\n\nconst validateEmail = (email: string) => {\n  return (\n    email.length &&\n    email\n      .toString()\n      .toLowerCase()\n      .match(\n        /^(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|.(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/\n      )\n  );\n};\n\nconst validatePhone = (number: string) => {\n  const regex = /^\\+\\d{1,3}-\\d{3}-\\d{3}-\\d{4}$/;\n  return regex.test(number);\n};\n// const new_n_id = () => {\n//   state.tabs[1].data.new_member.n_id = `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`\n// }\n\n/*\n  Steps:\n  1. Do a search to /api/nsight-ids to see if the n_id is already taken. Use the qs library to stringify the params:\n    qs.stringify({ n_id: state.tabs[1].data.new_member.n_id })\n  2. If the n_id is taken, generate a new one and try again? maybe\n    state.tabs[1].data.new_member.n_id = `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`\n  3. Add the nsight_id to /api/nsight-ids:\n    globalThis.$fetch.post('/api/nsight-ids', { n_id: state.tabs[1].data.new_member.n_id })\n  4. Add the user to /api/users:\n    globalThis.$fetch.post('/api/users', {\n      email: state.tabs[1].data.new_member.email,\n      first_name: state.tabs[1].data.new_member.first_name,\n      last_name: state.tabs[1].data.new_member.last_name,\n      password: generate_random_password(),\n      nsight_id: state.tabs[1].data.new_member.n_id\n    })\n  5. Add user to Medusa by using medusa.customers.create()\n  6. Add user to your friends list\n  7. Send email confirmation to new member\n  8. Update on your DB that the user has been added\n\n*/\n\nconst post_new_member = async () => {\n  let active_tab = state.tabs[1];\n  active_tab.data.posting_new = true;\n\n  const headers_obj = {\n    \"Content-Type\": \"application/json\",\n    accept: \"application/json\",\n    Authorization: `Bearer ${auth.token}`,\n  };\n\n  active_tab.post = $fetch(\n    `${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids?${qs.stringify({\n      filters: {\n        nsight_id: state.tabs[1].data.new_member.n_id,\n      },\n    })}`,\n    {\n      method: \"GET\",\n      headers: headers_obj,\n    }\n  )\n    .then((nsight_id_check) => {\n      // If none found, add the nsight_id to the nsight-ids table\n      if (!nsight_id_check.data.length) {\n        // Add the nsight_id to the nsight-ids table\n        let new_nsight_id = {\n          data: {\n            authentic: true,\n            nsight_id: active_tab.data.new_member.n_id,\n          },\n        };\n        $fetch(\n          `${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids?populate=*`,\n          {\n            method: \"POST\",\n            headers: headers_obj,\n            body: JSON.stringify(new_nsight_id),\n          }\n        )\n          .then((new_nsight_id_data) => {\n            console.log(\"New nsight id added\", new_nsight_id_data);\n            const new_strapi_nsight_id = new_nsight_id_data.data;\n\n            // Add the user to the users table\n            let new_nsight_member = {\n              blocked: false,\n              confirmed: false,\n              email: active_tab.data.new_member.email,\n              first_name: active_tab.data.new_member.first_name,\n              last_name: active_tab.data.new_member.last_name,\n              phone_number: active_tab.data.new_member.phone_number,\n              nsight_id: new_strapi_nsight_id,\n              square_id: \"\",\n              preferences: [\n                {\n                  dark_mode: true,\n                },\n              ],\n              username: active_tab.data.new_member.email,\n              // password: thisObj.generate_random_password()\n              medusa_password: generate_random_password(),\n              password: \"P@ssW3rd9756\",\n              users: [auth.user],\n              friends: [auth.user],\n              addresses: {\n                shipping: [],\n                billing: [],\n              },\n              selected_addresses: {\n                shipping: null,\n                billing: null,\n              },\n              selected_payment_method: null,\n              payment_methods: {\n                data: [],\n              },\n              orders: {\n                data: [],\n              },\n              returns: {\n                data: [],\n              },\n              cancelled_orders: {\n                data: [],\n              },\n              role: {\n                id: 1,\n                name: \"Authenticated\",\n                description: \"Default role given to authenticated user.\",\n                type: \"authenticated\",\n                connect: [\n                  {\n                    id: 1,\n                  },\n                ],\n              },\n            };\n\n            $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users`, {\n              method: \"POST\",\n              headers: headers_obj,\n              body: JSON.stringify(new_nsight_member),\n            })\n              .then((new_strapi_user_data) => {\n                console.log(\n                  \"created new strapi member: \",\n                  new_strapi_user_data\n                );\n                const new_strapi_user = new_strapi_user_data;\n\n                // update nsight_id with new user\n                $fetch(\n                  `${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids/${new_strapi_nsight_id.id}`,\n                  {\n                    method: \"PUT\",\n                    headers: headers_obj,\n                    body: JSON.stringify({\n                      data: {\n                        user: [new_strapi_user],\n                      },\n                    }),\n                  }\n                )\n                  .then(async (updated_nsight_id_data) => {\n                    console.log(\n                      \"updated nsight_id with new user: \",\n                      updated_nsight_id_data\n                    );\n\n                    // Add the user to Square\n                    const new_square_customer = {\n                      givenName: new_nsight_member.first_name,\n                      familyName: new_nsight_member.last_name,\n                      emailAddress: new_nsight_member.email,\n                      phoneNumber: new_nsight_member.phone_number,\n                    };\n\n                    // Add customer to Square\n\n                    const square_data = await $fetch(\n                      \"/api/square/create-customer\",\n                      {\n                        method: \"POST\",\n                        headers: headers_obj,\n                        body: JSON.stringify(new_square_customer),\n                      }\n                    );\n                    new_nsight_member.square_id = square_data.customer.id;\n\n                    if (square_data.customer && square_data.customer.id) {\n                      new_nsight_member.square_id = square_data.customer.id;\n\n                      // console.log(\"holup!!!!!!\", new_nsight_member);\n                      // Update Strapi with square_id\n                      nextTick(() => {\n                        new_nsight_member.square_id = square_data.customer.id;\n                        console.log(\n                          \"updated new_nsight_member with square_id: \",\n                          new_nsight_member\n                        );\n\n                        const updated_new_sight_member = new_nsight_member;\n\n                        $fetch(\n                          `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${new_strapi_user.id}`,\n                          {\n                            method: \"PUT\",\n                            headers: headers_obj,\n                            body: JSON.stringify({\n                              square_id: square_data.customer.id,\n                            }),\n                          }\n                        )\n                          .then((square_id_update_data) => {\n                            console.log(\n                              \"updated strapi user with square_id: \",\n                              square_id_update_data\n                            );\n\n                            // Add the user to your friends list\n                            // There's an issue right now with friends vs users. I'm adding to both for now.\n                            auth.user.friends.push(square_id_update_data);\n                            auth.user.users.push(square_id_update_data);\n                            state.tabs[1].data.adding_new = false;\n\n                            nextTick(() => {\n                              $fetch(\n                                `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${auth.user.id}`,\n                                {\n                                  method: \"PUT\",\n                                  headers: headers_obj,\n                                  body: JSON.stringify({ data: auth.user }),\n                                }\n                              )\n                                .then((data) => {\n                                  console.log(\n                                    \"updated strapi user with new member: \",\n                                    data\n                                  );\n                                  active_tab.data.posting_new = false;\n\n                                  // Send email confirmation to new member. Let's refrain for now. SendGrid doesn't like it.\n                                  // $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/send-email-confirmation`, {\n                                  //   method: 'POST',\n                                  //   headers: headers_obj,\n                                  //   body: JSON.stringify({ email: active_tab.data.new_member.email })\n                                  // })\n                                  //   .then((data) => {\n                                  //     console.log('email confirmation sent to new member: ', data)\n                                  //     active_tab.data.posting_new = false\n                                  //   })\n                                  //   .catch((err) => { console.log('error sending email confirmation to new member: ', err); state.error = err })\n                                })\n                                .catch((err) => {\n                                  console.log(\n                                    \"error updating strapi user with new member: \",\n                                    err\n                                  );\n                                  state.error = err;\n                                });\n                            });\n                          })\n                          .catch((err) => {\n                            console.log(\n                              \"error updating strapi user with square_id: \",\n                              err\n                            );\n                            state.error = err;\n                          });\n                      });\n                    }\n                  })\n                  .catch((err) => {\n                    console.log(\n                      \"error updating nsight_id with new user: \",\n                      err\n                    );\n                    state.error = err;\n                  });\n              })\n              .catch((err) => {\n                console.log(\"error creating new member: \", err);\n                state.error = err;\n              });\n          })\n          .catch((err) => {\n            state.error = err;\n          });\n      } else {\n        const mssg = `nsight id already exists. Please try again.`;\n        console.log(mssg, res.data);\n        state.error = mssg;\n      }\n    })\n    .catch((err) => {\n      console.log(\"nsight error\", err);\n      return err;\n    });\n};\n\n// Watch\n// watch all attributes of new_member:\nwatch(\n  () => state.tabs[1].data.new_member,\n  (val: object) => {\n    state.validate =\n      val.email.length > 0 &&\n      validateEmail(val.email) &&\n      val.first_name.length > 0 &&\n      val.last_name.length > 0 &&\n      validatePhone(val.phone_number);\n  },\n  { deep: true }\n);\n\n// email:\n// watch(() => state.tabs[1].data.new_member.email, (val) => {\n//   state.validate = (val.length > 0) && (validateEmail(val))\n// })\n// // first_name:\n// watch(() => state.tabs[1].data.new_member.first_name, (val) => {\n//   state.validate = val.length > 0\n// })\n// // last_name:\n// watch(() => state.tabs[1].data.new_member.last_name, (val) => {\n//   state.validate = val.length > 0\n// })\n// // phone_number:\n// watch(() => state.tabs[1].data.new_member.phone_number, (val) => {\n//   state.validate = val.length > 0\n// })\n</script>\n<style lang=\"scss\" scoped>\n#dashboard {\n  height: 100vh;\n}\n</style>\n",
-      "start": 1709003844972,
-      "end": 1709003845566,
+      "start": 1709272107152,
+      "end": 1709272107550,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003845566,
-      "end": 1709003845567,
+      "start": 1709272107550,
+      "end": 1709272107550,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003845567,
-      "end": 1709003845567,
+      "start": 1709272107550,
+      "end": 1709272107550,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003845567,
-      "end": 1709003845567,
+      "start": 1709272107550,
+      "end": 1709272107550,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003845567,
-      "end": 1709003845567,
+      "start": 1709272107550,
+      "end": 1709272107550,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003845567,
-      "end": 1709003845567,
+      "start": 1709272107550,
+      "end": 1709272107550,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003845567,
-      "end": 1709003845567,
+      "start": 1709272107550,
+      "end": 1709272107550,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003845567,
-      "end": 1709003845567,
+      "start": 1709272107550,
+      "end": 1709272107550,
       "order": "normal"
     },
     {
       "name": "vite:vue",
       "result": "import _sfc_main from \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/pages/dashboard_legacy.vue?vue&type=script&setup=true&lang.ts\";\nexport * from \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/pages/dashboard_legacy.vue?vue&type=script&setup=true&lang.ts\";\nimport \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/pages/dashboard_legacy.vue?vue&type=style&index=0&scoped=fb11572a&lang.scss\";\nimport _export_sfc from \"\\0plugin-vue:export-helper\";\nexport default /* @__PURE__ */ _export_sfc(_sfc_main, [[\"__scopeId\", \"data-v-fb11572a\"]]);\n",
-      "start": 1709003845567,
-      "end": 1709003847109,
+      "start": 1709272107550,
+      "end": 1709272108746,
       "order": "normal",
       "sourcemaps": {
         "mappings": ""
@@ -62,117 +62,117 @@
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003847109,
-      "end": 1709003847109,
+      "start": 1709272108747,
+      "end": 1709272108747,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003847109,
-      "end": 1709003847109,
+      "start": 1709272108747,
+      "end": 1709272108747,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003847109,
-      "end": 1709003847109,
+      "start": 1709272108747,
+      "end": 1709272108747,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003847109,
-      "end": 1709003847109,
+      "start": 1709272108747,
+      "end": 1709272108747,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003847109,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108748,
+      "end": 1709272108748,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003847110,
-      "end": 1709003847110,
+      "start": 1709272108749,
+      "end": 1709272108749,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003847110,
-      "end": 1709003847111,
+      "start": 1709272108749,
+      "end": 1709272108750,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003847111,
-      "end": 1709003847111,
+      "start": 1709272108750,
+      "end": 1709272108750,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
       "result": "export { default } from \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/pages/dashboard_legacy.vue?macro=true&vue&type=script&setup=true&lang.ts\"",
-      "start": 1709003847112,
-      "end": 1709003847112,
+      "start": 1709272108751,
+      "end": 1709272108751,
       "order": "post",
       "sourcemaps": {
         "version": 3,
@@ -185,38 +185,38 @@
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003847112,
-      "end": 1709003847112,
+      "start": 1709272108751,
+      "end": 1709272108752,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003847112,
-      "end": 1709003847112,
+      "start": 1709272108752,
+      "end": 1709272108752,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003847112,
-      "end": 1709003847113,
+      "start": 1709272108752,
+      "end": 1709272108752,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003847113,
-      "end": 1709003847113,
+      "start": 1709272108752,
+      "end": 1709272108752,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003847113,
-      "end": 1709003847113,
+      "start": 1709272108752,
+      "end": 1709272108752,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003847113,
-      "end": 1709003847113,
+      "start": 1709272108752,
+      "end": 1709272108752,
       "order": "normal"
     }
   ]

@@ -4,135 +4,135 @@
     {
       "name": "vite:load-fallback",
       "result": "'use strict';\n\nvar utils = require('./../utils');\n\nmodule.exports = (\n  utils.isStandardBrowserEnv() ?\n\n  // Standard browser envs support document.cookie\n    (function standardBrowserEnv() {\n      return {\n        write: function write(name, value, expires, path, domain, secure) {\n          var cookie = [];\n          cookie.push(name + '=' + encodeURIComponent(value));\n\n          if (utils.isNumber(expires)) {\n            cookie.push('expires=' + new Date(expires).toGMTString());\n          }\n\n          if (utils.isString(path)) {\n            cookie.push('path=' + path);\n          }\n\n          if (utils.isString(domain)) {\n            cookie.push('domain=' + domain);\n          }\n\n          if (secure === true) {\n            cookie.push('secure');\n          }\n\n          document.cookie = cookie.join('; ');\n        },\n\n        read: function read(name) {\n          var match = document.cookie.match(new RegExp('(^|;\\\\s*)(' + name + ')=([^;]*)'));\n          return (match ? decodeURIComponent(match[3]) : null);\n        },\n\n        remove: function remove(name) {\n          this.write(name, '', Date.now() - 86400000);\n        }\n      };\n    })() :\n\n  // Non standard browser env (web workers, react-native) lack needed support.\n    (function nonStandardBrowserEnv() {\n      return {\n        write: function write() {},\n        read: function read() { return null; },\n        remove: function remove() {}\n      };\n    })()\n);\n",
-      "start": 1709003849119,
-      "end": 1709003849159,
+      "start": 1709272110694,
+      "end": 1709272110727,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003849159,
-      "end": 1709003849159,
+      "start": 1709272110727,
+      "end": 1709272110727,
       "order": "normal"
     },
     {
       "name": "commonjs",
       "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\nimport require$$0 from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/axios-client-adapter/node_modules/axios/lib/utils.js?commonjs-proxy\";\n\nvar cookies;\nvar hasRequiredCookies;\n\nfunction requireCookies () {\n\tif (hasRequiredCookies) return cookies;\n\thasRequiredCookies = 1;\n\t'use strict';\n\n\tvar utils = require$$0;\n\n\tcookies = (\n\t  utils.isStandardBrowserEnv() ?\n\n\t  // Standard browser envs support document.cookie\n\t    (function standardBrowserEnv() {\n\t      return {\n\t        write: function write(name, value, expires, path, domain, secure) {\n\t          var cookie = [];\n\t          cookie.push(name + '=' + encodeURIComponent(value));\n\n\t          if (utils.isNumber(expires)) {\n\t            cookie.push('expires=' + new Date(expires).toGMTString());\n\t          }\n\n\t          if (utils.isString(path)) {\n\t            cookie.push('path=' + path);\n\t          }\n\n\t          if (utils.isString(domain)) {\n\t            cookie.push('domain=' + domain);\n\t          }\n\n\t          if (secure === true) {\n\t            cookie.push('secure');\n\t          }\n\n\t          document.cookie = cookie.join('; ');\n\t        },\n\n\t        read: function read(name) {\n\t          var match = document.cookie.match(new RegExp('(^|;\\\\s*)(' + name + ')=([^;]*)'));\n\t          return (match ? decodeURIComponent(match[3]) : null);\n\t        },\n\n\t        remove: function remove(name) {\n\t          this.write(name, '', Date.now() - 86400000);\n\t        }\n\t      };\n\t    })() :\n\n\t  // Non standard browser env (web workers, react-native) lack needed support.\n\t    (function nonStandardBrowserEnv() {\n\t      return {\n\t        write: function write() {},\n\t        read: function read() { return null; },\n\t        remove: function remove() {}\n\t      };\n\t    })()\n\t);\n\treturn cookies;\n}\n\nexport { requireCookies as __require };",
-      "start": 1709003849159,
-      "end": 1709003849160,
+      "start": 1709272110727,
+      "end": 1709272110728,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
@@ -145,74 +145,74 @@
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110728,
+      "end": 1709272110728,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110728,
+      "end": 1709272110728,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110728,
+      "end": 1709272110728,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110728,
+      "end": 1709272110728,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110728,
+      "end": 1709272110728,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110728,
+      "end": 1709272110728,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110728,
+      "end": 1709272110729,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110729,
+      "end": 1709272110729,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110729,
+      "end": 1709272110729,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110729,
+      "end": 1709272110729,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110729,
+      "end": 1709272110729,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003849160,
-      "end": 1709003849160,
+      "start": 1709272110729,
+      "end": 1709272110729,
       "order": "normal"
     }
   ]

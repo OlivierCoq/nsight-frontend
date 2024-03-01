@@ -4,159 +4,159 @@
     {
       "name": "vite:load-fallback",
       "result": "import { createPinia } from \"pinia\";\nimport piniaPluginPersistedstate from \"pinia-plugin-persistedstate\";\nimport { ofetch } from \"ofetch\";\n\nconst pinia = createPinia();\npinia.use(piniaPluginPersistedstate);\nconst runtimeConfig = useRuntimeConfig();\n\nimport { productsStore } from \"./products\";\n\nimport { customFetch } from \"~/composables/custom_fetch.ts\";\nconst useCustomFetch = customFetch();\n\nexport const authStore = defineStore({\n  id: \"authStore\",\n  state: () => {\n    return {\n      user: null,\n      token: null,\n      loggedIn: false,\n      errors: false,\n    };\n  },\n  actions: {\n    async login(payload) {\n      const prodStore = productsStore();\n\n      // Sign in to Strapi:\n      const res = await $fetch(\n        `${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/local`,\n        {\n          method: \"POST\",\n          headers: {\n            \"Content-Type\": \"application/json\",\n            accept: \"application/json\",\n            \"Access-Control-Allow-Origin\": \"*\",\n          },\n          body: JSON.stringify(payload),\n        }\n      );\n      if (res.statusCode === 400) {\n        this.errors = res.data.message[0].messages[0].message;\n      } else {\n        this.errors = false;\n\n        // ofetch: Make sure to set the Authorization header for all future requests:\n        globalThis.$fetch = ofetch.create({\n          headers: {\n            \"Content-Type\": \"application/json\",\n            Authorization: `Bearer ${res.jwt}`,\n          },\n        });\n        // Get user data from Strapi:\n        const custom_data = await $fetch(\n          `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${res.user.id}?populate=*`,\n          {\n            method: \"GET\",\n            headers: {\n              \"Content-Type\": \"application/json\",\n              accept: \"application/json\",\n              Authorization: `Bearer ${res.jwt}`,\n            },\n          }\n        ).then((full_user_data) => {\n          this.errors = false;\n          this.user = full_user_data;\n          this.token = res.jwt;\n          this.loggedIn = true;\n          localStorage.setItem(\"token\", res.jwt);\n\n          setTimeout(() => {\n            navigateTo(\"/dashboard\");\n          }, 1000);\n        });\n      }\n    },\n    async logout() {\n      const prodStore = productsStore();\n\n      this.token = null;\n      this.loggedIn = false;\n      // localStorage.removeItem('token')\n      // localStorage.removeItem('user')\n\n      prodStore.cart = null;\n      this.user = null;\n\n      navigateTo(\"/\");\n    },\n    async updateUser() {\n      $fetch(\n        `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${this.user.id}`,\n        {\n          method: \"PUT\",\n          headers: {\n            Authorization: `Bearer ${this.token}`,\n            \"Content-Type\": \"application/json\",\n            accept: \"application/json\",\n          },\n          body: JSON.stringify(this.user),\n        }\n      )\n        .then((res) => {\n          console.log(\"Updated nSight user.\");\n        })\n        .catch((err) => {\n          console.log(\"Update user error\", err);\n        });\n    },\n  },\n  getters: {},\n  persist: {\n    enabled: true,\n    storage: persistedState.localStorage,\n  },\n});\n",
-      "start": 1709003846255,
-      "end": 1709003846441,
+      "start": 1709272107829,
+      "end": 1709272107920,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003846441,
-      "end": 1709003846441,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003846442,
-      "end": 1709003846442,
+      "start": 1709272107920,
+      "end": 1709272107920,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
       "result": "import { useRuntimeConfig } from '#app/nuxt';\nimport { defineStore } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@pinia/nuxt/dist/runtime/composables';\nimport { navigateTo } from '#app/composables/router';\nimport { persistedState } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@pinia-plugin-persistedstate/nuxt/dist/runtime/storages';\nimport { createPinia } from \"pinia\";\nimport piniaPluginPersistedstate from \"pinia-plugin-persistedstate\";\nimport { ofetch } from \"ofetch\";\n\nconst pinia = createPinia();\npinia.use(piniaPluginPersistedstate);\nconst runtimeConfig = useRuntimeConfig();\n\nimport { productsStore } from \"./products\";\n\nimport { customFetch } from \"~/composables/custom_fetch.ts\";\nconst useCustomFetch = customFetch();\n\nexport const authStore = defineStore({\n  id: \"authStore\",\n  state: () => {\n    return {\n      user: null,\n      token: null,\n      loggedIn: false,\n      errors: false,\n    };\n  },\n  actions: {\n    async login(payload) {\n      const prodStore = productsStore();\n\n      // Sign in to Strapi:\n      const res = await $fetch(\n        `${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/local`,\n        {\n          method: \"POST\",\n          headers: {\n            \"Content-Type\": \"application/json\",\n            accept: \"application/json\",\n            \"Access-Control-Allow-Origin\": \"*\",\n          },\n          body: JSON.stringify(payload),\n        }\n      );\n      if (res.statusCode === 400) {\n        this.errors = res.data.message[0].messages[0].message;\n      } else {\n        this.errors = false;\n\n        // ofetch: Make sure to set the Authorization header for all future requests:\n        globalThis.$fetch = ofetch.create({\n          headers: {\n            \"Content-Type\": \"application/json\",\n            Authorization: `Bearer ${res.jwt}`,\n          },\n        });\n        // Get user data from Strapi:\n        const custom_data = await $fetch(\n          `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${res.user.id}?populate=*`,\n          {\n            method: \"GET\",\n            headers: {\n              \"Content-Type\": \"application/json\",\n              accept: \"application/json\",\n              Authorization: `Bearer ${res.jwt}`,\n            },\n          }\n        ).then((full_user_data) => {\n          this.errors = false;\n          this.user = full_user_data;\n          this.token = res.jwt;\n          this.loggedIn = true;\n          localStorage.setItem(\"token\", res.jwt);\n\n          setTimeout(() => {\n            navigateTo(\"/dashboard\");\n          }, 1000);\n        });\n      }\n    },\n    async logout() {\n      const prodStore = productsStore();\n\n      this.token = null;\n      this.loggedIn = false;\n      // localStorage.removeItem('token')\n      // localStorage.removeItem('user')\n\n      prodStore.cart = null;\n      this.user = null;\n\n      navigateTo(\"/\");\n    },\n    async updateUser() {\n      $fetch(\n        `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${this.user.id}`,\n        {\n          method: \"PUT\",\n          headers: {\n            Authorization: `Bearer ${this.token}`,\n            \"Content-Type\": \"application/json\",\n            accept: \"application/json\",\n          },\n          body: JSON.stringify(this.user),\n        }\n      )\n        .then((res) => {\n          console.log(\"Updated nSight user.\");\n        })\n        .catch((err) => {\n          console.log(\"Update user error\", err);\n        });\n    },\n  },\n  getters: {},\n  persist: {\n    enabled: true,\n    storage: persistedState.localStorage,\n  },\n});\n",
-      "start": 1709003846442,
-      "end": 1709003846443,
+      "start": 1709272107920,
+      "end": 1709272107922,
       "order": "post",
       "sourcemaps": {
         "version": 3,
@@ -169,50 +169,50 @@
     },
     {
       "name": "unctx:transform",
-      "start": 1709003846443,
-      "end": 1709003846443,
+      "start": 1709272107922,
+      "end": 1709272107922,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003846443,
-      "end": 1709003846443,
+      "start": 1709272107922,
+      "end": 1709272107922,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003846443,
-      "end": 1709003846443,
+      "start": 1709272107922,
+      "end": 1709272107922,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003846443,
-      "end": 1709003846443,
+      "start": 1709272107922,
+      "end": 1709272107922,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003846443,
-      "end": 1709003846443,
+      "start": 1709272107922,
+      "end": 1709272107922,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003846443,
-      "end": 1709003846443,
+      "start": 1709272107922,
+      "end": 1709272107922,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003846443,
-      "end": 1709003846444,
+      "start": 1709272107922,
+      "end": 1709272107922,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003846444,
-      "end": 1709003846444,
+      "start": 1709272107922,
+      "end": 1709272107922,
       "order": "normal"
     }
   ]

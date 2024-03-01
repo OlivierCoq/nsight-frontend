@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import { getHeader } from '@apimatic/http-headers';\n\n/**\r\n * An enum to override retries for any endpoint.\r\n */\nvar RequestRetryOption;\n(function (RequestRetryOption) {\n  RequestRetryOption[RequestRetryOption[\"Enable\"] = 0] = \"Enable\";\n  RequestRetryOption[RequestRetryOption[\"Disable\"] = 1] = \"Disable\";\n  RequestRetryOption[RequestRetryOption[\"Default\"] = 2] = \"Default\";\n})(RequestRetryOption || (RequestRetryOption = {}));\n/**\r\n * Returns wait time for the request\r\n * @param retryConfig Configuration for retry\r\n * @param method HttpMethod of the request\r\n * @param allowedWaitTime Remaining allowed wait time\r\n * @param retryCount Retry attempt number\r\n * @param httpCode Status code received\r\n * @param headers Response headers\r\n * @param timeoutError Error from the server\r\n * @returns Wait time before the retry\r\n */\nfunction getRetryWaitTime(retryConfig, allowedWaitTime, retryCount, httpCode, headers, timeoutError) {\n  var retryWaitTime = 0.0;\n  var retry = false;\n  var retryAfter = 0;\n  if (retryCount < retryConfig.maxNumberOfRetries) {\n    if (timeoutError) {\n      retry = retryConfig.retryOnTimeout;\n    } else if (typeof headers !== 'undefined' && typeof httpCode !== 'undefined') {\n      retryAfter = getRetryAfterSeconds(getHeader(headers, 'retry-after'));\n      retry = retryAfter > 0 || retryConfig.httpStatusCodesToRetry.includes(httpCode);\n    }\n    if (retry) {\n      var noise = +(Math.random() / 100).toFixed(3);\n      var waitTime = retryConfig.retryInterval * Math.pow(retryConfig.backoffFactor, retryCount) + noise;\n      waitTime = Math.max(waitTime, retryAfter);\n      if (waitTime <= allowedWaitTime) {\n        retryWaitTime = waitTime;\n      }\n    }\n  }\n  return retryWaitTime;\n}\nfunction getRetryAfterSeconds(retryAfter) {\n  if (retryAfter == null) {\n    return 0;\n  }\n  if (isNaN(+retryAfter)) {\n    var timeDifference = (new Date(retryAfter).getTime() - Date.now()) / 1000;\n    return isNaN(timeDifference) ? 0 : timeDifference;\n  }\n  return +retryAfter;\n}\nfunction shouldRetryRequest(retryOption, retryConfig, httpMethod) {\n  switch (retryOption) {\n    case RequestRetryOption.Default:\n      return retryConfig !== undefined && httpMethod !== undefined ? retryConfig.httpMethodsToRetry.includes(httpMethod) : false;\n    case RequestRetryOption.Enable:\n      return true;\n    case RequestRetryOption.Disable:\n      return false;\n  }\n}\nexport { RequestRetryOption, getRetryWaitTime, shouldRetryRequest };",
-      "start": 1709003847731,
-      "end": 1709003847763,
+      "start": 1709272109430,
+      "end": 1709272109490,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003847763,
-      "end": 1709003847763,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003847763,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003847764,
-      "end": 1709003847764,
+      "start": 1709272109490,
+      "end": 1709272109490,
       "order": "normal"
     }
   ]

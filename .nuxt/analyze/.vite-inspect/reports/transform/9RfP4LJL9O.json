@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import { getPaymentRefundResponseSchema, } from '../models/getPaymentRefundResponse';\nimport { listPaymentRefundsResponseSchema, } from '../models/listPaymentRefundsResponse';\nimport { refundPaymentRequestSchema, } from '../models/refundPaymentRequest';\nimport { refundPaymentResponseSchema, } from '../models/refundPaymentResponse';\nimport { number, optional, string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class RefundsApi extends BaseApi {\n    /**\n     * Retrieves a list of refunds for the account making the request.\n     *\n     * Results are eventually consistent, and new refunds or changes to refunds might take several\n     * seconds to appear.\n     *\n     * The maximum results per page is 100.\n     *\n     * @param beginTime   Indicates the start of the time range to retrieve each `PaymentRefund` for, in RFC\n     *                              3339  format.  The range is determined using the `created_at` field for each\n     *                              `PaymentRefund`.   Default: The current time minus one year.\n     * @param endTime     Indicates the end of the time range to retrieve each `PaymentRefund` for, in RFC\n     *                              3339  format.  The range is determined using the `created_at` field for each\n     *                              `PaymentRefund`.  Default: The current time.\n     * @param sortOrder   The order in which results are listed by `PaymentRefund.created_at`: - `ASC` -\n     *                              Oldest to newest. - `DESC` - Newest to oldest (default).\n     * @param cursor      A pagination cursor returned by a previous call to this endpoint. Provide this\n     *                              cursor to retrieve the next set of results for the original query.  For more\n     *                              information, see [Pagination](https://developer.squareup.com/docs/build-basics/common-\n     *                              api-patterns/pagination).\n     * @param locationId  Limit results to the location supplied. By default, results are returned for all\n     *                              locations associated with the seller.\n     * @param status      If provided, only refunds with the given status are returned. For a list of refund\n     *                              status values, see [PaymentRefund](entity:PaymentRefund).  Default: If omitted,\n     *                              refunds are returned regardless of their status.\n     * @param sourceType  If provided, only returns refunds whose payments have the indicated source type.\n     *                              Current values include `CARD`, `BANK_ACCOUNT`, `WALLET`, `CASH`, and `EXTERNAL`. For\n     *                              information about these payment source types, see [Take Payments](https://developer.\n     *                              squareup.com/docs/payments-api/take-payments).  Default: If omitted, refunds are\n     *                              returned regardless of the source type.\n     * @param limit       The maximum number of results to be returned in a single page.  It is possible to\n     *                              receive fewer results than the specified limit on a given page.  If the supplied\n     *                              value is greater than 100, no more than 100 results are returned.  Default: 100\n     * @return Response from the API call\n     */\n    async listPaymentRefunds(beginTime, endTime, sortOrder, cursor, locationId, status, sourceType, limit, requestOptions) {\n        const req = this.createRequest('GET', '/v2/refunds');\n        const mapped = req.prepareArgs({\n            beginTime: [beginTime, optional(string())],\n            endTime: [endTime, optional(string())],\n            sortOrder: [sortOrder, optional(string())],\n            cursor: [cursor, optional(string())],\n            locationId: [locationId, optional(string())],\n            status: [status, optional(string())],\n            sourceType: [sourceType, optional(string())],\n            limit: [limit, optional(number())],\n        });\n        req.query('begin_time', mapped.beginTime);\n        req.query('end_time', mapped.endTime);\n        req.query('sort_order', mapped.sortOrder);\n        req.query('cursor', mapped.cursor);\n        req.query('location_id', mapped.locationId);\n        req.query('status', mapped.status);\n        req.query('source_type', mapped.sourceType);\n        req.query('limit', mapped.limit);\n        return req.callAsJson(listPaymentRefundsResponseSchema, requestOptions);\n    }\n    /**\n     * Refunds a payment. You can refund the entire payment amount or a\n     * portion of it. You can use this endpoint to refund a card payment or record a\n     * refund of a cash or external payment. For more information, see\n     * [Refund Payment](https://developer.squareup.com/docs/payments-api/refund-payments).\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async refundPayment(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/refunds');\n        const mapped = req.prepareArgs({\n            body: [body, refundPaymentRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(refundPaymentResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves a specific refund using the `refund_id`.\n     *\n     * @param refundId  The unique ID for the desired `PaymentRefund`.\n     * @return Response from the API call\n     */\n    async getPaymentRefund(refundId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ refundId: [refundId, string()] });\n        req.appendTemplatePath `/v2/refunds/${mapped.refundId}`;\n        return req.callAsJson(getPaymentRefundResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=refundsApi.js.map",
-      "start": 1709003846799,
-      "end": 1709003846897,
+      "start": 1709272108469,
+      "end": 1709272108568,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108568,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108568,
+      "end": 1709272108569,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108569,
+      "end": 1709272108569,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108569,
+      "end": 1709272108569,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108569,
+      "end": 1709272108569,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108569,
+      "end": 1709272108569,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108569,
+      "end": 1709272108569,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108569,
+      "end": 1709272108569,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108569,
+      "end": 1709272108569,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108569,
+      "end": 1709272108569,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108569,
+      "end": 1709272108572,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003846897,
-      "end": 1709003846897,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003846897,
-      "end": 1709003846898,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003846898,
-      "end": 1709003846898,
+      "start": 1709272108572,
+      "end": 1709272108572,
       "order": "normal"
     }
   ]

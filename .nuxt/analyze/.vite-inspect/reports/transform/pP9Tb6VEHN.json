@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "import { bulkCreateVendorsRequestSchema, } from '../models/bulkCreateVendorsRequest';\nimport { bulkCreateVendorsResponseSchema, } from '../models/bulkCreateVendorsResponse';\nimport { bulkRetrieveVendorsRequestSchema, } from '../models/bulkRetrieveVendorsRequest';\nimport { bulkRetrieveVendorsResponseSchema, } from '../models/bulkRetrieveVendorsResponse';\nimport { bulkUpdateVendorsRequestSchema, } from '../models/bulkUpdateVendorsRequest';\nimport { bulkUpdateVendorsResponseSchema, } from '../models/bulkUpdateVendorsResponse';\nimport { createVendorRequestSchema, } from '../models/createVendorRequest';\nimport { createVendorResponseSchema, } from '../models/createVendorResponse';\nimport { retrieveVendorResponseSchema, } from '../models/retrieveVendorResponse';\nimport { searchVendorsRequestSchema, } from '../models/searchVendorsRequest';\nimport { searchVendorsResponseSchema, } from '../models/searchVendorsResponse';\nimport { updateVendorRequestSchema, } from '../models/updateVendorRequest';\nimport { updateVendorResponseSchema, } from '../models/updateVendorResponse';\nimport { string } from '../schema';\nimport { BaseApi } from './baseApi';\nexport class VendorsApi extends BaseApi {\n    /**\n     * Creates one or more [Vendor]($m/Vendor) objects to represent suppliers to a seller.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                        See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async bulkCreateVendors(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/vendors/bulk-create');\n        const mapped = req.prepareArgs({\n            body: [body, bulkCreateVendorsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(bulkCreateVendorsResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves one or more vendors of specified [Vendor]($m/Vendor) IDs.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                          See the corresponding object definition for field\n     *                                                          details.\n     * @return Response from the API call\n     */\n    async bulkRetrieveVendors(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/vendors/bulk-retrieve');\n        const mapped = req.prepareArgs({\n            body: [body, bulkRetrieveVendorsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(bulkRetrieveVendorsResponseSchema, requestOptions);\n    }\n    /**\n     * Updates one or more of existing [Vendor]($m/Vendor) objects as suppliers to a seller.\n     *\n     * @param body         An object containing the fields to POST for the request.\n     *                                                        See the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async bulkUpdateVendors(body, requestOptions) {\n        const req = this.createRequest('PUT', '/v2/vendors/bulk-update');\n        const mapped = req.prepareArgs({\n            body: [body, bulkUpdateVendorsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(bulkUpdateVendorsResponseSchema, requestOptions);\n    }\n    /**\n     * Creates a single [Vendor]($m/Vendor) object to represent a supplier to a seller.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                   the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async createVendor(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/vendors/create');\n        const mapped = req.prepareArgs({ body: [body, createVendorRequestSchema] });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(createVendorResponseSchema, requestOptions);\n    }\n    /**\n     * Searches for vendors using a filter against supported [Vendor]($m/Vendor) properties and a supported\n     * sorter.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                    the corresponding object definition for field details.\n     * @return Response from the API call\n     */\n    async searchVendors(body, requestOptions) {\n        const req = this.createRequest('POST', '/v2/vendors/search');\n        const mapped = req.prepareArgs({\n            body: [body, searchVendorsRequestSchema],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        return req.callAsJson(searchVendorsResponseSchema, requestOptions);\n    }\n    /**\n     * Retrieves the vendor of a specified [Vendor]($m/Vendor) ID.\n     *\n     * @param vendorId  ID of the [Vendor](entity:Vendor) to retrieve.\n     * @return Response from the API call\n     */\n    async retrieveVendor(vendorId, requestOptions) {\n        const req = this.createRequest('GET');\n        const mapped = req.prepareArgs({ vendorId: [vendorId, string()] });\n        req.appendTemplatePath `/v2/vendors/${mapped.vendorId}`;\n        return req.callAsJson(retrieveVendorResponseSchema, requestOptions);\n    }\n    /**\n     * Updates an existing [Vendor]($m/Vendor) object as a supplier to a seller.\n     *\n     * @param body         An object containing the fields to POST for the request.  See\n     *                                                   the corresponding object definition for field details.\n     * @param vendorId\n     * @return Response from the API call\n     */\n    async updateVendor(body, vendorId, requestOptions) {\n        const req = this.createRequest('PUT');\n        const mapped = req.prepareArgs({\n            body: [body, updateVendorRequestSchema],\n            vendorId: [vendorId, string()],\n        });\n        req.header('Content-Type', 'application/json');\n        req.json(mapped.body);\n        req.appendTemplatePath `/v2/vendors/${mapped.vendorId}`;\n        return req.callAsJson(updateVendorResponseSchema, requestOptions);\n    }\n}\n//# sourceMappingURL=vendorsApi.js.map",
-      "start": 1709003846811,
-      "end": 1709003846905,
+      "start": 1709272108539,
+      "end": 1709272108629,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108629,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108629,
+      "end": 1709272108630,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003846905,
-      "end": 1709003846905,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003846905,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003846906,
-      "end": 1709003846906,
+      "start": 1709272108630,
+      "end": 1709272108630,
       "order": "normal"
     }
   ]

@@ -4,135 +4,135 @@
     {
       "name": "vite:load-fallback",
       "result": "'use strict';\n\nvar enhanceError = require('./enhanceError');\n\n/**\n * Create an Error with the specified message, config, error code, request and response.\n *\n * @param {string} message The error message.\n * @param {Object} config The config.\n * @param {string} [code] The error code (for example, 'ECONNABORTED').\n * @param {Object} [request] The request.\n * @param {Object} [response] The response.\n * @returns {Error} The created error.\n */\nmodule.exports = function createError(message, config, code, request, response) {\n  var error = new Error(message);\n  return enhanceError(error, config, code, request, response);\n};\n",
-      "start": 1709003849132,
-      "end": 1709003849172,
+      "start": 1709272110705,
+      "end": 1709272110735,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110735,
+      "end": 1709272110735,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110735,
+      "end": 1709272110735,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110735,
+      "end": 1709272110735,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110735,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003849172,
-      "end": 1709003849172,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "commonjs",
       "result": "import * as commonjsHelpers from \"\u0000commonjsHelpers.js\";\nimport require$$0 from \"\\u0000/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@apimatic/axios-client-adapter/node_modules/axios/lib/core/enhanceError.js?commonjs-proxy\";\n\nvar createError;\nvar hasRequiredCreateError;\n\nfunction requireCreateError () {\n\tif (hasRequiredCreateError) return createError;\n\thasRequiredCreateError = 1;\n\t'use strict';\n\n\tvar enhanceError = require$$0;\n\n\t/**\n\t * Create an Error with the specified message, config, error code, request and response.\n\t *\n\t * @param {string} message The error message.\n\t * @param {Object} config The config.\n\t * @param {string} [code] The error code (for example, 'ECONNABORTED').\n\t * @param {Object} [request] The request.\n\t * @param {Object} [response] The response.\n\t * @returns {Error} The created error.\n\t */\n\tcreateError = function createError(message, config, code, request, response) {\n\t  var error = new Error(message);\n\t  return enhanceError(error, config, code, request, response);\n\t};\n\treturn createError;\n}\n\nexport { requireCreateError as __require };",
-      "start": 1709003849172,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal",
       "sourcemaps": {
         "version": 3,
@@ -145,74 +145,74 @@
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003849173,
-      "end": 1709003849173,
+      "start": 1709272110736,
+      "end": 1709272110736,
       "order": "normal"
     }
   ]

@@ -4,57 +4,57 @@
     {
       "name": "vite:load-fallback",
       "result": "<template>\n  <v-card class=\"member-card w-100 h-100\" variant=\"tonal\">\n    <v-img\n      class=\"white--text align-end w-100\"\n      :src=\"member.profile_picture ? member.profile_picture : 'https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg'\"\n    >\n      <v-card-title class=\"text-white member_name\">{{ member.first_name }}</v-card-title>\n    </v-img>\n    <v-card-actions class=\"d-flex flex-row align-center justify-end\">\n\n      <v-btn text @click=\"gift_user\">\n        <font-awesome-icon :icon=\"['fas', 'gift']\" />\n        <v-tooltip bottom open-delay=\"500\">\n          <span>Send Gift</span>\n        </v-tooltip>\n      </v-btn>\n      <v-btn text @click=\"visit_profile\">\n        <font-awesome-icon :icon=\"['fas', 'user']\" />\n        <v-tooltip bottom open-delay=\"500\">\n          <span>View Profile</span>\n        </v-tooltip>\n      </v-btn>\n    </v-card-actions>\n  </v-card>\n</template>\n<script setup>\n  // import { reactive } from 'vue'\n  const props = defineProps(['member'])\n  const state = reactive({\n    member: props.member\n  })\n  const visit_profile = () => {\n    navigateTo(`/members/${state.member.id}`)\n  }\n  const gift_user = () => {\n\n    console.log('gift user', state.member)\n  }\n</script>\n<style lang=\"scss\">\n  .member-card {\n\n    img { height: 100%; }\n\n    // subtle text-shadow\n    .member_name {\n      text-shadow: 1px 1px 9px rgb(20 1 1 / 56%);\n    }\n\n    .w-100 { width: 100% !important; }\n    .h-100 { height: 100% !important; }\n  }\n</style>",
-      "start": 1709003848625,
-      "end": 1709003848681,
+      "start": 1709272110230,
+      "end": 1709272110273,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003848681,
-      "end": 1709003848681,
+      "start": 1709272110273,
+      "end": 1709272110273,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003848681,
-      "end": 1709003848681,
+      "start": 1709272110273,
+      "end": 1709272110273,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003848681,
-      "end": 1709003848681,
+      "start": 1709272110273,
+      "end": 1709272110273,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003848681,
-      "end": 1709003848681,
+      "start": 1709272110273,
+      "end": 1709272110273,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003848681,
-      "end": 1709003848681,
+      "start": 1709272110273,
+      "end": 1709272110273,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003848681,
-      "end": 1709003848681,
+      "start": 1709272110273,
+      "end": 1709272110273,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003848681,
-      "end": 1709003848681,
+      "start": 1709272110273,
+      "end": 1709272110273,
       "order": "normal"
     },
     {
       "name": "vite:vue",
       "result": "import { toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createVNode as _createVNode, createElementVNode as _createElementVNode, openBlock as _openBlock, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = /*#__PURE__*/_createElementVNode(\"span\", null, \"Send Gift\", -1)\nconst _hoisted_2 = /*#__PURE__*/_createElementVNode(\"span\", null, \"View Profile\", -1)\n\n\nconst _sfc_main = {\n  __name: 'MemberCard',\n  props: ['member'],\n  setup(__props) {\n\n  // import { reactive } from 'vue'\n  const props = __props\n  const state = reactive({\n    member: props.member\n  })\n  const visit_profile = () => {\n    navigateTo(`/members/${state.member.id}`)\n  }\n  const gift_user = () => {\n\n    console.log('gift user', state.member)\n  }\n\nreturn (_ctx, _cache) => {\n  const _component_v_card_title = _resolveComponent(\"v-card-title\")\n  const _component_v_img = _resolveComponent(\"v-img\")\n  const _component_font_awesome_icon = _resolveComponent(\"font-awesome-icon\")\n  const _component_v_tooltip = _resolveComponent(\"v-tooltip\")\n  const _component_v_btn = _resolveComponent(\"v-btn\")\n  const _component_v_card_actions = _resolveComponent(\"v-card-actions\")\n  const _component_v_card = _resolveComponent(\"v-card\")\n\n  return (_openBlock(), _createBlock(_component_v_card, {\n    class: \"member-card w-100 h-100\",\n    variant: \"tonal\"\n  }, {\n    default: _withCtx(() => [\n      _createVNode(_component_v_img, {\n        class: \"white--text align-end w-100\",\n        src: __props.member.profile_picture ? __props.member.profile_picture : 'https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg'\n      }, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_card_title, { class: \"text-white member_name\" }, {\n            default: _withCtx(() => [\n              _createTextVNode(_toDisplayString(__props.member.first_name), 1)\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      }, 8, [\"src\"]),\n      _createVNode(_component_v_card_actions, { class: \"d-flex flex-row align-center justify-end\" }, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_btn, {\n            text: \"\",\n            onClick: gift_user\n          }, {\n            default: _withCtx(() => [\n              _createVNode(_component_font_awesome_icon, { icon: ['fas', 'gift'] }),\n              _createVNode(_component_v_tooltip, {\n                bottom: \"\",\n                \"open-delay\": \"500\"\n              }, {\n                default: _withCtx(() => [\n                  _hoisted_1\n                ]),\n                _: 1\n              })\n            ]),\n            _: 1\n          }),\n          _createVNode(_component_v_btn, {\n            text: \"\",\n            onClick: visit_profile\n          }, {\n            default: _withCtx(() => [\n              _createVNode(_component_font_awesome_icon, { icon: ['fas', 'user'] }),\n              _createVNode(_component_v_tooltip, {\n                bottom: \"\",\n                \"open-delay\": \"500\"\n              }, {\n                default: _withCtx(() => [\n                  _hoisted_2\n                ]),\n                _: 1\n              })\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      })\n    ]),\n    _: 1\n  }))\n}\n}\n\n}\n\n\nimport \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/components/dashboard/MemberCard.vue?vue&type=style&index=0&lang.scss\"\n\nexport default _sfc_main",
-      "start": 1709003848681,
-      "end": 1709003848683,
+      "start": 1709272110273,
+      "end": 1709272110276,
       "order": "normal",
       "sourcemaps": {
         "mappings": ""
@@ -62,105 +62,105 @@
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003848683,
-      "end": 1709003848683,
+      "start": 1709272110276,
+      "end": 1709272110276,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
       "result": "import { reactive } from 'vue';\nimport { navigateTo } from '#app/composables/router';\nimport { toDisplayString as _toDisplayString, createTextVNode as _createTextVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createVNode as _createVNode, createElementVNode as _createElementVNode, openBlock as _openBlock, createBlock as _createBlock } from \"vue\"\n\nconst _hoisted_1 = /*#__PURE__*/_createElementVNode(\"span\", null, \"Send Gift\", -1)\nconst _hoisted_2 = /*#__PURE__*/_createElementVNode(\"span\", null, \"View Profile\", -1)\n\n\nconst _sfc_main = {\n  __name: 'MemberCard',\n  props: ['member'],\n  setup(__props) {\n\n  // import { reactive } from 'vue'\n  const props = __props\n  const state = reactive({\n    member: props.member\n  })\n  const visit_profile = () => {\n    navigateTo(`/members/${state.member.id}`)\n  }\n  const gift_user = () => {\n\n    console.log('gift user', state.member)\n  }\n\nreturn (_ctx, _cache) => {\n  const _component_v_card_title = _resolveComponent(\"v-card-title\")\n  const _component_v_img = _resolveComponent(\"v-img\")\n  const _component_font_awesome_icon = _resolveComponent(\"font-awesome-icon\")\n  const _component_v_tooltip = _resolveComponent(\"v-tooltip\")\n  const _component_v_btn = _resolveComponent(\"v-btn\")\n  const _component_v_card_actions = _resolveComponent(\"v-card-actions\")\n  const _component_v_card = _resolveComponent(\"v-card\")\n\n  return (_openBlock(), _createBlock(_component_v_card, {\n    class: \"member-card w-100 h-100\",\n    variant: \"tonal\"\n  }, {\n    default: _withCtx(() => [\n      _createVNode(_component_v_img, {\n        class: \"white--text align-end w-100\",\n        src: __props.member.profile_picture ? __props.member.profile_picture : 'https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg'\n      }, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_card_title, { class: \"text-white member_name\" }, {\n            default: _withCtx(() => [\n              _createTextVNode(_toDisplayString(__props.member.first_name), 1)\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      }, 8, [\"src\"]),\n      _createVNode(_component_v_card_actions, { class: \"d-flex flex-row align-center justify-end\" }, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_btn, {\n            text: \"\",\n            onClick: gift_user\n          }, {\n            default: _withCtx(() => [\n              _createVNode(_component_font_awesome_icon, { icon: ['fas', 'gift'] }),\n              _createVNode(_component_v_tooltip, {\n                bottom: \"\",\n                \"open-delay\": \"500\"\n              }, {\n                default: _withCtx(() => [\n                  _hoisted_1\n                ]),\n                _: 1\n              })\n            ]),\n            _: 1\n          }),\n          _createVNode(_component_v_btn, {\n            text: \"\",\n            onClick: visit_profile\n          }, {\n            default: _withCtx(() => [\n              _createVNode(_component_font_awesome_icon, { icon: ['fas', 'user'] }),\n              _createVNode(_component_v_tooltip, {\n                bottom: \"\",\n                \"open-delay\": \"500\"\n              }, {\n                default: _withCtx(() => [\n                  _hoisted_2\n                ]),\n                _: 1\n              })\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      })\n    ]),\n    _: 1\n  }))\n}\n}\n\n}\n\n\nimport \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/components/dashboard/MemberCard.vue?vue&type=style&index=0&lang.scss\"\n\nexport default _sfc_main",
-      "start": 1709003848683,
-      "end": 1709003848685,
+      "start": 1709272110276,
+      "end": 1709272110279,
       "order": "post",
       "sourcemaps": {
         "version": 3,
@@ -173,50 +173,50 @@
     },
     {
       "name": "unctx:transform",
-      "start": 1709003848685,
-      "end": 1709003848685,
+      "start": 1709272110279,
+      "end": 1709272110279,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003848685,
-      "end": 1709003848685,
+      "start": 1709272110279,
+      "end": 1709272110279,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003848685,
-      "end": 1709003848685,
+      "start": 1709272110279,
+      "end": 1709272110279,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003848685,
-      "end": 1709003848685,
+      "start": 1709272110279,
+      "end": 1709272110279,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003848685,
-      "end": 1709003848685,
+      "start": 1709272110279,
+      "end": 1709272110279,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003848685,
-      "end": 1709003848685,
+      "start": 1709272110279,
+      "end": 1709272110279,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003848685,
-      "end": 1709003848685,
+      "start": 1709272110279,
+      "end": 1709272110279,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003848685,
-      "end": 1709003848685,
+      "start": 1709272110279,
+      "end": 1709272110279,
       "order": "normal"
     }
   ]

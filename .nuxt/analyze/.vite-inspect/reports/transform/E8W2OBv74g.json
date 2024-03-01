@@ -3,207 +3,216 @@
   "transforms": [
     {
       "name": "virtual",
-      "result": "\nimport { defineNuxtPlugin } from '#app/nuxt'\nexport default defineNuxtPlugin({\n  name: 'nuxt:global-components',\n})\n",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "result": "import { defineNuxtPlugin } from '#app/nuxt'\nimport { LazyPrimeAutoComplete, LazyPrimeTabView, LazyPrimeTabPanel, LazyPrimeDialog } from '#components'\nconst lazyGlobalComponents = [\n  [\"PrimeAutoComplete\", LazyPrimeAutoComplete],\n[\"PrimeTabView\", LazyPrimeTabView],\n[\"PrimeTabPanel\", LazyPrimeTabPanel],\n[\"PrimeDialog\", LazyPrimeDialog],\n  \n]\n\nexport default defineNuxtPlugin({\n  name: 'nuxt:global-components',\n  setup (nuxtApp) {\n    for (const [name, component] of lazyGlobalComponents) {\n      nuxtApp.vueApp.component(name, component)\n      nuxtApp.vueApp.component('Lazy' + name, component)\n    }\n  }\n})\n",
+      "start": 1709272106238,
+      "end": 1709272106238,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106238,
+      "end": 1709272106238,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106238,
+      "end": 1709272106239,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106239,
+      "end": 1709272106239,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106239,
+      "end": 1709272106239,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106239,
+      "end": 1709272106239,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106239,
+      "end": 1709272106241,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106241,
+      "end": 1709272106241,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106241,
+      "end": 1709272106242,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106242,
+      "end": 1709272106242,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106242,
+      "end": 1709272106242,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106242,
+      "end": 1709272106242,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106242,
+      "end": 1709272106242,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003844417,
-      "end": 1709003844417,
-      "order": "normal"
+      "result": "import LazyPrimeAutoComplete from 'primevue/autocomplete?nuxt_component=async&nuxt_component_name=PrimeAutoComplete';\nimport LazyPrimeTabView from 'primevue/tabview?nuxt_component=async&nuxt_component_name=PrimeTabView';\nimport LazyPrimeTabPanel from 'primevue/tabpanel?nuxt_component=async&nuxt_component_name=PrimeTabPanel';\nimport LazyPrimeDialog from 'primevue/dialog?nuxt_component=async&nuxt_component_name=PrimeDialog';\nimport { defineNuxtPlugin } from '#app/nuxt'\nconst lazyGlobalComponents = [\n  [\"PrimeAutoComplete\", LazyPrimeAutoComplete],\n[\"PrimeTabView\", LazyPrimeTabView],\n[\"PrimeTabPanel\", LazyPrimeTabPanel],\n[\"PrimeDialog\", LazyPrimeDialog],\n  \n]\n\nexport default defineNuxtPlugin({\n  name: 'nuxt:global-components',\n  setup (nuxtApp) {\n    for (const [name, component] of lazyGlobalComponents) {\n      nuxtApp.vueApp.component(name, component)\n      nuxtApp.vueApp.component('Lazy' + name, component)\n    }\n  }\n})\n",
+      "start": 1709272106242,
+      "end": 1709272106244,
+      "order": "normal",
+      "sourcemaps": {
+        "version": 3,
+        "sources": [
+          ""
+        ],
+        "names": [],
+        "mappings": ";;;;AAAA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAE5C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAC9B,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAC/C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACnC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACrC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjC,CAAC,CAAC;AACF,CAAC;AACD;AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACjC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACnB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAC3D,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AAC/C,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;AACxD,CAAC,CAAC,CAAC,CAAC,CAAC;AACL,CAAC,CAAC,CAAC;AACH,CAAC,CAAC;"
+      }
     },
     {
       "name": "replace",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106244,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003844417,
-      "end": 1709003844417,
+      "start": 1709272106245,
+      "end": 1709272106245,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003844417,
-      "end": 1709003844418,
+      "start": 1709272106245,
+      "end": 1709272106246,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003844418,
-      "end": 1709003844419,
+      "start": 1709272106246,
+      "end": 1709272106247,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003844419,
-      "end": 1709003844419,
+      "start": 1709272106247,
+      "end": 1709272106247,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003844419,
-      "end": 1709003844419,
+      "start": 1709272106247,
+      "end": 1709272106247,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003844419,
-      "end": 1709003844419,
+      "start": 1709272106247,
+      "end": 1709272106247,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003844419,
-      "end": 1709003844419,
+      "start": 1709272106247,
+      "end": 1709272106248,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003844419,
-      "end": 1709003844419,
+      "start": 1709272106248,
+      "end": 1709272106248,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003844419,
-      "end": 1709003844421,
+      "start": 1709272106249,
+      "end": 1709272106249,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003844422,
-      "end": 1709003844422,
+      "start": 1709272106250,
+      "end": 1709272106250,
       "order": "normal"
     }
   ]

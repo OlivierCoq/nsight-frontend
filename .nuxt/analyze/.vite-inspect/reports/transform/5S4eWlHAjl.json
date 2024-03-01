@@ -4,206 +4,206 @@
     {
       "name": "vite:load-fallback",
       "result": "function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, \"prototype\", { writable: false }); return Constructor; }\n\n// This \"state\" object simply holds the state of the \"AsYouType\" parser:\n//\n// * `country?: string`\n// * `callingCode?: string`\n// * `digits: string`\n// * `international: boolean`\n// * `missingPlus: boolean`\n// * `IDDPrefix?: string`\n// * `carrierCode?: string`\n// * `nationalPrefix?: string`\n// * `nationalSignificantNumber?: string`\n// * `nationalSignificantNumberMatchesInput: boolean`\n// * `complexPrefixBeforeNationalSignificantNumber?: string`\n//\n// `state.country` and `state.callingCode` aren't required to be in sync.\n// For example, `state.country` could be `\"AR\"` and `state.callingCode` could be `undefined`.\n// So `state.country` and `state.callingCode` are totally independent.\n//\nvar AsYouTypeState = /*#__PURE__*/function () {\n  function AsYouTypeState(_ref) {\n    var onCountryChange = _ref.onCountryChange,\n        onCallingCodeChange = _ref.onCallingCodeChange;\n\n    _classCallCheck(this, AsYouTypeState);\n\n    this.onCountryChange = onCountryChange;\n    this.onCallingCodeChange = onCallingCodeChange;\n  }\n\n  _createClass(AsYouTypeState, [{\n    key: \"reset\",\n    value: function reset(_ref2) {\n      var country = _ref2.country,\n          callingCode = _ref2.callingCode;\n      this.international = false;\n      this.missingPlus = false;\n      this.IDDPrefix = undefined;\n      this.callingCode = undefined;\n      this.digits = '';\n      this.resetNationalSignificantNumber();\n      this.initCountryAndCallingCode(country, callingCode);\n    }\n  }, {\n    key: \"resetNationalSignificantNumber\",\n    value: function resetNationalSignificantNumber() {\n      this.nationalSignificantNumber = this.getNationalDigits();\n      this.nationalSignificantNumberMatchesInput = true;\n      this.nationalPrefix = undefined;\n      this.carrierCode = undefined;\n      this.complexPrefixBeforeNationalSignificantNumber = undefined;\n    }\n  }, {\n    key: \"update\",\n    value: function update(properties) {\n      for (var _i = 0, _Object$keys = Object.keys(properties); _i < _Object$keys.length; _i++) {\n        var key = _Object$keys[_i];\n        this[key] = properties[key];\n      }\n    }\n  }, {\n    key: \"initCountryAndCallingCode\",\n    value: function initCountryAndCallingCode(country, callingCode) {\n      this.setCountry(country);\n      this.setCallingCode(callingCode);\n    }\n  }, {\n    key: \"setCountry\",\n    value: function setCountry(country) {\n      this.country = country;\n      this.onCountryChange(country);\n    }\n  }, {\n    key: \"setCallingCode\",\n    value: function setCallingCode(callingCode) {\n      this.callingCode = callingCode;\n      this.onCallingCodeChange(callingCode, this.country);\n    }\n  }, {\n    key: \"startInternationalNumber\",\n    value: function startInternationalNumber(country, callingCode) {\n      // Prepend the `+` to parsed input.\n      this.international = true; // If a default country was set then reset it\n      // because an explicitly international phone\n      // number is being entered.\n\n      this.initCountryAndCallingCode(country, callingCode);\n    }\n  }, {\n    key: \"appendDigits\",\n    value: function appendDigits(nextDigits) {\n      this.digits += nextDigits;\n    }\n  }, {\n    key: \"appendNationalSignificantNumberDigits\",\n    value: function appendNationalSignificantNumberDigits(nextDigits) {\n      this.nationalSignificantNumber += nextDigits;\n    }\n    /**\r\n     * Returns the part of `this.digits` that corresponds to the national number.\r\n     * Basically, all digits that have been input by the user, except for the\r\n     * international prefix and the country calling code part\r\n     * (if the number is an international one).\r\n     * @return {string}\r\n     */\n\n  }, {\n    key: \"getNationalDigits\",\n    value: function getNationalDigits() {\n      if (this.international) {\n        return this.digits.slice((this.IDDPrefix ? this.IDDPrefix.length : 0) + (this.callingCode ? this.callingCode.length : 0));\n      }\n\n      return this.digits;\n    }\n  }, {\n    key: \"getDigitsWithoutInternationalPrefix\",\n    value: function getDigitsWithoutInternationalPrefix() {\n      if (this.international) {\n        if (this.IDDPrefix) {\n          return this.digits.slice(this.IDDPrefix.length);\n        }\n      }\n\n      return this.digits;\n    }\n  }]);\n\n  return AsYouTypeState;\n}();\n\nexport { AsYouTypeState as default };\n//# sourceMappingURL=AsYouTypeState.js.map",
-      "start": 1709003849020,
-      "end": 1709003849064,
+      "start": 1709272110603,
+      "end": 1709272110646,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:vue",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003849064,
-      "end": 1709003849064,
+      "start": 1709272110646,
+      "end": 1709272110646,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003849064,
-      "end": 1709003849065,
+      "start": 1709272110646,
+      "end": 1709272110647,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "post"
     },
     {
       "name": "unctx:transform",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003849065,
-      "end": 1709003849065,
+      "start": 1709272110647,
+      "end": 1709272110647,
       "order": "normal"
     }
   ]

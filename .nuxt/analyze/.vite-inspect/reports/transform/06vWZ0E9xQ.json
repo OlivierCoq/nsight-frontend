@@ -4,57 +4,57 @@
     {
       "name": "vite:load-fallback",
       "result": "<template>\n  <v-row id=\"products\" class=\"overflow-auto\">\n    <v-col>\n      <v-container>\n        <v-row>\n          <v-col>\n            <div\n              class=\"shop_header d-flex flex-row align-center justify-center p-5 my-5\"\n            >\n              <h1 class=\"text-center\">nSight shop</h1>\n            </div>\n          </v-col>\n        </v-row>\n        <hr class=\"my-5\" />\n        <v-row v-if=\"prodStore.products\">\n          <v-col\n            v-for=\"product in prodStore.products.data\"\n            :key=\"product.id\"\n            cols=\"12\"\n            md=\"6\"\n            lg=\"3\"\n            xl=\"2\"\n          >\n            <ProductsProductCard :product=\"product\" />\n          </v-col>\n        </v-row>\n        <v-row v-else>\n          <v-col>\n            <div class=\"p-5\">\n              <v-progress-circular indeterminate color=\"primary\" />\n            </div>\n          </v-col>\n        </v-row>\n      </v-container>\n    </v-col>\n  </v-row>\n</template>\n<script>\nimport { reactive, onBeforeMount } from \"vue\";\n\nexport default {\n  name: \"Products\",\n  setup() {\n    definePageMeta({\n      middleware: [\"auth\"],\n      layout: \"inner\",\n    });\n    const prodStore = productsStore();\n    const state = reactive({});\n\n    return {\n      // meta\n      definePageMeta,\n      // state\n      state,\n      prodStore,\n      // methods:\n    };\n  },\n};\n</script>\n<style lang=\"scss\">\n#products {\n  height: 100vh;\n}\n</style>\n",
-      "start": 1709003845798,
-      "end": 1709003845977,
+      "start": 1709272107630,
+      "end": 1709272107768,
       "sourcemaps": null
     },
     {
       "name": "nuxt:layer-aliasing",
-      "start": 1709003845977,
-      "end": 1709003845977,
+      "start": 1709272107768,
+      "end": 1709272107768,
       "order": "pre"
     },
     {
       "name": "nuxt:server-devonly:transform",
-      "start": 1709003845977,
-      "end": 1709003845977,
+      "start": 1709272107768,
+      "end": 1709272107768,
       "order": "pre"
     },
     {
       "name": "nuxt:client-fallback-auto-id",
-      "start": 1709003845977,
-      "end": 1709003845977,
+      "start": 1709272107768,
+      "end": 1709272107768,
       "order": "pre"
     },
     {
       "name": "vite:css",
-      "start": 1709003845977,
-      "end": 1709003845978,
+      "start": 1709272107768,
+      "end": 1709272107768,
       "order": "normal"
     },
     {
       "name": "vite:esbuild",
-      "start": 1709003845978,
-      "end": 1709003845978,
+      "start": 1709272107768,
+      "end": 1709272107768,
       "order": "normal"
     },
     {
       "name": "vite:json",
-      "start": 1709003845978,
-      "end": 1709003845978,
+      "start": 1709272107768,
+      "end": 1709272107768,
       "order": "normal"
     },
     {
       "name": "vite:worker",
-      "start": 1709003845978,
-      "end": 1709003845978,
+      "start": 1709272107768,
+      "end": 1709272107768,
       "order": "normal"
     },
     {
       "name": "vite:vue",
       "result": "\nimport { reactive, onBeforeMount } from \"vue\";\n\nconst _sfc_main = {\n  name: \"Products\",\n  setup() {\n    definePageMeta({\n      middleware: [\"auth\"],\n      layout: \"inner\",\n    });\n    const prodStore = productsStore();\n    const state = reactive({});\n\n    return {\n      // meta\n      definePageMeta,\n      // state\n      state,\n      prodStore,\n      // methods:\n    };\n  },\n};\n\nimport { createElementVNode as _createElementVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createVNode as _createVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = /*#__PURE__*/_createElementVNode(\"div\", { class: \"shop_header d-flex flex-row align-center justify-center p-5 my-5\" }, [\n  /*#__PURE__*/_createElementVNode(\"h1\", { class: \"text-center\" }, \"nSight shop\")\n], -1)\nconst _hoisted_2 = /*#__PURE__*/_createElementVNode(\"hr\", { class: \"my-5\" }, null, -1)\nconst _hoisted_3 = { class: \"p-5\" }\n\nfunction _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {\n  const _component_v_col = _resolveComponent(\"v-col\")\n  const _component_v_row = _resolveComponent(\"v-row\")\n  const _component_ProductsProductCard = _resolveComponent(\"ProductsProductCard\")\n  const _component_v_progress_circular = _resolveComponent(\"v-progress-circular\")\n  const _component_v_container = _resolveComponent(\"v-container\")\n\n  return (_openBlock(), _createBlock(_component_v_row, {\n    id: \"products\",\n    class: \"overflow-auto\"\n  }, {\n    default: _withCtx(() => [\n      _createVNode(_component_v_col, null, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_container, null, {\n            default: _withCtx(() => [\n              _createVNode(_component_v_row, null, {\n                default: _withCtx(() => [\n                  _createVNode(_component_v_col, null, {\n                    default: _withCtx(() => [\n                      _hoisted_1\n                    ]),\n                    _: 1\n                  })\n                ]),\n                _: 1\n              }),\n              _hoisted_2,\n              ($setup.prodStore.products)\n                ? (_openBlock(), _createBlock(_component_v_row, { key: 0 }, {\n                    default: _withCtx(() => [\n                      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList($setup.prodStore.products.data, (product) => {\n                        return (_openBlock(), _createBlock(_component_v_col, {\n                          key: product.id,\n                          cols: \"12\",\n                          md: \"6\",\n                          lg: \"3\",\n                          xl: \"2\"\n                        }, {\n                          default: _withCtx(() => [\n                            _createVNode(_component_ProductsProductCard, { product: product }, null, 8, [\"product\"])\n                          ]),\n                          _: 2\n                        }, 1024))\n                      }), 128))\n                    ]),\n                    _: 1\n                  }))\n                : (_openBlock(), _createBlock(_component_v_row, { key: 1 }, {\n                    default: _withCtx(() => [\n                      _createVNode(_component_v_col, null, {\n                        default: _withCtx(() => [\n                          _createElementVNode(\"div\", _hoisted_3, [\n                            _createVNode(_component_v_progress_circular, {\n                              indeterminate: \"\",\n                              color: \"primary\"\n                            })\n                          ])\n                        ]),\n                        _: 1\n                      })\n                    ]),\n                    _: 1\n                  }))\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      })\n    ]),\n    _: 1\n  }))\n}\n\nimport \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/pages/shop/products.vue?vue&type=style&index=0&lang.scss\"\n\nimport _export_sfc from '\u0000plugin-vue:export-helper'\nexport default /*#__PURE__*/_export_sfc(_sfc_main, [['render',_sfc_render]])",
-      "start": 1709003845978,
-      "end": 1709003845979,
+      "start": 1709272107768,
+      "end": 1709272107769,
       "order": "normal",
       "sourcemaps": {
         "mappings": ""
@@ -62,105 +62,105 @@
     },
     {
       "name": "vite:vue-jsx",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107769,
+      "end": 1709272107769,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107769,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "nuxt:remove-plugin-metadata",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "nuxt:chunk-error",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "nuxt:components:imports",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "replace",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "ssr-styles",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "vite:define",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "vite:css-post",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "vite:build-html",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "vite:worker-import-meta-url",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "vite:asset-import-meta-url",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "commonjs",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "vite:dynamic-import-vars",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "vite:import-glob",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "normal"
     },
     {
       "name": "nuxt:composable-keys",
-      "start": 1709003845979,
-      "end": 1709003845979,
+      "start": 1709272107770,
+      "end": 1709272107770,
       "order": "post"
     },
     {
       "name": "nuxt:imports-transform",
       "result": "import { definePageMeta } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/nuxt/dist/pages/runtime/composables';\nimport { productsStore } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/stores/products.js';\n\nimport { reactive, onBeforeMount } from \"vue\";\n\nconst _sfc_main = {\n  name: \"Products\",\n  setup() {\n    definePageMeta({\n      middleware: [\"auth\"],\n      layout: \"inner\",\n    });\n    const prodStore = productsStore();\n    const state = reactive({});\n\n    return {\n      // meta\n      definePageMeta,\n      // state\n      state,\n      prodStore,\n      // methods:\n    };\n  },\n};\n\nimport { createElementVNode as _createElementVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createVNode as _createVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = /*#__PURE__*/_createElementVNode(\"div\", { class: \"shop_header d-flex flex-row align-center justify-center p-5 my-5\" }, [\n  /*#__PURE__*/_createElementVNode(\"h1\", { class: \"text-center\" }, \"nSight shop\")\n], -1)\nconst _hoisted_2 = /*#__PURE__*/_createElementVNode(\"hr\", { class: \"my-5\" }, null, -1)\nconst _hoisted_3 = { class: \"p-5\" }\n\nfunction _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {\n  const _component_v_col = _resolveComponent(\"v-col\")\n  const _component_v_row = _resolveComponent(\"v-row\")\n  const _component_ProductsProductCard = _resolveComponent(\"ProductsProductCard\")\n  const _component_v_progress_circular = _resolveComponent(\"v-progress-circular\")\n  const _component_v_container = _resolveComponent(\"v-container\")\n\n  return (_openBlock(), _createBlock(_component_v_row, {\n    id: \"products\",\n    class: \"overflow-auto\"\n  }, {\n    default: _withCtx(() => [\n      _createVNode(_component_v_col, null, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_container, null, {\n            default: _withCtx(() => [\n              _createVNode(_component_v_row, null, {\n                default: _withCtx(() => [\n                  _createVNode(_component_v_col, null, {\n                    default: _withCtx(() => [\n                      _hoisted_1\n                    ]),\n                    _: 1\n                  })\n                ]),\n                _: 1\n              }),\n              _hoisted_2,\n              ($setup.prodStore.products)\n                ? (_openBlock(), _createBlock(_component_v_row, { key: 0 }, {\n                    default: _withCtx(() => [\n                      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList($setup.prodStore.products.data, (product) => {\n                        return (_openBlock(), _createBlock(_component_v_col, {\n                          key: product.id,\n                          cols: \"12\",\n                          md: \"6\",\n                          lg: \"3\",\n                          xl: \"2\"\n                        }, {\n                          default: _withCtx(() => [\n                            _createVNode(_component_ProductsProductCard, { product: product }, null, 8, [\"product\"])\n                          ]),\n                          _: 2\n                        }, 1024))\n                      }), 128))\n                    ]),\n                    _: 1\n                  }))\n                : (_openBlock(), _createBlock(_component_v_row, { key: 1 }, {\n                    default: _withCtx(() => [\n                      _createVNode(_component_v_col, null, {\n                        default: _withCtx(() => [\n                          _createElementVNode(\"div\", _hoisted_3, [\n                            _createVNode(_component_v_progress_circular, {\n                              indeterminate: \"\",\n                              color: \"primary\"\n                            })\n                          ])\n                        ]),\n                        _: 1\n                      })\n                    ]),\n                    _: 1\n                  }))\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      })\n    ]),\n    _: 1\n  }))\n}\n\nimport \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/pages/shop/products.vue?vue&type=style&index=0&lang.scss\"\n\nimport _export_sfc from '\u0000plugin-vue:export-helper'\nexport default /*#__PURE__*/_export_sfc(_sfc_main, [['render',_sfc_render]])",
-      "start": 1709003845979,
-      "end": 1709003845981,
+      "start": 1709272107770,
+      "end": 1709272107771,
       "order": "post",
       "sourcemaps": {
         "version": 3,
@@ -173,52 +173,52 @@
     },
     {
       "name": "unctx:transform",
-      "start": 1709003845981,
-      "end": 1709003845981,
+      "start": 1709272107771,
+      "end": 1709272107772,
       "order": "post"
     },
     {
       "name": "nuxt:pages-macros-transform",
-      "start": 1709003845981,
-      "end": 1709003845981,
+      "start": 1709272107772,
+      "end": 1709272107772,
       "order": "post"
     },
     {
       "name": "nuxt:runtime-paths-dep",
-      "start": 1709003845981,
-      "end": 1709003845982,
+      "start": 1709272107772,
+      "end": 1709272107772,
       "order": "post"
     },
     {
       "name": "nuxt:route-injection-plugin",
-      "start": 1709003845982,
-      "end": 1709003845982,
+      "start": 1709272107772,
+      "end": 1709272107772,
       "order": "post"
     },
     {
       "name": "nuxt:components-loader",
       "result": "import { default as __nuxt_component_0 } from \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/components/products/ProductCard.vue\";\nimport { definePageMeta } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/nuxt/dist/pages/runtime/composables';\nimport { productsStore } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/stores/products.js';\n\nimport { reactive, onBeforeMount } from \"vue\";\n\nconst _sfc_main = {\n  name: \"Products\",\n  setup() {\n    definePageMeta({\n      middleware: [\"auth\"],\n      layout: \"inner\",\n    });\n    const prodStore = productsStore();\n    const state = reactive({});\n\n    return {\n      // meta\n      definePageMeta,\n      // state\n      state,\n      prodStore,\n      // methods:\n    };\n  },\n};\n\nimport { createElementVNode as _createElementVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createVNode as _createVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = /*#__PURE__*/_createElementVNode(\"div\", { class: \"shop_header d-flex flex-row align-center justify-center p-5 my-5\" }, [\n  /*#__PURE__*/_createElementVNode(\"h1\", { class: \"text-center\" }, \"nSight shop\")\n], -1)\nconst _hoisted_2 = /*#__PURE__*/_createElementVNode(\"hr\", { class: \"my-5\" }, null, -1)\nconst _hoisted_3 = { class: \"p-5\" }\n\nfunction _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {\n  const _component_v_col = _resolveComponent(\"v-col\")\n  const _component_v_row = _resolveComponent(\"v-row\")\n  const _component_ProductsProductCard = __nuxt_component_0\n  const _component_v_progress_circular = _resolveComponent(\"v-progress-circular\")\n  const _component_v_container = _resolveComponent(\"v-container\")\n\n  return (_openBlock(), _createBlock(_component_v_row, {\n    id: \"products\",\n    class: \"overflow-auto\"\n  }, {\n    default: _withCtx(() => [\n      _createVNode(_component_v_col, null, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_container, null, {\n            default: _withCtx(() => [\n              _createVNode(_component_v_row, null, {\n                default: _withCtx(() => [\n                  _createVNode(_component_v_col, null, {\n                    default: _withCtx(() => [\n                      _hoisted_1\n                    ]),\n                    _: 1\n                  })\n                ]),\n                _: 1\n              }),\n              _hoisted_2,\n              ($setup.prodStore.products)\n                ? (_openBlock(), _createBlock(_component_v_row, { key: 0 }, {\n                    default: _withCtx(() => [\n                      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList($setup.prodStore.products.data, (product) => {\n                        return (_openBlock(), _createBlock(_component_v_col, {\n                          key: product.id,\n                          cols: \"12\",\n                          md: \"6\",\n                          lg: \"3\",\n                          xl: \"2\"\n                        }, {\n                          default: _withCtx(() => [\n                            _createVNode(_component_ProductsProductCard, { product: product }, null, 8, [\"product\"])\n                          ]),\n                          _: 2\n                        }, 1024))\n                      }), 128))\n                    ]),\n                    _: 1\n                  }))\n                : (_openBlock(), _createBlock(_component_v_row, { key: 1 }, {\n                    default: _withCtx(() => [\n                      _createVNode(_component_v_col, null, {\n                        default: _withCtx(() => [\n                          _createElementVNode(\"div\", _hoisted_3, [\n                            _createVNode(_component_v_progress_circular, {\n                              indeterminate: \"\",\n                              color: \"primary\"\n                            })\n                          ])\n                        ]),\n                        _: 1\n                      })\n                    ]),\n                    _: 1\n                  }))\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      })\n    ]),\n    _: 1\n  }))\n}\n\nimport \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/pages/shop/products.vue?vue&type=style&index=0&lang.scss\"\n\nimport _export_sfc from '\u0000plugin-vue:export-helper'\nexport default /*#__PURE__*/_export_sfc(_sfc_main, [['render',_sfc_render]])",
-      "start": 1709003845982,
-      "end": 1709003845982,
+      "start": 1709272107772,
+      "end": 1709272107772,
       "order": "post"
     },
     {
       "name": "nuxt:tree-shake-composables:transform",
       "result": "import { default as __nuxt_component_0 } from \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/components/products/ProductCard.vue\";\nimport { definePageMeta } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/nuxt/dist/pages/runtime/composables';\nimport { productsStore } from '/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/stores/products.js';\n\nimport { reactive, onBeforeMount } from \"vue\";\n\nconst _sfc_main = {\n  name: \"Products\",\n  setup() {\n     false && /*@__PURE__*/ definePageMeta({\n      middleware: [\"auth\"],\n      layout: \"inner\",\n    });\n    const prodStore = productsStore();\n    const state = reactive({});\n\n    return {\n      // meta\n      definePageMeta,\n      // state\n      state,\n      prodStore,\n      // methods:\n    };\n  },\n};\n\nimport { createElementVNode as _createElementVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createVNode as _createVNode, renderList as _renderList, Fragment as _Fragment, openBlock as _openBlock, createElementBlock as _createElementBlock, createBlock as _createBlock, createCommentVNode as _createCommentVNode } from \"vue\"\n\nconst _hoisted_1 = /*#__PURE__*/_createElementVNode(\"div\", { class: \"shop_header d-flex flex-row align-center justify-center p-5 my-5\" }, [\n  /*#__PURE__*/_createElementVNode(\"h1\", { class: \"text-center\" }, \"nSight shop\")\n], -1)\nconst _hoisted_2 = /*#__PURE__*/_createElementVNode(\"hr\", { class: \"my-5\" }, null, -1)\nconst _hoisted_3 = { class: \"p-5\" }\n\nfunction _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {\n  const _component_v_col = _resolveComponent(\"v-col\")\n  const _component_v_row = _resolveComponent(\"v-row\")\n  const _component_ProductsProductCard = __nuxt_component_0\n  const _component_v_progress_circular = _resolveComponent(\"v-progress-circular\")\n  const _component_v_container = _resolveComponent(\"v-container\")\n\n  return (_openBlock(), _createBlock(_component_v_row, {\n    id: \"products\",\n    class: \"overflow-auto\"\n  }, {\n    default: _withCtx(() => [\n      _createVNode(_component_v_col, null, {\n        default: _withCtx(() => [\n          _createVNode(_component_v_container, null, {\n            default: _withCtx(() => [\n              _createVNode(_component_v_row, null, {\n                default: _withCtx(() => [\n                  _createVNode(_component_v_col, null, {\n                    default: _withCtx(() => [\n                      _hoisted_1\n                    ]),\n                    _: 1\n                  })\n                ]),\n                _: 1\n              }),\n              _hoisted_2,\n              ($setup.prodStore.products)\n                ? (_openBlock(), _createBlock(_component_v_row, { key: 0 }, {\n                    default: _withCtx(() => [\n                      (_openBlock(true), _createElementBlock(_Fragment, null, _renderList($setup.prodStore.products.data, (product) => {\n                        return (_openBlock(), _createBlock(_component_v_col, {\n                          key: product.id,\n                          cols: \"12\",\n                          md: \"6\",\n                          lg: \"3\",\n                          xl: \"2\"\n                        }, {\n                          default: _withCtx(() => [\n                            _createVNode(_component_ProductsProductCard, { product: product }, null, 8, [\"product\"])\n                          ]),\n                          _: 2\n                        }, 1024))\n                      }), 128))\n                    ]),\n                    _: 1\n                  }))\n                : (_openBlock(), _createBlock(_component_v_row, { key: 1 }, {\n                    default: _withCtx(() => [\n                      _createVNode(_component_v_col, null, {\n                        default: _withCtx(() => [\n                          _createElementVNode(\"div\", _hoisted_3, [\n                            _createVNode(_component_v_progress_circular, {\n                              indeterminate: \"\",\n                              color: \"primary\"\n                            })\n                          ])\n                        ]),\n                        _: 1\n                      })\n                    ]),\n                    _: 1\n                  }))\n            ]),\n            _: 1\n          })\n        ]),\n        _: 1\n      })\n    ]),\n    _: 1\n  }))\n}\n\nimport \"/Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/pages/shop/products.vue?vue&type=style&index=0&lang.scss\"\n\nimport _export_sfc from '\u0000plugin-vue:export-helper'\nexport default /*#__PURE__*/_export_sfc(_sfc_main, [['render',_sfc_render]])",
-      "start": 1709003845982,
-      "end": 1709003845983,
+      "start": 1709272107772,
+      "end": 1709272107773,
       "order": "post"
     },
     {
       "name": "vite:build-import-analysis",
-      "start": 1709003845983,
-      "end": 1709003845983,
+      "start": 1709272107773,
+      "end": 1709272107773,
       "order": "normal"
     },
     {
       "name": "vite:reporter",
-      "start": 1709003845983,
-      "end": 1709003845983,
+      "start": 1709272107773,
+      "end": 1709272107773,
       "order": "normal"
     }
   ]
