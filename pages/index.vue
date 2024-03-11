@@ -9,7 +9,7 @@
       <div class="w-3/4 mx-auto mb-4">
         <input
           type="email"
-          class="w-full shadow-xl border-0 rounded-md h-[40px] my-2 px-4"
+          class="w-full text-neutral-900 shadow-xl border-0 rounded-md h-[40px] my-2 px-4"
           v-model="state.input.email"
           placeholder="Email"
         />
@@ -34,6 +34,29 @@
           </svg>
           <span class="text-center"> let's get it </span>
         </button>
+      </div>
+      <div class="w-3/4 mx-auto mb-4">
+        <small class="text-neutral-900 dark:text-white"
+          >Forgot Password?
+          <NuxtLink
+            to="/forgot-password"
+            class="text-blue-300 fw-bolder text-decoration-none"
+            >Let's fix that.
+          </NuxtLink>
+        </small>
+      </div>
+      <div class="w-3/4 mx-auto my-5">
+        <p v-if="state.quote" class="text-neutral-900 dark:text-white text-xl">
+            " {{ state.quote.quote_body[0].children[0].text }} "
+        </p>
+        <small class="text-md ">
+         <a :href="state.quote.link ? state.quote.link : 'javascript:(0)'"
+            :target="state.quote.link ? '_blank' : '_self'"
+            class="text-decoration-none text-blue-200 font-bold text-lg"
+          >
+            - {{ state.quote.author }}
+          </a>
+        </small>
       </div>
     </div>
   </div>

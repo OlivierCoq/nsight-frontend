@@ -4,29 +4,18 @@
       class="w-full h-1/2 rounded-t-md bg-cover bg-center"
       :style="{ backgroundImage: `url(${state.member.profile_picture ? state.member.profile_picture : 'https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg'})` }"
     ></div>
-    <div class="w-full h-1/2 flex flex-col justify-start items-start p-4">
-      <h3 class="text-2xl member_name text-neutral-800">{{ state.member.first_name }}</h3>
-      <div class="w-full flex flex-row my-3">
-        <button @click="gift_user" class="btn-gift me-2 hover:text-blue-300">
+    <div class="w-full h-1/2 flex flex-col justify-between items-start p-4">
+      <h3 class="text-2xl member_name text-neutral-300">{{ state.member.first_name }}</h3>
+      <div class="w-full flex flex-row my-3 items-end justify-end">
+        <button @click="gift_user" class="btn-gift me-3 text-neutral-300 hover:text-blue-300">
           <font-awesome-icon :icon="['fas', 'gift']" />
           <!-- <span class="ms-2">Send Gift</span> -->
         </button>
-        <button @click="visit_profile" class="btn-profile me-2 hover:text-green-500">
+        <button @click="visit_profile" class="btn-profile me-3 text-neutral-300 hover:text-green-500">
           <font-awesome-icon :icon="['fas', 'user']" />
           <!-- <span class="ms-2">View Profile</span> -->
         </button>
       </div>
-      <!-- <h3 class="text-2xl font-bold member_name">{{ state.member.first_name }}</h3>
-      <div class="flex flex-row justify-center items-center">
-        <button @click="gift_user" class="btn-gift">
-          <font-awesome-icon :icon="['fas', 'gift']" />
-          <span class="ms-2">Send Gift</span>
-        </button>
-        <button @click="visit_profile" class="btn-profile">
-          <font-awesome-icon :icon="['fas', 'user']" />
-          <span class="ms-2">View Profile</span>
-        </button>
-      </div> -->
     </div>  
   </div>
 </template>

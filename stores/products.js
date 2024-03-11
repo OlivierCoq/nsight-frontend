@@ -37,6 +37,20 @@ export const productsStore = defineStore({
 
       const auth = authStore()
 
+    },
+    getProducts() {
+    
+      $fetch(`/api/square/list-catalog`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          accept: "application/json",
+        },
+      }).then((square_res) => {
+        console.log('square_res', square_res);
+        this.products = square_res;
+      });
+
     }
   },
   getters: {

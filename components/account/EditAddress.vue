@@ -1734,7 +1734,7 @@ watch(
   { deep: true }
 );
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .ctr-address {
   height: auto !important;
 }

@@ -68,6 +68,9 @@ export const authStore = defineStore({
           this.loggedIn = true;
           localStorage.setItem("token", res.jwt);
 
+          // Grap products from api/square
+          prodStore.getProducts();
+        
           setTimeout(() => {
             navigateTo("/dashboard");
           }, 1000);
