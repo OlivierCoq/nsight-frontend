@@ -10,25 +10,25 @@
         <!-- shadow-xl rounded-md bg-zinc-300 dark:bg-zinc-900 -->
         <div class="h-full w-full flex flex-col">
           <div v-for="(tab, a) in state.tabs" :key="a" 
-            class="w-full py-4 px-8 hover:shadow-xl mb-2 hover:cursor-pointer hover:bg-zinc-400 dark:hover:bg-zinc-700 rounded-lg"
-            :class="tab == state.current_tab ? 'bg-zinc-400 dark:bg-zinc-700 shadow-xl' : ''"
+            class="w-full py-4 px-8 hover:shadow-xl mb-2 hover:cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-700 rounded-lg"
+            :class="tab == state.current_tab ? 'bg-zinc-300 dark:bg-zinc-700 shadow-xl' : ''"
             @click="state.current_tab = tab"
           >
-              <span class=" text-neutral-900 dark:text-white">
+              <span class=" text-neutral-700 dark:text-white">
                 {{ tab.name }}
               </span>
           </div>
         </div>
       </div>
 
-      <div class="h-[95%] my-auto me-4 rounded-lg w-full md:w-4/5 px-3 pb-4 bg-zinc-400 dark:bg-zinc-700 shadow-xl">
+      <div class="h-[95%] my-auto me-4 rounded-lg w-full md:w-4/5 px-3 pb-4 bg-zinc-300 dark:bg-zinc-700 shadow-xl">
 
         <div v-if="state?.current_tab?.name == 'My Friends'" class="w-full flex flex-col p-4">
 
           <div class="w-full flex flex-row justify-between mb-4">
-            <h1 class="text-neutral-900 dark:text-white text-5xl mt-2 mb-3 font-thin">My friends</h1>
+            <h1 class="text-neutral-700 dark:text-white text-5xl mt-2 mb-3 font-thin">My friends</h1>
             <button
-              class="nsight-btn-primary w-1/5 h-[40px] text-neutral-900 dark:text-white px-2 rounded uppercase"
+              class="nsight-btn-primary w-1/5 h-[40px] text-neutral-700 dark:text-white px-2 rounded uppercase"
               @click="state.tabs[0].data.adding_new = !state.tabs[0].data.adding_new"
             >
               invite
@@ -49,7 +49,7 @@
                       <div class="w-full md:w-1/2 px-2">
                         <input
                           type="text"
-                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder:text-white dark:text-white"
+                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder:text-white dark:text-white"
                           :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
                           placeholder="First Name"
                           v-model="state.tabs[0].data.new_member.first_name"
@@ -58,7 +58,7 @@
                       <div class="w-full md:w-1/2 px-2">
                         <input
                           type="text"
-                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder-white dark:text-white"
                           :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
                           placeholder="Last Name"
                           v-model="state.tabs[0].data.new_member.last_name"
@@ -70,7 +70,7 @@
                       <div class="w-full md:w-2/3 px-2">
                         <input
                           type="email"
-                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder:text-white dark:text-white"
+                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder:text-white dark:text-white"
                           :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
                           placeholder="Email"
                           v-model="state.tabs[0].data.new_member.email"
@@ -79,7 +79,7 @@
                       <div class="w-full md:w-1/3 px-2">
                         <input
                           type="text"
-                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-900 dark:placeholder-white dark:text-white"
+                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder-white dark:text-white"
                           :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
                           v-model="state.tabs[0].data.new_member.phone_number"
                           pattern="[0-9\-]*"
@@ -97,7 +97,7 @@
                     </div>
 
                     <div class="input_group w-full flex flex-row mt-3">
-                      <button class="nsight-btn-primary px-4 py-2 text-neutral-900 dark:text-white w-full rounded-md mx-2 shadow-xl" :disabled="!state.validate" @click="post_new_member">
+                      <button class="nsight-btn-primary px-4 py-2 text-neutral-700 dark:text-white w-full rounded-md mx-2 shadow-xl" :disabled="!state.validate" @click="post_new_member">
                         <span :class="!state.validate ? 'opacity-50' : 'opacity-1'">invite friend</span>
                       </button>
                     </div>
@@ -110,8 +110,9 @@
           </div>
           
           <!-- Friends grid -->
-          <div class="w-full grid grid-cols-1 md:grid-cols-6">
+          <div class="w-full grid grid-cols-1 md:grid-cols-4">
             <!-- Friend grid items -->
+            <DashboardMemberCard v-for="(member, i) in auth?.user?.friends" :key="i" :member="member" />
           </div>
           
         </div>
