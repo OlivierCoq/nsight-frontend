@@ -10,6 +10,7 @@ import { productsStore } from "./products";
 
 import { customFetch } from "~/composables/custom_fetch.ts";
 const useCustomFetch = customFetch();
+import qs from "qs";
 
 export const authStore = defineStore({
   id: "authStore",
@@ -51,8 +52,35 @@ export const authStore = defineStore({
           },
         });
         // Get user data from Strapi:
+      
         const custom_data = await $fetch(
-          `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${res.user.id}?populate=*`,
+          `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${res.user.id}?${qs.stringify({
+            populate: [
+              'username',
+              'email',
+              'first_name',
+              'last_name',
+              'favorites',
+              'cart',
+              'addresses',
+              'selected_addresses',
+              'selected_payment_method',
+              'payment_methods',
+              'preferences',
+              'nsight_id',
+              'friends',
+              'friends.friends',
+              'friends.profile_picture',
+              'users.friends',
+              'phone_number',
+              'square_id',
+              'orders',
+              'returns',
+              'cancelled_orders',
+              'profile_picture',
+              'pictures'
+            ]
+          })}`,
           {
             method: "GET",
             headers: {

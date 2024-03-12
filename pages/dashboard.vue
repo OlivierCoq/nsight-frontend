@@ -304,6 +304,8 @@ const post_new_member = async () => {
               password: "P@ssW3rd9756",
               users: [auth.user],
               friends: [auth.user],
+              profile_picture: {},
+              pictures: [],
               addresses: {
                 shipping: [],
                 billing: [],

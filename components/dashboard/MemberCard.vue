@@ -2,7 +2,7 @@
   <div class="w-[90%] h-[360px] mx-auto mb-6 rounded-md shadow-md bg-zinc-200 dark:bg-zinc-400">
     <div 
       class="w-full h-1/2 rounded-t-md bg-cover bg-center"
-      :style="{ backgroundImage: `url(${state.member.profile_picture ? state.member.profile_picture : 'https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg'})` }"
+      :style="{ backgroundImage: `url(${state.member.profile_picture ? state.member.profile_picture.url : 'https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg'})` }"
     ></div>
     <div class="w-full h-1/2 flex flex-col justify-between items-start p-4">
       <h3 class="text-2xl member_name text-neutral-500 dark:text-neutral-200">{{ state.member.first_name }}</h3>
