@@ -1,55 +1,52 @@
 <template>
-  <v-card class="product-card w-100 h-100" variant="tonal">
-    <v-img class="white--text align-end w-100 product_img" :src="product.image.url"
-      @click="go_to_product(product.permalink)" style="z-index; 1;">
-    </v-img>
-    <div class="position-relative w-100 height: 80px;" :class="state.show_options ? 'toggled' : ''"
-      style="margin-top: -3rem;">
-      <v-card-title class="text-white product_name text-wrap text-right h-100" style="position-absolute bottom: 0;">
-        <div v-if="state.show_options">
-          <div class="w-100 d-flex flex-row align-center justify-space-between">
-            <ul style="list-style: none;" class="p-0 m-0 overflow-hidden">
-              <li v-for="variant in state.product.variants" :key="variant.id" class="float-left mx-1 option"
-                :class="state.product.selected_option === variant ? 'option_selected' : ''">
-                <span class="text-button" @click="select_option(variant)">{{ variant.description }}</span>
-              </li>
-            </ul>
-            <v-spacer />
-            <font-awesome-icon :icon="['fas', 'x']" size="xs" @click="toggleOptions" cursor="pointer" />
-          </div>
-          <div>
-            <v-btn color="info" block @click="add_to_cart" :disabled="!state.product.selected_option || state.loading">
-              Add to cart
-              <v-progress-circular v-if="state.loading" indeterminate color="white" size="15" class="mx-2" />
-            </v-btn>
-            <v-snackbar v-model="state.snackbar" :timeout="3000" :top="true" :right="true" location="top"
-              :multi-line="true" :vertical="true" color="success">
-              {{ state.snackbar_text }}
-            </v-snackbar>
-          </div>
-        </div>
-        <div v-else class="h-100 w-100" style="z-index: 2;">
-          <font-awesome-icon :icon="['fas', 'heart']" class="mx-2 btn-like" />
-          <font-awesome-icon :icon="['fas', 'cart-plus']" class="mx-2 btn-add_to_cart" @click="toggleOptions" />
-        </div>
-      </v-card-title>
-    </div>
-    <v-card-actions>
-      <div class="d-flex w-100 flex-column">
-        <span>{{ product.name }}</span>
-        <span>{{ product.price.formatted_with_symbol }}</span>
+  <div class="flex flex-col items-start justify-start">
+    <div class="w-full h-[360px] bg-zinc-200 dark:bg-zinc-400 shadow-lg rounded-md relative">
+      <div 
+        class="w-full h-full absolute rounded-md bg-cover bg-center z-0 cursor-pointer" :style="{backgroundImage: `url(${ props.product.images[0].url })`}"
+        @click="go_to_product(props.product.id)"
+      ></div>
+      <div class="rounded-full hover:cursor-pointer shadow-xl h-[40px] w-[40px] bg-white flex flex-col items-center justify-center absolute right-[65px] bottom-[15px] z-10">
+        <font-awesome-icon
+          :icon="['far', 'heart']"
+          class="text-red-500 hover:text-red-600"
+        >
+        </font-awesome-icon>
       </div>
-      <v-spacer />
-
-    </v-card-actions>
-  </v-card>
+       <div class="rounded-full hover:cursor-pointer shadow-xl h-[40px] w-[40px] bg-white flex flex-col items-center justify-center absolute right-[15px] bottom-[15px] z-10">
+        <font-awesome-icon
+          :icon="['fas', 'cart-plus']"
+          class="text-blue-400 hover:text-blue-500"
+          @click="state.show_options = true"
+        >
+        </font-awesome-icon>
+      </div>
+      <div v-if="state.show_options" class="rounded-b-md h-[90px] w-full bg-white/75 p-3 flex flex-col justify-start items-start z-20 absolute bottom-0">
+        <div class="w-full flex flex-row items-end justify-end">
+          <font-awesome-icon
+            :icon="['fas', 'times']"
+            class="text-neutral-400 hover:text-neutral-500 cursor-pointer"
+            @click="state.show_options = false"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="w-full flex flex-row justify-between mt-2 px-2">
+      <h2 class="text-neutral-900 dark:text-white text-lg">{{ props.product.item_data.name }}</h2>
+      <h2 class="text-neutral-900 dark:text-white font-thin text-lg">$ {{ format_price(props.product.item_data.variations[0].item_variation_data.price_money.amount) }}</h2>
+    </div>
+  </div>
 </template>
 <script setup>
 
 import { reactive } from 'vue'
 
 
-const props = defineProps(['product'])
+const props = defineProps({
+  product: {
+    type: Object,
+    required: true
+  }
+})
 const state = reactive({
   product: props.product,
   show_options: false,
@@ -82,7 +79,9 @@ const add_to_cart = () => {
   state.snackbar = true
   state.loading = false
 
-  // Add to Medusa cart
+}
+const format_price = (amount) => {
+  return amount / 100
 }
 </script>
 <style lang="scss">

@@ -2874,8 +2874,48 @@ const square_client$1 = new Client({
 const listCatalog_post = defineEventHandler(async (event) => {
   await readBody(event);
   const { result, ...httpResponse } = await square_client$1.catalogApi.listCatalog();
-  const response = JSONBig.parse(JSONBig.stringify(result));
-  return response;
+  JSONBig.parse(JSONBig.stringify(result));
+  const batchObjRequest = {
+    objectIds: [],
+    includeRelatedObjects: true
+  };
+  async function getProductObjects() {
+    try {
+      const listResponse = await square_client$1.catalogApi.listCatalog();
+      for (const catalogObject of listResponse.result.objects) {
+        const objectId = catalogObject.id;
+        const retrieveResponse = await square_client$1.catalogApi.retrieveCatalogObject(objectId);
+        batchObjRequest.objectIds.push(objectId);
+      }
+    } catch (error) {
+      console.error("Error fetching product images:", error);
+    }
+    const batchRetrieveResponse = await square_client$1.catalogApi.batchRetrieveCatalogObjects(batchObjRequest);
+    return batchRetrieveResponse;
+  }
+  const objects = await getProductObjects();
+  const processed = JSON.parse(objects.body);
+  let items = [], categories = [];
+  processed.objects.forEach((object) => {
+    var _a, _b;
+    if (object.type === "ITEM") {
+      (_b = (_a = object.item_data) == null ? void 0 : _a.image_ids) == null ? void 0 : _b.forEach((imageId) => {
+        const image = processed.related_objects.find((relatedObject) => relatedObject.id === imageId);
+        if (image) {
+          object["images"] = [];
+          object["images"].push(image.image_data);
+        }
+      });
+      items.push(object);
+    }
+    if (object.type === "CATEGORY") {
+      categories.push(object);
+    }
+  });
+  return {
+    products: items,
+    categories
+  };
 });
 
 const listCatalog_post$1 = /*#__PURE__*/Object.freeze({

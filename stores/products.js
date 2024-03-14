@@ -47,8 +47,9 @@ export const productsStore = defineStore({
           accept: "application/json",
         },
       }).then((square_res) => {
-        console.log('square_res', square_res);
-        this.products = square_res;
+        // console.log('square_res', square_res);
+        this.products = square_res.products
+        this.categories = square_res.categories
       });
 
     }
