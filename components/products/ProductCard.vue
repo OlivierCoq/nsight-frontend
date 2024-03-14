@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-start justify-start">
+  <div class="flex flex-col items-start justify-start mb-5">
     <div class="w-full h-[360px] bg-zinc-200 dark:bg-zinc-400 shadow-lg rounded-md relative">
       <div 
         class="w-full h-full absolute rounded-md bg-cover bg-center z-0 cursor-pointer" :style="{backgroundImage: `url(${ props.product.images[0].url })`}"

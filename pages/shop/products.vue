@@ -8,7 +8,7 @@
 
       <!-- Products -->
       <div class="container mx-auto my-5">
-        <div class="w-full grid grid-cols-1 md:grid-cols-4 px-4">
+        <div class="w-full grid grid-cols-1 md:grid-cols-4 px-4 gap-3">
           <ProductsProductCard v-for="product in prodStore.products" :key="product.id" :product="product"/>
         </div>
       </div>
