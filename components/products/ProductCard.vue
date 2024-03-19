@@ -20,13 +20,20 @@
         >
         </font-awesome-icon>
       </div>
-      <div v-if="state.show_options" class="rounded-b-md h-[90px] w-full bg-white/75 p-3 flex flex-col justify-start items-start z-20 absolute bottom-0">
+      <div v-if="state.show_options" class="rounded-b-md h-[90px] w-full bg-white/75 p-3 flex flex-col justify-between items-start z-20 absolute bottom-0">
         <div class="w-full flex flex-row items-end justify-end">
           <font-awesome-icon
             :icon="['fas', 'times']"
             class="text-neutral-400 hover:text-neutral-500 cursor-pointer"
             @click="state.show_options = false"
           />
+        </div>
+        <div class="w-full flex flex-row items-start">
+          <!-- Options -->
+
+        </div>
+        <div class="w-full flex flex-row justify-between">
+          <button class="btn-add_to_cart nsight-btn-primary my-1 py-1 w-full px-5 text-white shadow-xl rounded-md" @click="add_to_cart">Add to cart</button>
         </div>
       </div>
     </div>

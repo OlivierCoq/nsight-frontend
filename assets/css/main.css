@@ -28,3 +28,19 @@
   --surface-900: 15 23 42;
   --surface-950: 3 6 23;
 }
+
+p, 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+button,
+input,
+textarea,
+label,
+span {
+  font-family: 'Inter', sans-serif;
+}

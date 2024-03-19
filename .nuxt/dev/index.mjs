@@ -2622,6 +2622,7 @@ const _lazy_xsVbzw = () => Promise.resolve().then(function () { return createCar
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
 const _lazy_ocOO4q = () => Promise.resolve().then(function () { return listCatalog_post$1; });
 const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_post$1; });
+const _lazy_3k04uK = () => Promise.resolve().then(function () { return retrieveItem_post$1; });
 const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
@@ -2629,6 +2630,7 @@ const handlers = [
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/list-catalog', handler: _lazy_ocOO4q, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/payment', handler: _lazy_lOjqNk, lazy: true, middleware: false, method: "post" },
+  { route: '/api/square/retrieve-item', handler: _lazy_3k04uK, lazy: true, middleware: false, method: "post" },
   { route: '/__nuxt_error', handler: _lazy_ShO9cQ, lazy: true, middleware: false, method: undefined },
   { route: '/.well-known/security.txt', handler: _E2XjkS, lazy: false, middleware: false, method: undefined },
   { route: '/.well-known/change-password', handler: _icsbdn, lazy: false, middleware: false, method: undefined },
@@ -2818,15 +2820,15 @@ const errorDev = /*#__PURE__*/Object.freeze({
   template: template$1
 });
 
-const square_client$3 = new Client({
-  environment: Environment.Production,
-  // or Environment.Sandbox for testing
+const square_client$4 = new Client({
+  environment: Environment.Sandbox,
+  // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
 const createCard_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   const body = post_data;
-  const { result, ...httpResponse } = await square_client$3.cardsApi.createCard(
+  const { result, ...httpResponse } = await square_client$4.cardsApi.createCard(
     body
   );
   const response = JSONBig.parse(JSONBig.stringify(result));
@@ -2838,16 +2840,16 @@ const createCard_post$1 = /*#__PURE__*/Object.freeze({
   default: createCard_post
 });
 
-const square_client$2 = new Client({
-  environment: Environment.Production,
-  // or Environment.Sandbox for testing
+const square_client$3 = new Client({
+  environment: Environment.Sandbox,
+  // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
 const createCustomer_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   const body = post_data;
   try {
-    const { result, ...httpResponse } = await square_client$2.customersApi.createCustomer(body);
+    const { result, ...httpResponse } = await square_client$3.customersApi.createCustomer(body);
     const response = JSONBig.parse(JSONBig.stringify(result));
     event.node.res.statusCode = 200;
     event.node.res.setHeader("Content-Type", "application/json");
@@ -2866,31 +2868,32 @@ const createCustomer_post$1 = /*#__PURE__*/Object.freeze({
   default: createCustomer_post
 });
 
-const square_client$1 = new Client({
-  environment: Environment.Production,
-  // or Environment.Sandbox for testing
+const square_client$2 = new Client({
+  environment: Environment.Sandbox,
+  // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
 const listCatalog_post = defineEventHandler(async (event) => {
   await readBody(event);
-  const { result, ...httpResponse } = await square_client$1.catalogApi.listCatalog();
+  const { result, ...httpResponse } = await square_client$2.catalogApi.listCatalog();
   JSONBig.parse(JSONBig.stringify(result));
   const batchObjRequest = {
     objectIds: [],
     includeRelatedObjects: true
   };
   async function getProductObjects() {
+    var _a;
     try {
-      const listResponse = await square_client$1.catalogApi.listCatalog();
-      for (const catalogObject of listResponse.result.objects) {
+      const listResponse = await square_client$2.catalogApi.listCatalog();
+      for (const catalogObject of (_a = listResponse == null ? void 0 : listResponse.result) == null ? void 0 : _a.objects) {
         const objectId = catalogObject.id;
-        const retrieveResponse = await square_client$1.catalogApi.retrieveCatalogObject(objectId);
+        const retrieveResponse = await square_client$2.catalogApi.retrieveCatalogObject(objectId);
         batchObjRequest.objectIds.push(objectId);
       }
     } catch (error) {
       console.error("Error fetching product images:", error);
     }
-    const batchRetrieveResponse = await square_client$1.catalogApi.batchRetrieveCatalogObjects(batchObjRequest);
+    const batchRetrieveResponse = await square_client$2.catalogApi.batchRetrieveCatalogObjects(batchObjRequest);
     return batchRetrieveResponse;
   }
   const objects = await getProductObjects();
@@ -2923,15 +2926,15 @@ const listCatalog_post$1 = /*#__PURE__*/Object.freeze({
   default: listCatalog_post
 });
 
-const square_client = new Client({
+const square_client$1 = new Client({
   environment: Environment.Sandbox,
-  // or Environment.Sandbox for testing
+  // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
 const payment_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   const body = post_data;
-  const { result, ...httpResponse } = await square_client.paymentsApi.createPayment(body);
+  const { result, ...httpResponse } = await square_client$1.paymentsApi.createPayment(body);
   const response = JSONBig.parse(JSONBig.stringify(result));
   return response;
 });
@@ -2939,6 +2942,32 @@ const payment_post = defineEventHandler(async (event) => {
 const payment_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: payment_post
+});
+
+const square_client = new Client({
+  environment: Environment.Sandbox,
+  // Environment.Production or Environment.Sandbox for testing
+  accessToken: process.env.SQUARE_ACCESS_TOKEN
+});
+const retrieveItem_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  const objectId = post_data, includeRelatedObjects = true, includeCategoryPathToRoot = true;
+  const { result, ...httpResponse } = await square_client.catalogApi.retrieveCatalogObject(
+    objectId,
+    includeRelatedObjects,
+    void 0,
+    includeCategoryPathToRoot
+  );
+  const response = JSONBig.parse(JSONBig.stringify(result));
+  return {
+    item: response.object,
+    related: response.relatedObjects
+  };
+});
+
+const retrieveItem_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: retrieveItem_post
 });
 
 const Vue3 = version.startsWith("3");
@@ -2997,7 +3026,7 @@ function createServerHead(options = {}) {
 
 const unheadPlugins = [];
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"}],"link":[],"style":[],"script":[{"src":"https://sandbox.web.squarecdn.com/v1/square.js"}],"noscript":[]};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"}],"link":[{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"}],"style":[],"script":[{"src":"https://sandbox.web.squarecdn.com/v1/square.js"}],"noscript":[]};
 
 const appRootId = "__nuxt";
 

@@ -1,7 +1,7 @@
 import { Client, Environment, ApiError, BatchRetrieveCatalogObjectsRequest } from "square";
 import JSONBig from "json-bigint";
 const square_client = new Client({
-  environment: Environment.Production, // or Environment.Sandbox for testing
+  environment: Environment.Sandbox, // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
 });
 
@@ -25,7 +25,7 @@ async function getProductObjects() {
   try {
     const listResponse = await square_client.catalogApi.listCatalog();
     
-    for (const catalogObject of listResponse.result.objects) {
+    for (const catalogObject of listResponse?.result?.objects) {
       const objectId = catalogObject.id;
       const retrieveResponse = await square_client.catalogApi.retrieveCatalogObject(objectId);
 

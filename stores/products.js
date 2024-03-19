@@ -10,25 +10,23 @@ pinia.use(piniaPluginPersistedstate)
 
 import { authStore } from './auth'
 
-// Square
-import { Client, Environment, ApiError, } from 'square'
-const square_client = new Client({
-  accessToken: runtimeConfig.public.SQUARE_ACCESS_TOKEN,
-  // Procution environment:
-  // environment: Environment.Production
-  environment: Environment.Sandbox
-})
-
 export const productsStore = defineStore({
   id: 'productsStore',
   state: () => {
     return {
       merchant: null,
       categories: null,
+      filters: {
+        category: null,
+        search: null,
+        sort: { field: 'name', order: 'asc' },
+        limit: 10,
+        offset: 0
+      },
       products: null,
       cart: null,
       cart_obj: null,
-      square_client: square_client,
+      // square_client: square_client,
     }
   },
   actions: {
