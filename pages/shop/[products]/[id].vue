@@ -1,16 +1,60 @@
 <template>
   <div class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col px-3 py-4">
     <div class="container mx-auto p-3 flex flex-col md:flex-row">
-      <div class="w-full md:w-1/2 p-3">
-        <img class="w-full shadow-xl rounded-md" :src="state.product?.images[0]?.imageData?.url" />
+      <div class="w-full md:w-1/2 p-3 flex flex-col">
+        <img class="w-full shadow-xl rounded-md" :src="state?.main_img" />
+        <div class="py-2">
+          <PrimeCarousel v-if="state?.product?.images?.length" :value="state?.product?.images" :numVisible="3" circular :numScroll="3" :autoplayInterval="3000">
+           <template #item="slotProps">
+              <div class="w-[190px] h-[135px] mx-2 bg-cover bg-center rounded-md shadow-lg hover:cursor-pointer" @click="slotProps.data.modal = true" :style="{backgroundImage: `url(${slotProps.data.imageData.url})`}">
+                
+                <PrimeDialog v-model:visible="slotProps.data.modal"  :style="{ width: '50rem' }">
+                  <div class="w-full bg-center bg-cover h-[50rem]" :style="{ backgroundImage: `url(${slotProps.data.imageData.url})` }">
+
+                  </div>
+                </PrimeDialog>
+              </div>
+            </template>
+          </PrimeCarousel>
+        </div>
       </div>
       <div class="w-full md:w-1/2 p-3">
-        <h1 class="text-3xl text-neutral-900 dark:text-neutral-200 uppercase font-thin pb-3">{{ state.product?.item?.itemData?.name }}</h1>
+        <h1 class="text-3xl text-neutral-900 dark:text-neutral-200  font-thin pb-3">{{ state.product?.item?.itemData?.name }}</h1>
         <!-- <h2 class="text-2xl text-neutral-900 dark:text-neutral-200 uppercase font-thin">$ {{ state.product.variations[0].price_money.amount }}</h2> -->
-        <p class="text-lg text-neutral-900 dark:text-neutral-200">{{ state.product?.item?.itemData?.description }}</p>
-        <div class="w-full flex flex-row justify-between py-5">
+        <p class="text-lg text-neutral-900 dark:text-neutral-200 opacity-85">{{ state.product?.item?.itemData?.description }}</p>
+
+        <div class="w-full flex flex-row justify-start py-5 items-center">
           <button class="btn-add_to_cart nsight-btn-primary my-1 py-1 w-full md:w-1/2 px-5 text-white shadow-xl rounded-md" @click="add_to_cart">Add to cart</button>
+           <font-awesome-icon
+            :icon="['far', 'heart']"
+            class="text-red-500 hover:text-red-600 text-3xl ml-3 hover:cursor-pointer drop-shadow-xl "
+          />
         </div>
+
+        <div class="w-full my-10 flex flex-row items-start">
+          <h2 class="text-md text-neutral-900 dark:text-neutral-200 font-thin">Categories: </h2>
+          <div class="flex flex-row items-center">
+            <p v-for="category in state.product?.categories" :key="category.id" 
+              class="mx-2 font-normal hover:cursor-pointer text-neutral-900 dark:text-white opacity-75 hover:opacity-1"
+            >
+              {{ category.categoryData.name }}
+            </p>
+          </div>
+        </div>
+
+        <div class="w-full flex flex-col">
+          <div v-for="(variation_block, a) in state.variations.titles" :key="a" class="w-full flex flex-col">
+            <h2 class="text-lg text-neutral-900 dark:text-neutral-200 font-thin">{{ variation_block }}:</h2>
+            <div v-for="(option, b) in state.variations.options" :key="b" class="">
+              <div v-if="option.name == variation_block" class="w-full">
+                <div class="w-full flex flex-col">
+                  <p class="text-neutral-900 dark:text-white">{{ option.stringValue }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -22,12 +66,23 @@
     layout: 'inner'
   })
 
+  const product = ref()
+
       // Data
 const prodStore = productsStore(),
   route = useRoute(),
-  state = reactive({ product: null })
+  state = reactive({ 
+    product: null,
+    main_img: null,
+    loading: true,
+    variations: {
+      titles: [],
+      options: []
+    }
+  })
 
-  $fetch('/api/square/retrieve-item',{
+  onMounted(() => {
+     $fetch('/api/square/retrieve-item',{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -37,14 +92,36 @@ const prodStore = productsStore(),
   .then((res) => { 
     state.product = res 
     state.product['images'] = []
+    state.product['categories'] = []
+
     state.product.related.forEach((obj) => {
       if(obj.type === 'IMAGE') {
+        obj['modal'] = false
         state.product['images'].push(obj)
       }
+      if(obj.type === 'CATEGORY') {
+        state.product['categories'].push(obj)
+      }
     })
+
+    state.main_img = state.product.images[0].imageData.url
+
+    // Loop through every variation and loop through each variation's customAttributeValues, and then push the name into state.variations.titles. Make sure to remove duplicates
+    state.product.item.itemData.variations?.forEach((variation) => {
+      // push variation.customAttributeValues.name into state.variations.titles. Make sure to remove duplicates
+      if(!state.variations.titles.includes(Object.entries(variation.customAttributeValues)[0][1]).name)  { 
+        state.variations.titles.push(Object.entries(variation?.customAttributeValues)[0][1]?.name) 
+      }
+      if(!state.variations.titles.includes(Object.entries(variation.customAttributeValues)[0][1]))  { 
+        state.variations.options.push(Object.entries(variation?.customAttributeValues)[0][1]) 
+      }
+    })
+    
+    state.loading = false
   })
   .catch((err) => {
     console.log(err)
+  })
   })
 
   // Methods

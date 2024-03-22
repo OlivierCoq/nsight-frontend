@@ -5,7 +5,7 @@ import path from "path";
 
 export default defineNuxtConfig({
   devtools: {
-    enabled: true,
+    enabled: false,
     timeline: {
       enabled: true,
     },
@@ -53,7 +53,7 @@ export default defineNuxtConfig({
     components: {
       prefix: "Prime",
       name: undefined,
-      include: ["Tooltip", "Dialog", "AutoComplete", "TabView", "TabPanel"],
+      include: ["Tooltip", "Dialog", "AutoComplete", "TabView", "TabPanel", "Carousel"],
       exclude: undefined,
     },
     directives: {

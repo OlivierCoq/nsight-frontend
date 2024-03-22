@@ -122,6 +122,14 @@ const _inlineRuntimeConfig = {
           "export": "default",
           "filePath": "primevue/dialog",
           "global": true
+        },
+        {
+          "name": "PrimeCarousel",
+          "as": "Carousel",
+          "from": "primevue/carousel",
+          "export": "default",
+          "filePath": "primevue/carousel",
+          "global": true
         }
       ],
       "directives": [
@@ -196,6 +204,11 @@ const _inlineRuntimeConfig = {
           "name": "DialogStyle",
           "as": "DialogStyle",
           "from": "primevue/dialog/style"
+        },
+        {
+          "name": "CarouselStyle",
+          "as": "CarouselStyle",
+          "from": "primevue/carousel/style"
         },
         {
           "name": "TooltipStyle",
@@ -2142,12 +2155,12 @@ function _defineProperty$1(obj, key, value) { key = _toPropertyKey$1(key); if (k
 function _toPropertyKey$1(t) { var i = _toPrimitive$1(t, "string"); return "symbol" == _typeof$1(i) ? i : String(i); }
 function _toPrimitive$1(t, r) { if ("object" != _typeof$1(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$1(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var css = "\n.p-hidden-accessible {\n    border: 0;\n    clip: rect(0 0 0 0);\n    height: 1px;\n    margin: -1px;\n    overflow: hidden;\n    padding: 0;\n    position: absolute;\n    width: 1px;\n}\n\n.p-hidden-accessible input,\n.p-hidden-accessible select {\n    transform: scale(0);\n}\n\n.p-overflow-hidden {\n    overflow: hidden;\n    padding-right: var(--scrollbar-width);\n}\n";
-var classes$4 = {};
+var classes$5 = {};
 var inlineStyles$2 = {};
-var BaseStyle$5 = {
+var BaseStyle$6 = {
   name: 'base',
   css: css,
-  classes: classes$4,
+  classes: classes$5,
   inlineStyles: inlineStyles$2,
   loadStyle: function loadStyle() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -2176,16 +2189,16 @@ var BaseStyle$5 = {
   }
 };
 
-var basestyle_cjs = BaseStyle$5;
+var basestyle_cjs = BaseStyle$6;
 
-const BaseStyle$6 = /*@__PURE__*/getDefaultExportFromCjs(basestyle_cjs);
+const BaseStyle$7 = /*@__PURE__*/getDefaultExportFromCjs(basestyle_cjs);
 
-var BaseStyle$4 = basestyle_cjs;
+var BaseStyle$5 = basestyle_cjs;
 var usestyle = usestyle_cjs;
 
-function _interopDefaultLegacy$4 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$5 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$4 = /*#__PURE__*/_interopDefaultLegacy$4(BaseStyle$4);
+var BaseStyle__default$5 = /*#__PURE__*/_interopDefaultLegacy$5(BaseStyle$5);
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -2193,7 +2206,7 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-var BaseComponentStyle = BaseStyle__default$4["default"].extend({
+var BaseComponentStyle = BaseStyle__default$5["default"].extend({
   name: 'common',
   loadGlobalStyle: function loadGlobalStyle(globalCSS) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -2207,19 +2220,19 @@ var basecomponentstyle_cjs = BaseComponentStyle;
 
 const BaseComponentStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(basecomponentstyle_cjs);
 
-var BaseStyle$3 = basestyle_cjs;
+var BaseStyle$4 = basestyle_cjs;
 var utils = utils_cjs;
 
-function _interopDefaultLegacy$3 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$4 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$3 = /*#__PURE__*/_interopDefaultLegacy$3(BaseStyle$3);
+var BaseStyle__default$4 = /*#__PURE__*/_interopDefaultLegacy$4(BaseStyle$4);
 
 var inlineStyles$1 = {
   root: {
     position: 'relative'
   }
 };
-var classes$3 = {
+var classes$4 = {
   root: function root(_ref) {
     var instance = _ref.instance,
       props = _ref.props;
@@ -2283,9 +2296,9 @@ var classes$3 = {
   },
   emptyMessage: 'p-autocomplete-empty-message'
 };
-var AutoCompleteStyle = BaseStyle__default$3["default"].extend({
+var AutoCompleteStyle = BaseStyle__default$4["default"].extend({
   name: 'autocomplete',
-  classes: classes$3,
+  classes: classes$4,
   inlineStyles: inlineStyles$1
 });
 
@@ -2293,13 +2306,13 @@ var autocompletestyle_cjs = AutoCompleteStyle;
 
 const AutoCompleteStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(autocompletestyle_cjs);
 
-var BaseStyle$2 = basestyle_cjs;
+var BaseStyle$3 = basestyle_cjs;
 
-function _interopDefaultLegacy$2 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$3 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$2 = /*#__PURE__*/_interopDefaultLegacy$2(BaseStyle$2);
+var BaseStyle__default$3 = /*#__PURE__*/_interopDefaultLegacy$3(BaseStyle$3);
 
-var classes$2 = {
+var classes$3 = {
   root: function root(_ref) {
     var props = _ref.props;
     return ['p-tabview p-component', {
@@ -2332,9 +2345,9 @@ var classes$2 = {
   nextButton: 'p-tabview-nav-next p-tabview-nav-btn p-link',
   panelContainer: 'p-tabview-panels'
 };
-var TabViewStyle = BaseStyle__default$2["default"].extend({
+var TabViewStyle = BaseStyle__default$3["default"].extend({
   name: 'tabview',
-  classes: classes$2
+  classes: classes$3
 });
 
 var tabviewstyle_cjs = TabViewStyle;
@@ -2347,11 +2360,11 @@ var tabpanelstyle_cjs = TabPanelStyle;
 
 const TabPanelStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(tabpanelstyle_cjs);
 
-var BaseStyle$1 = basestyle_cjs;
+var BaseStyle$2 = basestyle_cjs;
 
-function _interopDefaultLegacy$1 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$2 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$1 = /*#__PURE__*/_interopDefaultLegacy$1(BaseStyle$1);
+var BaseStyle__default$2 = /*#__PURE__*/_interopDefaultLegacy$2(BaseStyle$2);
 
 /* Position */
 var inlineStyles = {
@@ -2376,7 +2389,7 @@ var inlineStyles = {
     pointerEvents: 'auto'
   }
 };
-var classes$1 = {
+var classes$2 = {
   mask: function mask(_ref2) {
     var props = _ref2.props;
     var positions = ['left', 'right', 'top', 'topleft', 'topright', 'bottom', 'bottomleft', 'bottomright'];
@@ -2406,15 +2419,88 @@ var classes$1 = {
   content: 'p-dialog-content',
   footer: 'p-dialog-footer'
 };
-var DialogStyle = BaseStyle__default$1["default"].extend({
+var DialogStyle = BaseStyle__default$2["default"].extend({
   name: 'dialog',
-  classes: classes$1,
+  classes: classes$2,
   inlineStyles: inlineStyles
 });
 
 var dialogstyle_cjs = DialogStyle;
 
 const DialogStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(dialogstyle_cjs);
+
+var BaseStyle$1 = basestyle_cjs;
+
+function _interopDefaultLegacy$1 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var BaseStyle__default$1 = /*#__PURE__*/_interopDefaultLegacy$1(BaseStyle$1);
+
+var classes$1 = {
+  root: function root(_ref) {
+    var instance = _ref.instance;
+    return ['p-carousel p-component', {
+      'p-carousel-vertical': instance.isVertical(),
+      'p-carousel-horizontal': !instance.isVertical()
+    }];
+  },
+  header: 'p-carousel-header',
+  content: 'p-carousel-content',
+  container: 'p-carousel-container',
+  previousButton: function previousButton(_ref2) {
+    var instance = _ref2.instance;
+    return ['p-carousel-prev p-link', {
+      'p-disabled': instance.backwardIsDisabled
+    }];
+  },
+  previousButtonIcon: 'p-carousel-next-icon',
+  itemsContent: 'p-carousel-items-content',
+  itemsContainer: 'p-carousel-items-container',
+  itemCloned: function itemCloned(_ref3) {
+    var index = _ref3.index,
+      value = _ref3.value,
+      totalShiftedItems = _ref3.totalShiftedItems,
+      d_numVisible = _ref3.d_numVisible;
+    return ['p-carousel-item p-carousel-item-cloned', {
+      'p-carousel-item-active': totalShiftedItems * -1 === value.length + d_numVisible,
+      'p-carousel-item-start': index === 0,
+      'p-carousel-item-end': value.slice(-1 * d_numVisible).length - 1 === index
+    }];
+  },
+  item: function item(_ref4) {
+    var instance = _ref4.instance,
+      index = _ref4.index;
+    return ['p-carousel-item', {
+      'p-carousel-item-active': instance.firstIndex() <= index && instance.lastIndex() >= index,
+      'p-carousel-item-start': instance.firstIndex() === index,
+      'p-carousel-item-end': instance.lastIndex() === index
+    }];
+  },
+  nextButton: function nextButton(_ref5) {
+    var instance = _ref5.instance;
+    return ['p-carousel-next p-link', {
+      'p-disabled': instance.forwardIsDisabled
+    }];
+  },
+  nextButtonIcon: 'p-carousel-prev-icon',
+  indicators: 'p-carousel-indicators p-reset',
+  indicator: function indicator(_ref6) {
+    var instance = _ref6.instance,
+      index = _ref6.index;
+    return ['p-carousel-indicator', {
+      'p-highlight': instance.d_page === index
+    }];
+  },
+  indicatorButton: 'p-link',
+  footer: 'p-carousel-footer'
+};
+var CarouselStyle = BaseStyle__default$1["default"].extend({
+  name: 'carousel',
+  classes: classes$1
+});
+
+var carouselstyle_cjs = CarouselStyle;
+
+const CarouselStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(carouselstyle_cjs);
 
 var BaseStyle = basestyle_cjs;
 
@@ -2442,7 +2528,7 @@ const styleProps = {
 };
 const styles = [
   ,
-  BaseStyle$6 && BaseStyle$6.getStyleSheet ? BaseStyle$6.getStyleSheet(undefined, styleProps) : '',BaseComponentStyle$1 && BaseComponentStyle$1.getStyleSheet ? BaseComponentStyle$1.getStyleSheet(undefined, styleProps) : '',AutoCompleteStyle$1 && AutoCompleteStyle$1.getStyleSheet ? AutoCompleteStyle$1.getStyleSheet(undefined, styleProps) : '',TabViewStyle$1 && TabViewStyle$1.getStyleSheet ? TabViewStyle$1.getStyleSheet(undefined, styleProps) : '',TabPanelStyle$1 && TabPanelStyle$1.getStyleSheet ? TabPanelStyle$1.getStyleSheet(undefined, styleProps) : '',DialogStyle$1 && DialogStyle$1.getStyleSheet ? DialogStyle$1.getStyleSheet(undefined, styleProps) : '',TooltipStyle$1 && TooltipStyle$1.getStyleSheet ? TooltipStyle$1.getStyleSheet(undefined, styleProps) : ''
+  BaseStyle$7 && BaseStyle$7.getStyleSheet ? BaseStyle$7.getStyleSheet(undefined, styleProps) : '',BaseComponentStyle$1 && BaseComponentStyle$1.getStyleSheet ? BaseComponentStyle$1.getStyleSheet(undefined, styleProps) : '',AutoCompleteStyle$1 && AutoCompleteStyle$1.getStyleSheet ? AutoCompleteStyle$1.getStyleSheet(undefined, styleProps) : '',TabViewStyle$1 && TabViewStyle$1.getStyleSheet ? TabViewStyle$1.getStyleSheet(undefined, styleProps) : '',TabPanelStyle$1 && TabPanelStyle$1.getStyleSheet ? TabPanelStyle$1.getStyleSheet(undefined, styleProps) : '',DialogStyle$1 && DialogStyle$1.getStyleSheet ? DialogStyle$1.getStyleSheet(undefined, styleProps) : '',CarouselStyle$1 && CarouselStyle$1.getStyleSheet ? CarouselStyle$1.getStyleSheet(undefined, styleProps) : '',TooltipStyle$1 && TooltipStyle$1.getStyleSheet ? TooltipStyle$1.getStyleSheet(undefined, styleProps) : ''
 ].join('');
 
 const defineNitroPlugin = (def) => def;
@@ -2453,26 +2539,8 @@ const _Bqeas0SwaX = defineNitroPlugin(async (nitroApp) => {
   });
 });
 
-const script = `
-if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
-  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
-    value: {},
-    enumerable: false,
-    configurable: true,
-  })
-}
-window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
-`;
-
-const _dfScCcbrZK = (function(nitro) {
-  nitro.hooks.hook("render:html", (htmlContext) => {
-    htmlContext.head.push(`<script>${script}<\/script>`);
-  });
-});
-
 const plugins = [
-  _Bqeas0SwaX,
-_dfScCcbrZK
+  _Bqeas0SwaX
 ];
 
 function defineRenderHandler(handler) {
@@ -2821,7 +2889,7 @@ const errorDev = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$4 = new Client({
-  environment: Environment.Sandbox,
+  environment: Environment.Production,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -2841,7 +2909,7 @@ const createCard_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$3 = new Client({
-  environment: Environment.Sandbox,
+  environment: Environment.Production,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -2869,17 +2937,19 @@ const createCustomer_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$2 = new Client({
-  environment: Environment.Sandbox,
+  environment: Environment.Production,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
 const listCatalog_post = defineEventHandler(async (event) => {
   await readBody(event);
-  const { result, ...httpResponse } = await square_client$2.catalogApi.listCatalog();
-  JSONBig.parse(JSONBig.stringify(result));
+  const { result, ...httpResponse } = await square_client$2.catalogApi.listCatalog(void 0, "ITEM,ITEM_VARIATION,MODIFIER,MODIFIER_LIST,CATEGORY,TAX,IMAGE");
+  const response = JSONBig.parse(JSONBig.stringify(result));
   const batchObjRequest = {
     objectIds: [],
-    includeRelatedObjects: true
+    includeRelatedObjects: true,
+    // Include images:
+    catalogVersion: response.latestVersion
   };
   async function getProductObjects() {
     var _a;
@@ -2917,7 +2987,8 @@ const listCatalog_post = defineEventHandler(async (event) => {
   });
   return {
     products: items,
-    categories
+    categories,
+    res: JSONBig.parse(JSONBig.stringify(result))
   };
 });
 
@@ -2927,7 +2998,7 @@ const listCatalog_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$1 = new Client({
-  environment: Environment.Sandbox,
+  environment: Environment.Production,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -2945,11 +3016,12 @@ const payment_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client = new Client({
-  environment: Environment.Sandbox,
+  environment: Environment.Production,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
 const retrieveItem_post = defineEventHandler(async (event) => {
+  var _a, _b, _c, _d, _e, _f, _g, _h;
   const post_data = await readBody(event);
   const objectId = post_data, includeRelatedObjects = true, includeCategoryPathToRoot = true;
   const { result, ...httpResponse } = await square_client.catalogApi.retrieveCatalogObject(
@@ -2959,6 +3031,29 @@ const retrieveItem_post = defineEventHandler(async (event) => {
     includeCategoryPathToRoot
   );
   const response = JSONBig.parse(JSONBig.stringify(result));
+  if ((_c = (_b = (_a = response == null ? void 0 : response.object) == null ? void 0 : _a.itemData) == null ? void 0 : _b.imageIds) == null ? void 0 : _c.length) {
+    response.object["images"] = [];
+    response.object.itemData.imageIds.forEach((imageId) => {
+      response.relatedObjects.forEach((relatedObject) => {
+        if (relatedObject.id === imageId) {
+          response.object["images"].push(relatedObject.imageData);
+        }
+      });
+    });
+  }
+  if ((_f = (_e = (_d = response == null ? void 0 : response.object) == null ? void 0 : _d.itemData) == null ? void 0 : _e.variations) == null ? void 0 : _f.length) {
+    (_h = (_g = response == null ? void 0 : response.object) == null ? void 0 : _g.itemData) == null ? void 0 : _h.variations.forEach((variation) => {
+      var _a2;
+      variation["images"] = [];
+      (_a2 = variation.itemVariationData) == null ? void 0 : _a2.imageIds.forEach((imageId) => {
+        response.relatedObjects.forEach((relatedObject) => {
+          if (relatedObject.id === imageId) {
+            variation["images"].push(relatedObject.imageData);
+          }
+        });
+      });
+    });
+  }
   return {
     item: response.object,
     related: response.relatedObjects

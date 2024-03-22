@@ -3,7 +3,6 @@
 /// <reference types="@pinia-plugin-persistedstate/nuxt" />
 /// <reference types="nuxt-primevue" />
 /// <reference types="@zadigetvoltaire/nuxt-well-known" />
-/// <reference types="@nuxt/devtools" />
 /// <reference types="@nuxt/telemetry" />
 /// <reference types="nuxt" />
 /// <reference path="types/plugins.d.ts" />

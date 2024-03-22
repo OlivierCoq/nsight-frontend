@@ -1,7 +1,7 @@
 import { Client, Environment, ApiError, CreateCustomerRequest } from "square";
 import JSONBig from "json-bigint";
 const square_client = new Client({
-  environment: Environment.Sandbox, // Environment.Production or Environment.Sandbox for testing
+  environment: Environment.Production, // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
 });
 

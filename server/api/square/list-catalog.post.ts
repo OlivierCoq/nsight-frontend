@@ -1,9 +1,11 @@
 import { Client, Environment, ApiError, BatchRetrieveCatalogObjectsRequest } from "square";
 import JSONBig from "json-bigint";
 const square_client = new Client({
-  environment: Environment.Sandbox, // Environment.Production or Environment.Sandbox for testing
+  environment: Environment.Production, // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
 });
+
+
 
 export default defineEventHandler(async (event) => {
   const post_data = await readBody(event);
@@ -11,15 +13,29 @@ export default defineEventHandler(async (event) => {
   // typeoF body:
   // console.log("typeof body", typeof post_data);
 
+//   let opts = {
+//     types: "ITEM,ITEM_VARIATION,MODIFIER,MODIFIER_LIST,CATEGORY,TAX,IMAGE"
+// }
+
+
+
   const { result, ...httpResponse } =
-    await square_client.catalogApi.listCatalog();
+    await square_client.catalogApi.listCatalog(undefined, "ITEM,ITEM_VARIATION,MODIFIER,MODIFIER_LIST,CATEGORY,TAX,IMAGE");
   // console.log("listCatalog result", result);
+
+// First, get the entire catalog:
+
   const response = JSONBig.parse(JSONBig.stringify(result));
 
   const batchObjRequest: BatchRetrieveCatalogObjectsRequest = { 
     objectIds: [],
-    includeRelatedObjects: true
+    includeRelatedObjects: true,
+    // Include images:
+    catalogVersion: response.latestVersion,
+    
   }
+
+// Then, get the images for each item:
 
 async function getProductObjects() {
   try {
@@ -41,6 +57,7 @@ async function getProductObjects() {
 
 }
 
+// Objects are catalog with additional data:
 const objects = await getProductObjects();
 // console.log('Objects', objects.body)
 
@@ -67,6 +84,7 @@ processed.objects.forEach((object: any) => {
 
   return {
     products: items,
-    categories: categories
+    categories: categories,
+    res: JSONBig.parse(JSONBig.stringify(result))
   }
 });
