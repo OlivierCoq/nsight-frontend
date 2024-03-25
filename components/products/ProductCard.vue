@@ -7,7 +7,7 @@
       ></div>
       <div class="rounded-full hover:cursor-pointer shadow-xl h-[40px] w-[40px] bg-white flex flex-col items-center justify-center absolute right-[65px] bottom-[15px] z-10">
         <font-awesome-icon
-          :icon="[ auth.user.favorites.products.includes(props.product) ? 'fas' : 'far', 'heart']"
+          :icon="[ in_favorites() ? 'fas' : 'far', 'heart']"
           class="text-red-500 hover:text-red-600"
           @click="toggle_favorite(props.product)"
         >
@@ -93,16 +93,22 @@ const format_price = (amount) => {
   return amount / 100
 }
 
+const in_favorites = () => {
+  // Check if a product with the same ID is in the favorites
+  return auth?.user?.favorites?.products?.includes(props.product.id)
+}
+
 const toggle_favorite = (product) => {
-  if (auth.user.favorites.products.includes(product)) {
-    auth.user.favorites.products = auth.user.favorites.products.filter(p => p.id !== product.id)
+  if (auth?.user?.favorites?.products?.includes(product.id)) {
+    auth.user.favorites.products = auth.user.favorites.products.filter(p => p !== product.id)
   } else {
-    auth.user.favorites.products.push(product)
+    auth.user.favorites.products.push(product.id)
   }
   nextTick(()=> {
     auth.updateUser()
   })
 }
+
 
 </script>
 <style lang="scss">

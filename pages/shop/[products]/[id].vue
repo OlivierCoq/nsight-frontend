@@ -37,10 +37,11 @@
         </div>
         <div class="w-full flex flex-row justify-start pb-5 items-center">
           <PrimeToast />
-          <button class="btn-add_to_cart nsight-btn-primary my-1 py-1 w-full md:w-1/2 px-5 text-white shadow-xl rounded-md" @click="add_to_cart">Add to cart</button>
+          <button v-if="state.product?.item" class="btn-add_to_cart nsight-btn-primary my-1 py-1 w-full md:w-1/2 px-5 text-white shadow-xl rounded-md" @click="add_to_cart">Add to cart</button>
            <font-awesome-icon
-            :icon="['far', 'heart']"
+            :icon="[ in_favorites() ? 'fas' : 'far', 'heart']"
             class="text-red-500 hover:text-red-600 text-3xl ml-3 hover:cursor-pointer drop-shadow-xl "
+            @click="toggle_favorite(state?.product?.item)"
           />
         </div>
 
@@ -112,6 +113,7 @@
   const product = ref()
   import { useToast } from "primevue/usetoast";
   const toast = useToast();
+  const auth = authStore()
 
       // Data
 const prodStore = productsStore(),
@@ -208,6 +210,22 @@ const prodStore = productsStore(),
   const select_variation = (variation) => {
     state.selected = variation
   }
+
+  const in_favorites = () => {
+    // Check if a product with the same ID is in the favorites
+    return auth?.user?.favorites?.products?.includes(state.product?.item?.id);
+  }
+
+  const toggle_favorite = (product) => {
+      if (auth?.user?.favorites?.products?.includes(state.product?.item?.id)) {
+        auth.user.favorites.products = auth.user.favorites.products.filter(p => p !== product.id)
+      } else {
+        auth.user.favorites.products.push(product.id)
+      }
+      nextTick(()=> {
+        auth.updateUser()
+      })
+    }
 
 </script>
 <style lang="scss">
