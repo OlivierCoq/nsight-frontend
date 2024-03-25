@@ -305,6 +305,10 @@ const post_new_member = async () => {
               users: [auth.user],
               friends: [auth.user],
               profile_picture: {},
+              favorites: {
+                products: [],
+                users: []
+              },
               pictures: [],
               addresses: {
                 shipping: [],
@@ -316,6 +320,9 @@ const post_new_member = async () => {
               },
               selected_payment_method: null,
               payment_methods: {
+                data: [],
+              },
+              cart_obj: {
                 data: [],
               },
               orders: {

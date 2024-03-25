@@ -1,1 +1,0 @@
-import{d as t}from"./composables.PaokOPte.js";import{_ as r}from"./_plugin-vue_export-helper.x3n3nnut.js";import{n as o,c as a,o as s}from"./entry.rB01nS72.js";const n={name:"Member",setup(){const e=o({});return{definePageMeta:t,state:e}}};function c(e,p,_,i,m,f){return s(),a("div")}const $=r(n,[["render",c]]);export{$ as default};

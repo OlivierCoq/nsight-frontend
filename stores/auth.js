@@ -78,7 +78,8 @@ export const authStore = defineStore({
               'returns',
               'cancelled_orders',
               'profile_picture',
-              'pictures'
+              'pictures',
+              'cart_obj'
             ]
           })}`,
           {
@@ -112,8 +113,6 @@ export const authStore = defineStore({
       this.loggedIn = false;
       // localStorage.removeItem('token')
       // localStorage.removeItem('user')
-
-      prodStore.cart = null;
       this.user = null;
 
       navigateTo("/");

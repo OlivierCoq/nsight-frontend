@@ -100,6 +100,14 @@ const _inlineRuntimeConfig = {
           "global": true
         },
         {
+          "name": "PrimeInputNumber",
+          "as": "InputNumber",
+          "from": "primevue/inputnumber",
+          "export": "default",
+          "filePath": "primevue/inputnumber",
+          "global": true
+        },
+        {
           "name": "PrimeTabView",
           "as": "TabView",
           "from": "primevue/tabview",
@@ -124,11 +132,30 @@ const _inlineRuntimeConfig = {
           "global": true
         },
         {
+          "name": "PrimeToast",
+          "use": {
+            "as": "ToastService"
+          },
+          "as": "Toast",
+          "from": "primevue/toast",
+          "export": "default",
+          "filePath": "primevue/toast",
+          "global": true
+        },
+        {
           "name": "PrimeCarousel",
           "as": "Carousel",
           "from": "primevue/carousel",
           "export": "default",
           "filePath": "primevue/carousel",
+          "global": true
+        },
+        {
+          "name": "PrimeProgressSpinner",
+          "as": "ProgressSpinner",
+          "from": "primevue/progressspinner",
+          "export": "default",
+          "filePath": "primevue/progressspinner",
           "global": true
         }
       ],
@@ -173,7 +200,13 @@ const _inlineRuntimeConfig = {
           "from": "primevue/config"
         }
       ],
-      "services": [],
+      "services": [
+        {
+          "name": "ToastService",
+          "as": "ToastService",
+          "from": "primevue/toastservice"
+        }
+      ],
       "styles": [
         {
           "name": "BaseStyle",
@@ -191,6 +224,11 @@ const _inlineRuntimeConfig = {
           "from": "primevue/autocomplete/style"
         },
         {
+          "name": "InputNumberStyle",
+          "as": "InputNumberStyle",
+          "from": "primevue/inputnumber/style"
+        },
+        {
           "name": "TabViewStyle",
           "as": "TabViewStyle",
           "from": "primevue/tabview/style"
@@ -206,9 +244,19 @@ const _inlineRuntimeConfig = {
           "from": "primevue/dialog/style"
         },
         {
+          "name": "ToastStyle",
+          "as": "ToastStyle",
+          "from": "primevue/toast/style"
+        },
+        {
           "name": "CarouselStyle",
           "as": "CarouselStyle",
           "from": "primevue/carousel/style"
+        },
+        {
+          "name": "ProgressSpinnerStyle",
+          "as": "ProgressSpinnerStyle",
+          "from": "primevue/progressspinner/style"
         },
         {
           "name": "TooltipStyle",
@@ -759,7 +807,7 @@ function _toConsumableArray$3(arr) { return _arrayWithoutHoles$3(arr) || _iterab
 function _nonIterableSpread$3() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArray$3(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles$3(arr) { if (Array.isArray(arr)) return _arrayLikeToArray$3(arr); }
-function _typeof$3(o) { "@babel/helpers - typeof"; return _typeof$3 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof$3(o); }
+function _typeof$3$1(o) { "@babel/helpers - typeof"; return _typeof$3$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof$3$1(o); }
 function _slicedToArray$1(arr, i) { return _arrayWithHoles$1(arr) || _iterableToArrayLimit$1(arr, i) || _unsupportedIterableToArray$3(arr, i) || _nonIterableRest$1(); }
 function _nonIterableRest$1() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray$3(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray$3(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray$3(o, minLen); }
@@ -945,7 +993,7 @@ var DomHandler = {
         var styles = element !== null && element !== void 0 && (_element$$attrs = element.$attrs) !== null && _element$$attrs !== void 0 && _element$$attrs[rule] ? [element === null || element === void 0 || (_element$$attrs2 = element.$attrs) === null || _element$$attrs2 === void 0 ? void 0 : _element$$attrs2[rule]] : [];
         return [value].flat().reduce(function (cv, v) {
           if (v !== null && v !== undefined) {
-            var type = _typeof$3(v);
+            var type = _typeof$3$1(v);
             if (type === 'string' || type === 'number') {
               cv.push(v);
             } else if (type === 'object') {
@@ -1252,7 +1300,7 @@ var DomHandler = {
     if (this.isElement(target)) target.appendChild(element);else if (target.el && target.elElement) target.elElement.appendChild(element);else throw new Error('Cannot append ' + target + ' to ' + element);
   },
   isElement: function isElement(obj) {
-    return (typeof HTMLElement === "undefined" ? "undefined" : _typeof$3(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && _typeof$3(obj) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string';
+    return (typeof HTMLElement === "undefined" ? "undefined" : _typeof$3$1(HTMLElement)) === 'object' ? obj instanceof HTMLElement : obj && _typeof$3$1(obj) === 'object' && obj !== null && obj.nodeType === 1 && typeof obj.nodeName === 'string';
   },
   scrollInView: function scrollInView(container, item) {
     var borderTopValue = getComputedStyle(container).getPropertyValue('borderTopWidth');
@@ -1892,18 +1940,18 @@ function _iterableToArray$1(iter) { if (typeof Symbol !== "undefined" && iter[Sy
 function _arrayWithoutHoles$1(arr) { if (Array.isArray(arr)) return _arrayLikeToArray$1(arr); }
 function _arrayLikeToArray$1(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey$3(descriptor.key), descriptor); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey$4(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _defineProperty$3(obj, key, value) { key = _toPropertyKey$3(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey$3(t) { var i = _toPrimitive$3(t, "string"); return "symbol" == _typeof$4(i) ? i : String(i); }
-function _toPrimitive$3(t, r) { if ("object" != _typeof$4(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$4(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _defineProperty$4(obj, key, value) { key = _toPropertyKey$4(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey$4(t) { var i = _toPrimitive$4(t, "string"); return "symbol" == _typeof$4(i) ? i : String(i); }
+function _toPrimitive$4(t, r) { if ("object" != _typeof$4(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$4(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var _default = /*#__PURE__*/function () {
   function _default(_ref) {
     var init = _ref.init,
       type = _ref.type;
     _classCallCheck(this, _default);
-    _defineProperty$3(this, "helpers", void 0);
-    _defineProperty$3(this, "type", void 0);
+    _defineProperty$4(this, "helpers", void 0);
+    _defineProperty$4(this, "type", void 0);
     this.helpers = new Set(init);
     this.type = type;
   }
@@ -2053,12 +2101,12 @@ Object.defineProperty(usestyle_cjs, '__esModule', { value: true });
 var utils$1 = utils_cjs;
 var vue = require$$1;
 
-function _typeof$2(o) { "@babel/helpers - typeof"; return _typeof$2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof$2(o); }
+function _typeof$3(o) { "@babel/helpers - typeof"; return _typeof$3 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof$3(o); }
 function ownKeys$2(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread$2(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$2(Object(t), !0).forEach(function (r) { _defineProperty$2(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty$2(obj, key, value) { key = _toPropertyKey$2(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey$2(t) { var i = _toPrimitive$2(t, "string"); return "symbol" == _typeof$2(i) ? i : String(i); }
-function _toPrimitive$2(t, r) { if ("object" != _typeof$2(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$2(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _objectSpread$2(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$2(Object(t), !0).forEach(function (r) { _defineProperty$3(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$2(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty$3(obj, key, value) { key = _toPropertyKey$3(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey$3(t) { var i = _toPrimitive$3(t, "string"); return "symbol" == _typeof$3(i) ? i : String(i); }
+function _toPrimitive$3(t, r) { if ("object" != _typeof$3(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$3(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function tryOnMounted(fn) {
   var sync = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
   if (vue.getCurrentInstance()) vue.onMounted(fn);else if (sync) fn();else vue.nextTick(fn);
@@ -2142,7 +2190,7 @@ usestyle_cjs.useStyle = useStyle;
 
 var usestyle$1 = usestyle_cjs;
 
-function _typeof$1(o) { "@babel/helpers - typeof"; return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof$1(o); }
+function _typeof$2(o) { "@babel/helpers - typeof"; return _typeof$2 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof$2(o); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -2150,18 +2198,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function ownKeys$1(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread$1(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$1(Object(t), !0).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$1(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty$1(obj, key, value) { key = _toPropertyKey$1(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey$1(t) { var i = _toPrimitive$1(t, "string"); return "symbol" == _typeof$1(i) ? i : String(i); }
-function _toPrimitive$1(t, r) { if ("object" != _typeof$1(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$1(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _objectSpread$1(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys$1(Object(t), !0).forEach(function (r) { _defineProperty$2(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys$1(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty$2(obj, key, value) { key = _toPropertyKey$2(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey$2(t) { var i = _toPrimitive$2(t, "string"); return "symbol" == _typeof$2(i) ? i : String(i); }
+function _toPrimitive$2(t, r) { if ("object" != _typeof$2(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$2(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var css = "\n.p-hidden-accessible {\n    border: 0;\n    clip: rect(0 0 0 0);\n    height: 1px;\n    margin: -1px;\n    overflow: hidden;\n    padding: 0;\n    position: absolute;\n    width: 1px;\n}\n\n.p-hidden-accessible input,\n.p-hidden-accessible select {\n    transform: scale(0);\n}\n\n.p-overflow-hidden {\n    overflow: hidden;\n    padding-right: var(--scrollbar-width);\n}\n";
-var classes$5 = {};
-var inlineStyles$2 = {};
-var BaseStyle$6 = {
+var classes$8 = {};
+var inlineStyles$3 = {};
+var BaseStyle$9 = {
   name: 'base',
   css: css,
-  classes: classes$5,
-  inlineStyles: inlineStyles$2,
+  classes: classes$8,
+  inlineStyles: inlineStyles$3,
   loadStyle: function loadStyle() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     return this.css ? usestyle$1.useStyle(this.css, _objectSpread$1({
@@ -2189,24 +2237,24 @@ var BaseStyle$6 = {
   }
 };
 
-var basestyle_cjs = BaseStyle$6;
+var basestyle_cjs = BaseStyle$9;
 
-const BaseStyle$7 = /*@__PURE__*/getDefaultExportFromCjs(basestyle_cjs);
+const BaseStyle$a = /*@__PURE__*/getDefaultExportFromCjs(basestyle_cjs);
 
-var BaseStyle$5 = basestyle_cjs;
+var BaseStyle$8 = basestyle_cjs;
 var usestyle = usestyle_cjs;
 
-function _interopDefaultLegacy$5 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$8 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$5 = /*#__PURE__*/_interopDefaultLegacy$5(BaseStyle$5);
+var BaseStyle__default$8 = /*#__PURE__*/_interopDefaultLegacy$8(BaseStyle$8);
 
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _typeof$1(o) { "@babel/helpers - typeof"; return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof$1(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-var BaseComponentStyle = BaseStyle__default$5["default"].extend({
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty$1(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty$1(obj, key, value) { key = _toPropertyKey$1(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey$1(t) { var i = _toPrimitive$1(t, "string"); return "symbol" == _typeof$1(i) ? i : String(i); }
+function _toPrimitive$1(t, r) { if ("object" != _typeof$1(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$1(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+var BaseComponentStyle = BaseStyle__default$8["default"].extend({
   name: 'common',
   loadGlobalStyle: function loadGlobalStyle(globalCSS) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -2220,19 +2268,19 @@ var basecomponentstyle_cjs = BaseComponentStyle;
 
 const BaseComponentStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(basecomponentstyle_cjs);
 
-var BaseStyle$4 = basestyle_cjs;
+var BaseStyle$7 = basestyle_cjs;
 var utils = utils_cjs;
 
-function _interopDefaultLegacy$4 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$7 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$4 = /*#__PURE__*/_interopDefaultLegacy$4(BaseStyle$4);
+var BaseStyle__default$7 = /*#__PURE__*/_interopDefaultLegacy$7(BaseStyle$7);
 
-var inlineStyles$1 = {
+var inlineStyles$2 = {
   root: {
     position: 'relative'
   }
 };
-var classes$4 = {
+var classes$7 = {
   root: function root(_ref) {
     var instance = _ref.instance,
       props = _ref.props;
@@ -2296,23 +2344,74 @@ var classes$4 = {
   },
   emptyMessage: 'p-autocomplete-empty-message'
 };
-var AutoCompleteStyle = BaseStyle__default$4["default"].extend({
+var AutoCompleteStyle = BaseStyle__default$7["default"].extend({
   name: 'autocomplete',
-  classes: classes$4,
-  inlineStyles: inlineStyles$1
+  classes: classes$7,
+  inlineStyles: inlineStyles$2
 });
 
 var autocompletestyle_cjs = AutoCompleteStyle;
 
 const AutoCompleteStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(autocompletestyle_cjs);
 
-var BaseStyle$3 = basestyle_cjs;
+var BaseStyle$6 = basestyle_cjs;
 
-function _interopDefaultLegacy$3 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$6 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$3 = /*#__PURE__*/_interopDefaultLegacy$3(BaseStyle$3);
+var BaseStyle__default$6 = /*#__PURE__*/_interopDefaultLegacy$6(BaseStyle$6);
 
-var classes$3 = {
+var classes$6 = {
+  root: function root(_ref) {
+    var instance = _ref.instance,
+      props = _ref.props;
+    return ['p-inputnumber p-component p-inputwrapper', {
+      'p-inputwrapper-filled': instance.filled || props.allowEmpty === false,
+      'p-inputwrapper-focus': instance.focused,
+      'p-inputnumber-buttons-stacked': props.showButtons && props.buttonLayout === 'stacked',
+      'p-inputnumber-buttons-horizontal': props.showButtons && props.buttonLayout === 'horizontal',
+      'p-inputnumber-buttons-vertical': props.showButtons && props.buttonLayout === 'vertical',
+      'p-invalid': props.invalid
+    }];
+  },
+  input: function input(_ref2) {
+    var props = _ref2.props,
+      instance = _ref2.instance;
+    return ['p-inputnumber-input', {
+      'p-variant-filled': props.variant ? props.variant === 'filled' : instance.$primevue.config.inputStyle === 'filled'
+    }];
+  },
+  buttonGroup: 'p-inputnumber-button-group',
+  incrementButton: function incrementButton(_ref3) {
+    var instance = _ref3.instance,
+      props = _ref3.props;
+    return ['p-inputnumber-button p-inputnumber-button-up', {
+      'p-disabled': props.showButtons && props.max !== null && instance.maxBoundry()
+    }];
+  },
+  decrementButton: function decrementButton(_ref4) {
+    var instance = _ref4.instance,
+      props = _ref4.props;
+    return ['p-inputnumber-button p-inputnumber-button-down', {
+      'p-disabled': props.showButtons && props.min !== null && instance.minBoundry()
+    }];
+  }
+};
+var InputNumberStyle = BaseStyle__default$6["default"].extend({
+  name: 'inputnumber',
+  classes: classes$6
+});
+
+var inputnumberstyle_cjs = InputNumberStyle;
+
+const InputNumberStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(inputnumberstyle_cjs);
+
+var BaseStyle$5 = basestyle_cjs;
+
+function _interopDefaultLegacy$5 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var BaseStyle__default$5 = /*#__PURE__*/_interopDefaultLegacy$5(BaseStyle$5);
+
+var classes$5 = {
   root: function root(_ref) {
     var props = _ref.props;
     return ['p-tabview p-component', {
@@ -2345,9 +2444,9 @@ var classes$3 = {
   nextButton: 'p-tabview-nav-next p-tabview-nav-btn p-link',
   panelContainer: 'p-tabview-panels'
 };
-var TabViewStyle = BaseStyle__default$3["default"].extend({
+var TabViewStyle = BaseStyle__default$5["default"].extend({
   name: 'tabview',
-  classes: classes$3
+  classes: classes$5
 });
 
 var tabviewstyle_cjs = TabViewStyle;
@@ -2360,14 +2459,14 @@ var tabpanelstyle_cjs = TabPanelStyle;
 
 const TabPanelStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(tabpanelstyle_cjs);
 
-var BaseStyle$2 = basestyle_cjs;
+var BaseStyle$4 = basestyle_cjs;
 
-function _interopDefaultLegacy$2 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$4 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$2 = /*#__PURE__*/_interopDefaultLegacy$2(BaseStyle$2);
+var BaseStyle__default$4 = /*#__PURE__*/_interopDefaultLegacy$4(BaseStyle$4);
 
 /* Position */
-var inlineStyles = {
+var inlineStyles$1 = {
   mask: function mask(_ref) {
     var position = _ref.position,
       modal = _ref.modal;
@@ -2389,7 +2488,7 @@ var inlineStyles = {
     pointerEvents: 'auto'
   }
 };
-var classes$2 = {
+var classes$4 = {
   mask: function mask(_ref2) {
     var props = _ref2.props;
     var positions = ['left', 'right', 'top', 'topleft', 'topright', 'bottom', 'bottomleft', 'bottomright'];
@@ -2419,23 +2518,87 @@ var classes$2 = {
   content: 'p-dialog-content',
   footer: 'p-dialog-footer'
 };
-var DialogStyle = BaseStyle__default$2["default"].extend({
+var DialogStyle = BaseStyle__default$4["default"].extend({
   name: 'dialog',
-  classes: classes$2,
-  inlineStyles: inlineStyles
+  classes: classes$4,
+  inlineStyles: inlineStyles$1
 });
 
 var dialogstyle_cjs = DialogStyle;
 
 const DialogStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(dialogstyle_cjs);
 
-var BaseStyle$1 = basestyle_cjs;
+var BaseStyle$3 = basestyle_cjs;
 
-function _interopDefaultLegacy$1 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$3 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$1 = /*#__PURE__*/_interopDefaultLegacy$1(BaseStyle$1);
+var BaseStyle__default$3 = /*#__PURE__*/_interopDefaultLegacy$3(BaseStyle$3);
 
-var classes$1 = {
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+
+// Position
+var inlineStyles = {
+  root: function root(_ref) {
+    var position = _ref.position;
+    return {
+      position: 'fixed',
+      top: position === 'top-right' || position === 'top-left' || position === 'top-center' ? '20px' : position === 'center' ? '50%' : null,
+      right: (position === 'top-right' || position === 'bottom-right') && '20px',
+      bottom: (position === 'bottom-left' || position === 'bottom-right' || position === 'bottom-center') && '20px',
+      left: position === 'top-left' || position === 'bottom-left' ? '20px' : position === 'center' || position === 'top-center' || position === 'bottom-center' ? '50%' : null
+    };
+  }
+};
+var classes$3 = {
+  root: function root(_ref2) {
+    var props = _ref2.props,
+      instance = _ref2.instance;
+    return ['p-toast p-component p-toast-' + props.position, {
+      'p-ripple-disabled': instance.$primevue.config.ripple === false
+    }];
+  },
+  container: function container(_ref3) {
+    var props = _ref3.props;
+    return ['p-toast-message', {
+      'p-toast-message-info': props.message.severity === 'info' || props.message.severity === undefined,
+      'p-toast-message-warn': props.message.severity === 'warn',
+      'p-toast-message-error': props.message.severity === 'error',
+      'p-toast-message-success': props.message.severity === 'success',
+      'p-toast-message-secondary': props.message.severity === 'secondary',
+      'p-toast-message-contrast': props.message.severity === 'contrast'
+    }];
+  },
+  content: 'p-toast-message-content',
+  icon: function icon(_ref4) {
+    var props = _ref4.props;
+    return ['p-toast-message-icon', _defineProperty(_defineProperty(_defineProperty(_defineProperty({}, props.infoIcon, props.message.severity === 'info'), props.warnIcon, props.message.severity === 'warn'), props.errorIcon, props.message.severity === 'error'), props.successIcon, props.message.severity === 'success')];
+  },
+  text: 'p-toast-message-text',
+  summary: 'p-toast-summary',
+  detail: 'p-toast-detail',
+  closeButton: 'p-toast-icon-close p-link',
+  closeIcon: 'p-toast-icon-close-icon'
+};
+var ToastStyle = BaseStyle__default$3["default"].extend({
+  name: 'toast',
+  classes: classes$3,
+  inlineStyles: inlineStyles
+});
+
+var toaststyle_cjs = ToastStyle;
+
+const ToastStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(toaststyle_cjs);
+
+var BaseStyle$2 = basestyle_cjs;
+
+function _interopDefaultLegacy$2 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var BaseStyle__default$2 = /*#__PURE__*/_interopDefaultLegacy$2(BaseStyle$2);
+
+var classes$2 = {
   root: function root(_ref) {
     var instance = _ref.instance;
     return ['p-carousel p-component', {
@@ -2493,14 +2656,34 @@ var classes$1 = {
   indicatorButton: 'p-link',
   footer: 'p-carousel-footer'
 };
-var CarouselStyle = BaseStyle__default$1["default"].extend({
+var CarouselStyle = BaseStyle__default$2["default"].extend({
   name: 'carousel',
-  classes: classes$1
+  classes: classes$2
 });
 
 var carouselstyle_cjs = CarouselStyle;
 
 const CarouselStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(carouselstyle_cjs);
+
+var BaseStyle$1 = basestyle_cjs;
+
+function _interopDefaultLegacy$1 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var BaseStyle__default$1 = /*#__PURE__*/_interopDefaultLegacy$1(BaseStyle$1);
+
+var classes$1 = {
+  root: 'p-progress-spinner',
+  spinner: 'p-progress-spinner-svg',
+  circle: 'p-progress-spinner-circle'
+};
+var ProgressSpinnerStyle = BaseStyle__default$1["default"].extend({
+  name: 'progressspinner',
+  classes: classes$1
+});
+
+var progressspinnerstyle_cjs = ProgressSpinnerStyle;
+
+const ProgressSpinnerStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(progressspinnerstyle_cjs);
 
 var BaseStyle = basestyle_cjs;
 
@@ -2528,7 +2711,7 @@ const styleProps = {
 };
 const styles = [
   ,
-  BaseStyle$7 && BaseStyle$7.getStyleSheet ? BaseStyle$7.getStyleSheet(undefined, styleProps) : '',BaseComponentStyle$1 && BaseComponentStyle$1.getStyleSheet ? BaseComponentStyle$1.getStyleSheet(undefined, styleProps) : '',AutoCompleteStyle$1 && AutoCompleteStyle$1.getStyleSheet ? AutoCompleteStyle$1.getStyleSheet(undefined, styleProps) : '',TabViewStyle$1 && TabViewStyle$1.getStyleSheet ? TabViewStyle$1.getStyleSheet(undefined, styleProps) : '',TabPanelStyle$1 && TabPanelStyle$1.getStyleSheet ? TabPanelStyle$1.getStyleSheet(undefined, styleProps) : '',DialogStyle$1 && DialogStyle$1.getStyleSheet ? DialogStyle$1.getStyleSheet(undefined, styleProps) : '',CarouselStyle$1 && CarouselStyle$1.getStyleSheet ? CarouselStyle$1.getStyleSheet(undefined, styleProps) : '',TooltipStyle$1 && TooltipStyle$1.getStyleSheet ? TooltipStyle$1.getStyleSheet(undefined, styleProps) : ''
+  BaseStyle$a && BaseStyle$a.getStyleSheet ? BaseStyle$a.getStyleSheet(undefined, styleProps) : '',BaseComponentStyle$1 && BaseComponentStyle$1.getStyleSheet ? BaseComponentStyle$1.getStyleSheet(undefined, styleProps) : '',AutoCompleteStyle$1 && AutoCompleteStyle$1.getStyleSheet ? AutoCompleteStyle$1.getStyleSheet(undefined, styleProps) : '',InputNumberStyle$1 && InputNumberStyle$1.getStyleSheet ? InputNumberStyle$1.getStyleSheet(undefined, styleProps) : '',TabViewStyle$1 && TabViewStyle$1.getStyleSheet ? TabViewStyle$1.getStyleSheet(undefined, styleProps) : '',TabPanelStyle$1 && TabPanelStyle$1.getStyleSheet ? TabPanelStyle$1.getStyleSheet(undefined, styleProps) : '',DialogStyle$1 && DialogStyle$1.getStyleSheet ? DialogStyle$1.getStyleSheet(undefined, styleProps) : '',ToastStyle$1 && ToastStyle$1.getStyleSheet ? ToastStyle$1.getStyleSheet(undefined, styleProps) : '',CarouselStyle$1 && CarouselStyle$1.getStyleSheet ? CarouselStyle$1.getStyleSheet(undefined, styleProps) : '',ProgressSpinnerStyle$1 && ProgressSpinnerStyle$1.getStyleSheet ? ProgressSpinnerStyle$1.getStyleSheet(undefined, styleProps) : '',TooltipStyle$1 && TooltipStyle$1.getStyleSheet ? TooltipStyle$1.getStyleSheet(undefined, styleProps) : ''
 ].join('');
 
 const defineNitroPlugin = (def) => def;
@@ -2889,7 +3072,7 @@ const errorDev = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$4 = new Client({
-  environment: Environment.Production,
+  environment: Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -2909,7 +3092,7 @@ const createCard_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$3 = new Client({
-  environment: Environment.Production,
+  environment: Environment.s,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -2937,7 +3120,7 @@ const createCustomer_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$2 = new Client({
-  environment: Environment.Production,
+  environment: Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -2998,7 +3181,7 @@ const listCatalog_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$1 = new Client({
-  environment: Environment.Production,
+  environment: Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -3016,7 +3199,7 @@ const payment_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client = new Client({
-  environment: Environment.Production,
+  environment: Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });

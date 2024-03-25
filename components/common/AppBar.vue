@@ -52,16 +52,11 @@
           @click="goToCart"
         />
         <div
-          v-if="
-            authData.user &&
-            authData.user.cart &&
-            prodStore.cart &&
-            prodStore.cart.total_items
-          "
-          class="num_count d-flex flex-row justify-center align-center"
+          v-if="prodStore.cart?.checkout?.order?.order?.lineItems?.length"
+          class="num_count d-flex flex-row justify-center align-center text-center"
         >
           <span class="text-white" v-tooltip="'Items in cart'">{{
-            prodStore.cart.total_items
+            prodStore.cart?.checkout?.order?.order?.lineItems?.length
           }}</span>
         </div>
         <button v-if="authData?.loggedIn" text @click="sign_out">

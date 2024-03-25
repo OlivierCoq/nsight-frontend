@@ -32,7 +32,10 @@ export default defineNuxtConfig({
     "~/assets/style/main.scss",
   ],
 
-  plugins: [{ src: "~/plugins/font-awesome.ts" }],
+  plugins: [
+    { src: "~/plugins/font-awesome.ts" },
+    { src: "~/plugins/toast.js" },
+  ],
   modules: [
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
@@ -53,7 +56,17 @@ export default defineNuxtConfig({
     components: {
       prefix: "Prime",
       name: undefined,
-      include: ["Tooltip", "Dialog", "AutoComplete", "TabView", "TabPanel", "Carousel"],
+      include: [
+        "Tooltip", 
+        "Dialog", 
+        "AutoComplete", 
+        "TabView", 
+        "TabPanel", 
+        "Carousel",
+        "ProgressSpinner",
+        "InputNumber",
+        "Toast"
+      ],
       exclude: undefined,
     },
     directives: {

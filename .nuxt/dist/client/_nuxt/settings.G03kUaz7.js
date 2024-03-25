@@ -1,1 +1,0 @@
-import{ah as e,ai as t,aj as s}from"./entry.rB01nS72.js";const a=e();a.use(t);const o=s({id:"settingsStore",state:()=>({dark_mode:!0,account:{}}),actions:{toggleDarkMode(){this.dark_mode=!this.dark_mode}},getters:{},persist:{enabled:!0}});export{o as s};
