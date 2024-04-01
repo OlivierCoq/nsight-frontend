@@ -1,0 +1,1 @@
+import{s as a}from"./settings.nAR60JhT.js";import{x as o,o as r,c as n,Q as l,s as i,u as c}from"./entry.MgUDxhFU.js";const u=o({__name:"default",setup(d){const s=a();return(t,m)=>{var e;return r(),n("div",{id:"nsight",class:i(["relative",(e=c(s))!=null&&e.dark_mode?"dark":""])},[l(t.$slots,"default")],2)}}});export{u as default};

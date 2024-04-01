@@ -99,6 +99,7 @@ export const authStore = defineStore({
 
           // Grap products from api/square
           prodStore.getProducts();
+          prodStore.initCart()
         
           setTimeout(() => {
             navigateTo("/dashboard");

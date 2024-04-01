@@ -2,7 +2,7 @@
   <div
     v-if="auth?.user"
     id="dashboard"
-    class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col"
+    class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col"
   >
     <div class="h-full w-full flex flex-row">
 
@@ -11,7 +11,7 @@
         <div class="h-full w-full flex flex-col">
           <div v-for="(tab, a) in state.tabs" :key="a" 
             class="w-full py-4 px-8 hover:shadow-xl mb-2 hover:cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-700 rounded-lg"
-            :class="tab == state.current_tab ? 'bg-zinc-300 dark:bg-zinc-700 shadow-xl' : ''"
+            :class="tab == state.current_tab ? 'bg-zinc-300 dark:bg-zinc-800 shadow-xl' : ''"
             @click="state.current_tab = tab"
           >
               <span class=" text-neutral-700 dark:text-white">
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div class="h-[95%] my-auto me-4 rounded-lg w-full md:w-4/5 px-3 pb-4 bg-zinc-300 dark:bg-zinc-700 shadow-xl">
+      <div class="h-[95%] my-auto me-4 rounded-lg w-full md:w-4/5 px-3 pb-4 bg-zinc-300 dark:bg-zinc-800 shadow-xl">
 
         <div v-if="state?.current_tab?.name == 'My Friends'" class="w-full flex flex-col p-4">
 

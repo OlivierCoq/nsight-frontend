@@ -1,120 +1,73 @@
 <template>
-  <div id="products" class="overflow-auto" :class="auth.user.preferences.dark_mode ? 'bg-dark' : 'bg-light'">
-    <v-card variant="tonal" class="h-100">
-      <v-card-text>
-        <v-container>
-          <v-row class="overflow-auto">
-            <v-col>
-              <v-container fluid>
-                <v-row>
-                  <v-col>
-                    <div class="shop_header d-flex flex-row align-center justify-center p-5 my-5">
-                      <h1 class="text-center">cart</h1>
-                    </div>
-                  </v-col>
-                </v-row>
-                <hr class="my-5" />
-              </v-container>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col v-if="prodStore.cart.total_items" cols="12" sm="12" md="6" lg="6" xl="6">
-              <v-container>
-                <ProductsCartCard v-for="product in prodStore.cart.line_items" :key="product.id" :product="product" />
-              </v-container>
-            </v-col>
-            <v-col v-else cols="12" sm="12" md="6" lg="6" xl="6">
-              <div class="d-flex flex-row align-center justify-center h-100">
-                <p>Looks like your cart's empty. Head over to our shop to see what we've got!</p>
-              </div>
-            </v-col>
-            <v-col cols="12" sm="12" md="6" lg="6" xl="6">
-              <v-container v-if="prodStore.cart.total_items">
-                <v-row>
-                  <v-col>
-                    <div class="w-100 d-flex flex-column align-end justify-end mb-5">
-                      <p class="text-uppercase fw-bold curser-pointer" @click="empty_cart">
-                        Empty cart &nbsp; <font-awesome-icon :icon="['fas', 'x']" cursor="pointer" />
-                      </p>
-                      <v-progress-circular v-if="state.emptying" indeterminate color="red" size="90"
-                        class="my-5 mx-5 position-absolute float-left" style="top: 20em; left: 45%; z-index: 999" />
-                      <v-snackbar v-model="state.snackbar" :timeout="3000" :top="true" :right="true" location="top"
-                        :multi-line="true" :vertical="true" color="success">
-                        {{ state.snackbar_text }}
-                      </v-snackbar>
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <div class="d-flex flex-row align-center justify-start">
-                      <h2>subtotal: {{ prodStore.cart.subtotal.formatted_with_symbol }}</h2>
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <div class="d-flex flex-column align-center justify-center">
-                      <v-btn color="info" block @click="checkout" :disabled="state.checking_out">
-                        checkout
-                        <v-progress-circular v-if="state.checking_out" indeterminate color="white" size="15"
-                          class="mx-2" />
-                      </v-btn>
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card-text>
-    </v-card>
+  <div class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col px-3 py-4">
+    <div class="w-full h-[100px] p-4 flex flex-col justify-center align-center items-center mb-6">
+      <h1 class="text-3xl text-neutral-900 dark:text-neutral-200 uppercase font-thin">Cart</h1>
+    </div>
+    <div class="w-full flex flex-col md:flex-row">
+      <div class="w-full md:w-3/4 py-8 px-4 dark:bg-zinc-800 rounded-md shadow-xl mx-3 flex flex-col">
+        <p v-if="!prodStore?.cart?.checkout?.order?.order?.lineItems.length" class="text-neutral-900 dark:text-white text-lg my-3 font-thin">There are no items in your cart! Check out what we've got at our <a href="/shop/products"><strong>shop</strong></a>!</p>
+        <div v-else class="w-full flex flex-col">
+          <ProductsCartCard v-for="item in prodStore.cart?.checkout?.order?.order?.lineItems" :key="item.id" :product="item"/>
+        </div>
+      </div>
+      <div class="w-full md:w-1/4 p-4 dark:bg-zinc-800 rounded-md shadow-xl mx-3">
+        <div class="w-full flex flex-row justify-between items-center">
+          <h1 class="text-lg text-neutral-900 dark:text-white font-bold uppercase">Order Value</h1>
+          <h1 class="text-lg text-neutral-900 dark:text-white font-thin">{{ prodStore.cart?.checkout?.order?.order?.value?.str }}</h1>
+        </div>
+        <div class="w-full flex flex-row justify-between items-center">
+          <h1 class="text-lg text-neutral-900 dark:text-white font-bold uppercase">Shipping</h1>
+          <!-- <h1 class="text-lg v-neutral-900 dark:text-white font-thin">{{ prodStore.cart?.checkout?.order?.order?.value }}</h1> -->
+        </div>
+        <div class="w-full flex flex-row justify-between items-center">
+          <h1 class="text-lg text-neutral-900 dark:text-white font-bold uppercase">Total</h1>
+          <h1 class="text-lg text-neutral-900 dark:text-white font-thin">{{ prodStore.cart?.checkout?.order?.order?.total?.str }}</h1>
+        </div>
+        <div class="w-full flex flex-col justify-between items-center">
+          <button class="btn-empty_cart nsight-btn-primary my-2 py-2 w-full px-5 text-neutral-800  shadow-xl rounded-md">Proceed to Checkout</button>
+          <!-- <button v-if="!state.emptying" @click="empty_cart" class="btn-empty_cart nsight-btn-primary my-1 py-1 w-full px-5 text-neutral-990 dark:text-white shadow-xl rounded-md">Empty Cart</button>
+          <button v-else class="btn-empty_cart nsight-btn-primary my-1 py-1 w-full px-5 text-neutral-990 dark:text-whitev  shadow-xl rounded-md">Emptying...</button>
+          <button v-if="!state.checking_out" @click="checkout" class="btn-checkout nsight-btn-primary my-1 py-1 w-full px-5text-neutral-990 dark:text-white shadow-xl rounded-md">Checkout</button>
+          <button v-else class="btn-checkout nsight-btn-primary my-1 py-1 w-full px-5 text-neutral-990 dark:text-white shadow-xl rounded-md">Checking out...</button> -->
+        </div>
+      </div>
+    </div>
   </div>
 </template>
-<script>
-export default {
-  name: 'Cart',
-  setup() {
-    definePageMeta({
-      middleware: ['auth'],
-      layout: 'inner'
-    })
+<script setup lang="ts">
 
-    const state = reactive({
-      loading: false,
-      emptying: false,
-      checking_out: false,
-      snackbar: false,
-      snackbar_text: '',
-    })
-    const auth = authStore()
-    const prodStore = productsStore()
+  // Meta
+  definePageMeta({
+    middleware: ['auth'],
+    layout: 'inner'
+  })
+
+  // Stores
+  const auth = authStore()
+  const prodStore = productsStore()
+
+  // State
+  const state = reactive({
+    loading: false,
+    emptying: false,
+    checking_out: false,
+    snackbar: false,
+    snackbar_text: ''
+  })
+
 
     // methods
-    const empty_cart = () => {
-      state.emptying = true
+  const empty_cart = () => {
+    state.emptying = true
 
-      // Empty Medusa car
-    }
-    const checkout = async () => {
+    // Empty Medusa car
+  }
+  const checkout = async () => {
 
-      state.checking_out = true
-      // Checkout with Medusa
-    }
+    state.checking_out = true
+    // Checkout with Medusa
+  }
 
-    return {
-      // meta
-      definePageMeta,
-      // state
-      state,
-      auth,
-      prodStore,
-      // methods
-      checkout,
-      empty_cart
-    }
-  },
-}
 </script>
 <style lang="scss">
 .curser-pointer {

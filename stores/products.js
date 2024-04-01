@@ -27,7 +27,7 @@ export const productsStore = defineStore({
         offset: 0
       },
       products: null,
-      cart: authStore?.user?.cart ? authStore?.user?.cart : {
+      cart: authStore?.user?.cart_obj.data ? authStore?.user?.cart_obj.data : {
         checkout: {
           idempotencyKey: uuidv4(),
           order: {
@@ -37,6 +37,14 @@ export const productsStore = defineStore({
               lineItems: [],
               taxes: [],
               discounts: [],
+              value: {
+                str: '0.00',
+                amount: 0,
+              },
+              total: {
+                str: '0.00',
+                amount: 0,
+              }
             },
             idempotencyKey: uuidv4(),
           },
@@ -65,6 +73,69 @@ export const productsStore = defineStore({
 
       const auth = authStore()
 
+      if (auth?.user?.cart_obj) {
+        this.cart = auth?.user?.cart_obj.data
+      }
+    },
+    format_currency(amount, currency) {
+      if(currency === 'USD') {
+        return `$${(amount/100).toFixed(2)}`
+      }
+    },
+    update_cart() {
+
+      console.log('updating cart')
+      const auth = authStore()
+
+      const update_user = () => {
+        const auth = authStore()
+        auth.user.cart_obj.data = this.cart 
+        auth.updateUser()
+      }
+
+      // In line items, multiply price by quantity for each item:
+      if(this.cart.checkout.order.order.lineItems.length) {
+        this.cart.checkout.order.order.lineItems = this.cart?.checkout?.order?.order?.lineItems?.map(item => {
+          item['subtotal'] = item.basePriceMoney.amount * Number(item.quantity)
+          // console.log('item.subtotal', item.subtotal)
+          // item.base_price_money.amount = item.base_price_money.amount * item.quantity
+          return item
+        })
+
+
+        nextTick(() => {
+          // Total up all the subtotals:
+          this.cart.checkout.order.order.total = this.cart?.checkout?.order?.order?.lineItems?.reduce((acc, item) => {
+            // console.log('acc', acc)
+            // console.log('item.subtotal', item.subtotal)
+            // console.log('total', this.format_currency((acc.amount ? acc.amount : acc ) + item.subtotal, item.basePriceMoney.currency))
+            return {
+              amount: (acc.amount ? acc.amount : acc ) + item.subtotal,
+              str: this.format_currency((acc.amount ? acc.amount : acc ) + item.subtotal, item.basePriceMoney.currency)
+            }
+          }, 0)
+
+          nextTick(() => { 
+            this.cart.checkout.order.order.value = {
+              amount: this.cart.checkout.order.order.total.amount,
+              str: this.format_currency(this.cart.checkout.order.order.total.amount, 'USD')
+            }
+          })
+
+          update_user()
+        })
+
+      } else {
+        this.cart.checkout.order.order.total = {
+          amount: 0,
+          str: this.format_currency(0, 'USD')
+        }
+        this.cart.checkout.order.order.value = {
+          amount: 0,
+          str: this.format_currency(0, 'USD')
+        }
+        update_user()
+      }
     },
     getProducts() {
     
@@ -79,7 +150,6 @@ export const productsStore = defineStore({
         this.products = square_res.products
         this.categories = square_res.categories
       });
-
     },
     add_to_cart(product) { 
 
@@ -87,13 +157,15 @@ export const productsStore = defineStore({
 
       this.cart.checkout.order.order.lineItems.push(product)
       auth.user.cart_obj.data = this.cart 
-      auth.updateUser()
+      this.update_cart()
     },
     remove_from_cart(product) {
-      this.cart.checkout.order.order.lineItems = this.cart.checkout.order.order.lineItems.filter(item => item.id !== product.id)
+       const auth = authStore()
+      this.cart.checkout.order.order.lineItems = this.cart?.checkout?.order?.order?.lineItems?.filter(item => item.id !== product.id)
       auth.user.cart_obj.data = this.cart 
       auth.updateUser()
-    },
+      this.update_cart()
+    }
   },
   getters: {
 

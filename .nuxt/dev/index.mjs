@@ -3072,7 +3072,7 @@ const errorDev = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$4 = new Client({
-  environment: Environment.Production,
+  environment: process.env.SQUARE_ENVIRONMENT == "production" ? Environment.Production : Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -3092,7 +3092,7 @@ const createCard_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$3 = new Client({
-  environment: Environment.Production,
+  environment: process.env.SQUARE_ENVIRONMENT == "production" ? Environment.Production : Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -3120,7 +3120,7 @@ const createCustomer_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$2 = new Client({
-  environment: Environment.Production,
+  environment: process.env.SQUARE_ENVIRONMENT == "production" ? Environment.Production : Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -3181,7 +3181,7 @@ const listCatalog_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client$1 = new Client({
-  environment: Environment.Production,
+  environment: process.env.SQUARE_ENVIRONMENT == "production" ? Environment.Production : Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });
@@ -3199,7 +3199,7 @@ const payment_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const square_client = new Client({
-  environment: Environment.Production,
+  environment: process.env.SQUARE_ENVIRONMENT == "production" ? Environment.Production : Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   accessToken: process.env.SQUARE_ACCESS_TOKEN
 });

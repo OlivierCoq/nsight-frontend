@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[100vh] w-full bg-zinc-200 dark:bg-neutral-700 flex flex-col px-3 py-4">
+  <div class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col px-3 py-4">
     <div class="container mx-auto p-3 flex flex-col md:flex-row">
       <div v-if="!state.product" class="flex flex-row justify-start items-start">
       <PrimeProgressSpinner style="width: 50px; height: 50px; " strokeWidth="8" fill="var(--surface-ground)"
@@ -22,7 +22,7 @@
           </PrimeCarousel>
         </div>
       </div>
-      <div class="w-full md:w-1/2 p-3">
+      <div class="w-full md:w-1/2 p-6 bg-zinc-300 dark:bg-zinc-800 rounded-md shadow-xl mx-3">
         <div class="w-3/4 flex flex-row justify-between">
           <h1 class="text-3xl text-neutral-900 dark:text-neutral-200  font-thin pb-3">{{ state.product?.item?.itemData?.name }}</h1>
           <h2 class="text-xl text-neutral-900 dark:text-neutral-200 font-thin" v-html="format_currency(state.selected?.itemVariationData?.priceMoney?.amount, state.selected?.itemVariationData?.priceMoney?.currency)"></h2>
@@ -188,8 +188,10 @@ const prodStore = productsStore(),
     state.loading = true
     
     const line_item_obj = {
-      quantity: `${state.quantity}`,
+      id: state.selected?.id ? state.selected?.id : state.product.item.id,
+      quantity: state.quantity,
       name: state.selected?.itemVariationData?.name ? state.selected?.itemVariationData?.name : state.product.item.itemData.name,
+      images: state.selected?.images ? state.selected?.images : state.product.images,
       appliedTaxes: [],
       appliedDiscounts: [],
       basePriceMoney: {
