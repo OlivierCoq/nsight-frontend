@@ -108,6 +108,22 @@ const _inlineRuntimeConfig = {
           "global": true
         },
         {
+          "name": "PrimeAccordion",
+          "as": "Accordion",
+          "from": "primevue/accordion",
+          "export": "default",
+          "filePath": "primevue/accordion",
+          "global": true
+        },
+        {
+          "name": "PrimeAccordionTab",
+          "as": "AccordionTab",
+          "from": "primevue/accordiontab",
+          "export": "default",
+          "filePath": "primevue/accordiontab",
+          "global": true
+        },
+        {
           "name": "PrimeTabView",
           "as": "TabView",
           "from": "primevue/tabview",
@@ -227,6 +243,16 @@ const _inlineRuntimeConfig = {
           "name": "InputNumberStyle",
           "as": "InputNumberStyle",
           "from": "primevue/inputnumber/style"
+        },
+        {
+          "name": "AccordionStyle",
+          "as": "AccordionStyle",
+          "from": "primevue/accordion/style"
+        },
+        {
+          "name": "AccordionTabStyle",
+          "as": "AccordionTabStyle",
+          "from": "primevue/accordiontab/style"
         },
         {
           "name": "TabViewStyle",
@@ -2203,12 +2229,12 @@ function _defineProperty$2(obj, key, value) { key = _toPropertyKey$2(key); if (k
 function _toPropertyKey$2(t) { var i = _toPrimitive$2(t, "string"); return "symbol" == _typeof$2(i) ? i : String(i); }
 function _toPrimitive$2(t, r) { if ("object" != _typeof$2(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$2(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var css = "\n.p-hidden-accessible {\n    border: 0;\n    clip: rect(0 0 0 0);\n    height: 1px;\n    margin: -1px;\n    overflow: hidden;\n    padding: 0;\n    position: absolute;\n    width: 1px;\n}\n\n.p-hidden-accessible input,\n.p-hidden-accessible select {\n    transform: scale(0);\n}\n\n.p-overflow-hidden {\n    overflow: hidden;\n    padding-right: var(--scrollbar-width);\n}\n";
-var classes$8 = {};
+var classes$9 = {};
 var inlineStyles$3 = {};
-var BaseStyle$9 = {
+var BaseStyle$a = {
   name: 'base',
   css: css,
-  classes: classes$8,
+  classes: classes$9,
   inlineStyles: inlineStyles$3,
   loadStyle: function loadStyle() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -2237,16 +2263,16 @@ var BaseStyle$9 = {
   }
 };
 
-var basestyle_cjs = BaseStyle$9;
+var basestyle_cjs = BaseStyle$a;
 
-const BaseStyle$a = /*@__PURE__*/getDefaultExportFromCjs(basestyle_cjs);
+const BaseStyle$b = /*@__PURE__*/getDefaultExportFromCjs(basestyle_cjs);
 
-var BaseStyle$8 = basestyle_cjs;
+var BaseStyle$9 = basestyle_cjs;
 var usestyle = usestyle_cjs;
 
-function _interopDefaultLegacy$8 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$9 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$8 = /*#__PURE__*/_interopDefaultLegacy$8(BaseStyle$8);
+var BaseStyle__default$9 = /*#__PURE__*/_interopDefaultLegacy$9(BaseStyle$9);
 
 function _typeof$1(o) { "@babel/helpers - typeof"; return _typeof$1 = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof$1(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -2254,7 +2280,7 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 function _defineProperty$1(obj, key, value) { key = _toPropertyKey$1(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey$1(t) { var i = _toPrimitive$1(t, "string"); return "symbol" == _typeof$1(i) ? i : String(i); }
 function _toPrimitive$1(t, r) { if ("object" != _typeof$1(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof$1(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-var BaseComponentStyle = BaseStyle__default$8["default"].extend({
+var BaseComponentStyle = BaseStyle__default$9["default"].extend({
   name: 'common',
   loadGlobalStyle: function loadGlobalStyle(globalCSS) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -2268,19 +2294,19 @@ var basecomponentstyle_cjs = BaseComponentStyle;
 
 const BaseComponentStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(basecomponentstyle_cjs);
 
-var BaseStyle$7 = basestyle_cjs;
+var BaseStyle$8 = basestyle_cjs;
 var utils = utils_cjs;
 
-function _interopDefaultLegacy$7 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$8 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$7 = /*#__PURE__*/_interopDefaultLegacy$7(BaseStyle$7);
+var BaseStyle__default$8 = /*#__PURE__*/_interopDefaultLegacy$8(BaseStyle$8);
 
 var inlineStyles$2 = {
   root: {
     position: 'relative'
   }
 };
-var classes$7 = {
+var classes$8 = {
   root: function root(_ref) {
     var instance = _ref.instance,
       props = _ref.props;
@@ -2344,9 +2370,9 @@ var classes$7 = {
   },
   emptyMessage: 'p-autocomplete-empty-message'
 };
-var AutoCompleteStyle = BaseStyle__default$7["default"].extend({
+var AutoCompleteStyle = BaseStyle__default$8["default"].extend({
   name: 'autocomplete',
-  classes: classes$7,
+  classes: classes$8,
   inlineStyles: inlineStyles$2
 });
 
@@ -2354,13 +2380,13 @@ var autocompletestyle_cjs = AutoCompleteStyle;
 
 const AutoCompleteStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(autocompletestyle_cjs);
 
-var BaseStyle$6 = basestyle_cjs;
+var BaseStyle$7 = basestyle_cjs;
 
-function _interopDefaultLegacy$6 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+function _interopDefaultLegacy$7 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var BaseStyle__default$6 = /*#__PURE__*/_interopDefaultLegacy$6(BaseStyle$6);
+var BaseStyle__default$7 = /*#__PURE__*/_interopDefaultLegacy$7(BaseStyle$7);
 
-var classes$6 = {
+var classes$7 = {
   root: function root(_ref) {
     var instance = _ref.instance,
       props = _ref.props;
@@ -2396,14 +2422,61 @@ var classes$6 = {
     }];
   }
 };
-var InputNumberStyle = BaseStyle__default$6["default"].extend({
+var InputNumberStyle = BaseStyle__default$7["default"].extend({
   name: 'inputnumber',
-  classes: classes$6
+  classes: classes$7
 });
 
 var inputnumberstyle_cjs = InputNumberStyle;
 
 const InputNumberStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(inputnumberstyle_cjs);
+
+var BaseStyle$6 = basestyle_cjs;
+
+function _interopDefaultLegacy$6 (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+var BaseStyle__default$6 = /*#__PURE__*/_interopDefaultLegacy$6(BaseStyle$6);
+
+var classes$6 = {
+  root: 'p-accordion p-component',
+  tab: {
+    root: function root(_ref) {
+      var instance = _ref.instance,
+        index = _ref.index;
+      return ['p-accordion-tab', {
+        'p-accordion-tab-active': instance.isTabActive(index)
+      }];
+    },
+    header: function header(_ref2) {
+      var instance = _ref2.instance,
+        tab = _ref2.tab,
+        index = _ref2.index;
+      return ['p-accordion-header', {
+        'p-highlight': instance.isTabActive(index),
+        'p-disabled': instance.getTabProp(tab, 'disabled')
+      }];
+    },
+    headerAction: 'p-accordion-header-link p-accordion-header-action',
+    headerIcon: 'p-accordion-toggle-icon',
+    headerTitle: 'p-accordion-header-text',
+    toggleableContent: 'p-toggleable-content',
+    content: 'p-accordion-content'
+  }
+};
+var AccordionStyle = BaseStyle__default$6["default"].extend({
+  name: 'accordion',
+  classes: classes$6
+});
+
+var accordionstyle_cjs = AccordionStyle;
+
+const AccordionStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(accordionstyle_cjs);
+
+var AccordionTabStyle = {};
+
+var accordiontabstyle_cjs = AccordionTabStyle;
+
+const AccordionTabStyle$1 = /*@__PURE__*/getDefaultExportFromCjs(accordiontabstyle_cjs);
 
 var BaseStyle$5 = basestyle_cjs;
 
@@ -2711,7 +2784,7 @@ const styleProps = {
 };
 const styles = [
   ,
-  BaseStyle$a && BaseStyle$a.getStyleSheet ? BaseStyle$a.getStyleSheet(undefined, styleProps) : '',BaseComponentStyle$1 && BaseComponentStyle$1.getStyleSheet ? BaseComponentStyle$1.getStyleSheet(undefined, styleProps) : '',AutoCompleteStyle$1 && AutoCompleteStyle$1.getStyleSheet ? AutoCompleteStyle$1.getStyleSheet(undefined, styleProps) : '',InputNumberStyle$1 && InputNumberStyle$1.getStyleSheet ? InputNumberStyle$1.getStyleSheet(undefined, styleProps) : '',TabViewStyle$1 && TabViewStyle$1.getStyleSheet ? TabViewStyle$1.getStyleSheet(undefined, styleProps) : '',TabPanelStyle$1 && TabPanelStyle$1.getStyleSheet ? TabPanelStyle$1.getStyleSheet(undefined, styleProps) : '',DialogStyle$1 && DialogStyle$1.getStyleSheet ? DialogStyle$1.getStyleSheet(undefined, styleProps) : '',ToastStyle$1 && ToastStyle$1.getStyleSheet ? ToastStyle$1.getStyleSheet(undefined, styleProps) : '',CarouselStyle$1 && CarouselStyle$1.getStyleSheet ? CarouselStyle$1.getStyleSheet(undefined, styleProps) : '',ProgressSpinnerStyle$1 && ProgressSpinnerStyle$1.getStyleSheet ? ProgressSpinnerStyle$1.getStyleSheet(undefined, styleProps) : '',TooltipStyle$1 && TooltipStyle$1.getStyleSheet ? TooltipStyle$1.getStyleSheet(undefined, styleProps) : ''
+  BaseStyle$b && BaseStyle$b.getStyleSheet ? BaseStyle$b.getStyleSheet(undefined, styleProps) : '',BaseComponentStyle$1 && BaseComponentStyle$1.getStyleSheet ? BaseComponentStyle$1.getStyleSheet(undefined, styleProps) : '',AutoCompleteStyle$1 && AutoCompleteStyle$1.getStyleSheet ? AutoCompleteStyle$1.getStyleSheet(undefined, styleProps) : '',InputNumberStyle$1 && InputNumberStyle$1.getStyleSheet ? InputNumberStyle$1.getStyleSheet(undefined, styleProps) : '',AccordionStyle$1 && AccordionStyle$1.getStyleSheet ? AccordionStyle$1.getStyleSheet(undefined, styleProps) : '',AccordionTabStyle$1 && AccordionTabStyle$1.getStyleSheet ? AccordionTabStyle$1.getStyleSheet(undefined, styleProps) : '',TabViewStyle$1 && TabViewStyle$1.getStyleSheet ? TabViewStyle$1.getStyleSheet(undefined, styleProps) : '',TabPanelStyle$1 && TabPanelStyle$1.getStyleSheet ? TabPanelStyle$1.getStyleSheet(undefined, styleProps) : '',DialogStyle$1 && DialogStyle$1.getStyleSheet ? DialogStyle$1.getStyleSheet(undefined, styleProps) : '',ToastStyle$1 && ToastStyle$1.getStyleSheet ? ToastStyle$1.getStyleSheet(undefined, styleProps) : '',CarouselStyle$1 && CarouselStyle$1.getStyleSheet ? CarouselStyle$1.getStyleSheet(undefined, styleProps) : '',ProgressSpinnerStyle$1 && ProgressSpinnerStyle$1.getStyleSheet ? ProgressSpinnerStyle$1.getStyleSheet(undefined, styleProps) : '',TooltipStyle$1 && TooltipStyle$1.getStyleSheet ? TooltipStyle$1.getStyleSheet(undefined, styleProps) : ''
 ].join('');
 
 const defineNitroPlugin = (def) => def;

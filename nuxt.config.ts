@@ -65,7 +65,9 @@ export default defineNuxtConfig({
         "Carousel",
         "ProgressSpinner",
         "InputNumber",
-        "Toast"
+        "Toast",
+        "Accordion",
+        "AccordionTab",
       ],
       exclude: undefined,
     },

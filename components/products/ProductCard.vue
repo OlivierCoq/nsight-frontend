@@ -60,20 +60,12 @@ const state = reactive({
   product: props.product,
   show_options: false,
   snackbar: false,
-  snackbar_text: ''
+  snackbar_text: '',
+  selected_option: null,
 })
 const prodStore = productsStore()
 
-const get_variants = () => {
-  // get variants from Medusa
 
-}
-
-get_variants()
-
-const toggleOptions = () => {
-  state.show_options = !state.show_options
-}
 const go_to_product = (permalink) => {
   navigateTo(`/shop/products/${permalink}`)
 }
@@ -82,12 +74,13 @@ const select_option = (variant) => {
 }
 const add_to_cart = () => {
   // add product to cart
-  state.loading = true
+  // state.loading = true
 
-  state.snackbar_text = `"${state.product.name}" - (${state.product.selected_option.description}) added to cart!`
-  state.snackbar = true
-  state.loading = false
+  // state.snackbar_text = `"${state.product.name}" - (${state.product.selected_option.description}) added to cart!`
+  // state.snackbar = true
+  // state.loading = false
 
+  navigateTo(`/shop/products/${state.product.id}`)
 }
 const format_price = (amount) => {
   return amount / 100
