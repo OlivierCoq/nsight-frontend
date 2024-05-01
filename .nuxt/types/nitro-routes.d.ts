@@ -6,14 +6,23 @@ declare module 'nitropack' {
     '/api/square/create-card': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/create-card.post').default>>>>
     }
+    '/api/square/create-checkout': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/create-checkout.post').default>>>>
+    }
     '/api/square/create-customer': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/create-customer.post').default>>>>
     }
     '/api/square/list-catalog': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/list-catalog.post').default>>>>
     }
+    '/api/square/pay-order': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/pay-order.post').default>>>>
+    }
     '/api/square/payment': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/payment.post').default>>>>
+    }
+    '/api/square/place-order': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/place-order.post').default>>>>
     }
     '/api/square/retrieve-item': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/retrieve-item.post').default>>>>

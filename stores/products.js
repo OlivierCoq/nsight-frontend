@@ -112,7 +112,7 @@ export const productsStore = defineStore({
             return {
               amount: (acc.amount ? acc.amount : acc ) + item.subtotal,
               str: this.format_currency((acc.amount ? acc.amount : acc ) + item.subtotal, item.basePriceMoney.currency)
-            }
+            } 
           }, 0)
 
           nextTick(() => { 
@@ -127,11 +127,11 @@ export const productsStore = defineStore({
 
       } else {
         this.cart.checkout.order.order.total = {
-          amount: 0,
+          amount: '0',
           str: this.format_currency(0, 'USD')
         }
         this.cart.checkout.order.order.value = {
-          amount: 0,
+          amount: '0',
           str: this.format_currency(0, 'USD')
         }
         update_user()

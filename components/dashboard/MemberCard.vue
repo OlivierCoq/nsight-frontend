@@ -26,7 +26,7 @@
     member: props.member
   })
   const visit_profile = () => {
-    navigateTo(`/members/${state.member.id}`)
+    navigateTo(`/members/${state.member.nsight_id.nsight_id}`)
   }
   const gift_user = () => {
 

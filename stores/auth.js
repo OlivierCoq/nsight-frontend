@@ -69,6 +69,7 @@ export const authStore = defineStore({
               'preferences',
               'nsight_id',
               'friends',
+              'friends.nsight_id',
               'friends.friends',
               'friends.profile_picture',
               'users.friends',
