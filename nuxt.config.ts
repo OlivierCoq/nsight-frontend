@@ -68,6 +68,9 @@ export default defineNuxtConfig({
         "Toast",
         "Accordion",
         "AccordionTab",
+        "DataTable",
+        "Column",
+        "Button"
       ],
       exclude: undefined,
     },

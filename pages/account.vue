@@ -13,7 +13,7 @@
         <AccountEditAddress />
       </div>
       <div class="w-full md:w-1/2">
-        <AccountOrders />
+        <AccountOrders :store="prodStore" :user="auth?.user" />
         <AccountPaymentMethods />
       </div>
     </div>
@@ -26,7 +26,11 @@ definePageMeta({
 });
 // Add validation rules for state.address.new_address:
 
-const auth = authStore();
+// Stores
+const auth = authStore()
+const prodStore = productsStore()
+const settings = settingsStore()
+
 </script>
 <style lang="scss">
 #account {

@@ -89,7 +89,7 @@ export const productsStore = defineStore({
 
       const update_user = () => {
         const auth = authStore()
-        auth.user.cart_obj.data = this.cart 
+        // auth.user.cart_obj.data = this.cart 
         auth.updateUser()
       }
 
