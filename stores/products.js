@@ -156,13 +156,12 @@ export const productsStore = defineStore({
       const auth = authStore()
 
       this.cart.checkout.order.order.lineItems.push(product)
-      auth.user.cart_obj.data = this.cart 
+      // auth.user.cart_obj.data = this.cart 
       this.update_cart()
     },
     remove_from_cart(product) {
        const auth = authStore()
       this.cart.checkout.order.order.lineItems = this.cart?.checkout?.order?.order?.lineItems?.filter(item => item.id !== product.id)
-      auth.user.cart_obj.data = this.cart 
       auth.updateUser()
       this.update_cart()
     }

@@ -8,6 +8,7 @@
       </h2>
       <button
         class="nsight-btn-primary py-2 px-3 rounded-md"
+        :class="settings?.dark_mode ? 'dark' : ''"
         @click="state.dialog = true"
       >
         ADD +
@@ -54,7 +55,7 @@
 
       </button>
     </div>
-    <div class="w-full flex flex-row justify-between items-center">
+    <div class="w-full flex flex-row justify-between items-center" :class="settings?.dark_mode ? 'dark' : ''">
       <div v-if="auth.user.payment_methods.data.length" class="w-full grid grid-cols-1 lg:grid-cols-2 gap-3">
         <div 
           v-for="(payment_method, a) in auth?.user?.payment_methods?.data" 
@@ -140,6 +141,7 @@
 
 // stores
 const auth = authStore();
+const settings = settingsStore();
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -393,7 +395,7 @@ const initializeCard = async (payments) => {
   return card;
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .tab_window {
   min-height: 300px;
   overflow-y: auto;
@@ -425,6 +427,9 @@ const initializeCard = async (payments) => {
 }
 .p-tabview-header.p-highlight {
   color: white !important;
+}
+.bg-white {
+  background-color: transparent !important;
 }
 
 </style>

@@ -21,13 +21,13 @@ export default defineNuxtConfig({
         { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
         { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" },
       ],
-      script: [{ src: "https://sandbox.web.squarecdn.com/v1/square.js" }],
+      script: [{ src: process.env.SQUARE_ENVIRONMENT === 'sandbox' ? "https://sandbox.web.squarecdn.com/v1/square.js" : "https://web.squarecdn.com/v1/square.js" }],
     },
   },
   ssr: false,
   typescript: { strict: true },
   css: [
-    "~/assets/css/main.css",
+    // "~/assets/css/main.css",
     "@fortawesome/fontawesome-svg-core/styles.css",
     "~/assets/style/main.scss",
   ],
@@ -40,6 +40,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
     "nuxt-primevue",
+    '@nuxtjs/tailwindcss',
     "@zadigetvoltaire/nuxt-well-known",
   ],
   primevue: {

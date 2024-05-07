@@ -2,6 +2,7 @@
 /// <reference types="@pinia/nuxt" />
 /// <reference types="@pinia-plugin-persistedstate/nuxt" />
 /// <reference types="nuxt-primevue" />
+/// <reference types="@nuxtjs/tailwindcss" />
 /// <reference types="@zadigetvoltaire/nuxt-well-known" />
 /// <reference types="@nuxt/telemetry" />
 /// <reference types="nuxt" />
