@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col px-3 py-4">
+  <div v-if="prodStore.cart?.checkout" class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col px-3 py-4">
     <div class="w-full h-[100px] p-4 flex flex-col justify-start align-start items-start mb-6">
       <h1 class="text-3xl text-neutral-900 dark:text-neutral-200 uppercase font-thin">Cart</h1>
     </div>
