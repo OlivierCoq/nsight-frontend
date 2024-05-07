@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col px-3 py-4">
+  <div v-if="state.product" class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col px-3 py-4">
     <div class="container mx-auto p-3 flex flex-col md:flex-row">
       <div v-if="!state.product" class="flex flex-row justify-start items-start">
       <PrimeProgressSpinner style="width: 50px; height: 50px; " strokeWidth="8" fill="var(--surface-ground)"
