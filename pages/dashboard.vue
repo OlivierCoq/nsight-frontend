@@ -2,7 +2,7 @@
   <div
     v-if="auth?.user"
     id="dashboard"
-    class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col"
+    class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col pt-10"
   >
     <div class="h-full w-full flex flex-row">
 
@@ -138,6 +138,7 @@ import { parsePhoneNumber, AsYouType } from "libphonenumber-js";
 
 // oFetch
 import { ofetch } from "ofetch";
+import password from "~/presets/nsight_style_presets/password";
 const runtimeConfig = useRuntimeConfig();
 
 // globalThis.$fetch = ofetch.create({
@@ -197,6 +198,7 @@ const generate_random_password = () => {
   }
   return pass;
 };
+console.log("random password: ", generate_random_password());
 
 const validateEmail = (email: string) => {
   return (
@@ -301,7 +303,8 @@ const post_new_member = async () => {
               ],
               username: active_tab.data.new_member.email,
               // password: thisObj.generate_random_password()
-              password: "P@ssW3rd9756",
+              // password: "P@ssW3rd9756",
+              password: generate_random_password(),
               users: [auth.user],
               friends: [auth.user],
               profile_picture: {},
@@ -453,6 +456,22 @@ const post_new_member = async () => {
 
 
                                   // Send email confirmation to new member. Let's refrain for now. SendGrid doesn't like it.
+
+                                  $fetch('/api/email/new-user-confirmation', {
+                                    method: 'POST',
+                                    headers: headers_obj,
+                                    body: JSON.stringify({ 
+                                      full_name: `${new_nsight_member.first_name} ${new_nsight_member.last_name}`,
+                                      email: new_nsight_member.email,
+                                      inviting_member_name: `${auth.user.first_name} ${auth.user.last_name}`,
+                                      username: new_nsight_member.email,
+                                      password: new_nsight_member.password
+                                    })
+                                  }).then((data) => {
+                                    console.log('email confirmation sent to new member: ', data)
+                                    active_tab.data.posting_new = false
+                                  }).catch((err) => { console.log('error sending email confirmation to new member: ', err); state.error = err })
+
                                   // $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/send-email-confirmation`, {
                                   //   method: 'POST',
                                   //   headers: headers_obj,

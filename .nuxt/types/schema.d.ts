@@ -43,6 +43,8 @@ declare module 'nuxt/schema' {
 
    SQUARE_ENVIRONMENT: string,
 
+   SENDGRID_API_KEY: string,
+
    persistedState: {
       storage: string,
 

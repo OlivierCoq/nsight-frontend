@@ -1,5 +1,5 @@
 <template>
-  <div v-if="prodStore?.products" class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col">
+  <div v-if="prodStore?.products" id="products" class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col pt-20">
 
       <!-- Catagories bar -->
       <div class="w-full h-[100px] p-4 flex flex-col justify-center align-center  items-center">
@@ -27,7 +27,5 @@
 
 </script>
 <style lang="scss">
-#products {
-  height: 100vh;
-}
+ 
 </style>

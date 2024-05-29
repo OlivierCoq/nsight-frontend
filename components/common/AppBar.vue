@@ -2,7 +2,7 @@
   <div id="appBar">
     <!-- mobile -->
     <!-- Tablet & larger -->
-    <div class="w-full h-[50px] bg-zinc-400 dark:bg-zinc-800 flex flex-row position-fixed">
+    <div class="w-full h-[50px] bg-zinc-400 dark:bg-zinc-800 flex flex-row fixed">
       <div
         class="w-1/3 flex flex-row h-full justify-start align-center items-center"
       >
