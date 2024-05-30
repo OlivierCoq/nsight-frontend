@@ -5,9 +5,10 @@ import { mkdirSync } from 'node:fs';
 import { parentPort, threadId } from 'node:worker_threads';
 import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, createEvent, getRequestHeader, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseHeader, send, getResponseStatus, setResponseStatus, setResponseHeaders, getRequestHeaders, setHeader, sendError, H3Error, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, readBody, getQuery as getQuery$1, createError, getResponseStatusText } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/h3/dist/index.mjs';
 import sgMail from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@sendgrid/mail/index.js';
+import qs from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/qs/lib/index.js';
+import crypto from 'crypto';
 import { Client, Environment, ApiError } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/cjs/index.js';
 import JSONBig from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/json-bigint/index.js';
-import crypto from 'crypto';
 import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { stringify, uneval } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/devalue/index.js';
 import { renderSSRHead } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@unhead/ssr/dist/index.mjs';
@@ -806,9 +807,9 @@ function normalizeCookieHeaders(headers) {
   return outgoingHeaders;
 }
 
-const config$1 = useRuntimeConfig();
+const config$3 = useRuntimeConfig();
 const _routeRulesMatcher = toRouteMatcher(
-  createRouter({ routes: config$1.nitro.routeRules })
+  createRouter({ routes: config$3.nitro.routeRules })
 );
 function createRouteRulesHandler(ctx) {
   return eventHandler((event) => {
@@ -3240,7 +3241,9 @@ function render(options) {
   return options.content;
 }
 
+const _lazy_7XOvC1 = () => Promise.resolve().then(function () { return forgotPassword_post$1; });
 const _lazy_wLAu0m = () => Promise.resolve().then(function () { return newUserConfirmation_post$1; });
+const _lazy_2ghplS = () => Promise.resolve().then(function () { return resetPassword_post$1; });
 const _lazy_xsVbzw = () => Promise.resolve().then(function () { return createCard_post$1; });
 const _lazy_xPwnBM = () => Promise.resolve().then(function () { return createCheckout_post$1; });
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
@@ -3252,7 +3255,9 @@ const _lazy_3k04uK = () => Promise.resolve().then(function () { return retrieveI
 const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
+  { route: '/api/email/forgot-password', handler: _lazy_7XOvC1, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/new-user-confirmation', handler: _lazy_wLAu0m, lazy: true, middleware: false, method: "post" },
+  { route: '/api/email/reset-password', handler: _lazy_2ghplS, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-card', handler: _lazy_xsVbzw, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-checkout', handler: _lazy_xPwnBM, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
@@ -3450,8 +3455,125 @@ const errorDev = /*#__PURE__*/Object.freeze({
   template: template$1
 });
 
-const config = useRuntimeConfig(), api_key = config.public.SENDGRID_API_KEY;
-sgMail.setApiKey(api_key);
+const config$2 = useRuntimeConfig(), api_key$2 = config$2.public.SENDGRID_API_KEY;
+sgMail.setApiKey(api_key$2);
+const forgotPassword_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("post_data", post_data);
+  if (!post_data) {
+    return { status: "error", message: "Invalid data" };
+  } else {
+    const headers_obj = {
+      "Content-Type": "application/json",
+      accept: "application/json"
+    };
+    $fetch(
+      `${config$2.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
+        filters: {
+          email: post_data.email
+        }
+      })}`,
+      {
+        method: "GET",
+        headers: headers_obj
+      }
+    ).then(async (user_data) => {
+      if (!user_data.length) {
+        return { status: "error", message: "User not found with provided email." };
+      } else {
+        const generateSecureToken = (length = 48) => {
+          return crypto.randomBytes(length).toString("hex");
+        };
+        const token = generateSecureToken();
+        const token_headers_obj = {
+          "Content-Type": "application/json",
+          accept: "application/json",
+          Authorization: `Bearer ${process.env.CUSTOM_PW_RESET_TOKEN}`
+        };
+        $fetch(
+          `${config$2.public.NUXT_STRAPI_URL}/api/users/${user_data[0].id}`,
+          {
+            method: "PUT",
+            headers: token_headers_obj,
+            body: JSON.stringify({
+              reset_hash: token
+            })
+          }
+        ).then(async (updated_user) => {
+          const body = `
+                  <!DOCTYPE html>
+                  <html lang="en">
+                  <head>
+                      <meta charset="UTF-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <title>Welcome to the nSight Family</title>
+                  </head>
+                  <body style="font-family: Arial, sans-serif; background-color: #000000; margin: 0; padding: 0; height: 100vh;">
+                      <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #000000; margin: 0; padding: 0; height: inherit;">
+                          <tr>
+                              <td align="center" style="padding: 20px;">
+                                  <table role="presentation" style="width: 600px; border-collapse: collapse; border-radius: 10px;">
+                                      <tr>
+                                          <td align="center" style="padding: 0px;  border-radius: 10px; overflow: hidden;">
+                                              <img src="https://res.cloudinary.com/nsight/image/upload/v1716956060/welcome_banner_86a1a17412.jpg" alt="nSight Logo" style="width: 100%; height: auto;">
+                                          </td>
+                                      </tr>
+                                      <tr style="margin: -4px 26px 30px 26px;
+                                          display: block;
+                                          padding: 30px;
+                                          background: #ffffff;
+                                          border-bottom-left-radius: 15px;
+                                          border-bottom-right-radius: 15px;"
+                                        >
+                                          <td>
+                                              <h1 style="margin: 0 0 20px; font-size: 24px; color: #333333;">Hello, ${updated_user.first_name} ${updated_user.last_name}!</h1>
+                                              <p style="margin: 0 0 20px 0; font-size: 16px; color: #333333;">Please click here to reset your password. This link will expire in 30 minutes.</p>
+                                              <a href="${process.env.LOCAL_URL}/reset-password?token=${updated_user.reset_hash}" style="display: inline-block; padding: 10px 20px; margin: 0 0 20px; background-color: #f6e232; color: #272727; text-decoration: none; border-radius: 5px;">Login</a>
+                                              <p style="margin: 0 0 20px 0; font-size: 16px; color: #333333;">If you did not request a password reset, please ignore this email.</p>                                              
+                                              <p style="margin: 0; font-size: 16px; color: #333333;">See you on the other side.</p>
+                                          </td>
+                                      </tr>
+                                      <tr>
+                                          <td align="center" style="padding: 20px; background-color: #000000; color: #ffffff;">
+                                              <p style="margin: 0; font-size: 14px;">&copy; ${(/* @__PURE__ */ new Date()).getFullYear()} nSight. All rights reserved.</p>
+                                          </td>
+                                      </tr>
+                                  </table>
+                              </td>
+                          </tr>
+                      </table>
+                  </body>
+                  </html>`;
+          const msg = {
+            to: post_data.email,
+            from: "info@nsightapi.vip",
+            subject: "Reset your nSight password",
+            text: `Let's get it!`,
+            html: body
+          };
+          try {
+            await sgMail.send(msg);
+            return { status: "success", message: "Email sent successfully" };
+          } catch (error) {
+            console.error(error);
+            return { status: "error", message: "Failed to send email", error };
+          }
+        }).catch((error) => {
+          console.log("error", error);
+          return { status: "error", message: "Failed to update user" };
+        });
+      }
+    });
+  }
+});
+
+const forgotPassword_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: forgotPassword_post
+});
+
+const config$1 = useRuntimeConfig(), api_key$1 = config$1.public.SENDGRID_API_KEY;
+sgMail.setApiKey(api_key$1);
 const newUserConfirmation_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("post_data", post_data);
@@ -3523,6 +3645,96 @@ const newUserConfirmation_post = defineEventHandler(async (event) => {
 const newUserConfirmation_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: newUserConfirmation_post
+});
+
+const config = useRuntimeConfig(), api_key = config.public.SENDGRID_API_KEY;
+sgMail.setApiKey(api_key);
+const resetPassword_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  let return_data = {};
+  console.log("post_data", post_data);
+  if (!post_data) {
+    return_data = {
+      statusCode: 403,
+      data: {
+        error: "Invalid data"
+      }
+    };
+    return return_data;
+  } else {
+    try {
+      const headers_obj = {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        Authorization: `Bearer ${process.env.CUSTOM_PW_RESET_TOKEN}`
+      };
+      await $fetch(
+        `${config.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
+          filters: {
+            reset_hash: post_data.code
+          }
+        })}`,
+        {
+          method: "GET",
+          headers: headers_obj
+        }
+      ).then(async (user_data) => {
+        if (!user_data.length) {
+          console.log("user not found");
+          return_data = {
+            statusCode: 403,
+            data: {
+              error: "User not found with provided reset code."
+            }
+          };
+          return return_data;
+        } else {
+          const update_headers_obj = {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            Authorization: `Bearer ${process.env.CUSTOM_PW_RESET_TOKEN}`
+          };
+          await $fetch(
+            `${config.public.NUXT_STRAPI_URL}/api/users/${user_data[0].id}`,
+            {
+              method: "PUT",
+              headers: update_headers_obj,
+              body: JSON.stringify({
+                password: post_data.password
+              })
+            }
+          ).then(async () => {
+            return_data = { statusCode: 200, message: "Password updated successfully." };
+            return return_data;
+          });
+          return return_data;
+        }
+      }).catch((error) => {
+        console.log("error finding user");
+        return_data = {
+          statusCode: 403,
+          data: {
+            error: `Error: ${error}. User not found with provided reset code.`
+          }
+        };
+        return return_data;
+      });
+    } catch (error) {
+      console.log("error updating user");
+      return_data = {
+        statusCode: 403,
+        data: {
+          error: `Error: ${error}. User not found with provided reset code.`
+        }
+      };
+    }
+    return return_data;
+  }
+});
+
+const resetPassword_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: resetPassword_post
 });
 
 const square_client$7 = new Client({

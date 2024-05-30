@@ -136,6 +136,7 @@ import moment from "moment";
 import qs from "qs";
 import { parsePhoneNumber, AsYouType } from "libphonenumber-js";
 
+
 // oFetch
 import { ofetch } from "ofetch";
 import password from "~/presets/nsight_style_presets/password";
@@ -198,7 +199,9 @@ const generate_random_password = () => {
   }
   return pass;
 };
-console.log("random password: ", generate_random_password());
+// console.log("random password: ", generate_random_password());
+
+ 
 
 const validateEmail = (email: string) => {
   return (
@@ -296,6 +299,7 @@ const post_new_member = async () => {
               phone_number: active_tab.data.new_member.phone_number,
               nsight_id: new_strapi_nsight_id,
               square_id: "",
+              reset_token: generateSecureToken(),
               preferences: [
                 {
                   dark_mode: true,

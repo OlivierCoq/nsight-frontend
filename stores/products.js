@@ -5,6 +5,9 @@ const runtimeConfig = useRuntimeConfig()
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
+import { defineStore } from 'pinia';
+
+// Your store definition here
 
 import { authStore } from './auth';
 import { v4 as uuidv4 } from "uuid";

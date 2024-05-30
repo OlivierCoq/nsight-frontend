@@ -1,33 +1,18 @@
 <template>
-  <div id="forgot_password" class="bg-dark w-100 h-100 text-start d-flex align-start justify-center flex-column">
-    <v-container>
-      <v-row>
-        <v-col cols="12" sm="12" md="6" offset-md="3">
-            <h1 class="text-light m-3">forgot password?</h1><hr/>
-            <p v-if="!state.input.success" class="text-light my-3">Send me a reset link</p>
-            <form v-if="!state.input.success" class="w-100">
-                <div class="my-3">
-                  <v-text-field v-model="state.input.email" placeholder="your email" type="email">
+  <div id="forgot_password" class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col justify-center items-center pt-10">
 
-                  </v-text-field>
-                </div>
-                <div class="mb-3">
-                  <v-btn color="primary" block @click.prevent="forgot_password" :disabled="state.input.email.length < 1">
-                    Send Link
-                  </v-btn>
-                </div>
-            </form>
-            <v-alert v-if="state.input.success" text color="success" class="my-3">
-                <p v-html="state.input.success"></p>
-                <p v-if="!state.input.resent">Didn't get it? <span class="fw-bolder is-hoverable" @click="resend">Send again</span></p>
-                <p v-else class="fw-bolder">Resent.</p>
-            </v-alert>
-            <v-alert v-if="state.input.error.length" text color="error">
-                <p v-html="state.error"></p>
-            </v-alert>
-        </v-col>
-      </v-row>
-    </v-container>
+    <div class="w-full md:w-1/3 mx-auto p-4 flex flex-col">
+      <h1 class="text-3xl text-center text-zinc-900 dark:text-zinc-100">Forgot Password</h1>
+      <p class="text-center text-zinc-900 dark:text-zinc-100">Enter your email address to reset your password.</p>
+      <div class="flex flex-col mt-4">
+        <input v-model="state.input.email" type="email" placeholder="Email" class="p-2 border border-zinc-900 dark:border-zinc-100 rounded-md" />
+        <button @click="forgot_password" class="p-2 bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 rounded-md mt-2">Reset Password</button>
+      </div>
+      <div v-if="state.input.error" class="text-red-500 dark:text-red-400 mt-2" v-html="state.input.error"></div>
+      <div v-if="state.input.success" class="text-green-500 dark:text-green-400 mt-2" v-html="state.input.success"></div>
+      <div v-if="state.input.resent" class="text-green-500 dark:text-green-400 mt-2">Resent</div> 
+    </div>
+
   </div>
 </template> 
 <script>
@@ -64,7 +49,7 @@ export default {
             state.input.error = `Please enter email in "name@example.com" format.`
         } else {
             state.input.error = false
-            state.post = await $fetch(`https://nsightapi.vip/api/auth/forgot-password`, {
+            state.post = await $fetch(`/api/email/forgot-password`, {
             // state.input.post = await $fetch("http://localhost:1337/api/auth/forgot-password", {
               method: 'POST',
               headers: { 

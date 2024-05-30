@@ -1,32 +1,25 @@
 <template>
-  <div id="reset_password" class="bg-dark d-flex flex-column justify-center align-center p-3 p-md-5 h-100">
-    <v-container>
-      <v-row>
-        <v-col cols="12" md="6" offset-md="3">
-            <h1 class="text-light m-3">reset password</h1><hr class="mb-3"/> 
-            <form v-if="!state.success" class="w-100">
-                <div class="mb-3">
-                  <v-text-field v-model="state.new_password" placeholder="New Password" type="password" />
-                </div>
-                <div class="mb-3">
-                    <v-text-field v-model="state.confirm_new_password" placeholder="Confirm Password" type="password" />  
-                </div>
-                <div class="mb-3">
-                  <v-btn color="primary" block @click.prevent="reset_password" :disabled="state.confirm_new_password.length < 1">
-                    Reset Password
-                  </v-btn>
-                </div>
-            </form>
-            <v-alert v-if="state.success" color="success" class="my-3">
-              <p v-html="state.success"></p>
-              <v-btn color="primary" block @click="goToLogin">Log In</v-btn>
-            </v-alert>
-            <div v-if="state.error" class="my-3 alert alert-danger">
-              <p v-html="state.error"></p>
-            </div>
-        </v-col>
-      </v-row>
-    </v-container>
+    <div id="reset_password" class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col justify-center items-center pt-10">
+
+      <div class="w-full md:w-1/3 mx-auto p-4 flex flex-col">
+        <h1 class="text-3xl text-center text-zinc-900 dark:text-zinc-100">Reset Password</h1>
+        <p class="text-center text-zinc-900 dark:text-zinc-100">Enter your new password.</p>
+        <div v-if="!state.success" class="flex flex-col mt-4">
+          <input v-model="state.new_password" type="password" placeholder="New Password" @keydown="state.errors = []" class="p-2 border border-zinc-900 dark:border-zinc-100 rounded-md" />
+          <input v-model="state.confirm_new_password" type="password" placeholder="Confirm New Password" class="p-2 border border-zinc-900 dark:border-zinc-100 rounded-md mt-2" />
+          <button @click="reset_password" class="p-2 bg-zinc-900 dark:bg-zinc-100 text-zinc-100 dark:text-zinc-900 rounded-md mt-2">Reset Password</button>
+        </div>  
+        <div v-if="state.success">
+          <p class="text-green-500 dark:text-green-400 mt-8 text-center mb-8" v-html="state.success"></p>
+          <button @click="goToLogin" class="rounded-md shadow-xl w-full flex flex-row text-neutral-800 justify-center nsight-btn-primary my-2 py-2">Log In</button>
+        </div>
+        <div v-if="state.errors.length" class="text-red-500 mt-2">
+          <ul>
+            <li v-for="(error, a) in state.errors" :key="a" v-html="error"></li>
+          </ul>
+        </div>
+      </div>
+
     </div>
 </template>
 <script>
@@ -39,6 +32,8 @@ export default {
         middleware: ['guest'] 
       })
 
+      const route = useRoute()
+
       // State
       const state = reactive({
         new_password: '',
@@ -47,34 +42,41 @@ export default {
         error: false,
         errors: false,
         post: false,
-        send: false
+        send: false,
+        code: route.query.token
       })
-      const runtimeConfig = useRuntimeConfig()
+      
+
 
       // Methods
       const reset_password = async () => {
 
         state.error = false
-        if(state.new_password !== state.confirm_new_password) { 
+        if(!state.new_password.length || (state.new_password !== state.confirm_new_password)) { 
               state.errors = []
               state.errors.push('Passwords do not match.')
-        }
-        state.post = await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/reset-password`,{
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'accept': 'application/json'
-          },
-          body: JSON.stringify({
-              code: state.code,
-              password: state.new_password,
-              passwordConfirmation: state.confirm_new_password
-          })
-        })
-            .then((data) => {
-                console.log('password Confirm success', data)
-                state.success = "Password updated successfully. You can now use it to log in to your account."
+          return
+        } else {
+                  
+            state.post = await $fetch(`/api/email/reset-password`,{
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'accept': 'application/json'
+            },
+            body: JSON.stringify({
+                code: state.code,
+                password: state.new_password,
+                passwordConfirmation: state.confirm_new_password
+            })
+          }).then((data) => {
+                // console.log('password Confirm success', data)
+                if(data.statusCode === 200) {
+                  state.success = "Password updated successfully. You can now use it to log in to your account."
+                } else { state.errors.push(`Error: ${data.data.error}. Please try again.`) }
+                
             }).catch((err) => {  state.error = err.response.data.error.message })
+        }
       },
       goToLogin = () => {
           navigateTo('/')

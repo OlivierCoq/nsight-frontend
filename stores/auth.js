@@ -5,6 +5,9 @@ import { ofetch } from "ofetch";
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 const runtimeConfig = useRuntimeConfig();
+import { defineStore } from 'pinia';
+
+// Your store definition here
 
 import { productsStore } from "./products";
 
