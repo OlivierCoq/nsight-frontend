@@ -3705,7 +3705,39 @@ const resetPassword_post = defineEventHandler(async (event) => {
             }
           ).then(async () => {
             return_data = { statusCode: 200, message: "Password updated successfully." };
-            return return_data;
+            const token_headers_obj = {
+              "Content-Type": "application/json",
+              accept: "application/json",
+              Authorization: `Bearer ${process.env.CUSTOM_PW_RESET_TOKEN}`
+            };
+            await $fetch(
+              `${config.public.NUXT_STRAPI_URL}/api/users/${user_data[0].id}`,
+              {
+                method: "PUT",
+                headers: token_headers_obj,
+                body: JSON.stringify({
+                  reset_hash: ""
+                })
+              }
+            ).then(async () => {
+              console.log("reset code removed");
+              return_data = {
+                statusCode: 200,
+                data: {
+                  message: "Password updated successfully."
+                }
+              };
+              return return_data;
+            }).catch((error) => {
+              console.log("error removing reset code");
+              return_data = {
+                statusCode: 403,
+                data: {
+                  error: `Error: ${error}. Reset code not removed.`
+                }
+              };
+              return return_data;
+            });
           });
           return return_data;
         }
