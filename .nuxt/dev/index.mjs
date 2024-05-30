@@ -3467,7 +3467,7 @@ const forgotPassword_post = defineEventHandler(async (event) => {
       "Content-Type": "application/json",
       accept: "application/json"
     };
-    $fetch(
+    await $fetch(
       `${config$2.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
         filters: {
           email: post_data.email
@@ -3490,7 +3490,7 @@ const forgotPassword_post = defineEventHandler(async (event) => {
           accept: "application/json",
           Authorization: `Bearer ${process.env.CUSTOM_PW_RESET_TOKEN}`
         };
-        $fetch(
+        await $fetch(
           `${config$2.public.NUXT_STRAPI_URL}/api/users/${user_data[0].id}`,
           {
             method: "PUT",
@@ -3500,6 +3500,18 @@ const forgotPassword_post = defineEventHandler(async (event) => {
             })
           }
         ).then(async (updated_user) => {
+          setTimeout(async () => {
+            await $fetch(
+              `${config$2.public.NUXT_STRAPI_URL}/api/users/${updated_user.id}`,
+              {
+                method: "PUT",
+                headers: token_headers_obj,
+                body: JSON.stringify({
+                  reset_hash: ""
+                })
+              }
+            );
+          }, 18e5);
           const body = `
                   <!DOCTYPE html>
                   <html lang="en">

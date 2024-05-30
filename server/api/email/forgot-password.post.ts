@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
         accept: "application/json"
       };
 
-      $fetch(
+      await $fetch(
         `${config.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
           filters: {
             email: post_data.email,
@@ -57,7 +57,7 @@ export default defineEventHandler(async (event) => {
               Authorization: `Bearer ${process.env.CUSTOM_PW_RESET_TOKEN}`,
             };
 
-            $fetch(
+            await $fetch(
               `${config.public.NUXT_STRAPI_URL}/api/users/${user_data[0].id}`,
               {
                 method: "PUT",
@@ -66,8 +66,26 @@ export default defineEventHandler(async (event) => {
                   reset_hash: token
                 }),
               }
+
+
+              
+
             )
             .then(async (updated_user) => {
+
+              // IN 30 minutes, delete the token from user:
+              setTimeout(async () => {
+                await $fetch(
+                  `${config.public.NUXT_STRAPI_URL}/api/users/${updated_user.id}`,
+                  {
+                    method: "PUT",
+                    headers: token_headers_obj,
+                    body: JSON.stringify({
+                      reset_hash: ''
+                    }),
+                  }
+                )
+              }, 1800000)
 
               // console.log('updated_user', updated_user)
                 // return false
@@ -123,6 +141,9 @@ export default defineEventHandler(async (event) => {
                     text: `Let's get it!`,
                     html: body,
                   };
+
+
+
 
                   try {
                     await sgMail.send(msg);
