@@ -2,10 +2,8 @@
   <div id="appBar">
     <!-- mobile -->
     <!-- Tablet & larger -->
-    <div class="w-full h-[50px] bg-zinc-400 dark:bg-zinc-800 flex flex-row fixed">
-      <div
-        class="w-1/3 flex flex-row h-full justify-start align-center items-center"
-      >
+    <div class="w-full h-[50px] bg-zinc-400 dark:bg-zinc-800 flex flex-row justify-between fixed">
+      <div class="flex flex-row h-full justify-start align-center items-center w-1/6" >
         <a href="/dashboard" class="w-[50px] p-2">
           <img :src="logo" alt="nSight Logo" class="w-full h-full" />
         </a>
@@ -13,9 +11,7 @@
           <span class="fw-bold text-neutral-900 dark:text-white">Shop</span>
         </NuxtLink>
       </div>
-      <div
-        class="w-2/3 flex flex-row h-full justify-end align-start items-center"
-      >
+      <div class="flex flex-row h-full justify-end align-start items-center mx-5 w-2/3">
         <input
           v-show="state.search.searching"
           v-model="state.search.query"
@@ -31,39 +27,48 @@
           v-tooltip.bottom="'Search products, users, and more'"
         >
         </font-awesome-icon>
-        <NuxtLink
-          to="/account"
-          class="text-decoration-none username ms-4"
-          :class="
-            authData?.user?.preferences[0].dark_mode
-              ? 'text-white'
-              : 'text-dark'
-          "
-        >
-          <span
-            class="fw-bold relative text-neutral-900 dark:text-white"
-            v-tooltip.bottom="authData?.user?.email"
-            >{{ authData?.user?.first_name }}</span
+      </div>
+      <div class="flex flex-row h-full justify-between align-start items-center w-1/6">
+
+          <!-- Cart -->
+          <div>
+            <font-awesome-icon
+              :icon="['fas', 'cart-shopping']"
+              class="me-5 btn-cart cursor-pointer text-neutral-900 dark:text-white"
+              @click="goToCart"
+            />
+            <div
+              v-if="prodStore.cart?.checkout?.order?.order?.lineItems?.length"
+              class="num_count d-flex flex-row justify-center align-center text-center"
+            >
+              <span class="text-white" v-tooltip="'Items in cart'">
+                {{ prodStore.cart?.checkout?.order?.order?.lineItems?.length }}
+              </span>
+            </div>
+          </div>
+
+          <!-- User -->
+          <NuxtLink to="/account"  class="text-decoration-none username" 
+            :class="authData?.user?.preferences[0].dark_mode ? 'text-white' : 'text-dark'"
           >
-        </NuxtLink>
-        <font-awesome-icon
-          :icon="['fas', 'cart-shopping']"
-          class="me-4 btn-cart cursor-pointer text-neutral-900 dark:text-white"
-          @click="goToCart"
-        />
-        <div
-          v-if="prodStore.cart?.checkout?.order?.order?.lineItems?.length"
-          class="num_count d-flex flex-row justify-center align-center text-center"
-        >
-          <span class="text-white" v-tooltip="'Items in cart'">{{
-            prodStore.cart?.checkout?.order?.order?.lineItems?.length
-          }}</span>
-        </div>
-        <button v-if="authData?.loggedIn" text @click="sign_out">
-          <span class="text-neutral-900 dark:text-white text-sm me-6 uppercase"
-            >Sign Out</span
-          >
-        </button>
+            <span
+              class="fw-bold relative text-neutral-900 dark:text-white"
+              v-tooltip.bottom="authData?.user?.email"
+              >{{ authData?.user?.first_name }}</span
+            >
+          </NuxtLink>
+          
+          <!-- Sign Out -->
+          <button v-if="authData?.loggedIn" text @click="sign_out">
+            <span class="text-neutral-900 dark:text-white text-xs uppercase">Sign Out</span>
+          </button>
+
+          <!-- Dark Mode -->
+          <font-awesome-icon
+            :icon="['fas', `${settings.dark_mode ? 'moon' : 'sun' }`]"
+            class="me-6 btn-cart cursor-pointer text-neutral-900 dark:text-white"
+            @click="settings.toggleLighting()"
+          />
       </div>
     </div>
   </div>
@@ -82,8 +87,9 @@ const state = reactive({
   },
 });
 // computed
-const authData = computed(() => authStore());
-const prodStore = productsStore();
+const authData = computed(() => authStore())
+const prodStore = productsStore()
+const settings = settingsStore()
 
 // methods
 const sign_out = async () => {
@@ -98,6 +104,7 @@ const toggleSearch = () => {
 const doSearch = () => {
   // console.log('searching', state.search)
 };
+
 </script>
 <style lang="scss">
 #appBar {

@@ -10,10 +10,12 @@ import { defineStore } from 'pinia';
 // Your store definition here
 
 import { productsStore } from "./products";
+import { settingsStore } from "./settings";
 
 import { customFetch } from "~/composables/custom_fetch.ts";
 const useCustomFetch = customFetch();
 import qs from "qs";
+import auth from "~/middleware/auth";
 
 export const authStore = defineStore({
   id: "authStore",
@@ -28,6 +30,7 @@ export const authStore = defineStore({
   actions: {
     async login(payload) {
       const prodStore = productsStore();
+      const settings = settingsStore();
 
       // Sign in to Strapi:
       const res = await $fetch(
@@ -102,8 +105,10 @@ export const authStore = defineStore({
           localStorage.setItem("token", res.jwt);
 
           // Grap products from api/square
-          prodStore.getProducts();
+          prodStore.getProducts()
           prodStore.initCart()
+          settings.initSettings()
+        
         
           setTimeout(() => {
             navigateTo("/dashboard");
@@ -116,6 +121,8 @@ export const authStore = defineStore({
 
       this.token = null;
       this.loggedIn = false;
+
+      
       // localStorage.removeItem('token')
       // localStorage.removeItem('user')
       this.user = null;
