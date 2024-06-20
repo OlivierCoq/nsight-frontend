@@ -3,6 +3,15 @@ import type { Serialize, Simplify } from 'nitropack'
 declare module 'nitropack' {
   type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
   interface InternalApi {
+    '/api/chat/hooks/reply': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/hooks/reply.post').default>>>>
+    }
+    '/api/chat/send-message': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/send-message.post').default>>>>
+    }
+    '/api/chat/update-user': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/update-user.post').default>>>>
+    }
     '/api/email/forgot-password': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/email/forgot-password.post').default>>>>
     }
@@ -35,6 +44,9 @@ declare module 'nitropack' {
     }
     '/api/square/retrieve-item': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/retrieve-item.post').default>>>>
+    }
+    '/api/utils/secure-token': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/utils/secure-token.get').default>>>>
     }
     '/__nuxt_error': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/renderer').default>>>>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-[100vh] bg-zinc-800 dark:bg-black">
+  <div class="w-full min-h-[100vh] bg-zinc-800 dark:bg-black">
     <div class="w-1/2 mx-auto h-100 flex flex-col items-center justify-center">
       <img
         src="https://res.cloudinary.com/nsight/image/upload/v1708400678/n_Sight_logo_dark_dd6d0a819c.jpg"

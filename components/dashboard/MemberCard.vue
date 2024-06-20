@@ -7,6 +7,11 @@
     <div class="w-full h-1/2 flex flex-col justify-between items-start p-4">
       <h3 class="text-2xl member_name text-neutral-500 dark:text-neutral-200">{{ state.member.first_name }}</h3>
       <div class="w-full flex flex-row my-3 items-end justify-end">
+        <!-- Chat -->
+        <button @click="chat.chat_with_user(state.member)" class="btn-chat me-3 text-neutral-500 dark:text-neutral-200 hover:text-blue-300">
+          <font-awesome-icon :icon="['fas', 'comment-dots']" />
+          <!-- <span class="ms-2">Chat</span> -->
+        </button>
         <button @click="gift_user" class="btn-gift me-3 text-neutral-500 dark:text-neutral-200 hover:text-blue-300">
           <font-awesome-icon :icon="['fas', 'gift']" />
           <!-- <span class="ms-2">Send Gift</span> -->
@@ -25,11 +30,14 @@
   const state = reactive({
     member: props.member
   })
+
+  // Stores:
+  const chat = chatStore()
+
   const visit_profile = () => {
     navigateTo(`/members/${state.member.nsight_id.nsight_id}`)
   }
   const gift_user = () => {
-
     console.log('gift user', state.member)
   }
 </script>

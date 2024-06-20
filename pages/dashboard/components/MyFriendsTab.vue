@@ -1,143 +1,106 @@
 <template>
-  <div
-    v-if="auth?.user"
-    id="dashboard"
-    class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col pt-10"
-  >
-    <div class="h-full w-full flex flex-row">
+  <div clas="w-full flex flex-col p-4 fade-in"> 
+    <div class="w-full flex flex-row justify-between mb-4">
+      <h1 class="text-neutral-700 dark:text-white text-5xl mt-2 mb-3 font-thin">My friends</h1>
+      <button
+        class="nsight-btn-primary w-1/5 h-[40px] text-neutral-700 dark:text-white px-2 rounded uppercase"
+        @click="state.adding_new = !state.adding_new"
+      >
+        invite
 
-      <div class="h-full w-1/5 invisible md:visible px-3 pt-10 pb-4">
-        <!-- shadow-xl rounded-md bg-zinc-300 dark:bg-zinc-900 -->
-        <div class="h-full w-full flex flex-col">
-          <div v-for="(tab, a) in state.tabs" :key="a" 
-            class="w-full py-4 px-8 hover:shadow-xl mb-2 hover:cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-700 rounded-lg"
-            :class="tab == state.current_tab ? 'bg-zinc-300 dark:bg-zinc-800 shadow-xl' : ''"
-            @click="state.current_tab = tab"
-          >
-              <span class=" text-neutral-700 dark:text-white">
-                {{ tab.name }}
-              </span>
+      <!-- Invite dialog -->
+      <PrimeDialog v-model:visible="state.adding_new"
+        modal
+        header="invite a friend"
+        :style="{
+          width: '50rem',
+          backgroundColor: auth?.user?.preferences[0]?.dark_mode ? '#18181a' : '#a1a1aa',
+          color: 'white',
+          padding: '1rem',
+        }">  
+          <div v-if="state.success.show" class="w-full flex flex-col min-h-[25vh] bg-zinc-900 dark:bg-black px-5">
+            <p class="text-xl text-neutral-800 dark:text-white" v-html="state.success.message"></p>
           </div>
-        </div>
-      </div>
+          <div v-else class="w-full flex flex-col min-h-[25vh] bg-zinc-900 dark:bg-black">
 
-      <div class="h-[95%] my-auto me-4 rounded-lg w-full md:w-4/5 px-3 pb-4 bg-zinc-300 dark:bg-zinc-800 shadow-xl">
 
-        <div v-if="state?.current_tab?.name == 'My Friends'" class="w-full flex flex-col p-4">
+              <div class="input_group w-full flex flex-row mt-3">
+                <div class="w-full md:w-1/2 px-2">
+                  <input
+                    type="text"
+                    class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder:text-white dark:text-white"
+                    :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                    placeholder="First Name"
+                    v-model="state.new_member.first_name"
+                  />
+                </div>
+                <div class="w-full md:w-1/2 px-2">
+                  <input
+                    type="text"
+                    class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder-white dark:text-white"
+                    :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                    placeholder="Last Name"
+                    v-model="state.new_member.last_name"
+                  />
+                </div>
+              </div>
 
-          <div class="w-full flex flex-row justify-between mb-4">
-            <h1 class="text-neutral-700 dark:text-white text-5xl mt-2 mb-3 font-thin">My friends</h1>
-            <button
-              class="nsight-btn-primary w-1/5 h-[40px] text-neutral-700 dark:text-white px-2 rounded uppercase"
-              @click="state.tabs[0].data.adding_new = !state.tabs[0].data.adding_new"
-            >
-              invite
+              <div class="input_group w-full flex flex-row mt-3">
+                <div class="w-full md:w-2/3 px-2">
+                  <input
+                    type="email"
+                    class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder:text-white dark:text-white"
+                    :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                    placeholder="Email"
+                    v-model="state.new_member.email"
+                  />
+                </div>
+                <div class="w-full md:w-1/3 px-2">
+                  <input
+                    type="text"
+                    class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder-white dark:text-white"
+                    :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+                    v-model="state.new_member.phone_number"
+                    pattern="[0-9\-]*"
+                    placeholder="+1-123-456-7890"
+                    @keydown="
+                      () => {
+                        state.new_member.phone_number =
+                          new AsYouType()
+                            .input(state.new_member.phone_number)
+                            .replace(/\s/g, '-');
+                      }
+                    "
+                  />
+                </div>
+              </div>
 
-            <!-- Invite dialog -->
-            <PrimeDialog v-model:visible="state.tabs[0].data.adding_new"
-              modal
-              header="invite a friend"
-              :style="{
-                width: '50rem',
-                backgroundColor: auth?.user?.preferences[0]?.dark_mode ? '#18181a' : '#a1a1aa',
-                color: 'white',
-                padding: '1rem',
-              }">  
-                <div class="w-full flex flex-col min-h-[25vh] bg-zinc-900 dark:bg-black">
+              <div class="input_group w-full flex flex-row mt-3">
+                <button class="nsight-btn-primary px-4 py-2 text-neutral-700 dark:text-white w-full rounded-md mx-2 shadow-xl" :disabled="!state.validate" @click="post_new_member">
+                  <span :class="!state.validate ? 'opacity-50' : 'opacity-1'">invite friend</span>
+                </button>
+              </div>
 
-                    <div class="input_group w-full flex flex-row mt-3">
-                      <div class="w-full md:w-1/2 px-2">
-                        <input
-                          type="text"
-                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder:text-white dark:text-white"
-                          :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
-                          placeholder="First Name"
-                          v-model="state.tabs[0].data.new_member.first_name"
-                        />
-                      </div>
-                      <div class="w-full md:w-1/2 px-2">
-                        <input
-                          type="text"
-                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder-white dark:text-white"
-                          :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
-                          placeholder="Last Name"
-                          v-model="state.tabs[0].data.new_member.last_name"
-                        />
-                      </div>
-                    </div>
+            </div>
 
-                    <div class="input_group w-full flex flex-row mt-3">
-                      <div class="w-full md:w-2/3 px-2">
-                        <input
-                          type="email"
-                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder:text-white dark:text-white"
-                          :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
-                          placeholder="Email"
-                          v-model="state.tabs[0].data.new_member.email"
-                        />
-                      </div>
-                      <div class="w-full md:w-1/3 px-2">
-                        <input
-                          type="text"
-                          class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder-white dark:text-white"
-                          :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
-                          v-model="state.tabs[0].data.new_member.phone_number"
-                          pattern="[0-9\-]*"
-                                          placeholder="+1-123-456-7890"
-                                          @keydown="
-                                            () => {
-                                              state.tabs[0].data.new_member.phone_number =
-                                                new AsYouType()
-                                                  .input(state.tabs[0].data.new_member.phone_number)
-                                                  .replace(/\s/g, '-');
-                                            }
-                                          "
-                        />
-                      </div>
-                    </div>
+      </PrimeDialog>
+      
+      </button>
+    </div>
 
-                    <div class="input_group w-full flex flex-row mt-3">
-                      <button class="nsight-btn-primary px-4 py-2 text-neutral-700 dark:text-white w-full rounded-md mx-2 shadow-xl" :disabled="!state.validate" @click="post_new_member">
-                        <span :class="!state.validate ? 'opacity-50' : 'opacity-1'">invite friend</span>
-                      </button>
-                    </div>
-
-                  </div>
-
-            </PrimeDialog>
-            
-            </button>
-          </div>
-          
-          <!-- Friends grid -->
-          <div class="w-full grid grid-cols-1 md:grid-cols-4">
-            <!-- Friend grid items -->
-            <DashboardMemberCard v-for="(member, i) in auth?.user?.friends" :key="i" :member="member" />
-          </div>
-          
-        </div>
-      </div>
-
+    <!-- Friends grid -->
+    <div class="w-full grid grid-cols-1 md:grid-cols-4">
+      <!-- Friend grid items -->
+      <DashboardMemberCard v-for="(member, i) in auth?.user?.friends" :key="i" :member="member" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
-// Page meta
-definePageMeta({
-  title: "Dashboard",
-  description: "Dashboard",
-  url: "/dashboard",
-  middleware: ["auth"],
-  layout: "inner",
-});
 
-// necessary imports
+// Config
 import moment from "moment";
 import qs from "qs";
 import { parsePhoneNumber, AsYouType } from "libphonenumber-js";
-
-
-// oFetch
 import { ofetch } from "ofetch";
 import password from "~/presets/nsight_style_presets/password";
 const runtimeConfig = useRuntimeConfig();
@@ -152,7 +115,9 @@ const runtimeConfig = useRuntimeConfig();
 // Stores
 const auth = authStore();
 const prodStore = productsStore();
+const settings = settingsStore();
 
+ // Methods:
 // State
 const state = reactive({
   current_user: authStore.user,
@@ -160,34 +125,23 @@ const state = reactive({
   dark_mode: false,
   error: false,
   use_the_force: false,
-  tabs: [
-    {
-      name: "My Friends",
-      data: {
-        adding_new: false,
-        posting_new: false,
-        post: null,
-        new_member: {
-          email: "",
-          first_name: "",
-          last_name: "",
-          phone_number: "",
-          n_id: `nsight-${auth.user.id}-${moment().format("MMDDYYYY-hmmss")}`,
-        },
-      },
-    },
-    {
-      name: "My Profile",
-      data: {},
-    },
-  ],
+  adding_new: false,
+  posting_new: false,
+  new_member: {
+    email: "",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    n_id: `nsight-${auth.user.id}-${moment().format("MMDDYYYY-hmmss")}`,
+  },
+  post: null,
   validate: false,
+  success: {
+    message: "",
+    show: false,
+  }
 });
 
-// Mounted
-onMounted(() => {
-  state.current_tab = state.tabs[0];
-});
 
 // Methods
 const generate_random_password = () => {
@@ -201,7 +155,6 @@ const generate_random_password = () => {
 };
 // console.log("random password: ", generate_random_password());
 
- 
 
 const validateEmail = (email: string) => {
   return (
@@ -219,9 +172,6 @@ const validatePhone = (number: string) => {
   const regex = /^\+\d{1,3}-\d{3}-\d{3}-\d{4}$/;
   return regex.test(number);
 };
-// const new_n_id = () => {
-//   state.tabs[1].data.new_member.n_id = `nsight-${auth.user.id}-${moment().format('MMDDYYYY-hmmss')}`
-// }
 
 /*
   Steps:
@@ -246,9 +196,24 @@ const validatePhone = (number: string) => {
 
 */
 
+const generateSecureToken = () => {
+  $fetch('/api/utils/secure-token', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      accept: 'application',
+    }
+  }).
+  then((data) => {
+    return data.token
+  })
+}
+
+generateSecureToken()
+
 const post_new_member = async () => {
-  let active_tab = state.tabs[0];
-  active_tab.data.posting_new = true;
+
+  state.posting_new = true;
 
   const headers_obj = {
     "Content-Type": "application/json",
@@ -256,10 +221,10 @@ const post_new_member = async () => {
     Authorization: `Bearer ${auth.token}`,
   };
 
-  active_tab.post = $fetch(
+  state.post = $fetch(
     `${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids?${qs.stringify({
       filters: {
-        nsight_id: state.tabs[0].data.new_member.n_id,
+        nsight_id: state.new_member.n_id,
       },
     })}`,
     {
@@ -274,7 +239,7 @@ const post_new_member = async () => {
         let new_nsight_id = {
           data: {
             authentic: true,
-            nsight_id: active_tab.data.new_member.n_id,
+            nsight_id: state.new_member.n_id,
           },
         };
         $fetch(
@@ -293,19 +258,20 @@ const post_new_member = async () => {
             let new_nsight_member = {
               blocked: false,
               confirmed: false,
-              email: active_tab.data.new_member.email,
-              first_name: active_tab.data.new_member.first_name,
-              last_name: active_tab.data.new_member.last_name,
-              phone_number: active_tab.data.new_member.phone_number,
+              email: state.new_member.email,
+              first_name: state.new_member.first_name,
+              last_name: state.new_member.last_name,
+              phone_number: state.new_member.phone_number,
               nsight_id: new_strapi_nsight_id,
               square_id: "",
               reset_token: generateSecureToken(),
               preferences: [
                 {
                   dark_mode: true,
+                  default_dashboard_tab: "my_friends",
                 },
               ],
-              username: active_tab.data.new_member.email,
+              username: state.new_member.email,
               // password: thisObj.generate_random_password()
               // password: "P@ssW3rd9756",
               password: generate_random_password(),
@@ -317,6 +283,7 @@ const post_new_member = async () => {
                 users: []
               },
               pictures: [],
+              chats: [],
               addresses: {
                 shipping: [],
                 billing: [],
@@ -359,7 +326,7 @@ const post_new_member = async () => {
               headers: headers_obj,
               body: JSON.stringify(new_nsight_member),
             })
-              .then((new_strapi_user_data) => {
+              .then( (new_strapi_user_data) => {
                 console.log(
                   "created new strapi member: ",
                   new_strapi_user_data
@@ -367,7 +334,7 @@ const post_new_member = async () => {
                 const new_strapi_user = new_strapi_user_data;
 
                 // update nsight_id with new user
-                $fetch(
+                 $fetch(
                   `${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids/${new_strapi_nsight_id.id}`,
                   {
                     method: "PUT",
@@ -410,7 +377,7 @@ const post_new_member = async () => {
 
                       // console.log("holup!!!!!!", new_nsight_member);
                       // Update Strapi with square_id
-                      nextTick(() => {
+                      nextTick(async () => {
                         new_nsight_member.square_id = square_data.customer.id;
                         console.log(
                           "updated new_nsight_member with square_id: ",
@@ -419,7 +386,7 @@ const post_new_member = async () => {
 
                         const updated_new_sight_member = new_nsight_member;
 
-                        $fetch(
+                        await $fetch(
                           `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${new_strapi_user.id}`,
                           {
                             method: "PUT",
@@ -429,7 +396,7 @@ const post_new_member = async () => {
                             }),
                           }
                         )
-                          .then((square_id_update_data) => {
+                          .then( (square_id_update_data) => {
                             console.log(
                               "updated strapi user with square_id: ",
                               square_id_update_data
@@ -439,10 +406,10 @@ const post_new_member = async () => {
                             // There's an issue right now with friends vs users. I'm adding to both for now.
                             auth.user.friends.push(square_id_update_data);
                             auth.user.users.push(square_id_update_data);
-                            state.tabs[1].data.adding_new = false;
+                            // state.tabs[1].data.adding_new = false;
 
-                            nextTick(() => {
-                              $fetch(
+                            nextTick(async () => {
+                              await $fetch(
                                 `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${auth.user.id}`,
                                 {
                                   method: "PUT",
@@ -450,18 +417,18 @@ const post_new_member = async () => {
                                   body: JSON.stringify({ data: auth.user }),
                                 }
                               )
-                                .then((data) => {
+                                .then(async (data) => {
                                   console.log(
                                     "updated strapi user with new member: ",
                                     data
                                   );
-                                  active_tab.data.posting_new = false;
-                                  state.tabs[0].data.adding_new = false
+                                  state.posting_new = false;
+                                  // state.tabs[0].data.adding_new = false
 
 
                                   // Send email confirmation to new member. Let's refrain for now. SendGrid doesn't like it.
 
-                                  $fetch('/api/email/new-user-confirmation', {
+                                  await $fetch('/api/email/new-user-confirmation', {
                                     method: 'POST',
                                     headers: headers_obj,
                                     body: JSON.stringify({ 
@@ -473,17 +440,21 @@ const post_new_member = async () => {
                                     })
                                   }).then((data) => {
                                     console.log('email confirmation sent to new member: ', data)
-                                    active_tab.data.posting_new = false
+                                    state.posting_new = false
+                                    state.success.message = `${state.new_member.first_name}'s been invited and added to your friends list! 🎉 <br/><br/> An email's been sent to them with their login credentials. Let them know that it might be in their spam folder. If they don't see it, they can request a new password. `
+                                    nextTick(() => {
+                                      state.success.show = true
+                                    })
                                   }).catch((err) => { console.log('error sending email confirmation to new member: ', err); state.error = err })
 
                                   // $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/send-email-confirmation`, {
                                   //   method: 'POST',
                                   //   headers: headers_obj,
-                                  //   body: JSON.stringify({ email: active_tab.data.new_member.email })
+                                  //   body: JSON.stringify({ email: state.new_member.email })
                                   // })
                                   //   .then((data) => {
                                   //     console.log('email confirmation sent to new member: ', data)
-                                  //     active_tab.data.posting_new = false
+                                  //     state.posting_new = false
                                   //   })
                                   //   .catch((err) => { console.log('error sending email confirmation to new member: ', err); state.error = err })
                                 })
@@ -520,6 +491,7 @@ const post_new_member = async () => {
               });
           })
           .catch((err) => {
+            console.log("error adding nsight id: ", err);
             state.error = err;
           });
       } else {
@@ -537,7 +509,7 @@ const post_new_member = async () => {
 // Watch
 // watch all attributes of new_member:
 watch(
-  () => state.tabs[0].data.new_member,
+  () => state.new_member,
   (val: object) => {
     state.validate =
       val.email.length > 0 &&
@@ -548,6 +520,7 @@ watch(
   },
   { deep: true }
 );
+
 
 // email:
 // watch(() => state.tabs[1].data.new_member.email, (val) => {
@@ -572,7 +545,8 @@ input::placeholder {
   color: #ffffff9c !important;
 }
 
-input {
+input,
+p {
   color: #ffffff !important;
 
 }

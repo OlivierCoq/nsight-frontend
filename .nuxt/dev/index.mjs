@@ -807,9 +807,9 @@ function normalizeCookieHeaders(headers) {
   return outgoingHeaders;
 }
 
-const config$3 = useRuntimeConfig();
+const config$4 = useRuntimeConfig();
 const _routeRulesMatcher = toRouteMatcher(
-  createRouter({ routes: config$3.nitro.routeRules })
+  createRouter({ routes: config$4.nitro.routeRules })
 );
 function createRouteRulesHandler(ctx) {
   return eventHandler((event) => {
@@ -3241,6 +3241,9 @@ function render(options) {
   return options.content;
 }
 
+const _lazy_UmKe3C = () => Promise.resolve().then(function () { return reply_post; });
+const _lazy_NZZU1P = () => Promise.resolve().then(function () { return sendMessage_post$1; });
+const _lazy_1X6zm6 = () => Promise.resolve().then(function () { return updateUser_post$1; });
 const _lazy_7XOvC1 = () => Promise.resolve().then(function () { return forgotPassword_post$1; });
 const _lazy_wLAu0m = () => Promise.resolve().then(function () { return newUserConfirmation_post$1; });
 const _lazy_2ghplS = () => Promise.resolve().then(function () { return resetPassword_post$1; });
@@ -3252,9 +3255,13 @@ const _lazy_hWPhL2 = () => Promise.resolve().then(function () { return payOrder_
 const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_post$1; });
 const _lazy_D8ffMl = () => Promise.resolve().then(function () { return placeOrder_post$1; });
 const _lazy_3k04uK = () => Promise.resolve().then(function () { return retrieveItem_post$1; });
+const _lazy_bz5v70 = () => Promise.resolve().then(function () { return secureToken_get$1; });
 const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
+  { route: '/api/chat/hooks/reply', handler: _lazy_UmKe3C, lazy: true, middleware: false, method: "post" },
+  { route: '/api/chat/send-message', handler: _lazy_NZZU1P, lazy: true, middleware: false, method: "post" },
+  { route: '/api/chat/update-user', handler: _lazy_1X6zm6, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/forgot-password', handler: _lazy_7XOvC1, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/new-user-confirmation', handler: _lazy_wLAu0m, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/reset-password', handler: _lazy_2ghplS, lazy: true, middleware: false, method: "post" },
@@ -3266,6 +3273,7 @@ const handlers = [
   { route: '/api/square/payment', handler: _lazy_lOjqNk, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/place-order', handler: _lazy_D8ffMl, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/retrieve-item', handler: _lazy_3k04uK, lazy: true, middleware: false, method: "post" },
+  { route: '/api/utils/secure-token', handler: _lazy_bz5v70, lazy: true, middleware: false, method: "get" },
   { route: '/__nuxt_error', handler: _lazy_ShO9cQ, lazy: true, middleware: false, method: undefined },
   { route: '/.well-known/security.txt', handler: _E2XjkS, lazy: false, middleware: false, method: undefined },
   { route: '/.well-known/change-password', handler: _icsbdn, lazy: false, middleware: false, method: undefined },
@@ -3453,6 +3461,80 @@ const template$1 = _template;
 const errorDev = /*#__PURE__*/Object.freeze({
   __proto__: null,
   template: template$1
+});
+
+const reply_post = /*#__PURE__*/Object.freeze({
+  __proto__: null
+});
+
+const config$3 = useRuntimeConfig();
+const sendMessage_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  const recipient = post_data.recipient, message = post_data.send, auth = post_data.auth;
+  const conversation = recipient.chats.data.find((chat) => {
+    return chat.participants.includes(auth.user.id) && chat.participants.includes(recipient.id);
+  });
+  const local_conversation = auth.user.chats.data.find((chat) => {
+    return chat.participants.includes(auth.user.id) && chat.participants.includes(recipient.id);
+  });
+  if (!conversation) {
+    recipient.chats.data.push({
+      participants: [auth.user.id, recipient.id],
+      messages: [message]
+    });
+  } else {
+    conversation.messages.push(message);
+  }
+  if (!local_conversation) {
+    auth.user.chats.data.push({
+      participants: [auth.user.id, recipient.id],
+      messages: [message]
+    });
+  } else {
+    local_conversation.messages.push(message);
+  }
+  $fetch(`${config$3.public.NUXT_STRAPI_URL}/api/users/${recipient.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      accept: "application/json",
+      Authorization: `Bearer ${auth.token}`
+    },
+    body: JSON.stringify(recipient)
+  }).then(async (response) => {
+    console.log("Updated Recipient User", response);
+    $fetch(`${config$3.public.NUXT_STRAPI_URL}/api/users/${auth.user.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        Authorization: `Bearer ${auth.token}`
+      },
+      body: JSON.stringify(auth.user)
+    }).then(async (response2) => {
+      console.log("Updated Auth User", response2);
+    }).catch((error) => {
+      console.error("Error updating Strapi User", error);
+    });
+  }).catch((error) => {
+    console.error("Error updating Strapi User", error);
+  });
+});
+
+const sendMessage_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: sendMessage_post
+});
+
+useRuntimeConfig();
+const updateUser_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("post_data", post_data);
+});
+
+const updateUser_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: updateUser_post
 });
 
 const config$2 = useRuntimeConfig(), api_key$2 = config$2.public.SENDGRID_API_KEY;
@@ -4151,6 +4233,17 @@ const retrieveItem_post = defineEventHandler(async (event) => {
 const retrieveItem_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: retrieveItem_post
+});
+
+const secureToken_get = defineEventHandler(async (event) => {
+  return {
+    token: crypto.randomBytes(48).toString("hex")
+  };
+});
+
+const secureToken_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: secureToken_get
 });
 
 const Vue3 = version.startsWith("3");

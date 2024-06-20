@@ -11,6 +11,7 @@ import { defineStore } from 'pinia';
 
 import { productsStore } from "./products";
 import { settingsStore } from "./settings";
+import { chatStore } from "./chat";
 
 import { customFetch } from "~/composables/custom_fetch.ts";
 const useCustomFetch = customFetch();
@@ -72,11 +73,13 @@ export const authStore = defineStore({
               'selected_addresses',
               'selected_payment_method',
               'payment_methods',
+              'chats',
               'preferences',
               'nsight_id',
               'friends',
               'friends.nsight_id',
               'friends.friends',
+              'friends.chats',
               'friends.profile_picture',
               'users.friends',
               'phone_number',
@@ -118,9 +121,11 @@ export const authStore = defineStore({
     },
     async logout() {
       const prodStore = productsStore();
+      const chat = chatStore();
 
       this.token = null;
       this.loggedIn = false;
+      chat.current_conversation = null;
 
       
       // localStorage.removeItem('token')

@@ -27,6 +27,7 @@ export { injectHead, useHead, useSeoMeta, useHeadSafe, useServerHead, useServerS
 export { customFetch } from '../composables/custom_fetch';
 export { default as Icons } from '../utils/Icons';
 export { authStore } from '../stores/auth';
+export { chatStore } from '../stores/chat';
 export { productsStore } from '../stores/products';
 export { settingsStore } from '../stores/settings';
 export { defineStore, acceptHMRUpdate, usePinia, storeToRefs } from '../node_modules/@pinia/nuxt/dist/runtime/composables';

@@ -17,6 +17,7 @@ export const settingsStore = defineStore({
     return {
       dark_mode: true,
       account: {},
+      comp: 0
     };
   },
   actions: {
@@ -31,6 +32,13 @@ export const settingsStore = defineStore({
       if (auth.loggedIn) {
         this.dark_mode = auth.user.preferences[0].dark_mode
       }
+    },
+    // Dashboard settings:
+    pinDashboardTab(tab) {
+      const auth = authStore()
+      auth.user.preferences[0].default_dashboard_tab = tab.value
+      auth.updateUser()
+      this.comp++
     }
   },
   getters: {},
