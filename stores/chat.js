@@ -23,7 +23,8 @@ export const chatStore = defineStore({
     };
   },
   actions: {
-    chat_with_user(user) {
+    async chat_with_user(user) {
+      console.log('opening new chat.', user.chats.data.length)
 
       const auth = authStore();
 
@@ -33,25 +34,23 @@ export const chatStore = defineStore({
         messages: [],
       }
 
-      if(!this.friends.length) {
-        this.friends.push(user);
-      }
-      
-      if((!user.chats) || (!user.chats?.data.length)) {
+      if(!this.friends.length) { this.friends.push(user); }
+      if(!user.chats?.data.length) {
         // user.chats.data.push()
         console.log("User has no chats");
-        if(!user.chats) {
-          user.chats = {
-            data: []
-          }
-        }
+        // initiate()
+        this.current_conversation = conversation
         user.chats.data.push(conversation)
-        this.update_user(user)
+        this.update_participants(conversation)
       } else {
+        
         this.current_conversation = user.chats.data.find((chat) => {
           return chat.participants.includes(auth.user.id) && chat.participants.includes(user.id)
         })
+        this.update_participants(conversation)
+        console.log('User has chats!') 
       }
+
       this.chat_open = true;
     },
     update_user(user) {
@@ -69,6 +68,41 @@ export const chatStore = defineStore({
       }).catch((error) => {
         console.error('Error updating user: ', error);
       });
+    },
+    async update_participants(conversation) {
+
+      const auth = authStore();
+
+      this.current_conversation.participants.forEach(async (participant_id) => {
+          
+      await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${participant_id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            Authorization: `Bearer ${auth.token}`,
+          },
+        }).then(async (friend) => {
+          console.log("Member: ", friend.username);
+
+          const existing_conversation = friend.chats.data.find(conv => conv.id == this.current_conversation.id)
+          if(existing_conversation) {
+            
+            friend.chats.data.splice(friend.chats.data.indexOf(existing_conversation), 1, this.current_conversation)
+            console.log('conversations exists. Replacing: ', friend.chats.data)
+            nextTick(()=> {
+              this.update_user(friend)
+            })
+          } else {
+            friend.chats.data.push(this.current_conversation)
+            this.update_user(friend)
+          }
+          
+        }).catch((error) => {
+          console.error('Error updating user: ', error);
+        })
+          
+      })  
     },
     chat_user(user) {
       console.log("Getting messages");
@@ -137,13 +171,14 @@ export const chatStore = defineStore({
       // const conversation = 
       // check user.chats.data for conversation whose particupants include the current user and the selected user:
       const conversation = user.chats.data.find((chat) => {
-        return chat.participants.includes(auth.user.id) && chat.participants.includes(user.id)
+        // return chat.participants.includes(auth.user.id) && chat.participants.includes(user.id)
+        return chat.id == this.current_conversation.id
       })
       
-      conversation.messages.push(message)
+      await conversation.messages.push(message)
       // this.update_user(user)
-      console.log('Conversation: ', user.chats.data)
-
+      // console.log('Conversation: ', user.chats.data)
+      await this.update_participants(conversation)
       await $fetch(`/api/messaging/update-user`, {
         method: "POST",
         headers: {

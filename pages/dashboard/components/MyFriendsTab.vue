@@ -283,7 +283,9 @@ const post_new_member = async () => {
                 users: []
               },
               pictures: [],
-              chats: [],
+              chats: {
+                data: []
+              },
               addresses: {
                 shipping: [],
                 billing: [],

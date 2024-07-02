@@ -3,11 +3,11 @@ import type { Serialize, Simplify } from 'nitropack'
 declare module 'nitropack' {
   type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
   interface InternalApi {
+    '/api/chat/actions/send-message': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/actions/send-message.post').default>>>>
+    }
     '/api/chat/hooks/reply': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/hooks/reply.post').default>>>>
-    }
-    '/api/chat/send-message': {
-      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/send-message.post').default>>>>
     }
     '/api/chat/update-user': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/update-user.post').default>>>>

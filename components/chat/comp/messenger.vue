@@ -42,7 +42,7 @@
       </div>
       <p v-if="state.send.status.error" class="text-xs text-red-500 mt-2">{{ state.send.status.error }}</p>
     </div>
-  </div>å
+  </div>
 </template>
 <script setup lang="ts">
 
@@ -57,10 +57,7 @@
       sender: {
         user: auth.user.id,
       },
-      receiver: {
-        user: chat.friends[0]?.first_name,
-        message_read: false
-      },
+      participants: [chat.friends[0]?.id],
       media: null,
       status: {
         delivered: true,
@@ -78,23 +75,30 @@
     // state.send.body[0].text = ''
     if(state.send.body.length > 0) {
       
-      chat.current_conversation?.messages.push(state.send)
-      $fetch('/api/chat/send-message', {
-        method: 'POST',
-        body: JSON.stringify({
-          send: state.send,
-          recipient: chat.friends[0],
-          auth: auth
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      }).then((res) => {
-        console.log(res)
-      }).catch((err) => {
-        console.error(err)
-        state.send.status.error = `Error sending message.`
+      // chat.current_conversation?.messages.push(state.send)
+      nextTick(()=> {
+        chat.sendMessage(state.send, chat.friends[0])
       })
+
+      // $fetch('/api/chat/actions/send-message', {
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     send: state.send,
+      //     participants: [chat.friends[0].id],
+      //     sender: auth?.user
+      //   }),
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   }, 
+      // }).then((res) => {
+      //   console.log(res)
+      //   //
+      // }).catch((err) => {
+      //   console.error(err)
+      //   state.send.status.error = `Error sending message.`
+      // })
+
+
     } else {
       state.send.status.error = `Message can't be empty.`
     }
