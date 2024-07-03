@@ -11,8 +11,8 @@
         @click="chat.chat_open = false"
       />
     </div>
-    <div class="ctr-bubbles w-full h-[26rem] bg-white dark:bg-zinc-800 mt-2 rounded-tr-lg rounted-tl-lg p-4 flex flex-col overflow-y-scroll">
-      <div v-if="chat.current_conversation && chat.current_conversation.messages.length" class="w-full">
+    <div id="ctr-bubbles" class="w-full h-[26rem] bg-white dark:bg-zinc-800 mt-2 rounded-tr-lg rounted-tl-lg p-4 flex flex-col overflow-y-scroll">
+      <div v-if="chat.current_conversation && chat.current_conversation.messages.length" id="bubbles" class="w-full">
         <ChatCompBubble
           v-for="(message, i) in chat.current_conversation?.messages"
           :key="i"
@@ -26,8 +26,8 @@
         <textarea
           class="w-[90%] min-h-[1rem] px-3 py-2 me-1 text-sm text-gray-700 placeholder-gray-400 bg-transparent text-neutral-900 dark:text-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
           placeholder="Type a message..."
-          @keydown="state.send.status.error = false"
-          v-model="state.send.body"
+          @keydown="commit"
+          v-model="state.staging.body"
         />
         <font-awesome-icon
           :icon="['fas', 'paper-plane']"
@@ -52,12 +52,16 @@
 
   const state = reactive({
     receiver: chat.current_conversation?.receiver,
+    staging: {
+      body: '',
+      media: null
+    },
     send: {
       body: '',
       sender: {
         user: auth.user.id,
       },
-      participants: [chat.friends[0]?.id],
+      participants: [chat.friends[0]?.id, auth.user.id],
       media: null,
       status: {
         delivered: true,
@@ -65,42 +69,83 @@
         error: false,
       },
       created: new Date(),
-    }
+    },
+    comp: 0
   })
 
   // Methods
+  const commit = () => {
+    state.send.status.error = false
+  }
+  const clear = () => {
+    state.send.body = ''
+    state.send.media = null
+    state.staging.body = ''
+    state.staging.media = null
+  }
   const sendMessage = () => {
     console.log('Sending message...')
+    state.send.body = state.staging.body 
+    state.send.media = state.staging.media
     
     // state.send.body[0].text = ''
     if(state.send.body.length > 0) {
       
       // chat.current_conversation?.messages.push(state.send)
-      nextTick(()=> {
-        chat.sendMessage(state.send, chat.friends[0])
+      nextTick(async ()=> {
+        await chat.sendMessage(state.send, chat.friends[0])
+        state.comp++
+        clear()
+        await nextTick(()=>{
+          setTimeout(()=> {
+            scroll()
+          }, 100)
+        })
+        
       })
-
-      // $fetch('/api/chat/actions/send-message', {
-      //   method: 'POST',
-      //   body: JSON.stringify({
-      //     send: state.send,
-      //     participants: [chat.friends[0].id],
-      //     sender: auth?.user
-      //   }),
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }, 
-      // }).then((res) => {
-      //   console.log(res)
-      //   //
-      // }).catch((err) => {
-      //   console.error(err)
-      //   state.send.status.error = `Error sending message.`
-      // })
-
 
     } else {
       state.send.status.error = `Message can't be empty.`
     }
   }
+
+  const scroll = () => {
+    const parent = document.getElementById('ctr-bubbles')
+    parent.scrollTop = parent.scrollHeight
+  }
+
+  const bubbles = () => {
+
+    const parent = document.getElementById('ctr-bubbles')
+    const child = document.getElementById('bubbles')
+
+    // console.log('before nextTick: ', parent, child)
+    // nextTick(()=> {
+    //   console.log('after nextTick: ', parent, child)
+    // })
+
+    scroll()
+    const observer = new MutationObserver((mutations)=>{
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          const isScrolledToBottom = parent.scrollHeight - parent?.clientHeight <= parent.scrollTop + 1
+          if(isScrolledToBottom) {
+            scroll()
+          }
+        }
+      })
+    })
+
+    const config = { childList: true, subtree: true }
+    observer.observe(child, config)
+
+    // Initial scroll
+    scroll()
+  }
+
+  onMounted(()=> {
+    nextTick(()=> {
+      bubbles()
+    })
+  })
 </script>

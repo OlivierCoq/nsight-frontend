@@ -3242,6 +3242,7 @@ function render(options) {
 }
 
 const _lazy_AldD6M = () => Promise.resolve().then(function () { return sendMessage_post$1; });
+const _lazy_QXcwY7 = () => Promise.resolve().then(function () { return relay_post$1; });
 const _lazy_UmKe3C = () => Promise.resolve().then(function () { return reply_post; });
 const _lazy_1X6zm6 = () => Promise.resolve().then(function () { return updateUser_post$1; });
 const _lazy_7XOvC1 = () => Promise.resolve().then(function () { return forgotPassword_post$1; });
@@ -3260,6 +3261,7 @@ const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$
 
 const handlers = [
   { route: '/api/chat/actions/send-message', handler: _lazy_AldD6M, lazy: true, middleware: false, method: "post" },
+  { route: '/api/chat/hooks/relay', handler: _lazy_QXcwY7, lazy: true, middleware: false, method: "post" },
   { route: '/api/chat/hooks/reply', handler: _lazy_UmKe3C, lazy: true, middleware: false, method: "post" },
   { route: '/api/chat/update-user', handler: _lazy_1X6zm6, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/forgot-password', handler: _lazy_7XOvC1, lazy: true, middleware: false, method: "post" },
@@ -3473,6 +3475,21 @@ const sendMessage_post = defineEventHandler(async (event) => {
 const sendMessage_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: sendMessage_post
+});
+
+useRuntimeConfig();
+const relay_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("post_data", post_data);
+  return {
+    status: 200,
+    data: post_data
+  };
+});
+
+const relay_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: relay_post
 });
 
 const reply_post = /*#__PURE__*/Object.freeze({

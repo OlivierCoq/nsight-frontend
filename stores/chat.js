@@ -104,67 +104,6 @@ export const chatStore = defineStore({
           
       })  
     },
-    chat_user(user) {
-      console.log("Getting messages");
-      this.current_conversation = null;
-
-      const auth = authStore();
-
-      const chatQueryObj = {
-        populate: [
-          'id',
-          'initial_date',
-          'sender',
-          'receiver',
-          'messages',
-          'messages.date_time',
-          'messages.sender',
-          'messages.receiver',
-          'messages.body',
-          'messages.media',
-          'users_permissions_users'
-        ],
-        filters: {
-          // ONLY include conversations where that include the current user and the selected user:
-          users_permissions_users: [auth.user.id, user.id],
-
-        },
-      }
-      const headers_obj = {
-        "Content-Type": "application/json",
-        accept: "application/json",
-        Authorization: `Bearer ${auth.token}`,
-      }
-
-      $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/chat-conversations?${qs.stringify(chatQueryObj)}`, {
-        method: "GET",
-        headers: headers_obj,
-      }).then((response) => {
-        console.log("Chat conversations response: ", response);
-
-        if(response.data.length) {
-            this.current_conversation = {
-            id: response.data[0].id,
-            user: user,
-            sender: response.data[0].messages[0].sender,
-            receiver: response.data[0].users_permissions_users.find(user => user.id !== auth.user.id),
-            messages: response.data[0].messages
-          }
-        } else {
-          this.current_conversation = {
-            user: user,
-            sender: auth.user,
-            receiver: user,
-            messages: []
-          }
-        }
-        this.chat_open = true;
-        this.friends.push(user)
-        
-      }).catch((error) => {
-        console.error('Error getting messages: ', error);
-      });
-    },
     async sendMessage(message, user) {
 
       const auth = authStore();
@@ -174,21 +113,32 @@ export const chatStore = defineStore({
         // return chat.participants.includes(auth.user.id) && chat.participants.includes(user.id)
         return chat.id == this.current_conversation.id
       })
+
       
-      await conversation.messages.push(message)
-      // this.update_user(user)
-      // console.log('Conversation: ', user.chats.data)
-      await this.update_participants(conversation)
-      await $fetch(`/api/messaging/update-user`, {
+      // await conversation.messages.push(message)
+      $fetch('/api/chat/hooks/relay', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          accept: "application/json",
-          Authorization: `Bearer ${auth.token}`,
+          "accept": "application/json",
+          "Authorization": `Bearer ${auth.token}`,
         },
-        body: JSON.stringify(conversation)
+        body: JSON.stringify(message)
+      }).then(async(res)=>{
+        console.log('from relay', res)
+        await conversation.messages.push(res.data)
+      }).then(async()=> {
+        await this.update_participants(conversation)
+        await $fetch(`/api/messaging/update-user`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "accept": "application/json",
+            "Authorization": `Bearer ${auth.token}`,
+          },
+          body: JSON.stringify(conversation)
+        })
       })
-
     },
     async refresh() {
       const auth = authStore();

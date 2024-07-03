@@ -6,6 +6,9 @@ declare module 'nitropack' {
     '/api/chat/actions/send-message': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/actions/send-message.post').default>>>>
     }
+    '/api/chat/hooks/relay': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/hooks/relay.post').default>>>>
+    }
     '/api/chat/hooks/reply': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/hooks/reply.post').default>>>>
     }
