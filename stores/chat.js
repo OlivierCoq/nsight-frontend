@@ -74,33 +74,21 @@ export const chatStore = defineStore({
       const auth = authStore();
 
       this.current_conversation.participants.forEach(async (participant_id) => {
-          
-      await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${participant_id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-            Authorization: `Bearer ${auth.token}`,
-          },
-        }).then(async (friend) => {
-          console.log("Member: ", friend.username);
 
-          const existing_conversation = friend.chats.data.find(conv => conv.id == this.current_conversation.id)
-          if(existing_conversation) {
-            
-            friend.chats.data.splice(friend.chats.data.indexOf(existing_conversation), 1, this.current_conversation)
-            console.log('conversations exists. Replacing: ', friend.chats.data)
-            nextTick(()=> {
-              this.update_user(friend)
+        await $fetch('/api/chat/actions/send-message', {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              accept: "application/json",
+              Authorization: `Bearer ${auth.token}`,
+            },
+            body: JSON.stringify({
+              participant_id: participant_id,
+              conversation: conversation
             })
-          } else {
-            friend.chats.data.push(this.current_conversation)
-            this.update_user(friend)
-          }
-          
-        }).catch((error) => {
-          console.error('Error updating user: ', error);
         })
+            
+
           
       })  
     },

@@ -3243,7 +3243,7 @@ function render(options) {
 
 const _lazy_AldD6M = () => Promise.resolve().then(function () { return sendMessage_post$1; });
 const _lazy_QXcwY7 = () => Promise.resolve().then(function () { return relay_post$1; });
-const _lazy_UmKe3C = () => Promise.resolve().then(function () { return reply_post; });
+const _lazy_UmKe3C = () => Promise.resolve().then(function () { return reply_post$1; });
 const _lazy_1X6zm6 = () => Promise.resolve().then(function () { return updateUser_post$1; });
 const _lazy_7XOvC1 = () => Promise.resolve().then(function () { return forgotPassword_post$1; });
 const _lazy_wLAu0m = () => Promise.resolve().then(function () { return newUserConfirmation_post$1; });
@@ -3467,9 +3467,40 @@ const errorDev = /*#__PURE__*/Object.freeze({
 
 useRuntimeConfig();
 const sendMessage_post = defineEventHandler(async (event) => {
-  const post_data = await readBody(event);
-  console.log("send message", post_data);
-  post_data.participants; post_data.send; post_data.auth;
+  var _a;
+  const headahs = (_a = event == null ? void 0 : event.req) == null ? void 0 : _a.headers;
+  const post_data = await readBody(event), update_user = async (user) => {
+    await $fetch(`${process.env.STRAPI_URL}/api/users/${user.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        Authorization: headahs.authorization
+      },
+      body: JSON.stringify(user)
+    }).then((response) => {
+    }).catch((error) => {
+    });
+  };
+  await $fetch(`${process.env.STRAPI_URL}/api/users/${post_data.participant_id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      accept: "application/json",
+      Authorization: headahs.authorization
+    }
+  }).then(async (friend) => {
+    const existing_conversation = friend.chats.data.find((conv) => conv.id == post_data.conversation.id);
+    if (existing_conversation) {
+      friend.chats.data.splice(friend.chats.data.indexOf(existing_conversation), 1, post_data.conversation);
+      await update_user(friend);
+    } else {
+      friend.chats.data.push(post_data.conversation);
+      await update_user(friend);
+    }
+  }).catch((error) => {
+    console.error("Error updating user: ", error);
+  });
 });
 
 const sendMessage_post$1 = /*#__PURE__*/Object.freeze({
@@ -3480,7 +3511,6 @@ const sendMessage_post$1 = /*#__PURE__*/Object.freeze({
 useRuntimeConfig();
 const relay_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
-  console.log("post_data", post_data);
   return {
     status: 200,
     data: post_data
@@ -3492,8 +3522,18 @@ const relay_post$1 = /*#__PURE__*/Object.freeze({
   default: relay_post
 });
 
-const reply_post = /*#__PURE__*/Object.freeze({
-  __proto__: null
+useRuntimeConfig();
+const reply_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("message webhook", post_data);
+  return {
+    data: "message fired!"
+  };
+});
+
+const reply_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: reply_post
 });
 
 useRuntimeConfig();
