@@ -24,6 +24,9 @@ declare module 'nitropack' {
     '/api/email/reset-password': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/email/reset-password.post').default>>>>
     }
+    '/api/friends/add': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/friends/add.post').default>>>>
+    }
     '/api/square/create-card': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/create-card.post').default>>>>
     }
@@ -50,6 +53,12 @@ declare module 'nitropack' {
     }
     '/api/utils/secure-token': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/utils/secure-token.get').default>>>>
+    }
+    '/_ws': {
+      'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/routes/_ws').default>>>>
+    }
+    '/sse': {
+      'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/routes/sse').default>>>>
     }
     '/__nuxt_error': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/renderer').default>>>>

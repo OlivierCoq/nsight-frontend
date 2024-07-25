@@ -4,8 +4,9 @@
 import path from "path";
 
 export default defineNuxtConfig({
+  ssr: true,
   devtools: {
-    enabled: false,
+    enabled: true,
     timeline: {
       enabled: true,
     },
@@ -21,7 +22,12 @@ export default defineNuxtConfig({
         { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
         { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" },
       ],
-      script: [{ src: process.env.SQUARE_ENVIRONMENT === 'sandbox' ? "https://sandbox.web.squarecdn.com/v1/square.js" : "https://web.squarecdn.com/v1/square.js" }],
+      script: [
+        { src: process.env.SQUARE_ENVIRONMENT === 'sandbox' ? "https://sandbox.web.squarecdn.com/v1/square.js" : "https://web.squarecdn.com/v1/square.js" },
+        { src: "~/assets/js/uikit.min.js" },
+        { src: "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js", type: "module" },
+        { src: "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js", nomodule: true },
+      ],
     },
   },
   ssr: false,
@@ -34,7 +40,7 @@ export default defineNuxtConfig({
 
   plugins: [
     { src: "~/plugins/font-awesome.ts" },
-    { src: "~/plugins/toast.js" },
+    { src: "~/plugins/toast.js" }
   ],
   modules: [
     "@pinia/nuxt",
@@ -42,6 +48,7 @@ export default defineNuxtConfig({
     "nuxt-primevue",
     '@nuxtjs/tailwindcss',
     "@zadigetvoltaire/nuxt-well-known",
+    "@fedorae/nuxt-uikit"
   ],
   primevue: {
     usePrimeVue: true,
@@ -104,6 +111,11 @@ export default defineNuxtConfig({
   },
   pinia: {
     autoImports: ["defineStore", ["defineStore", "definePiniaStore"]],
+  },
+  nitro: {
+    experimental: {
+      websocket: true
+    }
   },
   // Tailwind:
   postcss: {

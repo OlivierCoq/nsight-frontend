@@ -1,4 +1,4 @@
-<template>
+0<template>
   <div
     class="messenger fade-in fixed bottom-4 right-4 bg-zinc-300 dark:bg-zinc-800 rounded-lg shadow-xl p-2 cursor-pointer min-h-[30rem] w-[30rem] flex flex-col"
   >
@@ -45,6 +45,7 @@
   </div>
 </template>
 <script setup lang="ts">
+
 
   // Stores:
   const chat = chatStore()
@@ -143,9 +144,19 @@
     scroll()
   }
 
+const eventSource = new EventSource('http://localhost:3000/api/chat/hooks/reply')
+    
+eventSource.onmessage = (event) => {
+  console.log('SSE', event.data)
+}
+
+
+
   onMounted(()=> {
+
     nextTick(()=> {
       bubbles()
     })
   })
+
 </script>

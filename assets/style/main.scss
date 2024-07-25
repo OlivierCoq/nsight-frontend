@@ -11,6 +11,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import '../scss/lib/tailwind.scss';
+@import '../scss/lib/instello.scss';
 
 :root {
   --primary-50: 236 253 245;
@@ -38,33 +40,3 @@
   --surface-950: 3 6 23;
 }
 
-p, 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-a,
-button,
-input,
-textarea,
-label,
-span {
-  font-family: 'Inter', sans-serif;
-}
-
-.p-dialog {
-
-  .p-dialog-header {
-    background-color: transparent !important;
-  }
-}
-
-.dark {
-
-  .p-dialog-header {
-     background-color: red !important;
-  }
-
-}

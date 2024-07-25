@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { mkdirSync } from 'node:fs';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, createEvent, getRequestHeader, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseHeader, send, getResponseStatus, setResponseStatus, setResponseHeaders, getRequestHeaders, setHeader, sendError, H3Error, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, readBody, getQuery as getQuery$1, createError, getResponseStatusText } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, createEvent, getRequestHeader, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseHeader, send, getResponseStatus, setResponseStatus, setResponseHeaders, getRequestHeaders, setHeader, sendError, H3Error, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, readBody, createEventStream, defineWebSocketHandler, getQuery as getQuery$1, createError, getResponseStatusText } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/h3/dist/index.mjs';
 import sgMail from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@sendgrid/mail/index.js';
 import qs from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/qs/lib/index.js';
 import crypto from 'crypto';
@@ -3094,8 +3094,26 @@ const _Bqeas0SwaX = defineNitroPlugin(async (nitroApp) => {
   });
 });
 
+const script = `
+if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
+  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
+    value: {},
+    enumerable: false,
+    configurable: true,
+  })
+}
+window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
+`;
+
+const _dfScCcbrZK = (function(nitro) {
+  nitro.hooks.hook("render:html", (htmlContext) => {
+    htmlContext.head.push(`<script>${script}<\/script>`);
+  });
+});
+
 const plugins = [
-  _Bqeas0SwaX
+  _Bqeas0SwaX,
+_dfScCcbrZK
 ];
 
 function defineRenderHandler(handler) {
@@ -3243,11 +3261,12 @@ function render(options) {
 
 const _lazy_AldD6M = () => Promise.resolve().then(function () { return sendMessage_post$1; });
 const _lazy_QXcwY7 = () => Promise.resolve().then(function () { return relay_post$1; });
-const _lazy_UmKe3C = () => Promise.resolve().then(function () { return reply_post; });
+const _lazy_UmKe3C = () => Promise.resolve().then(function () { return reply_post$1; });
 const _lazy_1X6zm6 = () => Promise.resolve().then(function () { return updateUser_post$1; });
 const _lazy_7XOvC1 = () => Promise.resolve().then(function () { return forgotPassword_post$1; });
 const _lazy_wLAu0m = () => Promise.resolve().then(function () { return newUserConfirmation_post$1; });
 const _lazy_2ghplS = () => Promise.resolve().then(function () { return resetPassword_post$1; });
+const _lazy_G8UaVF = () => Promise.resolve().then(function () { return add_post$1; });
 const _lazy_xsVbzw = () => Promise.resolve().then(function () { return createCard_post$1; });
 const _lazy_xPwnBM = () => Promise.resolve().then(function () { return createCheckout_post$1; });
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
@@ -3257,6 +3276,8 @@ const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_p
 const _lazy_D8ffMl = () => Promise.resolve().then(function () { return placeOrder_post$1; });
 const _lazy_3k04uK = () => Promise.resolve().then(function () { return retrieveItem_post$1; });
 const _lazy_bz5v70 = () => Promise.resolve().then(function () { return secureToken_get$1; });
+const _lazy_PsyUP0 = () => Promise.resolve().then(function () { return _ws$1; });
+const _lazy_pqDejS = () => Promise.resolve().then(function () { return sse$1; });
 const _lazy_ShO9cQ = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
@@ -3267,6 +3288,7 @@ const handlers = [
   { route: '/api/email/forgot-password', handler: _lazy_7XOvC1, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/new-user-confirmation', handler: _lazy_wLAu0m, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/reset-password', handler: _lazy_2ghplS, lazy: true, middleware: false, method: "post" },
+  { route: '/api/friends/add', handler: _lazy_G8UaVF, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-card', handler: _lazy_xsVbzw, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-checkout', handler: _lazy_xPwnBM, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
@@ -3276,6 +3298,8 @@ const handlers = [
   { route: '/api/square/place-order', handler: _lazy_D8ffMl, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/retrieve-item', handler: _lazy_3k04uK, lazy: true, middleware: false, method: "post" },
   { route: '/api/utils/secure-token', handler: _lazy_bz5v70, lazy: true, middleware: false, method: "get" },
+  { route: '/_ws', handler: _lazy_PsyUP0, lazy: true, middleware: false, method: undefined },
+  { route: '/sse', handler: _lazy_pqDejS, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_error', handler: _lazy_ShO9cQ, lazy: true, middleware: false, method: undefined },
   { route: '/.well-known/security.txt', handler: _E2XjkS, lazy: false, middleware: false, method: undefined },
   { route: '/.well-known/change-password', handler: _icsbdn, lazy: false, middleware: false, method: undefined },
@@ -3492,8 +3516,24 @@ const relay_post$1 = /*#__PURE__*/Object.freeze({
   default: relay_post
 });
 
-const reply_post = /*#__PURE__*/Object.freeze({
-  __proto__: null
+useRuntimeConfig();
+const reply_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("post_data", post_data);
+  const eventStream = createEventStream(event);
+  const interval = setInterval(async () => {
+    await eventStream.push(`Message @ ${(/* @__PURE__ */ new Date()).toLocaleTimeString()}`);
+  }, 1e3);
+  eventStream.onClosed(async () => {
+    clearInterval(interval);
+    await eventStream.close();
+  });
+  return eventStream.send();
+});
+
+const reply_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: reply_post
 });
 
 useRuntimeConfig();
@@ -3831,6 +3871,20 @@ const resetPassword_post = defineEventHandler(async (event) => {
 const resetPassword_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: resetPassword_post
+});
+
+const add_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("Add new friend POST data", post_data);
+  return {
+    status: "success",
+    message: post_data
+  };
+});
+
+const add_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: add_post
 });
 
 const square_client$7 = new Client({
@@ -4216,6 +4270,46 @@ const secureToken_get$1 = /*#__PURE__*/Object.freeze({
   default: secureToken_get
 });
 
+const _ws = defineWebSocketHandler({
+  open(peer) {
+    console.log("[ws] open", peer);
+  },
+  message(peer, message) {
+    console.log("[ws] message", peer, message);
+    if (message.text().includes("ping")) {
+      peer.send("pong");
+    }
+  },
+  close(peer, event) {
+    console.log("[ws] close", peer, event);
+  },
+  error(peer, error) {
+    console.log("[ws] error", peer, error);
+  }
+});
+
+const _ws$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: _ws
+});
+
+const sse = defineEventHandler(async (event) => {
+  const eventStream = createEventStream(event);
+  const interval = setInterval(async () => {
+    await eventStream.push(`Message @ ${(/* @__PURE__ */ new Date()).toLocaleTimeString()}`);
+  }, 1e3);
+  eventStream.onClosed(async () => {
+    clearInterval(interval);
+    await eventStream.close();
+  });
+  return eventStream.send();
+});
+
+const sse$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: sse
+});
+
 const Vue3 = version.startsWith("3");
 
 function resolveUnref(r) {
@@ -4272,7 +4366,7 @@ function createServerHead(options = {}) {
 
 const unheadPlugins = [];
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"}],"link":[{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"}],"style":[],"script":[{"src":"https://sandbox.web.squarecdn.com/v1/square.js"}],"noscript":[]};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"}],"link":[{"rel":"preconnect","href":"https://fonts.googleapis.com"},{"rel":"preconnect","href":"https://fonts.gstatic.com","crossorigin":""},{"rel":"stylesheet","href":"https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"}],"style":[],"script":[{"src":"https://sandbox.web.squarecdn.com/v1/square.js"},{"src":"~/assets/js/uikit.min.js"},{"src":"https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js","type":"module"},{"src":"https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js","nomodule":true},{"defer":true,"src":"/uikit.min.js"},{"defer":true,"src":"/uikit-icons.min.js"}],"noscript":[]};
 
 const appRootId = "__nuxt";
 

@@ -1,6 +1,6 @@
 <template>
   <div id="nsight" class="relative" :class="settings?.dark_mode ? 'dark' : ''">
-    <CommonAppBar />
+    <TemplateNav />
     <slot />
   </div>
 </template>

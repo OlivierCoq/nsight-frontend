@@ -51,6 +51,9 @@
       "public": [
         "../public"
       ],
+      "public/*": [
+        "../public/*"
+      ],
       "pinia": [
         "../node_modules/pinia/dist/pinia"
       ],
@@ -69,6 +72,8 @@
     "../node_modules/nuxt-primevue/runtime/server",
     "../node_modules/@nuxtjs/tailwindcss/runtime/server",
     "../node_modules/@zadigetvoltaire/nuxt-well-known/runtime/server",
+    "../node_modules/@fedorae/nuxt-uikit/runtime/server",
+    "../node_modules/@nuxt/devtools/runtime/server",
     "../node_modules/@nuxt/telemetry/runtime/server",
     "./types/nitro.d.ts",
     "../**/*",
