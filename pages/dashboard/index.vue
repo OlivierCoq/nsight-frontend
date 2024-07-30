@@ -5,7 +5,7 @@
     class="min-h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-10"
   >
     <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
-      <div class="max-w-3xl p-6 mx-auto">
+      <div class="max-w-4xl p-6 mx-auto">
         <!-- heading title -->
         <div class="page__heading flex flex-row justify-between">
           <h1 class="lowercase">friends</h1>
@@ -56,7 +56,7 @@
                 href="#"
                 class="inline-block py-5 border-b-2 border-transparent aria-expanded:text-black aria-expanded:border-black aria-expanded:dark:text-white text-neutral-900 dark:text-white aria-expanded:dark:border-white"
               >
-                friends 2,640
+                friends - {{ auth.user.friends.length }}
               </a>
             </li>
             <!-- <li>
@@ -79,68 +79,77 @@
           <!-- list  One -->
           <div class="uk-active">
             <div
-              class="grid sm:grid-cols-2 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100"
+              class="grid sm:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100"
             >
               <div
+                class="fade-in"
                 v-for="(friend, a) in auth.user.friends"
                 :key="a"
-                :class="[
-                  settings.dark_mode ? 'dark' : '#',
-                  friend.nsight_id ? 'opacity-1' : 'opacity-50',
-                ]"
-                class="flex gap-4 items-center flex-wrap justify-between p-5 rounded-lg shadow-sm border1 bg-zinc-100 dark:bg-zinc-900"
-                :disabled="!friend.nsight_id"
               >
-                <a
-                  :href="
-                    friend.nsight_id
-                      ? `/members/${friend.nsight_id?.nsight_id}`
-                      : ''
-                  "
+                <div
+                  v-show="a <= state.feed_num"
+                  :class="[
+                    settings.dark_mode ? 'dark' : '#',
+                    friend.nsight_id ? 'opacity-1' : 'opacity-50',
+                  ]"
+                  class="flex gap-4 items-center flex-wrap justify-between p-5 rounded-lg shadow-sm border1 bg-zinc-100 dark:bg-zinc-900"
+                  :disabled="!friend.nsight_id"
                 >
-                  <div
-                    class="rounded-full lg:w-16 lg:h-16 w-10 h-10 overflow-hidden flex flex-col justify-center items-center"
-                  >
-                    <img
-                      :src="
-                        friend.profile_picture?.url
-                          ? friend.profile_picture.url
-                          : '/assets/images/mock_data/placeholder_pfp.jpeg'
-                      "
-                      :alt="friend.first_name"
-                      class="w-[110%]"
-                    />
-                  </div>
-                </a>
-                <div class="flex-1">
                   <a
                     :href="
                       friend.nsight_id
-                        ? `/members/${friend.nsight_id.nsight_id}`
-                        : '#'
+                        ? `/members/${friend.nsight_id?.nsight_id}`
+                        : ''
                     "
-                    :disabled="!friend.nsight_id"
                   >
-                    <h4
-                      class="font-semibold text-sm text-neutral-900 dark:text-white"
+                    <div
+                      class="rounded-full lg:w-16 lg:h-16 w-10 h-10 overflow-hidden flex flex-col justify-center items-center"
                     >
-                      {{ friend.first_name }} {{ friend.last_name }}
-                    </h4>
+                      <img
+                        :src="
+                          friend.profile_picture?.url
+                            ? friend.profile_picture.url
+                            : '/assets/images/mock_data/placeholder_pfp.jpeg'
+                        "
+                        :alt="friend.first_name"
+                        class="w-[110%]"
+                      />
+                    </div>
                   </a>
-                  <div v-if="friend.friends" class="mt-0.5">
-                    {{ friend.friends.length }} following
+                  <div class="flex-1">
+                    <a
+                      :href="
+                        friend.nsight_id
+                          ? `/members/${friend.nsight_id.nsight_id}`
+                          : '#'
+                      "
+                      :disabled="!friend.nsight_id"
+                    >
+                      <h4
+                        class="font-semibold text-sm text-neutral-900 dark:text-white"
+                      >
+                        {{ friend.first_name }} {{ friend.last_name }}
+                      </h4>
+                    </a>
+                    <div v-if="friend.friends" class="mt-0.5">
+                      {{ friend.friends.length }} following
+                    </div>
+                    <div v-else class="mt-0.5">Invited</div>
                   </div>
-                  <div v-else class="mt-0.5">Invited</div>
+                  <!-- <button type="button" class="button bg-amber-500 rounded-full py-1.5 font-semibold">Fallow</button> -->
                 </div>
-                <!-- <button type="button" class="button bg-amber-500 rounded-full py-1.5 font-semibold">Fallow</button> -->
               </div>
             </div>
 
             <div class="flex justify-center my-10">
               <button
-                v-if="auth.user.friends.length > 14"
+                v-if="
+                  auth.user.friends.length > 14 &&
+                  state.feed_num < auth.user.friends.length
+                "
                 type="button"
-                class="bg-white py-2 px-5 rounded-full shadow-md font-semibold text-sm dark:bg-dark2"
+                class="bg-white py-2 px-5 rounded-full shadow-md font-semibold text-sm dark:bg-zinc-900 dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition duration-200 ease-in-out"
+                @click="state.feed_num += 15"
               >
                 Load more...
               </button>
@@ -170,6 +179,16 @@ const prodStore = productsStore();
 const settings = settingsStore();
 const chat = chatStore();
 
+const feedNum = () => {
+  let criteria;
+  if (auth.user.friends.length > 14) {
+    criteria = 14;
+  } else if (auth.user.friends.length < 14) {
+    criteria = auth.user.friends.length;
+  }
+  return criteria;
+};
+
 // State
 const state = reactive({
   current_user: authStore.user,
@@ -178,6 +197,7 @@ const state = reactive({
   error: false,
   invite_modal: false,
   comp: 0,
+  feed_num: feedNum(),
   tabs: [
     {
       name: "My Friends",
