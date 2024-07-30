@@ -128,31 +128,28 @@ export const authStore = defineStore({
       chat.current_conversation = null;
 
       
-      // localStorage.removeItem('token')
-      // localStorage.removeItem('user')
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      localStorage.removeItem('authStore')
       this.user = null;
 
       navigateTo("/");
     },
     async updateUser() {
-      $fetch(
-        `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${this.user.id}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-            "Content-Type": "application/json",
-            accept: "application/json",
-          },
-          body: JSON.stringify(this.user),
-        }
-      )
-        .then((res) => {
-          console.log("Updated nSight user.");
+      $fetch('/api/user/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+          Authorization: `Bearer ${this.token}`
+        },
+        body: JSON.stringify({
+          user: this.user,
+          token: this.token,
         })
-        .catch((err) => {
-          console.log("Update user error", err);
-        });
+      })
+        .then((res)=> { console.log('Updated user. ', res) })
+        .catch((err) => { console.log('Error updating user: ', err) })
     },
   },
   getters: {},

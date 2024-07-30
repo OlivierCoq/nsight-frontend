@@ -177,7 +177,7 @@
             <img :src="authData.user.profile_picture ? authData.user.profile_picture.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" :alt="`${authData?.user.first_name} ${ authData?.user.last_name} `" class="w-[110%]">
           </div>
           <span class="font-semibold text-sm max-xl:hidden">  {{ authData?.user.first_name }} {{ authData?.user.last_name }} </span>
-          <ion-icon name="chevron-forward-outline"  class="text-xl ml-auto duration-200 group-aria-expanded:-rotate-90 max-xl:hidden"></ion-icon>
+          <!-- <ion-icon name="chevron-forward-outline"  class="text-xl ml-auto duration-200 group-aria-expanded:-rotate-90 max-xl:hidden"></ion-icon> -->
         </a>
           <div class="bg-white sm:w-64 2xl:w-[calc(100%-16px)] w-full shadow-lg border rounded-xl overflow-hidden max-md:!top-auto max-md:bottom-16 border2 dark:bg-zinc-900 hidden" uk-drop="animation:uk-animation-slide-bottom-medium ;animate-out: true">
 

@@ -1,14 +1,27 @@
 <template>
-  <div class="h-[90%] flex flex-col justify-start items-start" :class="settings.dark_mode ? 'dark' : ''">
-    <div class="w-full flex flex-col h-full bg-zinc-800 shadow-xl px-5 justify-center items-center">
-      <p v-if="state.success.show" class="text-lg font-thin text-neutral-800 dark:text-white" v-html="state.success.message"></p>
+  <div
+    class="h-[90%] flex flex-col justify-start items-start"
+    :class="settings.dark_mode ? 'dark' : ''"
+  >
+    <div
+      class="w-full flex flex-col h-full bg-zinc-800 shadow-xl px-5 justify-center items-center"
+    >
+      <p
+        v-if="state.success.show"
+        class="text-lg font-thin text-neutral-800 dark:text-white"
+        v-html="state.success.message"
+      ></p>
       <div v-else class="w-full">
         <div class="input_group w-full flex flex-row mt-3">
           <div class="w-full md:w-1/2 px-2">
             <input
               type="text"
               class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder:text-white dark:text-white"
-              :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+              :class="
+                auth.user.preferences[0].dark_mode
+                  ? 'border-dark'
+                  : 'border-light'
+              "
               placeholder="First Name"
               v-model="new_nsight_member.first_name"
             />
@@ -17,7 +30,11 @@
             <input
               type="text"
               class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder-white dark:text-white"
-              :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+              :class="
+                auth.user.preferences[0].dark_mode
+                  ? 'border-dark'
+                  : 'border-light'
+              "
               placeholder="Last Name"
               v-model="new_nsight_member.last_name"
             />
@@ -29,7 +46,11 @@
             <input
               type="email"
               class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder:text-white dark:text-white"
-              :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+              :class="
+                auth.user.preferences[0].dark_mode
+                  ? 'border-dark'
+                  : 'border-light'
+              "
               placeholder="Email"
               v-model="new_nsight_member.email"
             />
@@ -38,16 +59,19 @@
             <input
               type="text"
               class="w-full p-2 mb-1 me-3 rounded-md border-gray-300 bg-transparent placeholder:text-neutral-700 dark:placeholder-white dark:text-white"
-              :class=" auth.user.preferences[0].dark_mode ? 'border-dark' : 'border-light'"
+              :class="
+                auth.user.preferences[0].dark_mode
+                  ? 'border-dark'
+                  : 'border-light'
+              "
               v-model="new_nsight_member.phone_number"
               pattern="[0-9\-]*"
               placeholder="+1-123-456-7890"
               @keydown="
                 () => {
-                  new_nsight_member.phone_number =
-                    new AsYouType()
-                      .input(new_nsight_member.phone_number)
-                      .replace(/\s/g, '-');
+                  new_nsight_member.phone_number = new AsYouType()
+                    .input(new_nsight_member.phone_number)
+                    .replace(/\s/g, '-');
                 }
               "
             />
@@ -55,8 +79,14 @@
         </div>
 
         <div class="input_group w-full flex flex-row mt-3">
-          <button class="nsight-btn-primary px-4 py-2 text-neutral-700  w-full rounded-md mx-2 shadow-xl" :disabled="!state.validate" @click="post_new_member">
-            <span :class="!state.validate ? 'opacity-50' : 'opacity-1'">invite friend</span>
+          <button
+            class="nsight-btn-primary px-4 py-2 text-neutral-700 w-full rounded-md mx-2 shadow-xl"
+            :disabled="!state.validate"
+            @click="post_new_member"
+          >
+            <span :class="!state.validate ? 'opacity-50' : 'opacity-1'"
+              >invite friend</span
+            >
           </button>
         </div>
       </div>
@@ -64,7 +94,6 @@
   </div>
 </template>
 <script setup lang="ts">
-
 // Config
 import moment from "moment";
 import qs from "qs";
@@ -81,14 +110,14 @@ const runtimeConfig = useRuntimeConfig();
 // })
 
 // Define emits:
-const emit = defineEmits(['post_new_member'])
+const emit = defineEmits(["post_new_member"]);
 
 // Stores
 const auth = authStore();
 const prodStore = productsStore();
 const settings = settingsStore();
 
- // Methods:
+// Methods:
 // State
 const state = reactive({
   current_user: authStore.user,
@@ -110,9 +139,8 @@ const state = reactive({
   success: {
     message: "",
     show: false,
-  }
+  },
 });
-
 
 // Methods
 const generate_random_password = () => {
@@ -126,7 +154,6 @@ const generate_random_password = () => {
 };
 // console.log("random password: ", generate_random_password());
 
-
 const validateEmail = (email: string) => {
   return (
     email.length &&
@@ -134,7 +161,7 @@ const validateEmail = (email: string) => {
       .toString()
       .toLowerCase()
       .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       )
   );
 };
@@ -168,28 +195,29 @@ const validatePhone = (number: string) => {
 */
 
 const generateSecureToken = () => {
-  $fetch('/api/utils/secure-token', {
-    method: 'GET',
+  $fetch("/api/utils/secure-token", {
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      accept: 'application',
-    }
-  }).
-  then((data) => {
-    return data.token
-  })
-}
+      "Content-Type": "application/json",
+      accept: "application",
+    },
+  }).then((data) => {
+    return data.token;
+  });
+};
 
-generateSecureToken()
+generateSecureToken();
+
+let clone_user = auth?.user;
 
 const new_nsight_member = reactive({
   blocked: false,
   confirmed: false,
-  email: '',
-  first_name: '',
-  last_name: '',
-  phone_number: '',
-  nsight_id: `nsight-${auth.user.id}-${moment().format("MMDDYYYY-hmmss")}`,
+  email: "",
+  first_name: "",
+  last_name: "",
+  phone_number: "",
+  nsight_id: `nsight-${clone_user.id}-${moment().format("MMDDYYYY-hmmss")}`,
   square_id: "",
   reset_token: generateSecureToken(),
   preferences: [
@@ -202,16 +230,16 @@ const new_nsight_member = reactive({
   // password: thisObj.generate_random_password()
   // password: "P@ssW3rd9756",
   password: generate_random_password(),
-  users: [auth.user],
-  friends: [auth.user],
+  users: [auth?.user],
+  friends: [auth?.user],
   profile_picture: {},
   favorites: {
     products: [],
-    users: []
+    users: [],
   },
   pictures: [],
   chats: {
-    data: []
+    data: [],
   },
   addresses: {
     shipping: [],
@@ -248,10 +276,9 @@ const new_nsight_member = reactive({
       },
     ],
   },
-})
+});
 
 const post_new_member = async () => {
-
   state.posting_new = true;
 
   const headers_obj = {
@@ -269,7 +296,7 @@ const post_new_member = async () => {
     {
       method: "GET",
       headers: headers_obj,
-    }
+    },
   )
     .then(async (nsight_id_check) => {
       // If none found, add the nsight_id to the nsight-ids table
@@ -281,13 +308,14 @@ const post_new_member = async () => {
             nsight_id: state.new_member.n_id,
           },
         };
+        // Add to nsight_id table
         await $fetch(
           `${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids?populate=*`,
           {
             method: "POST",
             headers: headers_obj,
             body: JSON.stringify(new_nsight_id),
-          }
+          },
         )
           .then(async (new_nsight_id_data) => {
             console.log("New nsight id added", new_nsight_id_data);
@@ -295,21 +323,21 @@ const post_new_member = async () => {
 
             new_nsight_member.nsight_id = new_strapi_nsight_id;
 
-
+            // Add the user to the users table
             await $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users`, {
               method: "POST",
               headers: headers_obj,
               body: JSON.stringify(new_nsight_member),
             })
-              .then( async(new_strapi_user_data) => {
+              .then(async (new_strapi_user_data) => {
                 console.log(
                   "created new strapi member: ",
-                  new_strapi_user_data
+                  new_strapi_user_data,
                 );
                 const new_strapi_user = new_strapi_user_data;
 
                 // update nsight_id with new user
-                 await $fetch(
+                await $fetch(
                   `${runtimeConfig.public.NUXT_STRAPI_URL}/api/nsight-ids/${new_strapi_nsight_id.id}`,
                   {
                     method: "PUT",
@@ -319,12 +347,12 @@ const post_new_member = async () => {
                         user: [new_strapi_user],
                       },
                     }),
-                  }
+                  },
                 )
                   .then(async (updated_nsight_id_data) => {
                     console.log(
                       "updated nsight_id with new user: ",
-                      updated_nsight_id_data
+                      updated_nsight_id_data,
                     );
 
                     // Add the user to Square
@@ -343,7 +371,7 @@ const post_new_member = async () => {
                         method: "POST",
                         headers: headers_obj,
                         body: JSON.stringify(new_square_customer),
-                      }
+                      },
                     );
                     new_nsight_member.square_id = square_data.customer.id;
 
@@ -356,7 +384,7 @@ const post_new_member = async () => {
                         new_nsight_member.square_id = square_data.customer.id;
                         console.log(
                           "updated new_nsight_member with square_id: ",
-                          new_nsight_member
+                          new_nsight_member,
                         );
 
                         const updated_new_sight_member = new_nsight_member;
@@ -369,49 +397,117 @@ const post_new_member = async () => {
                             body: JSON.stringify({
                               square_id: square_data.customer.id,
                             }),
-                          }
+                          },
                         )
-                          .then( async(square_id_update_data) => {
+                          .then(async (square_id_update_data) => {
                             console.log(
                               "updated strapi user with square_id: ",
-                              square_id_update_data
+                              square_id_update_data,
                             );
 
                             // Add the user to your friends list
                             // There's an issue right now with friends vs users. I'm adding to both for now.
                             // square_id_update_data['friends'] = new_nsight_member.friends
                             // square_id_update_data['users'] = new_nsight_member.users
+                            new_strapi_user["nsight_id"] = {};
+                            new_strapi_user.nsight_id.nsight_id =
+                              new_strapi_nsight_id.nsight_id;
 
-                              await auth?.user?.friends.push(new_nsight_member)
-                              await auth?.user?.users.push(new_nsight_member)
-                              // await auth.updateUser()
+                            auth?.user?.friends.push(new_strapi_user);
+                            auth?.user?.users.push(new_strapi_user);
 
-                              await $fetch('/api/email/new-user-confirmation', {
-                                method: 'POST',
+                            // Update logged in user with new friend:
+                            await $fetch(
+                              `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${auth?.user?.id}`,
+                              {
+                                method: "PUT",
                                 headers: headers_obj,
-                                body: JSON.stringify({ 
-                                  full_name: `${new_nsight_member.first_name} ${new_nsight_member.last_name}`,
-                                  email: new_nsight_member.email,
-                                  inviting_member_name: `${auth.user.first_name} ${auth.user.last_name}`,
-                                  username: new_nsight_member.email,
-                                  password: new_nsight_member.password
-                                })
-                              }).then(async(data) => {
-                                console.log('email confirmation sent to new member: ', data)
-                                state.posting_new = false
-                                state.success.message = `${state.new_member.first_name}'s been invited and added to your friends list! 🎉 <br/><br/> An email's been sent to them with their login credentials. Let them know that it might be in their spam folder. If they don't see it, they can request a new password. `
-                                
-                                emit('post_new_member')
-                                
+                                body: JSON.stringify({
+                                  data: {
+                                    friends: auth?.user?.friends,
+                                    users: auth?.user?.users,
+                                  },
+                                }),
+                              },
+                            )
+                              .then(async (updated_user_data) => {
+                                console.log(
+                                  "updated logged in user with new friend: ",
+                                  updated_user_data,
+                                );
+
+                                // Update friend with logged in user:
+                                await $fetch(
+                                  `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${square_id_update_data.id}`,
+                                  {
+                                    method: "PUT",
+                                    headers: headers_obj,
+                                    body: JSON.stringify({
+                                      data: {
+                                        friends: [auth.user],
+                                        users: [auth.user],
+                                      },
+                                    }),
+                                  },
+                                )
+                                  .then(async (updated_friend_data) => {
+                                    console.log(
+                                      "updated new friend with logged in user: ",
+                                      updated_friend_data,
+                                    );
+                                  })
+                                  .catch((err) => {
+                                    console.log(
+                                      "error updating new friend with logged in user: ",
+                                      err,
+                                    );
+                                  });
+                              })
+                              .catch((err) => {
+                                console.log(
+                                  "error updating logged in user: ",
+                                  err,
+                                );
+                              });
+
+                            // Send email to new member
+                            await $fetch("/api/email/new-user-confirmation", {
+                              method: "POST",
+                              headers: headers_obj,
+                              body: JSON.stringify({
+                                full_name: `${new_nsight_member.first_name} ${new_nsight_member.last_name}`,
+                                email: new_nsight_member.email,
+                                inviting_member_name: `${auth.user.first_name} ${auth.user.last_name}`,
+                                username: new_nsight_member.email,
+                                password: new_nsight_member.password,
+                              }),
+                            })
+                              .then(async (data) => {
+                                console.log(
+                                  "email confirmation sent to new member: ",
+                                  data,
+                                );
+                                state.posting_new = false;
+                                state.success.message = `${new_nsight_member.first_name}'s been invited and added to your friends list! 🎉 <br/><br/> An email's been sent to them with their login credentials. Let them know that it might be in their spam folder. If they don't see it, they can request a new password. `;
+
+                                emit("post_new_member");
+
                                 nextTick(() => {
-                                  state.success.show = true
-                                })
-                              }).catch((err) => { console.log('error sending email confirmation to new member: ', err); state.error = err })
+                                  state.success.show = true;
+                                });
+                              })
+                              .catch((err) => {
+                                console.log(
+                                  "error sending email confirmation to new member: ",
+                                  err,
+                                );
+                                state.error = err;
+                              });
                           })
                           .catch((err) => {
                             console.log(
                               "error updating strapi user with square_id: ",
-                              err
+                              err,
                             );
                             state.error = err;
                           });
@@ -421,7 +517,7 @@ const post_new_member = async () => {
                   .catch((err) => {
                     console.log(
                       "error updating nsight_id with new user: ",
-                      err
+                      err,
                     );
                     state.error = err;
                   });
@@ -441,9 +537,6 @@ const post_new_member = async () => {
         state.error = mssg;
       }
     })
-    .then(() => {
-      auth.updateUser()
-    })
     .catch((err) => {
       console.log("nsight error", err);
       return err;
@@ -455,7 +548,7 @@ const post_new_member = async () => {
 watch(
   () => new_nsight_member,
   (val: object) => {
-    new_nsight_member.username = new_nsight_member.email
+    new_nsight_member.username = new_nsight_member.email;
     state.validate =
       val.email.length > 0 &&
       validateEmail(val.email) &&
@@ -463,9 +556,8 @@ watch(
       val.last_name.length > 0 &&
       validatePhone(val.phone_number);
   },
-  { deep: true }
+  { deep: true },
 );
-
 
 // email:
 // watch(() => state.tabs[1].data.new_member.email, (val) => {

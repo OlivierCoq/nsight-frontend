@@ -24,9 +24,6 @@ declare module 'nitropack' {
     '/api/email/reset-password': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/email/reset-password.post').default>>>>
     }
-    '/api/friends/add': {
-      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/friends/add.post').default>>>>
-    }
     '/api/square/create-card': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/create-card.post').default>>>>
     }
@@ -50,6 +47,12 @@ declare module 'nitropack' {
     }
     '/api/square/retrieve-item': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/retrieve-item.post').default>>>>
+    }
+    '/api/user/add': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/add.post').default>>>>
+    }
+    '/api/user/update': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/update.post').default>>>>
     }
     '/api/utils/secure-token': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/utils/secure-token.get').default>>>>

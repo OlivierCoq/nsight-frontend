@@ -3266,7 +3266,6 @@ const _lazy_1X6zm6 = () => Promise.resolve().then(function () { return updateUse
 const _lazy_7XOvC1 = () => Promise.resolve().then(function () { return forgotPassword_post$1; });
 const _lazy_wLAu0m = () => Promise.resolve().then(function () { return newUserConfirmation_post$1; });
 const _lazy_2ghplS = () => Promise.resolve().then(function () { return resetPassword_post$1; });
-const _lazy_G8UaVF = () => Promise.resolve().then(function () { return add_post$1; });
 const _lazy_xsVbzw = () => Promise.resolve().then(function () { return createCard_post$1; });
 const _lazy_xPwnBM = () => Promise.resolve().then(function () { return createCheckout_post$1; });
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
@@ -3275,6 +3274,8 @@ const _lazy_hWPhL2 = () => Promise.resolve().then(function () { return payOrder_
 const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_post$1; });
 const _lazy_D8ffMl = () => Promise.resolve().then(function () { return placeOrder_post$1; });
 const _lazy_3k04uK = () => Promise.resolve().then(function () { return retrieveItem_post$1; });
+const _lazy_z4QTko = () => Promise.resolve().then(function () { return add_post$1; });
+const _lazy_Q675bI = () => Promise.resolve().then(function () { return update_post$1; });
 const _lazy_bz5v70 = () => Promise.resolve().then(function () { return secureToken_get$1; });
 const _lazy_PsyUP0 = () => Promise.resolve().then(function () { return _ws$1; });
 const _lazy_pqDejS = () => Promise.resolve().then(function () { return sse$1; });
@@ -3288,7 +3289,6 @@ const handlers = [
   { route: '/api/email/forgot-password', handler: _lazy_7XOvC1, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/new-user-confirmation', handler: _lazy_wLAu0m, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/reset-password', handler: _lazy_2ghplS, lazy: true, middleware: false, method: "post" },
-  { route: '/api/friends/add', handler: _lazy_G8UaVF, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-card', handler: _lazy_xsVbzw, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-checkout', handler: _lazy_xPwnBM, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
@@ -3297,6 +3297,8 @@ const handlers = [
   { route: '/api/square/payment', handler: _lazy_lOjqNk, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/place-order', handler: _lazy_D8ffMl, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/retrieve-item', handler: _lazy_3k04uK, lazy: true, middleware: false, method: "post" },
+  { route: '/api/user/add', handler: _lazy_z4QTko, lazy: true, middleware: false, method: "post" },
+  { route: '/api/user/update', handler: _lazy_Q675bI, lazy: true, middleware: false, method: "post" },
   { route: '/api/utils/secure-token', handler: _lazy_bz5v70, lazy: true, middleware: false, method: "get" },
   { route: '/_ws', handler: _lazy_PsyUP0, lazy: true, middleware: false, method: undefined },
   { route: '/sse', handler: _lazy_pqDejS, lazy: true, middleware: false, method: undefined },
@@ -3873,20 +3875,6 @@ const resetPassword_post$1 = /*#__PURE__*/Object.freeze({
   default: resetPassword_post
 });
 
-const add_post = defineEventHandler(async (event) => {
-  const post_data = await readBody(event);
-  console.log("Add new friend POST data", post_data);
-  return {
-    status: "success",
-    message: post_data
-  };
-});
-
-const add_post$1 = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  default: add_post
-});
-
 const square_client$7 = new Client({
   environment: process.env.SQUARE_ENVIRONMENT == "production" ? Environment.Production : Environment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
@@ -4257,6 +4245,34 @@ const retrieveItem_post = defineEventHandler(async (event) => {
 const retrieveItem_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: retrieveItem_post
+});
+
+const add_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("Add new friend POST data", post_data);
+  return {
+    status: "success",
+    message: post_data
+  };
+});
+
+const add_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: add_post
+});
+
+const update_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("Add new friend POST data", post_data);
+  return {
+    status: "success",
+    message: post_data
+  };
+});
+
+const update_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: update_post
 });
 
 const secureToken_get = defineEventHandler(async (event) => {
