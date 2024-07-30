@@ -5,7 +5,7 @@ import { ofetch } from "ofetch";
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 const runtimeConfig = useRuntimeConfig();
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
 // Your store definition here
 
@@ -26,6 +26,7 @@ export const authStore = defineStore({
       token: null,
       loggedIn: false,
       errors: false,
+      suggested_friends: [],
     };
   },
   actions: {
@@ -44,7 +45,7 @@ export const authStore = defineStore({
             "Access-Control-Allow-Origin": "*",
           },
           body: JSON.stringify(payload),
-        }
+        },
       );
       if (res.statusCode === 400) {
         this.errors = res.data.message[0].messages[0].message;
@@ -59,39 +60,41 @@ export const authStore = defineStore({
           },
         });
         // Get user data from Strapi:
-      
+
         const custom_data = await $fetch(
-          `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${res.user.id}?${qs.stringify({
-            populate: [
-              'username',
-              'email',
-              'first_name',
-              'last_name',
-              'favorites',
-              'cart',
-              'addresses',
-              'selected_addresses',
-              'selected_payment_method',
-              'payment_methods',
-              'chats',
-              'preferences',
-              'nsight_id',
-              'friends',
-              'friends.nsight_id',
-              'friends.friends',
-              'friends.chats',
-              'friends.profile_picture',
-              'users.friends',
-              'phone_number',
-              'square_id',
-              'orders',
-              'returns',
-              'cancelled_orders',
-              'profile_picture',
-              'pictures',
-              'cart_obj'
-            ]
-          })}`,
+          `${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${res.user.id}?${qs.stringify(
+            {
+              populate: [
+                "username",
+                "email",
+                "first_name",
+                "last_name",
+                "favorites",
+                "cart",
+                "addresses",
+                "selected_addresses",
+                "selected_payment_method",
+                "payment_methods",
+                "chats",
+                "preferences",
+                "nsight_id",
+                "friends",
+                "friends.nsight_id",
+                "friends.friends",
+                "friends.chats",
+                "friends.profile_picture",
+                "users.friends",
+                "phone_number",
+                "square_id",
+                "orders",
+                "returns",
+                "cancelled_orders",
+                "profile_picture",
+                "pictures",
+                "cart_obj",
+              ],
+            },
+          )}`,
           {
             method: "GET",
             headers: {
@@ -99,7 +102,7 @@ export const authStore = defineStore({
               accept: "application/json",
               Authorization: `Bearer ${res.jwt}`,
             },
-          }
+          },
         ).then((full_user_data) => {
           this.errors = false;
           this.user = full_user_data;
@@ -108,11 +111,10 @@ export const authStore = defineStore({
           localStorage.setItem("token", res.jwt);
 
           // Grap products from api/square
-          prodStore.getProducts()
-          prodStore.initCart()
-          settings.initSettings()
-        
-        
+          prodStore.getProducts();
+          prodStore.initCart();
+          settings.initSettings();
+
           setTimeout(() => {
             navigateTo("/dashboard");
           }, 1000);
@@ -127,29 +129,32 @@ export const authStore = defineStore({
       this.loggedIn = false;
       chat.current_conversation = null;
 
-      
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      localStorage.removeItem('authStore')
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("authStore");
       this.user = null;
 
       navigateTo("/");
     },
     async updateUser() {
-      $fetch('/api/user/update', {
-        method: 'POST',
+      $fetch("/api/user/update", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          accept: 'application/json',
-          Authorization: `Bearer ${this.token}`
+          "Content-Type": "application/json",
+          accept: "application/json",
+          Authorization: `Bearer ${this.token}`,
         },
         body: JSON.stringify({
           user: this.user,
           token: this.token,
-        })
+        }),
       })
-        .then((res)=> { console.log('Updated user. ', res) })
-        .catch((err) => { console.log('Error updating user: ', err) })
+        .then((res) => {
+          console.log("Updated user. ", res);
+        })
+        .catch((err) => {
+          console.log("Error updating user: ", err);
+        });
     },
   },
   getters: {},

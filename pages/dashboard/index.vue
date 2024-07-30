@@ -51,7 +51,10 @@
             :class="settings.dark_mode ? 'dark' : ''"
             class="flex gap-5 text-sm text-center text-gray-600 capitalize font-semibold -mb-px dark:text-white/80 connect: animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium"
           >
-            <li>
+            <li
+              :class="state.active_tab == 0 ? 'active-tab' : ''"
+              @click="state.active_tab = 0"
+            >
               <a
                 href="#"
                 class="inline-block py-5 border-b-2 border-transparent aria-expanded:text-black aria-expanded:border-black aria-expanded:dark:text-white text-neutral-900 dark:text-white aria-expanded:dark:border-white"
@@ -59,12 +62,10 @@
                 friends - {{ auth.user.friends.length }}
               </a>
             </li>
-            <!-- <li>
-                  <a href="#" class="inline-block py-5 border-b-2 border-transparent aria-expanded:text-black aria-expanded:border-black aria-expanded:dark:text-white text-neutral-900 dark:text-white aria-expanded:dark:border-white">
-                    following 1,420
-                  </a>
-                </li> -->
-            <li>
+            <li
+              :class="state.active_tab == 1 ? 'active-tab' : ''"
+              @click="state.active_tab = 1"
+            >
               <a
                 href="#"
                 class="inline-block py-5 border-b-2 border-transparent aria-expanded:text-black aria-expanded:border-black aria-expanded:dark:text-white text-neutral-900 dark:text-white aria-expanded:dark:border-white"
@@ -76,8 +77,11 @@
         </nav>
 
         <div :key="state.comp" class="uk-switcher uk-active mt-10" id="ttabs">
-          <!-- list  One -->
-          <div class="uk-active">
+          <!-- Friends -->
+          <div
+            v-show="state.active_tab == 0"
+            :class="state.active_tab == 0 ? 'uk-active' : ''"
+          >
             <div
               class="grid sm:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100"
             >
@@ -155,6 +159,20 @@
               </button>
             </div>
           </div>
+          <!-- Suggested members: -->
+          <div
+            v-show="state.active_tab == 1"
+            :class="state.active_tab == 1 ? 'uk-active' : ''"
+          >
+            <div class="w-full h-full px-2 py-4 flex flex-col">
+              <p
+                v-if="!auth.suggested_friends.length"
+                class="text-neutral-900 dark:text-white text-md my-5 text-start"
+              >
+                No suggested friends at the moment. Reach out to more people!
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -198,28 +216,14 @@ const state = reactive({
   invite_modal: false,
   comp: 0,
   feed_num: feedNum(),
+  active_tab: 0,
   tabs: [
+    { value: "friends", label: "Friends", pinned: false, active: true },
     {
-      name: "My Friends",
-      data: {
-        adding_new: false,
-        posting_new: false,
-        post: null,
-      },
-      value: "my_friends",
+      value: "people_you_may_know",
+      label: "People You May Know",
       pinned: false,
-    },
-    {
-      name: "My Profile",
-      value: "my_profile",
-      data: {},
-      pinned: false,
-    },
-    {
-      name: "Current",
-      data: {},
-      value: "current",
-      pinned: false,
+      active: false,
     },
   ],
   validate: false,
@@ -249,3 +253,10 @@ const pinTab = (tab) => {
   settings.pinDashboardTab(tab);
 };
 </script>
+<style lang="scss">
+.active-tab {
+  border-bottom: 1px solid #cecfc4 !important;
+  /* smooth transiton: */
+  transition: border-bottom 0.5s;
+}
+</style>
