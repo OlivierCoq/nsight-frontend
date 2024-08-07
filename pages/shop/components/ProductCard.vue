@@ -14,12 +14,15 @@
         <div
           class="absolute right-0 top-0 m-2 bg-slate-100 rounded-full py-0.5 px-2 text-sm font-bold dark:bg-slate-800/60"
         >
-          <font-awesome-icon
-            :icon="[in_favorites() ? 'fas' : 'far', 'heart']"
-            class="text-red-500 hover:text-red-600 hover:cursor-pointer"
-            @click="toggle_favorite(props.product)"
-          >
-          </font-awesome-icon>
+          <span class="text-neutral-900 dark:text-white font-thin">
+            $
+            {{
+              format_price(
+                props.product.item_data.variations[0].item_variation_data
+                  .price_money.amount,
+              )
+            }}
+          </span>
         </div>
       </div>
     </div>
@@ -85,15 +88,12 @@
       <span class="text-neutral-900 dark:text-white font-thin">
         {{ props.product.item_data?.name }}
       </span>
-      <span class="text-neutral-900 dark:text-white font-thin"
-        >$
-        {{
-          format_price(
-            props.product.item_data.variations[0].item_variation_data
-              .price_money.amount,
-          )
-        }}</span
+      <font-awesome-icon
+        :icon="[in_favorites() ? 'fas' : 'far', 'heart']"
+        class="text-red-500 hover:text-red-600 hover:cursor-pointer"
+        @click="toggle_favorite(props.product)"
       >
+      </font-awesome-icon>
     </div>
   </div>
 </template>
