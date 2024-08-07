@@ -13,14 +13,16 @@
             <h1>Shop</h1>
           </div>
           <!-- tab style one -->
-          <div class="overflow-hidden mt-6">
+          <div class="overflow-hidden my-6">
             <div
               id="product-nav"
               class="relative flex items-center justify-between border-b dark:border-slate-800 uk-animation-slide-top-medium"
             >
               <!-- tabs -->
               <ul
-                class="flex gap-2 text-sm text-center text-gray-600 capitalize font-semibold dark:text-white/80 -mb-px"
+                v-if="!state.search.isActive"
+                class="flex gap-2 text-sm text-center text-gray-600 capitalize font-semibold dark:text-white/80 -mb-px h-[54px]"
+                style="padding-left: 0px !important"
                 uk-switcher="connect: #market_tab ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium"
               >
                 <li v-for="(tab, a) in state.tabs" :key="a">
@@ -34,6 +36,18 @@
                   </a>
                 </li>
               </ul>
+              <!-- search input -->
+              <div
+                v-if="state.search.isActive"
+                class="flex items-center gap-2 fade-in shadow-xl rounded-md h-[54px] w-[75%]"
+              >
+                <input
+                  v-model="state.search.query"
+                  type="text"
+                  class="!bg-transparent focus:!border-transparent focus:!ring-transparent w-full"
+                  placeholder="Search"
+                />
+              </div>
 
               <!-- right button icons -->
               <div class="flex items-center gap-4">
@@ -44,6 +58,8 @@
                   stroke-width="2"
                   stroke="currentColor"
                   width="24"
+                  class="hover:cursor-pointer"
+                  @click="state.search.isActive = !state.search.isActive"
                 >
                   <path
                     stroke-linecap="round"
@@ -65,6 +81,17 @@
               </div>
             </div>
           </div>
+          <div
+            v-if="state.active_filter == 0"
+            class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 mt-2"
+            uk-scrollspy="target: > div; cls: uk-animation-slide-bottom-small; delay: 100"
+          >
+            <ProductCard
+              v-for="(product, i) in prodStore.products"
+              :key="i"
+              :product="product"
+            />
+          </div>
         </div>
       </div>
     </main>
@@ -76,8 +103,16 @@ definePageMeta({
   layout: "inner",
 });
 
+// components:
+
+import ProductCard from "./components/ProductCard.vue";
+
 const prodStore = productsStore();
 const state = reactive({
+  search: {
+    isActive: false,
+    query: "",
+  },
   filters: [
     {
       id: 0,
