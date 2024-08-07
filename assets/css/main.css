@@ -29,7 +29,7 @@
   --surface-950: 3 6 23;
 }
 
-p, 
+p,
 h1,
 h2,
 h3,
@@ -42,18 +42,18 @@ input,
 textarea,
 label,
 span {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 @keyframes fadeIn {
   to {
-    opacity: 1;
+    opacity: 1 !important;
   }
 }
 
 .fade-in {
-  opacity: 0;
-  animation: fadeIn 1.7s forwards;
+  opacity: 0 !important;
+  animation: fadeIn 1.7s forwards !important;
 }
 
 .fade-out {
