@@ -1,16 +1,17 @@
-import sgMail from '@sendgrid/mail';
+import sgMail from "@sendgrid/mail";
 
-const config = useRuntimeConfig(), api_key = config.public.SENDGRID_API_KEY;
+const config = useRuntimeConfig(),
+  api_key = config.public.SENDGRID_API_KEY;
 
 sgMail.setApiKey(api_key);
 
 export default defineEventHandler(async (event) => {
   const post_data = await readBody(event);
 
-  console.log('post_data', post_data);
+  console.log("post_data", post_data);
 
   if (!post_data) {
-    return { status: 'error', message: 'Invalid data' };
+    return { status: "error", message: "Invalid data" };
   } else {
     const body = `
 <!DOCTYPE html>
@@ -47,7 +48,7 @@ export default defineEventHandler(async (event) => {
                     </tr>
                     <tr>
                         <td align="center" style="padding: 20px; background-color: #000000; color: #ffffff;">
-                            <p style="margin: 0; font-size: 14px;">&copy; ${ new Date().getFullYear() } nSight. All rights reserved.</p>
+                            <p style="margin: 0; font-size: 14px;">&copy; ${new Date().getFullYear()} nSight. All rights reserved.</p>
                         </td>
                     </tr>
                 </table>
@@ -58,20 +59,41 @@ export default defineEventHandler(async (event) => {
 </html>
     `;
 
+    // const msg = {
+    //   to: post_data.email,
+    //   from: 'info@nsightapi.vip',
+    //   subject: 'Welcome to the nSight Family',
+    //   text: `Let's get it!`,
+    //   html: body,
+    // };
+
     const msg = {
-      to: post_data.email,
-      from: 'info@nsightapi.vip',
-      subject: 'Welcome to the nSight Family',
-      text: `Let's get it!`,
-      html: body,
+      From: "info@nsight.online",
+      To: post_data.email,
+      Subject: "Welcome to the nSight Family",
+      HtmlBody: body,
+      TrackOpens: true,
+      MessageStream: "outbound",
     };
 
     try {
-      await sgMail.send(msg);
-      return { status: 'success', message: 'Email sent successfully' };
+      // await sgMail.send(msg);
+
+      $fetch("https://api.postmarkapp.com/email", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-Postmark-Server-Token": config.public.POSTMARK_API_KEY,
+        },
+        body: JSON.stringify(msg),
+      }).then((response) => {
+        console.log("response", response);
+        return { status: "success", message: "Email sent successfully" };
+      });
     } catch (error) {
       console.error(error);
-      return { status: 'error', message: 'Failed to send email', error };
+      return { status: "error", message: "Failed to send email", error };
     }
   }
 });

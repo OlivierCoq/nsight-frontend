@@ -73,7 +73,7 @@ const _inlineRuntimeConfig = {
     "SQUARE_LOCATION_ID": "L56F5MJM7AFC7",
     "SQUARE_ACCESS_TOKEN": "EAAAlzaGxomxKQFqliNDihMJ4I4l1CpMN90rVRBR1L44k8lr8mFgPq9-f9WP7nda",
     "SQUARE_ENVIRONMENT": "sandbox",
-    "SENDGRID_API_KEY": "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",
+    "SENDGRID_API_KEY": "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",
     "persistedState": {
       "storage": "cookies",
       "debug": false,
@@ -3732,15 +3732,26 @@ const newUserConfirmation_post = defineEventHandler(async (event) => {
 </html>
     `;
     const msg = {
-      to: post_data.email,
-      from: "info@nsightapi.vip",
-      subject: "Welcome to the nSight Family",
-      text: `Let's get it!`,
-      html: body
+      From: "info@nsight.online",
+      To: post_data.email,
+      Subject: "Welcome to the nSight Family",
+      HtmlBody: body,
+      TrackOpens: true,
+      MessageStream: "outbound"
     };
     try {
-      await sgMail.send(msg);
-      return { status: "success", message: "Email sent successfully" };
+      $fetch("https://api.postmarkapp.com/email", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-Postmark-Server-Token": config$1.public.POSTMARK_API_KEY
+        },
+        body: JSON.stringify(msg)
+      }).then((response) => {
+        console.log("response", response);
+        return { status: "success", message: "Email sent successfully" };
+      });
     } catch (error) {
       console.error(error);
       return { status: "error", message: "Failed to send email", error };
