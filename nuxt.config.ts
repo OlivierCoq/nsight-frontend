@@ -19,14 +19,53 @@ export default defineNuxtConfig({
       // CSS:
       link: [
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
-        { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
-        { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" },
+        {
+          rel: "preconnect",
+          href: "https://fonts.gstatic.com",
+          crossorigin: "",
+        },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+        },
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "https://res.cloudinary.com/nsight/image/upload/v1723398229/apple_touch_icon_49ca9d5032.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "32x32",
+          href: "https://res.cloudinary.com/nsight/image/upload/v1723398229/favicon_32x32_fb523a84f5.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "16x16",
+          href: "https://res.cloudinary.com/nsight/image/upload/v1723398229/favicon_16x16_5d87179987.png",
+        },
+        {
+          rel: "manifest",
+          href: "https://res.cloudinary.com/nsight/raw/upload/v1723398230/site_641beadb95.webmanifest",
+        },
       ],
       script: [
-        { src: process.env.SQUARE_ENVIRONMENT === 'sandbox' ? "https://sandbox.web.squarecdn.com/v1/square.js" : "https://web.squarecdn.com/v1/square.js" },
+        {
+          src:
+            process.env.SQUARE_ENVIRONMENT === "sandbox"
+              ? "https://sandbox.web.squarecdn.com/v1/square.js"
+              : "https://web.squarecdn.com/v1/square.js",
+        },
         { src: "~/assets/js/uikit.min.js" },
-        { src: "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js", type: "module" },
-        { src: "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js", nomodule: true },
+        {
+          src: "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js",
+          type: "module",
+        },
+        {
+          src: "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js",
+          nomodule: true,
+        },
       ],
     },
   },
@@ -40,15 +79,15 @@ export default defineNuxtConfig({
 
   plugins: [
     { src: "~/plugins/font-awesome.ts" },
-    { src: "~/plugins/toast.js" }
+    { src: "~/plugins/toast.js" },
   ],
   modules: [
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
     "nuxt-primevue",
-    '@nuxtjs/tailwindcss',
+    "@nuxtjs/tailwindcss",
     "@zadigetvoltaire/nuxt-well-known",
-    "@fedorae/nuxt-uikit"
+    "@fedorae/nuxt-uikit",
   ],
   primevue: {
     usePrimeVue: true,
@@ -65,11 +104,11 @@ export default defineNuxtConfig({
       prefix: "Prime",
       name: undefined,
       include: [
-        "Tooltip", 
-        "Dialog", 
-        "AutoComplete", 
-        "TabView", 
-        "TabPanel", 
+        "Tooltip",
+        "Dialog",
+        "AutoComplete",
+        "TabView",
+        "TabPanel",
         "Carousel",
         "ProgressSpinner",
         "InputNumber",
@@ -78,7 +117,7 @@ export default defineNuxtConfig({
         "AccordionTab",
         "DataTable",
         "Column",
-        "Button"
+        "Button",
       ],
       exclude: undefined,
     },
@@ -114,8 +153,8 @@ export default defineNuxtConfig({
   },
   nitro: {
     experimental: {
-      websocket: true
-    }
+      websocket: true,
+    },
   },
   // Tailwind:
   postcss: {
