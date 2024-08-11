@@ -3680,6 +3680,7 @@ const forgotPassword_post$1 = /*#__PURE__*/Object.freeze({
 
 const newUserConfirmation_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
+  const client = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
   console.log("post_data", post_data);
   if (!post_data) {
     return { status: "error", message: "Invalid data" };
@@ -3734,23 +3735,16 @@ const newUserConfirmation_post = defineEventHandler(async (event) => {
       To: post_data.email,
       Subject: "Welcome to the nSight Family",
       HtmlBody: body,
+      TextBody: "Welcome to the nSight Family",
       TrackOpens: true,
       MessageStream: "outbound"
     };
     try {
-      const response = await $fetch("https://api.postmarkapp.com/email", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "X-Postmark-Server-Token": process.env.POSTMARK_SERVER_TOKEN
-        },
-        body: JSON.stringify(msg)
-      });
-      console.log("Email sent successfully:", response);
+      client.sendEmail(msg);
       return {
         statusCode: 200,
-        data: `Email sent successfully: ${JSON.stringify(response)}`
+        // data: `Email sent successfully: ${JSON.stringify(response)}`,
+        data: `Email sent successfully`
       };
     } catch (error) {
       console.error("Failed to send email:", error);
