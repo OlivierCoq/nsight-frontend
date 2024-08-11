@@ -1,10 +1,3 @@
-import sgMail from "@sendgrid/mail";
-
-const config = useRuntimeConfig(),
-  api_key = config.public.SENDGRID_API_KEY;
-
-sgMail.setApiKey(api_key);
-
 export default defineEventHandler(async (event) => {
   const post_data = await readBody(event);
 
@@ -59,14 +52,6 @@ export default defineEventHandler(async (event) => {
 </html>
     `;
 
-    // const msg = {
-    //   to: post_data.email,
-    //   from: 'info@nsightapi.vip',
-    //   subject: 'Welcome to the nSight Family',
-    //   text: `Let's get it!`,
-    //   html: body,
-    // };
-
     const msg = {
       From: "info@nsight.online",
       To: post_data.email,
@@ -77,23 +62,27 @@ export default defineEventHandler(async (event) => {
     };
 
     try {
-      // await sgMail.send(msg);
-
-      $fetch("https://api.postmarkapp.com/email", {
+      const response = await $fetch("https://api.postmarkapp.com/email", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "X-Postmark-Server-Token": config.public.POSTMARK_API_KEY,
+          "X-Postmark-Server-Token": process.env.POSTMARK_SERVER_TOKEN,
         },
         body: JSON.stringify(msg),
-      }).then((response) => {
-        console.log("response", response);
-        return { status: "success", message: "Email sent successfully" };
       });
+
+      console.log("Email sent successfully:", response);
+      return {
+        statusCode: 200,
+        data: `Email sent successfully: ${JSON.stringify(response)}`,
+      };
     } catch (error) {
-      console.error(error);
-      return { status: "error", message: "Failed to send email", error };
+      console.error("Failed to send email:", error);
+      return {
+        statusCode: 500,
+        data: `Failed to send email: ${error.message}`,
+      };
     }
   }
 });

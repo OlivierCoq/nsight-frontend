@@ -807,9 +807,9 @@ function normalizeCookieHeaders(headers) {
   return outgoingHeaders;
 }
 
-const config$3 = useRuntimeConfig();
+const config$2 = useRuntimeConfig();
 const _routeRulesMatcher = toRouteMatcher(
-  createRouter({ routes: config$3.nitro.routeRules })
+  createRouter({ routes: config$2.nitro.routeRules })
 );
 function createRouteRulesHandler(ctx) {
   return eventHandler((event) => {
@@ -3549,8 +3549,8 @@ const updateUser_post$1 = /*#__PURE__*/Object.freeze({
   default: updateUser_post
 });
 
-const config$2 = useRuntimeConfig(), api_key$2 = config$2.public.SENDGRID_API_KEY;
-sgMail.setApiKey(api_key$2);
+const config$1 = useRuntimeConfig(), api_key$1 = config$1.public.SENDGRID_API_KEY;
+sgMail.setApiKey(api_key$1);
 const forgotPassword_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("post_data", post_data);
@@ -3562,7 +3562,7 @@ const forgotPassword_post = defineEventHandler(async (event) => {
       accept: "application/json"
     };
     await $fetch(
-      `${config$2.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
+      `${config$1.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
         filters: {
           email: post_data.email
         }
@@ -3585,7 +3585,7 @@ const forgotPassword_post = defineEventHandler(async (event) => {
           Authorization: `Bearer ${process.env.CUSTOM_PW_RESET_TOKEN}`
         };
         await $fetch(
-          `${config$2.public.NUXT_STRAPI_URL}/api/users/${user_data[0].id}`,
+          `${config$1.public.NUXT_STRAPI_URL}/api/users/${user_data[0].id}`,
           {
             method: "PUT",
             headers: token_headers_obj,
@@ -3596,7 +3596,7 @@ const forgotPassword_post = defineEventHandler(async (event) => {
         ).then(async (updated_user) => {
           setTimeout(async () => {
             await $fetch(
-              `${config$2.public.NUXT_STRAPI_URL}/api/users/${updated_user.id}`,
+              `${config$1.public.NUXT_STRAPI_URL}/api/users/${updated_user.id}`,
               {
                 method: "PUT",
                 headers: token_headers_obj,
@@ -3678,8 +3678,6 @@ const forgotPassword_post$1 = /*#__PURE__*/Object.freeze({
   default: forgotPassword_post
 });
 
-const config$1 = useRuntimeConfig(), api_key$1 = config$1.public.SENDGRID_API_KEY;
-sgMail.setApiKey(api_key$1);
 const newUserConfirmation_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("post_data", post_data);
@@ -3740,21 +3738,26 @@ const newUserConfirmation_post = defineEventHandler(async (event) => {
       MessageStream: "outbound"
     };
     try {
-      $fetch("https://api.postmarkapp.com/email", {
+      const response = await $fetch("https://api.postmarkapp.com/email", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "X-Postmark-Server-Token": config$1.public.POSTMARK_API_KEY
+          "X-Postmark-Server-Token": process.env.POSTMARK_SERVER_TOKEN
         },
         body: JSON.stringify(msg)
-      }).then((response) => {
-        console.log("response", response);
-        return { status: "success", message: "Email sent successfully" };
       });
+      console.log("Email sent successfully:", response);
+      return {
+        statusCode: 200,
+        data: `Email sent successfully: ${JSON.stringify(response)}`
+      };
     } catch (error) {
-      console.error(error);
-      return { status: "error", message: "Failed to send email", error };
+      console.error("Failed to send email:", error);
+      return {
+        statusCode: 500,
+        data: `Failed to send email: ${error.message}`
+      };
     }
   }
 });
