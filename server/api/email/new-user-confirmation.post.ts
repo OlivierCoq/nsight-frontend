@@ -1,4 +1,8 @@
+import postmark from "postmark";
+
 export default defineEventHandler(async (event) => {
+  // import postmark:
+
   const post_data = await readBody(event);
   const client = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
 
@@ -76,13 +80,14 @@ export default defineEventHandler(async (event) => {
 
       // console.log("Email sent successfully:", response);
 
-      client.sendEmail(msg);
-
-      return {
-        statusCode: 200,
-        // data: `Email sent successfully: ${JSON.stringify(response)}`,
-        data: `Email sent successfully`,
-      };
+      client.sendEmail(msg).then((response) => {
+        console.log("Email sent successfully:", response);
+        return {
+          statusCode: 200,
+          data: `Email sent successfully: ${JSON.stringify(response)}`,
+          // data: `Email sent successfully`,
+        };
+      });
     } catch (error) {
       console.error("Failed to send email:", error);
       return {

@@ -7,6 +7,7 @@ import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, cr
 import sgMail from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@sendgrid/mail/index.js';
 import qs from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/qs/lib/index.js';
 import crypto from 'crypto';
+import postmark from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/postmark/dist/index.js';
 import { Client, Environment, ApiError } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/cjs/index.js';
 import JSONBig from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/json-bigint/index.js';
 import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
@@ -3740,12 +3741,14 @@ const newUserConfirmation_post = defineEventHandler(async (event) => {
       MessageStream: "outbound"
     };
     try {
-      client.sendEmail(msg);
-      return {
-        statusCode: 200,
-        // data: `Email sent successfully: ${JSON.stringify(response)}`,
-        data: `Email sent successfully`
-      };
+      client.sendEmail(msg).then((response) => {
+        console.log("Email sent successfully:", response);
+        return {
+          statusCode: 200,
+          data: `Email sent successfully: ${JSON.stringify(response)}`
+          // data: `Email sent successfully`,
+        };
+      });
     } catch (error) {
       console.error("Failed to send email:", error);
       return {
