@@ -1,10 +1,10 @@
 import postmark from "postmark";
+const client = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
 
 export default defineEventHandler(async (event) => {
   // import postmark:
 
   const post_data = await readBody(event);
-  const client = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
 
   console.log("post_data", post_data);
 
@@ -68,18 +68,6 @@ export default defineEventHandler(async (event) => {
     };
 
     try {
-      // const response = await $fetch("https://api.postmarkapp.com/email", {
-      //   method: "POST",
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json",
-      //     "X-Postmark-Server-Token": process.env.POSTMARK_SERVER_TOKEN,
-      //   },
-      //   body: JSON.stringify(msg),
-      // });
-
-      // console.log("Email sent successfully:", response);
-
       client.sendEmail(msg).then((response) => {
         console.log("Email sent successfully:", response);
         return {

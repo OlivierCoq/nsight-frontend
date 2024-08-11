@@ -4,10 +4,9 @@ import { join } from 'node:path';
 import { mkdirSync } from 'node:fs';
 import { parentPort, threadId } from 'node:worker_threads';
 import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, createEvent, getRequestHeader, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseHeader, send, getResponseStatus, setResponseStatus, setResponseHeaders, getRequestHeaders, setHeader, sendError, H3Error, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, readBody, createEventStream, defineWebSocketHandler, getQuery as getQuery$1, createError, getResponseStatusText } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/h3/dist/index.mjs';
-import sgMail from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@sendgrid/mail/index.js';
+import postmark from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/postmark/dist/index.js';
 import qs from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/qs/lib/index.js';
 import crypto from 'crypto';
-import postmark from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/postmark/dist/index.js';
 import { Client, Environment, ApiError } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/cjs/index.js';
 import JSONBig from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/json-bigint/index.js';
 import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
@@ -3550,8 +3549,8 @@ const updateUser_post$1 = /*#__PURE__*/Object.freeze({
   default: updateUser_post
 });
 
-const config$1 = useRuntimeConfig(), api_key$1 = config$1.public.SENDGRID_API_KEY;
-sgMail.setApiKey(api_key$1);
+const config$1 = useRuntimeConfig();
+const client$1 = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
 const forgotPassword_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("post_data", post_data);
@@ -3574,7 +3573,10 @@ const forgotPassword_post = defineEventHandler(async (event) => {
       }
     ).then(async (user_data) => {
       if (!user_data.length) {
-        return { status: "error", message: "User not found with provided email." };
+        return {
+          status: "error",
+          message: "User not found with provided email."
+        };
       } else {
         const generateSecureToken = (length = 48) => {
           return crypto.randomBytes(length).toString("hex");
@@ -3636,7 +3638,7 @@ const forgotPassword_post = defineEventHandler(async (event) => {
                                               <h1 style="margin: 0 0 20px; font-size: 24px; color: #333333;">Hello, ${updated_user.first_name} ${updated_user.last_name}!</h1>
                                               <p style="margin: 0 0 20px 0; font-size: 16px; color: #333333;">Please click here to reset your password. This link will expire in 30 minutes.</p>
                                               <a href="${process.env.LOCAL_URL}/reset-password?token=${updated_user.reset_hash}" style="display: inline-block; padding: 10px 20px; margin: 0 0 20px; background-color: #f6e232; color: #272727; text-decoration: none; border-radius: 5px;">Login</a>
-                                              <p style="margin: 0 0 20px 0; font-size: 16px; color: #333333;">If you did not request a password reset, please ignore this email.</p>                                              
+                                              <p style="margin: 0 0 20px 0; font-size: 16px; color: #333333;">If you did not request a password reset, please ignore this email.</p>
                                               <p style="margin: 0; font-size: 16px; color: #333333;">See you on the other side.</p>
                                           </td>
                                       </tr>
@@ -3652,18 +3654,24 @@ const forgotPassword_post = defineEventHandler(async (event) => {
                   </body>
                   </html>`;
           const msg = {
-            to: post_data.email,
-            from: "info@nsightapi.vip",
-            subject: "Reset your nSight password",
-            text: `Let's get it!`,
-            html: body
+            From: "info@nsight.online",
+            To: post_data.email,
+            Subject: "Reset your nSight password",
+            HtmlBody: body,
+            TextBody: "Let's reset your nSight password.",
+            TrackOpens: true,
+            MessageStream: "outbound"
           };
           try {
-            await sgMail.send(msg);
+            client$1.sendEmail(msg);
             return { status: "success", message: "Email sent successfully" };
           } catch (error) {
             console.error(error);
-            return { status: "error", message: "Failed to send email", error };
+            return {
+              status: "error",
+              message: "Failed to send email",
+              error
+            };
           }
         }).catch((error) => {
           console.log("error", error);
@@ -3679,9 +3687,9 @@ const forgotPassword_post$1 = /*#__PURE__*/Object.freeze({
   default: forgotPassword_post
 });
 
+const client = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
 const newUserConfirmation_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
-  const client = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
   console.log("post_data", post_data);
   if (!post_data) {
     return { status: "error", message: "Invalid data" };
@@ -3764,8 +3772,8 @@ const newUserConfirmation_post$1 = /*#__PURE__*/Object.freeze({
   default: newUserConfirmation_post
 });
 
-const config = useRuntimeConfig(), api_key = config.public.SENDGRID_API_KEY;
-sgMail.setApiKey(api_key);
+new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
+const config = useRuntimeConfig();
 const resetPassword_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   let return_data = {};
@@ -3821,7 +3829,10 @@ const resetPassword_post = defineEventHandler(async (event) => {
               })
             }
           ).then(async () => {
-            return_data = { statusCode: 200, message: "Password updated successfully." };
+            return_data = {
+              statusCode: 200,
+              message: "Password updated successfully."
+            };
             const token_headers_obj = {
               "Content-Type": "application/json",
               accept: "application/json",
