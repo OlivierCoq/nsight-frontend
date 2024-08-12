@@ -9,8 +9,60 @@
         <div
           class="cls-active: bg-zing-100/60 z-30 backdrop-blur-lg px-4; start: 80; animation: uk-animation-slide-top sticky"
         >
-          <div class="page__heading">
-            <h1>Shop</h1>
+          <div class="w-full flex flex-row justify-between">
+            <div class="page__heading">
+              <h1>Shop</h1>
+            </div>
+            <!-- font awesome shopping cart icon -->
+            <a href="/cart">
+              <div
+                class="flex items-center gap-4 text-neutral-900 dark:text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  width="24"
+                  class="hover:cursor-pointer"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 19c0 1.1.9 2 2 2s2-.9 2-2"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 19c0 1.1.9 2 2 2s2-.9 2-2"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M16 19c0 1.1.9 2 2 2s2-.9 2-2"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M16 19c0 1.1.9 2 2 2s2-.9 2-2"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M5 5h14M5 5l7 14L5 5z"
+                  />
+                </svg>
+                <span>Cart</span>
+                <!-- Number of items in cart: -->
+                <span
+                  v-if="prodStore.cart.checkout.order.order.lineItems.length"
+                  class="bg-yellow-500 text-white text-sm rounded-full h-[25px] w-[25px] flex items-center justify-center"
+                >
+                  {{ prodStore.cart.checkout.order.order.lineItems.length }}
+                </span>
+              </div>
+            </a>
           </div>
           <!-- tab style one -->
           <div class="overflow-hidden my-6">
