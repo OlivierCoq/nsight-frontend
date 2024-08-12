@@ -35,35 +35,13 @@ definePageMeta({
 // Stores
 const auth = authStore();
 const prodStore = productsStore();
+const settings = settingsStore();
 
 // State
 const state = reactive({
   loading: false,
-  emptying: false,
-  checking_out: false,
-  snackbar: false,
-  snackbar_text: "",
 });
 
 // methods
-const empty_cart = () => {
-  state.emptying = true;
-
-  // Empty Medusa car
-};
-const checkout = async () => {
-  state.checking_out = true;
-
-  // Send to API
-
-  // UX.UI:
-  navigateTo("/checkout");
-};
 </script>
-<style lang="scss">
-.curser-pointer {
-  &:hover {
-    cursor: pointer;
-  }
-}
-</style>
+<style lang="scss"></style>

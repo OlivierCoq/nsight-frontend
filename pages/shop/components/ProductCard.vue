@@ -12,7 +12,7 @@
           />
         </div>
         <div
-          class="absolute right-0 top-0 m-2 bg-slate-100 rounded-full py-0.5 px-2 text-sm font-bold dark:bg-slate-800/60"
+          class="absolute right-0 top-0 m-2 bg 100 rounded-full py-0.5 px-2 text-sm font-bold dark:bg-slate-800/60"
         >
           <font-awesome-icon
             :icon="[in_favorites() ? 'fas' : 'far', 'heart']"
@@ -70,6 +70,55 @@
                 </svg>
               </button>
             </div>
+
+            <!-- purchase toast -->
+            <div
+              v-show="state.toast.show"
+              class="p-2 border fade-in fade-out bg-green-50 border-green-500/30 rounded-xl dark:bg-zinc-700 fixed top-[15px] right-[30px] z-50 min-w-[26rem]"
+            >
+              <div class="flex flex-row items-start align-center">
+                <!-- icon -->
+                <div
+                  class="p-1 text-white bg-green-500 shadow rounded-xl shadow-green-300 me-4"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    class="w-8 h-8"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+
+                <!-- text -->
+                <div class="font-semibold text-white">
+                  <p class="mb-0">
+                    {{ state.selected?.itemVariationData?.name }} <br />
+                    <span class="font-thin">added to cart!</span>
+                  </p>
+                </div>
+
+                <!-- icon close -->
+                <button
+                  type="button"
+                  class="flex h-full flex-col opacity-1 top-[8px] justify-start items-start p-1 text-gray-600 rounded-lg ml-auto uk-alert-close"
+                  @click="state.toast.show = false"
+                >
+                  <ion-icon
+                    name="close"
+                    class="text-xl md hydrated"
+                    role="img"
+                    aria-label="close"
+                  ></ion-icon>
+                </button>
+              </div>
+            </div>
+
             <div
               class="ctr-item_data w-full flex flex-col items-start justify-start mt-10 px-8"
             >
@@ -82,7 +131,17 @@
                 class="text-lg font-thin text-neutral-900 dark:text-white mb-10"
                 v-html="props.product.item_data?.description"
               ></p>
-
+              <div class="ctr-price">
+                <p
+                  class="text-xl mt-4 mb-8 text-neutral-900 dark:text-white font-thin"
+                  v-html="
+                    format_currency(
+                      state.selected?.itemVariationData?.priceMoney?.amount,
+                      state.selected?.itemVariationData?.priceMoney?.currency,
+                    )
+                  "
+                ></p>
+              </div>
               <div
                 class="w-full flex flex-col justify-center place-content-center"
               >
@@ -218,8 +277,10 @@ const state = reactive({
   product: props.product,
   modal: false,
   show_options: false,
-  snackbar: false,
-  snackbar_text: "",
+  toast: {
+    show: false,
+    message: "",
+  },
   selected_option: null,
   quantity: 1,
   variations: {
@@ -259,6 +320,12 @@ const toggle_favorite = (product) => {
   nextTick(() => {
     auth.updateUser();
   });
+};
+
+const format_currency = (amount, currency) => {
+  if (currency === "USD") {
+    return `$${(amount / 100).toFixed(2)}`;
+  }
 };
 
 const open_modal = () => {
@@ -352,10 +419,11 @@ const add_to_cart = () => {
   // Add to cart
   prodStore.add_to_cart(line_item_obj);
 
-  // state.snackbar_text = `"${state.selected.itemVariationData.name}" added to cart!`
-  // state.snackbar = true
-  // state.loading = false
-  // toast.add({ detail: `${line_item_obj.name} added to cart!`, life: 30000 });
+  state.toast.show = true;
+  state.toast.message = `"${state.selected.itemVariationData.name}" added to cart!`;
+  setTimeout(() => {
+    state.toast.show = false;
+  }, 4000);
 };
 
 onMounted(() => {});
