@@ -24,16 +24,7 @@
         <div class="w-full md:w-3/4 mt-5 flex flex-row items-center justify-end">  
           <button @click="remove_from_cart" class="text-sm text-neutral-900 dark:text-white font-thin curser-pointer">Remove</button>
         </div>
-      </div>
-      <!-- <p class="text-sm text-neutral-700 dark:text-neutral-300 font-thin">{{ props?.product?.variant?.title }}</p>
-      <p class="text-sm text-neutral-700 dark:text-neutral-300 font-thin">{{ props?.product?.variant?.price }}</p>
-        <div class="w-1/4 flex flex-row items-center justify-start">
-          <button @click="remove_from_cart" class="text-sm text-neutral-900 dark:text-white font-thin curser-pointer">Remove</button>
-        </div>
-        <div class="w-3/4 flex flex-row items-center justify-end">
-          <input type="number" class="w-1/4 text-sm text-neutral-900 dark:text-white font-thin" v-model="state.num_select" />
-        </div>
-      </div> -->            
+      </div> 
     </div>
   </div>
 </template> 

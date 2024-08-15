@@ -1,62 +1,159 @@
 <template>
-  <div
-    id="cart"
-    class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-20"
-  >
-    <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
-      <div class="main__inner">
+  <div v-if="prodStore?.cart" class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-900 flex flex-col px-3 py-4">
+    <div class="w-full h-[100px] p-4 flex flex-col justify-start align-start items-start mb-6">
+      <h1 class="text-3xl text-neutral-900 dark:text-neutral-200 uppercase font-thin">Checkout</h1>
+    </div>
+    <div class="w-full flex flex-col md:flex-row mb-4">
+      <div class="w-full md:w-3/4 py-8 px-4 dark:bg-zinc-800 rounded-md shadow-xl mx-3 flex flex-col">
 
-        <div class="cls-active: bg-zing-100/60 z-30 backdrop-blur-lg px-4; start: 80; animation: uk-animation-slide-top sticky">
-          <div class="w-full flex flex-row justify-between">
-            <div class="page__heading">
-              <h1>Checkout</h1> 
+        <PrimeAccordion :activeIndex="[0]" :multiple="true">
+
+          <PrimeAccordionTab header="Shipping">
+            <div class="w-full flex flex-row justify-between">
+              <p v-if="auth.user.selected_addresses"  class="text-neutral-900 dark:text-white text-lg font-thin">
+                Default address: 
+                <strong>
+                  {{ auth.user.selected_addresses.street }} 
+                  {{ auth.user.selected_addresses.street_2 }} 
+                  {{ auth.user.selected_addresses.town_city }}, 
+                  {{ auth.user.selected_addresses.county_state }} 
+                  {{ auth.user.selected_addresses.country }}
+                </strong>
+              </p>
+              <button
+                class="nsight-btn-primary py-1 px-5 rounded-md"
+                @click="state.update.shipping = true"
+              >
+                <span v-html="auth?.user?.selected_addresses ? 'update' : 'Update'"></span>
+
+                <PrimeDialog
+                  v-model:visible="state.update.shipping"
+                  modal
+                  header="Update Shipping info"
+                  :style="{
+                    width: '60rem',
+                    backgroundColor: auth.user.preferences[0].dark_mode ? '#18181a' : '#a1a1aa',
+                    padding: 0,
+                  }"
+                > 
+                  <div class="w-full flex flex-col min-h-[25vh] bg-transparent" :class="auth.user.preferences[0].dark_mode ? 'dark' : ''">
+                    <AccountEditAddress />
+                  </div>
+                </PrimeDialog>
+
+              </button>
             </div>
+          </PrimeAccordionTab>
 
-            <div class="overflow-hidden my-6">
-              <div id="product-nav" class="relative flex items-center justify-between border-b dark:border-slate-800 uk-animation-slide-top-medium"></div>
+          <PrimeAccordionTab header="Payment">
+            <div class="w-full flex flex-row justify-between">
+              <p v-if="auth.user.selected_payment_method"  class="text-neutral-900 dark:text-white text-lg font-thin">
+                Default payment method: 
+                <strong>
+                  <font-awesome-icon class="text-neutral-900 dark:text-white text-2xl me-2" :icon="[ 'fab', format_card_brand(auth.user.selected_payment_method.card.cardBrand)]"/>
+                   {{ auth.user.selected_payment_method.card.cardBrand }} ending in {{ auth.user.selected_payment_method.card.last4 }} 
+                </strong>
+              </p>
+              <button
+                class="nsight-btn-primary py-1 px-5 rounded-md"
+                @click="state.update.payment = true"
+              >
+
+
+                <span v-html="auth?.user?.selected_payment_method ? 'update' : 'Add'"></span>
+
+                <PrimeDialog
+                  v-model:visible="state.update.payment"
+                  modal
+                  header="Update Payment info"
+                  :style="{
+                    width: '60rem',
+                    backgroundColor: auth.user.preferences[0].dark_mode ? '#18181a' : '#a1a1aa',
+                  }"
+                > 
+                  <div class="w-full flex flex-col min-h-[25vh] bg-transparent pb-4" :class="auth.user.preferences[0].dark_mode ? 'dark' : ''">
+                    <AccountPaymentMethods />
+                  </div>
+                </PrimeDialog>
+
+              </button>
             </div>
-            
-          </div>
-        </div>
+          </PrimeAccordionTab>
 
-        <div class="w-full flex">
-            <div class="flex flex-col md:flex-row w-full gap-2">
-              <div class="w-full md:w-3/4">
-                <div class="flex flex-col w-full mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
-                  
-                  <!-- Checkout Accordion Steps here -->
+          <PrimeAccordionTab header="Review Items">
+            <div class="w-full flex flex-col">
+              <div class="w-full flex flex-row justify-end items-end">
+                <button @click="back" class="nsight-btn-primary py-1 px-5 rounded-md">Update Cart</button>
+              </div>
+              <div v-for="item in prodStore?.cart?.checkout?.order?.order?.lineItems" :key="item.id"  class="w-full p-4 flex flex-row">
+                <div class="w-1/5 flex flex-col items-start justify-start">
+                  <div class="w-[100px] h-[100px] bg-cover bg-center  rounded-md" :style="{ backgroundImage: `url(${item?.images[0]?.url})` }"></div>
+                </div>
+                <div class="w-4/5 flex flex-col p-4">
+                  <div class="w-full flex flex-row align-start justify-between mb-2">
+                    <h1 class="text-xl text-neutral-900 dark:text-white font-thin mb-2">{{ item?.name }}</h1>
+                    <p class="text-lg text-neutral-700 dark:text-neutral-300 font-thin">
+                      {{ format_currency(item?.basePriceMoney?.amount, item?.basePriceMoney?.currency) }}
+                    </p>
+                  </div>
+                  <!-- <div class="w-full flex flex-row align-start justify-between mb-2">
+                    <div class="w-full md:w-1/4 mt-5">
+                      <label for="quantity" class="text-md text-neutral-900 dark:text-neutral-200 font-thin">Quantity</label>
+                      <input 
+                        type="number" 
+                        v-model="item.quantity" 
+                        min="1"
+                        @change="prodStore.update_cart()"
+                        class="my-2 bg-transparent border border-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                      />
+                    </div>
+                    <div class="w-full md:w-3/4 mt-5 flex flex-row items-center justify-end">  
+                      <button @click="remove_from_cart" class="text-sm text-neutral-900 dark:text-white font-thin curser-pointer">Remove</button>
+                    </div>
+                  </div> -->
                 </div>
               </div>
-              <div class="w-full md:w-1/4">
-                <div class="shadow-sm border1 bg-zinc-100 dark:bg-zinc-900 rounded-md shadow-md px-4 flex flex-col">
-                  <div class="w-full flex flex-col justify-between items-start px-0 py-4 mb-3">
-                    <p class="text-lg text-neutral-900 dark:text-white m-0">Subtotal</p>
-                    <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ prodStore.cart?.checkout?.order?.order?.value?.str }}</p>
-                  </div>
-                  <div class="w-full flex flex-col justify-between items-start px-0 py-4 mb-2">
-                    <p class="text-lg text-neutral-900 dark:text-white m-0">Shipping</p>
-                    <p class="text-sm text-neutral-900 dark:text-white font-thin m-0"></p>
-                  </div>
-                  <div class="w-full flex flex-col justify-between items-start px-0 py-4 mb-2">
-                    <p class="text-lg text-neutral-900 dark:text-white m-0">Total</p>
-                    <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ prodStore.cart?.checkout?.order?.order?.total?.str }}</p>
-                  </div>
-                  <div class="w-full flex flex-col justify-between items-start px-0 pb-2">
-                    <button 
-                      @click="place_order" 
-                      :disabled="state.processing"
-                      class="text-sm text-neutral-900 dark:text-white font-thin curser-pointer bg-yellow-500 hover:bg-yellow-600 w-full rounded-md shadow-md py-2 mb-4"
-                      :class="state.processing ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'"
-                    >Place Order</button>
-                  </div>
+            </div> 
+          </PrimeAccordionTab>
 
-                </div>
-              </div>   
-            </div>
-        </div>
+        </PrimeAccordion>
 
       </div>
-    </main>
+
+
+      <div class="w-full md:w-1/4 mx-3">
+        <div class="dark:bg-zinc-800 rounded-md shadow-xl px-4 pt-4 pb-6">
+          <div class="w-full flex flex-row justify-between items-center">
+            <h1 class="text-lg text-neutral-900 dark:text-white font-bold uppercase">Order Value</h1>
+            <h1 class="text-lg text-neutral-900 dark:text-white font-thin">{{ prodStore.cart?.checkout?.order?.order?.value?.str }}</h1>
+          </div>
+          <div class="w-full flex flex-row justify-between items-center">
+            <h1 class="text-lg text-neutral-900 dark:text-white font-bold uppercase">Shipping</h1>
+            <!-- <h1 class="text-lg v-neutral-900 dark:text-white font-thin">{{ prodStore.cart?.checkout?.order?.order?.value }}</h1> -->
+          </div>
+          <div class="w-full flex flex-row justify-between items-center">
+            <h1 class="text-lg text-neutral-900 dark:text-white font-bold uppercase">Total</h1>
+            <h1 class="text-lg text-neutral-900 dark:text-white font-thin">{{ prodStore.cart?.checkout?.order?.order?.total?.str }}</h1>
+          </div>
+          <div class="w-full flex flex-col justify-between items-center">
+            <button 
+              class="btn-empty_cart nsight-btn-primary my-2 py-2 w-full px-5 text-neutral-800 shadow-xl rounded-md" 
+              :class="state.processing ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'"
+              :disabled="state.processing"
+              @click="place_order"
+            >
+              Place Order
+            </button>
+            <!-- <button v-if="!state.emptying" @click="empty_cart" class="btn-empty_cart nsight-btn-primary my-1 py-1 w-full px-5 text-neutral-990 dark:text-white shadow-xl rounded-md">Empty Cart</button>
+            <button v-else class="btn-em`pty_cart nsight-btn-primary my-1 py-1 w-full px-5 text-neutral-990 dark:text-whitev  shadow-xl rounded-md">Emptying...</button>
+            <button v-if="!state.checking_out" @click="checkout" class="btn-checkout nsight-btn-primary my-1 py-1 w-full px-5text-neutral-990 dark:text-white shadow-xl rounded-md">Checkout</button>
+            <button v-else class="btn-checkout nsight-btn-primary my-1 py-1 w-full px-5 text-neutral-990 dark:text-white shadow-xl rounded-md">Checking out...</button> -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </template>
 <script setup lang="ts">
