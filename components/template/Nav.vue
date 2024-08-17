@@ -226,7 +226,7 @@
         </div>
 
         <!-- shop -->
-        <a href="/shop/products">
+        <a href="/shop">
           <svg
             id="icon__outline"
             xmlns="http://www.w3.org/2000/svg"
@@ -260,10 +260,7 @@
 
       <!-- profile -->
       <div>
-        <a
-          id="profile-link"
-          class="flex items-center gap-3 p-3 group text-neutral-800 dark:text-white"
-        >
+        <a id="profile-link" class="flex items-center gap-3 p-3 group text-neutral-800 dark:text-white" >
           <div
             class="rounded-full md:w-7 md:h-7 w-5 h-5 shrink-0 overflow-hidden flex flex-col justify-center items-center"
           >
@@ -278,10 +275,10 @@
             />
           </div>
           <span class="font-semibold text-sm max-xl:hidden">
-            {{ authData?.user.first_name }} {{ authData?.user.last_name }}
+            {{ authData?.user.first_name }} {{ authData?.user.last_name }} 
           </span>
-          <!-- <ion-icon name="chevron-forward-outline"  class="text-xl ml-auto duration-200 group-aria-expanded:-rotate-90 max-xl:hidden"></ion-icon> -->
         </a>
+
         <div
           class="bg-white sm:w-64 2xl:w-[calc(100%-16px)] w-full shadow-lg border rounded-xl overflow-hidden max-md:!top-auto max-md:bottom-16 border2 dark:bg-zinc-900 hidden"
           uk-drop="animation:uk-animation-slide-bottom-medium ;animate-out: true"
@@ -315,10 +312,16 @@
                 <!-- <div class="text-gray-400 dark:text-white/80"> @monroe </div> -->
               </div>
             </a>
+            <!-- <font-awesome-icon 
+              class="text-neutral-900 dark:text-white text-sm me-2 hover:cursor-pointer mb-[-1rem]" 
+              :icon="[ 'fas', `${settings.dark_mode ? 'sun' : 'moon'}` ]"
+              @click="settings.toggleLighting()"
+            /> -->
             <!-- <div class="mt-3 flex gap-3.5">
                       <div> <a href="profile.html"> <strong> 620K </strong> <span class="text-gray-400 dark:text-white/80 ml-1">Following </span> </a> </div>
                       <div> <a href="profile.html"> <strong> 38k </strong> <span class="text-gray-400 dark:text-white/80 ml-1">Followers </span> </a>  </div>
                   </div> -->
+                
           </div>
           <hr class="opacity-60" />
           <ul class="text-sm font-semibold p-2">
@@ -385,6 +388,13 @@ const toggleSearch = () => {
 const doSearch = () => {
   // console.log('searching', state.search)
 };
+const toggle_theme = () => {
+  auth.user.preferences[0].dark_mode = !auth.user.preferences[0].dark_mode
+  auth.updateUser()
+  nextTick(() => {
+    settings.dark_mode = auth.user.preferences[0].dark_mode
+  })
+}
 </script>
 <style lang="scss">
 a {
