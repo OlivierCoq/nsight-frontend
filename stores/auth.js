@@ -103,7 +103,7 @@ export const authStore = defineStore({
               Authorization: `Bearer ${res.jwt}`,
             },
           },
-        ).then((full_user_data) => {
+        ).then(async (full_user_data) => {
           this.errors = false;
           this.user = full_user_data;
           this.token = res.jwt;
@@ -114,6 +114,7 @@ export const authStore = defineStore({
           prodStore.getProducts();
           prodStore.initCart();
           settings.initSettings();
+          await this.format_payment_methods();
 
           setTimeout(() => {
             navigateTo("/dashboard");
@@ -135,6 +136,15 @@ export const authStore = defineStore({
       this.user = null;
 
       navigateTo("/");
+    },
+    async format_payment_methods() {
+      // console.log('Formatting payment methods: ', this.user.payment_methods);
+      if(this.user.payment_methods.data.length > 0) {
+        this.user.payment_methods.data.forEach((payment_method) => {
+          // console.log('Formatting payment method: ', payment_method.card);
+            payment_method['deleting'] = false;
+        });
+      }
     },
     async updateUser() {
       $fetch("/api/user/update", {

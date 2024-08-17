@@ -29,16 +29,133 @@
             <ul class="relative space-y-3 uk-accordion" uk-accordion="active: 0">
                 <li class="uk-open">
                     <a class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
-                        1. Shipping
+                        1. Payment Method
                         <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content">
-                        <p class="text-neutral-900 dark:text-white font-thin" style="font-size: 1.1rem; line-height: normal; ">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
+                        <div v-if="auth.user.payment_methods.data.length"></div>
+                        <div>
+                            <p v-if="!auth.user.payment_methods.data.length" class="text-neutral-900 dark:text-white font-thin" style="font-size: 1.1rem; line-height: normal; ">
+                              No payment methods found! Add a payment method to use for your next order.
+                            </p>
+                            <div class="w-full flex flex-col">
+                              <p v-if="auth.user.payment_methods.data.length" class="text-neutral-900 dark:text-white text-md">Payment methods on file:</p>
+                              <div class="w-full flex flex-row flex-wrap mb-2">
+                                <!-- List existing payment methods here: -->
+                                <div v-for="(method, i) in auth.user.payment_methods.data" :key="i" class="w-1/3  h-[110px] fade-in"> 
+                                  <div v-if="method.deleting" class="w-full h-full flex flex-col items-center justify-center">
+                                    <p class="text-sm text-neutral-900 dark:text-white font-thin">Are you sure you want to delete this payment method?</p>
+                                    <div class="w-full flex flex-row justify-center items-center">
+                                      <button class="text-xs text-red-500 font-thin curser-pointer me-2" @click="delete_method(method)"> 
+                                        <span>Yes</span> &nbsp;
+                                      </button>
+                                      <button class="text-xs text-yellow-500 font-thin curser-pointer" @click="method.deleting = false"> 
+                                        <span>No</span>
+                                      </button>
+                                    </div>
+                                  </div>
+                                  <div 
+                                    v-else
+                                    class="w-[95%] h-full overflow-scroll flex flex-col justify-between items-start mb-2 me-2 px-3 py-4 rounded-md cursor-pointer shadow-md"
+                                    :class="auth.user.selected_payment_method && (method.card.id == auth.user.selected_payment_method.card.id) ? 'shadow-xl border bg-white dark:bg-zinc-500' : 'bg-white dark:bg-zinc-900'"
+                                  >
+                                    <div class="w-full flex flex-row">
+                                      <div class="w-[40px] flex"> 
+                                        <font-awesome-icon :icon="['fab', format_card_brand(method.card.cardBrand)]" 
+                                          class="text-2xl" 
+                                          :class="auth.user.selected_payment_method && (method.card.id == auth.user.selected_payment_method.card.id) ? 'text-neutral-900' : 'text-neutral-300'"
+                                        />
+                                      </div>
+                                      <div class="w-1/2 flex">
+                                        <p 
+                                          class="text-sm font-thin m-0"
+                                          :class="auth.user.selected_payment_method && (method.card.id == auth.user.selected_payment_method.card.id) ? 'text-neutral-900' : 'text-neutral-300'"
+                                        >{{ method.card.cardBrand }} | {{ method.card.last4 }}</p>
+                                      </div>
+                                    </div>
+                                    <div class="w-full flex flex-row items-end justify-end">
+                                      <span v-if="auth.user.selected_payment_method && (method.card.id == auth.user.selected_payment_method.card.id)" class="me-2">Default</span>
+                                      <button 
+                                        v-else
+                                        @click="set_default(method)"
+                                        class="text-xs text-yellow-500 font-thin curser-pointer me-2"
+                                      >
+                                        <span>Set as Default</span>
+                                      </button>
+                                      <button class="text-xs text-red-500 font-thin curser-pointer me-2" @click="init_delete(method)"> 
+                                        <span>Delete</span> &nbsp;
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="w-1/4 flex flex-row justify-start items-start">
+
+                        
+
+                                <button 
+                                  @click="state.update.payment = true"
+                                  class="text-sm text-neutral-900 dark:text-white font-thin curser-pointer bg-yellow-500 hover:bg-yellow-600 w-full rounded-md shadow-md py-2 mb-4"
+                                >Add Payment Method</button>
+                              </div>
+                              <div v-show="state.update.payment" class="ctr-payment-tabs w-full">
+
+
+                                <div class="bg-white shadow rounded-md overflow-hidden dark:bg-zinc-900">
+
+                                  <div class="relative border-b dark:border-zinc-700">
+                                    <ul class="flex gap-2 text-sm text-center text-gray-600 capitalize font-semibold dark:text-white/80 -mb-px" uk-switcher="connect: #payment_tabs ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium">  
+                                      <li v-for="(tab, a) in state.tabs" :key="a" :class="tab.name === state.active_tab.name ? 'uk-active' : ''" @click="state.active_tab = tab"> 
+                                        <a 
+                                          href="#" 
+                    
+                                          class="flex items-center md:p-4 p-2.5  border-transparent aria-expanded:text-black aria-expanded:border-black aria-expanded:dark:text-white aria-expanded:dark:border-white" aria-expanded="true"
+                                          
+                                        > 
+                                           <font-awesome-icon :icon="[tab.fa_class, tab.fa_icon ]" /> &nbsp; 
+                                           <span :class="tab.name == state.active_tab.name ? 'text-yellow-600' : ''">{{ tab.name }}</span>
+                                        </a> 
+                                      </li>
+                                     </ul> 
+                                  </div>
+                                
+                                  <div id="payment_tabs" class="uk-switcher text-sm" style="touch-action: pan-y pinch-zoom;">
+                                    <div :class="state.active_tab.name === 'Credit Card' ? 'uk-active' : ''" class="fade-in">
+                                      <div v-show="state.active_tab.name === 'Credit Card'" class="p-6">
+                                        <p class="font-normal"> 
+                                          Credit Card
+                                        </p>
+                                        <div id="card-container"></div>
+                                        <button id="card-button" class="py-2 px-4 btn bg-yellow-500 hover:bg-yellow-600 text-white rounded-md w-full shadow-md">+ Card</button>
+                                        <p v-if="state.update.success" class="text-success mt-2 text-green-300"> {{ state.update.success }} </p>
+                                      </div>
+                                    </div>
+                                    <div :class="state.active_tab.name === 'PayPal' ? 'uk-active' : ''" class="fade-in">
+                                      <div class="p-6"> 
+                                        <p class="font-normal">PayPal</p>
+                                      </div>
+                                    </div>
+                                    <div :class="state.active_tab.name === 'Apple Pay' ? 'uk-active' : ''" class="fade-in">
+                                      <div class="p-6">
+                                        <p class="font-normal"> Apple Pay</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+
+
+
+
+                              </div>
+                            </div>
+                        </div>
                     </div>
                 </li>
                 <li>
                     <a class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
-                        2. Payment Method
+                        2. Shipping
                         <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content" hidden="">
@@ -106,6 +223,14 @@
   // UUID
   import { v4 as uuidv4 } from "uuid";
 
+  // Square:
+  const runtimeConfig = useRuntimeConfig();
+
+  const appId = runtimeConfig.public.SQUARE_APPLICATION_ID;
+  const locationId = runtimeConfig.public.SQUARE_LOCATION_ID;
+
+  let square_loaded;
+
   // State
   const state = reactive({
     billing: {
@@ -120,10 +245,45 @@
     },
     update: {
       shipping: false,
-      payment: false
+      payment: false,
+      success: false
+    },
+    deleting: {
+      open: false,
+      item: false
     },
     billing_same_as_shipping: auth?.user?.selected_addresses?.length ? true : false,
-    processing: false
+    processing: false,
+    tabs: [
+      {
+        name: "Credit Card",
+        fa_class: 'fas',
+        fa_icon: "credit-card",
+        component: "CreditCard",
+      },
+      {
+        name: "PayPal",
+        fa_class: 'fab',
+        fa_icon: "cc-paypal",
+        component: "PayPal",
+      },
+      {
+        name: "Apple Pay",
+        fa_class: 'fab',
+        fa_icon: "cc-apple-pay",
+        component: "ApplePay",
+      },
+      // {
+      //   name: 'Google Pay',
+      //   icon: 'mdi-google-wallet',
+      //   component: 'GooglePay'
+      // }
+    ],
+    active_tab: {
+      name: "Credit Card",
+      icon: "mdi-credit-card-outline",
+      component: "CreditCard",
+    }
   })
 
   // Methods
@@ -146,14 +306,14 @@
     }
   };
 
-const format_currency = (amount: number, currency: string) => {
-    if(currency === 'USD') {
-      return `$${(amount/100).toFixed(2)}`
+  const format_currency = (amount: number, currency: string) => {
+      if(currency === 'USD') {
+        return `$${(amount/100).toFixed(2)}`
+      }
     }
-  }
-const format_num = (str: string) => {
-  return Number(str)
-} 
+  const format_num = (str: string) => {
+    return Number(str)
+  } 
 
   const back = () => {
     navigateTo("/cart");
@@ -341,6 +501,193 @@ const format_num = (str: string) => {
         }
   }
 
+    // Payment Method functions:
+
+  const set_default = (method) => {
+    auth.user.selected_payment_method = method;
+    nextTick(() => {
+      auth.updateUser();
+    });
+  };
+
+  const initializeCard = async (payments) => {
+    const card = await payments.card();
+    await card.attach("#card-container");
+    return card;
+  };
+
+  const init_delete = (item) => {
+    console.log('delete', item)
+    item.deleting = true
+    // state.deleting.open = true;
+    state.deleting.item = item;
+  }
+
+  const delete_method = (method) => {
+    auth.user.payment_methods.data = auth.user.payment_methods.data.filter(
+      (m) => {
+        return m.card.id !== method.card.id;
+      }
+    );
+    nextTick(() => {
+      auth.updateUser();
+      // state.delete_method_dialog = false;
+    });
+  };
+
+  watch(
+  () => state.update.payment,
+  async () => {
+    if (!window.Square) {
+      throw new Error("Square.js failed to load properly");
+    } else {
+      // console.log("Square.js loaded", window.Square);
+
+      const payments = window.Square.payments(appId, locationId);
+      square_loaded = payments;
+      let card;
+      try {
+        card = await initializeCard(payments);
+
+        // console.log("card", card);
+        const createPayment = async (token) => {
+          const body = JSON.stringify({
+            locationId,
+            sourceId: token,
+            customerId: auth.user.square_id,
+            idempotencyKey: uuidv4(),
+            amountMoney: {
+              amount: 1,
+              currency: "USD",
+            },
+            appFeeMoney: {
+              amount: 0,
+              currency: "USD",
+            },
+          });
+
+          const paymentResponse = await $fetch("/api/square/payment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body,
+          });
+          console.log("paymentResponse", paymentResponse);
+          if (paymentResponse.status == "COMPLETED") {
+            return paymentResponse;
+          }
+          // const errorBody = await paymentResponse.text();
+          // throw new Error(errorBody);
+        };
+
+        const tokenize = async (paymentMethod) => {
+          const tokenResult = await paymentMethod.tokenize();
+          if (tokenResult.status === "OK") {
+            return tokenResult.token;
+          } else {
+            let errorMessage = `Tokenization failed-status: ${tokenResult.status}`;
+            if (tokenResult.errors) {
+              errorMessage += ` and errors: ${JSON.stringify(
+                tokenResult.errors
+              )}`;
+            }
+            throw new Error(errorMessage);
+          }
+        };
+
+        const displayPaymentResults = (status) => {
+          const statusContainer = document.getElementById(
+            "payment-status-container"
+          );
+          if (status === "SUCCESS") {
+            statusContainer.classList.remove("is-failure");
+            statusContainer.classList.add("is-success");
+          } else {
+            statusContainer.classList.remove("is-success");
+            statusContainer.classList.add("is-failure");
+          }
+
+          statusContainer.style.visibility = "visible";
+        };
+
+        const handlePaymentMethodSubmission = async (event, paymentMethod) => {
+          event.preventDefault();
+
+          try {
+            // disable the submit button as we await tokenization and make a
+            // payment request.
+            cardButton.disabled = true;
+            const token = await tokenize(paymentMethod);
+
+            /*
+              Use card to get the token, then use token to add card to user's payment methods
+            */
+
+            const address = {
+              addressLin1: auth?.user?.addresses?.street,
+              addressLin2: auth?.user?.addresses?.street2 ?? "",
+              locality: auth?.user?.addresses?.town_city,
+              administrativeDistrictLevel1: auth?.user?.addresses?.state,
+              postalCode: auth?.user?.addresses?.postal_zip_code,
+              country: auth?.user?.addresses?.country,
+            };
+
+            const body = JSON.stringify({
+              idempotencyKey: uuidv4(),
+              sourceId: token,
+              card: {
+                cardholderName: `${auth.user.first_name} ${auth.user.last_name}`,
+
+                customerId: auth.user.square_id,
+              },
+            });
+
+            // billingAddress: address,
+
+            const newCard = await $fetch("/api/square/create-card", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body,
+            });
+            console.log("createCardResponse", newCard);
+
+            auth.user.payment_methods.data.push(newCard);
+            if (!auth.user.selected_payment_method) {
+              auth.user.selected_payment_method = newCard;
+            }
+            nextTick(() => {
+              // add payment method to Medusa
+              auth.updateUser();
+              state.update.success = "Payment method added successfully!";
+              // state.dialog = false;
+            });
+
+            // const paymentResults = await createPayment(token);
+            // displayPaymentResults("SUCCESS");
+
+            // console.debug("Payment Success", paymentResults);
+          } catch (e) {
+            cardButton.disabled = false;
+            displayPaymentResults("FAILURE");
+            console.error(e.message);
+          }
+        };
+
+        const cardButton = document.getElementById("card-button");
+        cardButton.addEventListener("click", async function (event) {
+          await handlePaymentMethodSubmission(event, card);
+        });
+      } catch (e) {
+        console.error("Initializing Card failed", e);
+        return;
+      }
+    }
+  }
+);
+
 </script>
 <style lang="scss">
 .border-dark {
@@ -357,10 +704,15 @@ const format_num = (str: string) => {
     background-color: #e4d22e !important;
   }
 }
+.sq-card-wrapper .sq-card-message-no-error {
+  color: rgb(186, 180, 180) !important;
 
-.p-accordion {
-
+  // before:
+  &::before {
+    background-color: white !important;
+  }
 }
+
 .p-accordion-header {
   a {
     color: #a3a3a3ad !important;
