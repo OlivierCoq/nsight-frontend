@@ -3094,26 +3094,8 @@ const _Bqeas0SwaX = defineNitroPlugin(async (nitroApp) => {
   });
 });
 
-const script = `
-if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
-  Object.defineProperty(window, '__NUXT_DEVTOOLS_TIME_METRIC__', {
-    value: {},
-    enumerable: false,
-    configurable: true,
-  })
-}
-window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
-`;
-
-const _dfScCcbrZK = (function(nitro) {
-  nitro.hooks.hook("render:html", (htmlContext) => {
-    htmlContext.head.push(`<script>${script}<\/script>`);
-  });
-});
-
 const plugins = [
-  _Bqeas0SwaX,
-_dfScCcbrZK
+  _Bqeas0SwaX
 ];
 
 function defineRenderHandler(handler) {

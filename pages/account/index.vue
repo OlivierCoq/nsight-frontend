@@ -74,16 +74,86 @@
             
             <!-- tab user basic info -->
             <div>
-              <div class="min-h-[10rem] px-2 pt-8 pb-10">
+
+              <div v-if="state.open_tab.name === 'General' " id="general_tab" class="min-h-[10rem] p-8 pb-20 fade-in">
                 <div class="space-y-6">
+
                   <div class="md:flex items-center gap-10">
-                    <label class="md:w-32 text-right"> Name </label>
+                    <label class="md:w-32 text-right"> First Name </label>
                     <div class="flex-1 max-md:mt-4">
                       <input type="text" :placeholder="auth.user.first_name" class="lg:w-1/2 w-full">
                     </div>
                   </div>
+
+                  <div class="md:flex items-center gap-10">
+                    <label class="md:w-32 text-right"> Last Name </label>
+                    <div class="flex-1 max-md:mt-4">
+                      <input type="text" :placeholder="auth.user.last_name" class="lg:w-1/2 w-full">
+                    </div>
+                  </div>
+
+                  <div class="md:flex items-center gap-10">
+                    <label class="md:w-32 text-right"> Email </label>
+                    <div class="flex-1 max-md:mt-4">
+                      <input type="text" :placeholder="auth.user.email" class="lg:w-1/2 w-full">
+                    </div>
+                  </div> 
+
+                  <div class="md:flex items-center gap-10">
+                    <label class="md:w-32 text-right"> Phone </label>
+                    <div class="flex-1 max-md:mt-4">
+                      <input 
+                        type="tel" :placeholder="auth.user.phone_number" 
+                        pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="lg:w-1/2 w-full"
+                        @keydown="
+                          () => {
+                            auth.user.phone_number = new AsYouType()
+                              .input(auth.user.phone_number)
+                              .replace(/\s/g, '-');
+                          }
+                        "
+                      >
+                    </div>
+                  </div>
+
+                  <div class="md:flex items-start gap-10 px-4 pt-10">
+                    <label class="md:w-1/2 text-start text-lg font-bold"> Update Password </label>
+                  </div>
+
+                  <div class="md:flex items-center gap-10">
+                    <label class="md:w-32 text-right"> Current Password </label>
+                    <div class="flex-1 max-md:mt-4">
+                      <input type="password" class="lg:w-1/2 w-full">
+                    </div>
+                  </div>
+                  
+                  <div class="md:flex items-center gap-10">
+                    <label class="md:w-32 text-right"> New Password </label>
+                    <div class="flex-1 max-md:mt-4">
+                      <input type="password"  class="lg:w-1/2 w-full">
+                    </div>
+                  </div>
+                
+                  <div class="md:flex items-center gap-10">
+                    <label class="md:w-32 text-right"> Confirm Password </label>
+                    <div class="flex-1 max-md:mt-4">
+                      <input type="password" class="lg:w-1/2 w-full">
+                    </div>
+                  </div>
+                  
+                  <!-- Save Button: -->
+                  <div class="md:flex items-center gap-10 pt-10">
+                    <div class="md:w-32"></div>
+                    <div class="flex-1 max-md:mt-4">
+                      <button class="w-full lg:w-1/2 bg-amber-600 text-white rounded-md py-2"> Save Changes </button>
+                    </div>
+                  </div>
+
                 </div>
               </div>
+
+              <div v-if="state.open_tab.Address" class="min-h-[10rem] p-8 pb-20 fade-in"></div>
+              
             </div> 
             
             
@@ -96,6 +166,10 @@
   </div>
 </template>
 <script setup>
+
+import { parsePhoneNumber, AsYouType } from "libphonenumber-js";
+
+
 definePageMeta({
   middleware: ["auth"],
   layout: "inner",
@@ -115,7 +189,49 @@ const state = reactive({
     { name: "Orders", component: "AccountOrders" },
     { name: "Payment Methods", component: "AccountPaymentMethods" },
   ],
+  saving: false,
+  errors: {
+    general: {
+      first_name: null,
+      last_name: null,
+      email: null,
+      phone_number: null,
+      password: null,
+    }
+  }
 })
+
+onMounted(() => {
+  state.open_tab = state.tabs[0]
+})
+
+// Methods
+
+const validate_email = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+}
+
+
+const validate_general =  () => {
+  const errors = state.errors.general
+  errors.first_name = !state.first_name ? "First name is required" : null
+  errors.last_name = !state.last_name ? "Last name is required" : null
+  errors.email = (!state.email || !validate_email(state.email))  ? "Proper email's required" : null
+  errors.phone_number = !state.phone_number ? "Phone number is required" : null
+  errors.password = !state.password ? "Password is required" : null
+}
+
+const save_changes = () => {
+  state.saving = true
+   
+  // setTimeout(() => {
+  //   state.saving = false
+  // }, 2000)
+}
 
 </script>
 <style lang="scss">

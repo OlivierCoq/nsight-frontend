@@ -106,18 +106,15 @@
                                   <div class="relative border-b dark:border-zinc-700">
                                     <ul class="flex gap-2 text-sm text-center text-gray-600 capitalize font-semibold dark:text-white/80 -mb-px" uk-switcher="connect: #payment_tabs ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium">  
                                       <li v-for="(tab, a) in state.tabs" :key="a" :class="tab.name === state.active_tab.name ? 'uk-active' : ''" @click="state.active_tab = tab"> 
-                                        <a 
-                                          href="#" 
-                    
+                                        <a  href="#" 
                                           class="flex items-center md:p-4 p-2.5  border-transparent aria-expanded:text-black aria-expanded:border-black aria-expanded:dark:text-white aria-expanded:dark:border-white" aria-expanded="true"
-                                          
                                         > 
                                            <font-awesome-icon :icon="[tab.fa_class, tab.fa_icon ]" /> &nbsp; 
                                            <span :class="tab.name == state.active_tab.name ? 'text-yellow-600' : ''">{{ tab.name }}</span>
                                         </a> 
                                       </li>
                                      </ul> 
-                                  </div>
+                                  </div>  
                                 
                                   <div id="payment_tabs" class="uk-switcher text-sm" style="touch-action: pan-y pinch-zoom;">
                                     <div :class="state.active_tab.name === 'Credit Card' ? 'uk-active' : ''" class="fade-in">
