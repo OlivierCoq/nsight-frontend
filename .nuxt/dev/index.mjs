@@ -3257,6 +3257,7 @@ const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_p
 const _lazy_D8ffMl = () => Promise.resolve().then(function () { return placeOrder_post$1; });
 const _lazy_3k04uK = () => Promise.resolve().then(function () { return retrieveItem_post$1; });
 const _lazy_z4QTko = () => Promise.resolve().then(function () { return add_post$1; });
+const _lazy_wN5pgk = () => Promise.resolve().then(function () { return update_password$1; });
 const _lazy_Q675bI = () => Promise.resolve().then(function () { return update_post$1; });
 const _lazy_bz5v70 = () => Promise.resolve().then(function () { return secureToken_get$1; });
 const _lazy_PsyUP0 = () => Promise.resolve().then(function () { return _ws$1; });
@@ -3280,6 +3281,7 @@ const handlers = [
   { route: '/api/square/place-order', handler: _lazy_D8ffMl, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/retrieve-item', handler: _lazy_3k04uK, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/add', handler: _lazy_z4QTko, lazy: true, middleware: false, method: "post" },
+  { route: '/api/user/update_password', handler: _lazy_wN5pgk, lazy: true, middleware: false, method: undefined },
   { route: '/api/user/update', handler: _lazy_Q675bI, lazy: true, middleware: false, method: "post" },
   { route: '/api/utils/secure-token', handler: _lazy_bz5v70, lazy: true, middleware: false, method: "get" },
   { route: '/_ws', handler: _lazy_PsyUP0, lazy: true, middleware: false, method: undefined },
@@ -4265,12 +4267,53 @@ const add_post$1 = /*#__PURE__*/Object.freeze({
   default: add_post
 });
 
+const update_password = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("from front end", post_data);
+  let return_obj = {
+    status: null,
+    message: null
+  };
+  if ((post_data == null ? void 0 : post_data.new_password) !== (post_data == null ? void 0 : post_data.confirm_password)) {
+    return_obj.status = "error";
+    return_obj.message = "Passwords do not match";
+  } else if ((post_data == null ? void 0 : post_data.current_password) !== (post_data == null ? void 0 : post_data.auth.user.password)) {
+    return_obj.status = "error";
+    return_obj.message = "Current password is incorrect.";
+  } else {
+    return_obj.status = "success";
+    return_obj.message = "Clear to update password";
+  }
+  return return_obj;
+});
+
+const update_password$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: update_password
+});
+
 const update_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("Add new friend POST data", post_data);
+  $fetch(
+    `${process.env.STRAPI_URL}/api/users/${post_data == null ? void 0 : post_data.user.id}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${post_data == null ? void 0 : post_data.token}`,
+        "Content-Type": "application/json",
+        accept: "application/json"
+      },
+      body: JSON.stringify(post_data == null ? void 0 : post_data.user)
+    }
+  ).then((res) => {
+    console.log("Updated nSight user.");
+  }).catch((err) => {
+    console.log("Update user error", err);
+  });
   return {
     status: "success",
-    message: post_data
+    message: "User updated successfully"
   };
 });
 

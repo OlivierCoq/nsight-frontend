@@ -80,29 +80,33 @@
 
                   <div class="md:flex items-center gap-10">
                     <label class="md:w-32 text-right"> First Name </label>
-                    <div class="flex-1 max-md:mt-4">
-                      <input type="text" :placeholder="auth.user.first_name" class="lg:w-1/2 w-full">
+                    <div class="flex-1 max-md:mt-4 flex flex-col">
+                      <input type="text" v-model="auth.user.first_name" :placeholder="auth.user.first_name" class="lg:w-1/2 w-full">
+                      <small v-if="!validate_name(auth.user.first_name)" class="text-red-500 text-sm mt-2">Please use a full first name.</small>
                     </div>
                   </div>
 
                   <div class="md:flex items-center gap-10">
                     <label class="md:w-32 text-right"> Last Name </label>
-                    <div class="flex-1 max-md:mt-4">
-                      <input type="text" :placeholder="auth.user.last_name" class="lg:w-1/2 w-full">
+                    <div class="flex-1 max-md:mt-4 flex flex-col">
+                      <input type="text" v-model="auth.user.last_name" :placeholder="auth.user.last_name" class="lg:w-1/2 w-full">
+                      <small v-if="!validate_name(auth.user.last_name)" class="text-red-500 text-sm mt-2">Please use a full first name.</small>
                     </div>
                   </div>
 
                   <div class="md:flex items-center gap-10">
                     <label class="md:w-32 text-right"> Email </label>
-                    <div class="flex-1 max-md:mt-4">
-                      <input type="text" :placeholder="auth.user.email" class="lg:w-1/2 w-full">
+                    <div class="flex-1 max-md:mt-4 flex flex-col">
+                      <input type="email" v-model="auth.user.email" :placeholder="auth.user.email" class="lg:w-1/2 w-full">
+                      <small v-if="!validate_email(auth.user.email)" class="text-red-500 text-sm mt-2">Please use a valid email.</small>
                     </div>
                   </div> 
 
                   <div class="md:flex items-center gap-10">
                     <label class="md:w-32 text-right"> Phone </label>
-                    <div class="flex-1 max-md:mt-4">
+                    <div class="flex-1 max-md:mt-4 flex flex-col">
                       <input 
+                        v-model="auth.user.phone_number"
                         type="tel" :placeholder="auth.user.phone_number" 
                         pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="lg:w-1/2 w-full"
                         @keydown="
@@ -113,6 +117,15 @@
                           }
                         "
                       >
+                      <small v-if="!auth.user.phone_number" class="text-red-500 text-sm mt-2">Please use a valid phone number.</small>
+                    </div>
+                  </div>
+
+                  <!-- Save Button: -->
+                  <div class="md:flex items-center gap-10 pt-5">
+                    <div class="md:w-32"></div>
+                    <div class="flex-1 max-md:mt-4">
+                      <button class="w-full lg:w-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" @click="save_changes"> Save Changes </button>
                     </div>
                   </div>
 
@@ -122,32 +135,38 @@
 
                   <div class="md:flex items-center gap-10">
                     <label class="md:w-32 text-right"> Current Password </label>
-                    <div class="flex-1 max-md:mt-4">
-                      <input type="password" class="lg:w-1/2 w-full">
+                    <div class="flex-1 max-md:mt-4 flex flex-col">
+                      <input type="password" v-model="state.password.current" class="lg:w-1/2 w-full">
+                      <small v-if="state.errors.general.password.current" class="text-red-500 text-sm mt-2">{{ state.errors.general.password.current }}</small>
                     </div>
                   </div>
                   
                   <div class="md:flex items-center gap-10">
                     <label class="md:w-32 text-right"> New Password </label>
-                    <div class="flex-1 max-md:mt-4">
-                      <input type="password"  class="lg:w-1/2 w-full">
+                    <div class="flex-1 max-md:mt-4 flex flex-col">
+                      <input type="password" v-model="state.password.new" class="lg:w-1/2 w-full">
+                      <small v-if="state.errors.general.password.new" class="text-red-500 text-sm mt-2">{{ state.errors.general.password.new }}</small>
                     </div>
                   </div>
                 
                   <div class="md:flex items-center gap-10">
                     <label class="md:w-32 text-right"> Confirm Password </label>
-                    <div class="flex-1 max-md:mt-4">
-                      <input type="password" class="lg:w-1/2 w-full">
+                    <div class="flex-1 max-md:mt-4 flex flex-col">
+                      <input type="password" v-model="state.password.confirm" class="lg:w-1/2 w-full">
+                      <small v-if="state.errors.general.password.confirm" class="text-red-500 text-sm mt-2">{{ state.errors.general.password.confirm }}</small>
+                    </div>
+                  </div>
+
+                  <!-- Update password button: -->
+                  <div class="md:flex items-center gap-10 pt-5">
+                    <div class="md:w-32"></div>
+                    <div class="flex-1 max-md:mt-4 flex flex-col">
+                      <button class="w-full lg:w-1/2 bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" @click="update_password"> Update Password </button>
+                      <small v-if="state.success.password" class="text-green-500 text-sm mt-2">{{ state.success.password }}</small>
                     </div>
                   </div>
                   
-                  <!-- Save Button: -->
-                  <div class="md:flex items-center gap-10 pt-10">
-                    <div class="md:w-32"></div>
-                    <div class="flex-1 max-md:mt-4">
-                      <button class="w-full lg:w-1/2 bg-amber-600 text-white rounded-md py-2"> Save Changes </button>
-                    </div>
-                  </div>
+                  
 
                 </div>
               </div>
@@ -168,6 +187,8 @@
 <script setup>
 
 import { parsePhoneNumber, AsYouType } from "libphonenumber-js";
+import password from "~/presets/nsight_style_presets/password";
+
 
 
 definePageMeta({
@@ -190,13 +211,26 @@ const state = reactive({
     { name: "Payment Methods", component: "AccountPaymentMethods" },
   ],
   saving: false,
+  password: {
+    current: "",
+    new: "",
+    confirm: "",
+  },
+  success: {
+    general: null,
+    password: null
+  },
   errors: {
     general: {
       first_name: null,
       last_name: null,
       email: null,
       phone_number: null,
-      password: null,
+      password: {
+        current: null,
+        new: null,
+        confirm: null,
+      },
     }
   }
 })
@@ -206,6 +240,9 @@ onMounted(() => {
 })
 
 // Methods
+const validate_name = (text) => {
+  return text.length > 2
+}
 
 const validate_email = (email) => {
   return String(email)
@@ -216,21 +253,97 @@ const validate_email = (email) => {
 }
 
 
-const validate_general =  () => {
-  const errors = state.errors.general
-  errors.first_name = !state.first_name ? "First name is required" : null
-  errors.last_name = !state.last_name ? "Last name is required" : null
-  errors.email = (!state.email || !validate_email(state.email))  ? "Proper email's required" : null
-  errors.phone_number = !state.phone_number ? "Phone number is required" : null
-  errors.password = !state.password ? "Password is required" : null
-}
 
 const save_changes = () => {
   state.saving = true
-   
-  // setTimeout(() => {
-  //   state.saving = false
-  // }, 2000)
+  
+
+  if(!validate_name(auth.user.first_name)) {
+    state.errors.general.first_name = "Please use a full first name."
+  } 
+  if(!validate_name(auth.user.last_name)) {
+    state.errors.general.last_name = "Please use a full last name."
+  }
+  if(!validate_email(auth.user.email)) {
+    state.errors.general.email = "Please use a valid email."
+  }
+  if(!auth.user.phone_number) {
+    state.errors.general.phone_number = "Please use a valid phone number."
+  }
+
+  if(
+    validate_name(auth.user.first_name) &&
+    validate_name(auth.user.last_name) &&
+    validate_email(auth.user.email) &&
+    auth.user.phone_number
+  ) {
+    auth.updateUser()
+    .then(() => {
+      state.saving = false
+      state.errors.general = {
+        first_name: null,
+        last_name: null,
+        email: null,
+        phone_number: null,
+        password: null,
+      }
+    })
+    .catch((error) => {
+      state.saving = false
+      console.log(error)
+    })
+  } else {
+    state.saving = false
+  }
+
+}
+
+const update_password = () => {
+
+    $fetch('/api/user/update_password', {
+      method: 'POST',
+      body: JSON.stringify({
+        current_password: state.password.current,
+        new_password: state.password.new,
+        confirm_password: state.password.confirm,
+        auth
+      })
+    }).then((res) => {
+      // console.log('reeeessss', res)
+      if(res.status == 'error') {
+        if(res.message === 'Passwords do not match') {
+          state.errors.general.password.confirm = res.message
+        } else if (res.message === 'Current password is incorrect.') {
+          state.errors.general.password.current = res.message
+          state.errors.general.password.confirm = null
+        } else {
+          state.errors.general.password = res.message
+        }
+      } else {
+        state.errors.general.password = {
+          current: null,
+          new: null,
+          confirm: null,
+        }
+
+        auth.user.password = state.password.new
+        nextTick(() => {
+          auth.updateUser()
+          state.success.password = "Password updated successfully!"
+          nextTick(() => {
+            state.password = {
+              current: "",
+              new: "",
+              confirm: "",
+            }
+          })
+            
+        })
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
 </script>

@@ -51,6 +51,9 @@ declare module 'nitropack' {
     '/api/user/add': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/add.post').default>>>>
     }
+    '/api/user/update_password': {
+      'default': Simplify<Serialize<Awaited<ReturnType<typeof impor../../server/api/user/update_password).default>>>>
+    }
     '/api/user/update': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/update.post').default>>>>
     }

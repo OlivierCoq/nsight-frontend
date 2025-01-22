@@ -34,6 +34,8 @@ export const authStore = defineStore({
       const prodStore = productsStore();
       const settings = settingsStore();
 
+      const pass = payload.password;
+
       // Sign in to Strapi:
       const res = await $fetch(
         `${runtimeConfig.public.NUXT_STRAPI_URL}/api/auth/local`,
@@ -67,6 +69,7 @@ export const authStore = defineStore({
               populate: [
                 "username",
                 "email",
+                "password",
                 "first_name",
                 "last_name",
                 "favorites",
@@ -106,6 +109,7 @@ export const authStore = defineStore({
         ).then(async (full_user_data) => {
           this.errors = false;
           this.user = full_user_data;
+          this.user['password'] = pass;
           this.token = res.jwt;
           this.loggedIn = true;
           localStorage.setItem("token", res.jwt);
