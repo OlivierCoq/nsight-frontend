@@ -4672,6 +4672,11 @@ lazystream@^1.0.0:
   dependencies:
     readable-stream "^2.0.5"
 
+leaflet@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.npmjs.org/leaflet/-/leaflet-1.9.4.tgz"
+  integrity sha512-nxS1ynzJOmOlHp+iL3FyWqK89GtNL8U8rvlMOsQdTTssxZwCXh8N2NB3GDQOL+YR3XnWyZAxwQixURb+FA74PA==
+
 libphonenumber-js@^1.10.55:
   version "1.10.55"
   resolved "https://registry.npmjs.org/libphonenumber-js/-/libphonenumber-js-1.10.55.tgz"

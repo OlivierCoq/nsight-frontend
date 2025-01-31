@@ -171,7 +171,106 @@
                 </div>
               </div>
 
-              <div v-if="state.open_tab.Address" class="min-h-[10rem] p-8 pb-20 fade-in"></div>
+              <div v-if="state.open_tab.name === 'Address' " class="min-h-[10rem] p-8 pb-20 fade-in relative z-0">
+
+                  
+                <div v-if="!auth.user.addresses?.shipping?.length" class="flex gap-10">
+                  <div class="flex-1">
+                    <h3 class="text-lg font-semibold"> Address </h3>
+                    <p class="text-sm text-gray-500"> {{ auth.user.address ? auth.user.address : 'No address added yet.' }} </p>
+                  </div>
+                </div>
+
+                <div v-else>
+                  <div v-for="(address, b) in auth.user.addresses.shipping" :key="b" class="address-card flex gap-10 mb-5">
+                    <div class="flex-1">
+                      <h3 class="text-lg font-semibold text-gray-500 dark:text-gray-100"> {{ address.full_name }} </h3>
+                      <p class="text-sm text-gray-500 dark:text-gray-200">
+                        {{ address.street }} <br/>
+                        {{ address.town_city }}, {{ address.county_state }} {{ address.postal_zip_code }}
+                      </p>
+                    </div>
+                    <div class="flex flex-col items-center justify-center ctr-address">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-white">
+                        <path d="M12 2C7.03 2 3 6.03 3 11c0 4.5 9 13 9 13s9-8.5 9-13c0-4.97-4.03-9-9-9zm0 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 1a2 2 0 100 4 2 2 0 000-4z"/>
+                      </svg>
+                      <p class="text-sm text-white"> Add Address </p>
+                    </div>
+                  </div>
+                  
+                </div>
+                
+                <div class="w-full flex flex-col py-4">
+                  <button class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" @click="open_address_modal"> 
+                    Add Address 
+                  </button>
+
+                  <div v-if="state.tabs[1].modal" class="absolute px-10 pb-20 bg-zinc-900 shadow-xl z-10 top-5 fade-in rounded-lg w-[92%] h-[92%] flex flex-col">
+                    <div class="flex flex-row justify-between">
+                      <div class="flex flex-1"></div>
+                      <div class="w-[40px] h-[40px] flex flex-col justify-center align-center">
+                        <button
+                          class="absolute top-[10px] right-[8px] p-4"
+                          type="button"
+                          uk-close
+                          @click="state.tabs[1].modal = false"
+                          ></button>
+                      </div>
+                    </div>
+                    <div class="flex flex-1 flex-col">
+                      <h3 class="text-lg font-semibold text-white"> Add Address </h3>
+                      <div class="flex flex-col gap-4">
+                        <div class="flex flex-row justify-between">
+                          <input type="text" v-model="state.tabs[1].new_address.first_name" placeholder="Full Name" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700 mx-1">
+                          <input type="text" v-model="state.tabs[1].new_address.last_name" placeholder="Full Name" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700 mx-1">
+                        </div>
+                        
+                        <input type="text" v-model="state.tabs[1].new_address.street" placeholder="Street" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                        <input type="text" v-model="state.tabs[1].new_address.town_city" placeholder="Town/City" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                        <input type="text" v-model="state.tabs[1].new_address.county_state" placeholder="County/State" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                        <input type="text" v-model="state.tabs[1].new_address.postal_zip_code" placeholder="Postal/Zip Code" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                        <input type="tel" v-model="state.tabs[1].new_address.phone_number" placeholder="Phone Number" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                      </div>
+                      <div class="flex flex-1"></div>
+                      <div class="flex flex-col mt-10">
+                        <button class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" @click="save_changes"> Save Changes </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    
+                    class="fade-in w-[90vw] md:w-[50vw] h-[90vh] md:h-[22vh] p-0 bg-zinc-200 dark:bg-zinc-900 shadow-xl mx-auto mt-20"
+                    id="new_address_modal"
+                    uk-modal
+                    style="padding: 0 !important"
+                    >
+                    <div
+                      class="uk-modal-dialog tt relative mx-auto rounded-lg shadow-xl overflow-hidden w-full"
+                      style="width: 100% !important; height: 100% !important"
+                      >
+                      <div class="w-full bg-zinc-200 dark:bg-zinc-900 h-[10%]">
+                        <button
+                          class="absolute top-[10px] right-[8px] p-4"
+                          type="button"
+                          uk-close
+                          @click="state.tabs[1].modal = false"
+                          ></button>
+                      </div>
+                      <div class="w-[80vw] h-[80vh]">nigger nigger nigger</div>
+                    </div>
+                  </div>
+
+                </div>
+                
+                
+       
+                
+              </div>
+
+              <div v-if="state.open_tab.name === 'Orders' " class="min-h-[10rem] p-8 pb-20 fade-in"></div>
+
+              <div v-if="state.open_tab.name === 'Payment Methods' " class="min-h-[10rem] p-8 pb-20 fade-in"></div>
               
             </div> 
             
@@ -184,7 +283,7 @@
     </main>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 
 import { parsePhoneNumber, AsYouType } from "libphonenumber-js";
 import password from "~/presets/nsight_style_presets/password";
@@ -206,7 +305,21 @@ const state = reactive({
   open_tab: false,
   tabs: [
     { name: "General", component: "AccountEditPersonal" },
-    { name: "Address", component: "AccountEditAddress" },
+    { 
+      name: "Address", 
+      component: "AccountEditAddress", 
+      modal: false,
+      new_address: {
+        full_name: "",
+        first_name: "",
+        last_name: "",
+        street: "",
+        town_city: "",
+        county_state: "",
+        postal_zip_code: "",
+        phone_number: "",
+      }
+    },
     { name: "Orders", component: "AccountOrders" },
     { name: "Payment Methods", component: "AccountPaymentMethods" },
   ],
@@ -216,6 +329,7 @@ const state = reactive({
     new: "",
     confirm: "",
   },
+
   success: {
     general: null,
     password: null
@@ -344,6 +458,12 @@ const update_password = () => {
     .catch((error) => {
       console.log(error)
     })
+}
+
+// Addresses
+const open_address_modal = () => {
+  console.log('open address modal')
+  state.tabs[1].modal = true
 }
 
 </script>
