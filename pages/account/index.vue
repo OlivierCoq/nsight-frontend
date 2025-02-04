@@ -51,7 +51,7 @@
                     > 
                     
                     <li class="w-auto pr-2.5"> 
-                      <a v-for="(tab, a) in state.tabs" :key="a" href="#" @click="state.open_tab = tab" 
+                      <a v-for="(tab, a) in state.tabs" :key="a" href="#" @click="toggle_tab(tab)" 
                         class="inline-block p-4 pt-2 border-b-2 border-transparent aria-expanded:text-zinc-500 aria-expanded:border-zinc-500"
                         :class="state.open_tab === tab ? 'text-neutral-900 border-black dark:text-white dark:border-white' : 'text-gray-500 dark:text-white/80'"
                       > 
@@ -75,7 +75,7 @@
             <!-- tab user basic info -->
             <div>
 
-              <div v-if="state.open_tab.name === 'General' " id="general_tab" class="min-h-[10rem] p-8 pb-20 fade-in">
+              <div v-if="state.open_tab.name === 'General' " id="general_tab" class="min-h-[50rem] p-8 pb-20 fade-in">
                 <div class="space-y-6">
 
                   <div class="md:flex items-center gap-10">
@@ -171,13 +171,13 @@
                 </div>
               </div>
 
-              <div v-if="state.open_tab.name === 'Address' " class="min-h-[10rem] p-8 pb-20 fade-in relative z-0">
+              <div v-if="state.open_tab.name === 'Address' " class="min-h-[50rem] p-8 pb-20 fade-in relative z-0">
 
                   
                 <div v-if="!auth.user.addresses?.shipping?.length" class="flex gap-10">
                   <div class="flex-1">
-                    <h3 class="text-lg font-semibold"> Address </h3>
-                    <p class="text-sm text-gray-500"> {{ auth.user.address ? auth.user.address : 'No address added yet.' }} </p>
+                    <h3 class="text-lg font-semibold dark:text-white"> Address </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400"> {{ auth.user.address ? auth.user.address : 'No address added yet.' }} </p>
                   </div>
                 </div>
 
@@ -190,11 +190,11 @@
                         {{ address.town_city }}, {{ address.county_state }} {{ address.postal_zip_code }}
                       </p>
                     </div>
-                    <div class="flex flex-col items-center justify-center ctr-address">
+                    <div class="flex flex-col items-center justify-center ctr-address" :id="`mapContainer-${b}`">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-white">
                         <path d="M12 2C7.03 2 3 6.03 3 11c0 4.5 9 13 9 13s9-8.5 9-13c0-4.97-4.03-9-9-9zm0 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 1a2 2 0 100 4 2 2 0 000-4z"/>
                       </svg>
-                      <p class="text-sm text-white"> Add Address </p>
+                      <p class="text-sm text-white"> {{ address.street }} </p>
                     </div>
                   </div>
                   
@@ -205,7 +205,7 @@
                     Add Address 
                   </button>
 
-                  <div v-if="state.tabs[1].modal" class="absolute px-10 pb-20 bg-zinc-900 shadow-xl z-10 top-5 fade-in rounded-lg w-[92%] h-[92%] flex flex-col">
+                  <div style="z-index: 999999 !important;" v-if="state.tabs[1].modal" class="absolute px-10 pb-20 bg-zinc-900 shadow-xl top-5 rounded-lg w-[92%] h-[92%] flex flex-col overflow-y-scroll">
                     <div class="flex flex-row justify-between">
                       <div class="flex flex-1"></div>
                       <div class="w-[40px] h-[40px] flex flex-col justify-center align-center">
@@ -221,19 +221,46 @@
                       <h3 class="text-lg font-semibold text-white"> Add Address </h3>
                       <div class="flex flex-col gap-4">
                         <div class="flex flex-row justify-between">
-                          <input type="text" v-model="state.tabs[1].new_address.first_name" placeholder="Full Name" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700 mx-1">
-                          <input type="text" v-model="state.tabs[1].new_address.last_name" placeholder="Full Name" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700 mx-1">
+                          <div class="mx-1 flex-1"> 
+                            <input type="text" v-model="state.tabs[1].new_address.first_name" @keydown="state.errors.address.new_address.first_name = false" placeholder="First Name" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                            <small v-if="state.errors.address.new_address.first_name" class="text-red-500 text-sm m-2">Please use a full first name.</small>
+                          </div>
+                          <div class="mx-1 flex-1"> 
+                            <input type="text" v-model="state.tabs[1].new_address.last_name" @keydown="state.errors.address.new_address.last_name = false" placeholder="First Name" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                            <small v-if="state.errors.address.new_address.last_name" class="text-red-500 text-sm m-2">Please use a full first name.</small>
+                          </div>
                         </div>
-                        
-                        <input type="text" v-model="state.tabs[1].new_address.street" placeholder="Street" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
-                        <input type="text" v-model="state.tabs[1].new_address.town_city" placeholder="Town/City" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
-                        <input type="text" v-model="state.tabs[1].new_address.county_state" placeholder="County/State" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
-                        <input type="text" v-model="state.tabs[1].new_address.postal_zip_code" placeholder="Postal/Zip Code" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
-                        <input type="tel" v-model="state.tabs[1].new_address.phone_number" placeholder="Phone Number" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                          <div class="mx-1 flex-1">
+                            <input type="text" required v-model="state.tabs[1].new_address.street" @keydown="state.errors.address.new_address.street = false" placeholder="Street" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                            <small v-if="state.errors.address.new_address.street" class="text-red-500 text-sm m-2">Please enter an address street</small>
+                          </div>
+                          <div class="mx-1 flex-1">
+                            <input type="text" required v-model="state.tabs[1].new_address.town_city" @keydown="state.errors.address.new_address.town_city = false" placeholder="Town/City" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                            <small v-if="state.errors.address.new_address.town_city" class="text-red-500 text-sm m-2">Please enter a town/city</small>
+                          </div>
+                          <div class="mx-1 flex-1">
+                            <input type="text" required v-model="state.tabs[1].new_address.county_state" @keydown="state.errors.address.new_address.county_state = false" placeholder="County/State" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                            <small v-if="state.errors.address.new_address.county_state" class="text-red-500 text-sm m-2">Please enter a county/state</small>
+                          </div>
+                          <div class="mx-1 flex-1">
+                            <input type="text" required v-model="state.tabs[1].new_address.postal_zip_code" @keydown="state.errors.address.new_address.postal_zip_code = false" placeholder="Postal/Zip Code" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                            <small v-if="state.errors.address.new_address.postal_zip_code" class="text-red-500 text-sm m-2">Please enter a postal/zip code</small>
+                          </div>
+                          <div class="mx-1 flex-1">
+                            <input type="tel" required v-model="state.tabs[1].new_address.phone_number" @keydown="state.errors.address.new_address.phone_number" placeholder="Phone Number" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                            <small v-if="state.errors.address.new_address.phone_number" class="text-red-500 text-sm m-2">Please enter a phone number</small>
+                          </div>
+                       
                       </div>
                       <div class="flex flex-1"></div>
                       <div class="flex flex-col mt-10">
-                        <button class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" @click="save_changes"> Save Changes </button>
+                        <button 
+                          class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" 
+                          :class="state.errors.address.new_address.disable ? 'opacity-[0.5] hover:bg-amber-500' : ''"
+                          :disable="state.errors.address.new_address.disable"
+                          @click="add_new_address"> 
+                            Add New Address 
+                          </button>
                       </div>
                     </div>
                   </div>
@@ -287,6 +314,10 @@
 
 import { parsePhoneNumber, AsYouType } from "libphonenumber-js";
 import password from "~/presets/nsight_style_presets/password";
+
+//Leaflet
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
 
 
@@ -345,6 +376,18 @@ const state = reactive({
         new: null,
         confirm: null,
       },
+    },
+    address: {
+      new_address: {
+        first_name: null,
+        last_name: null,
+        street: null,
+        town_city: null,
+        county_state: null,
+        postal_zip_code: null,
+        phone_number: null,
+        disable: false
+      }
     }
   }
 })
@@ -366,7 +409,14 @@ const validate_email = (email) => {
     );
 }
 
-
+const toggle_tab = (tab) => {
+  state.open_tab = tab
+  nextTick(() => {
+    if(tab.name === 'Address') {
+      init_address_tab()
+    }
+  })
+}
 
 const save_changes = () => {
   state.saving = true
@@ -461,9 +511,112 @@ const update_password = () => {
 }
 
 // Addresses
+const mapInstances = ref([]);
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 const open_address_modal = () => {
   console.log('open address modal')
   state.tabs[1].modal = true
+}
+
+
+const initMap = (lat: string, lon: string, index: number) => {
+
+  // Fix pre initialized maps
+  if (mapInstances.value[index]) {
+    mapInstances.value[index]?.setView([lat, lon], 13);
+    return;
+  }
+
+
+  const mapContainer = document.getElementById(`mapContainer-${index}`)
+  const map = L.map(mapContainer).setView([lat, lon], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+  nextTick(() => {
+    L.marker([lat, lon]).addTo(map)
+    .bindPopup(auth.user.addresses.shipping[index].street)
+    .openPopup();
+
+    mapInstances.value[index] = map;
+  })
+}
+
+const init_address_tab = () => {
+
+  nextTick(async () => {
+    auth.user.addresses.shipping.forEach(async (address, index) => {
+     await get_coordinates(`${address.street} ${address.town_city} ${address.county_state}, ${address.postal_zip_code}`, index)
+     await delay(2000)
+    })
+  })
+}
+
+const get_coordinates = async (address: string | number | boolean, index: number) => {
+  $fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
+    .then((res) => {
+      console.log('res', res)
+      if(res.length) {
+          // console.log('response', response)
+        // const data = await response
+        // console.log('data', data)
+        // if(data.length) {
+          auth.user.addresses.shipping[auth.user.addresses.shipping.length - 1].coordinates = {
+            lat: res[0].lat,
+            lon: res[0].lon
+          }
+          const { lat, lon } = res[0]
+          initMap(lat, lon, index)
+        // }
+      }
+    })
+  // console.log('response', response)
+  // const data = await response
+  // console.log('data', data)
+  // if(data.length) {
+  //   auth.user.addresses.shipping[auth.user.addresses.shipping.length - 1].coordinates = {
+  //     lat: data[0].lat,
+  //     lon: data[0].lon
+  //   }
+  //   const { lat, lon } = data[0]
+  //   // initMap(lat, lon, index)
+  // }
+}
+
+const add_new_address = async () => {
+  Object.keys(state.tabs[1].new_address).forEach((key) => {
+    if(!state.tabs[1].new_address[key]?.length) {
+      state.errors.address.new_address[key] = `Please enter a ${key.replace('_', ' ')}`
+      state.errors.address.new_address.disable = true
+    } else {
+      state.errors.address.new_address[key] = null
+      state.errors.address.new_address.disable = false
+      // console.log('all clear')
+    }
+    
+  })
+  nextTick(async ()=> {
+    if(!state.errors.address.new_address.disable) {
+      auth.user.addresses.shipping.push(state.tabs[1].new_address)
+      if(!auth.user.selected_addresses) {
+        auth.user.selected_addresses = {
+          shipping: state.tabs[1].new_address
+        }
+      }
+
+
+      auth.updateUser()
+
+      nextTick(() => {
+        auth.user.addresses.shipping.forEach(async (address, index) => {
+          await get_coordinates(`${address.street} ${address.town_city} ${address.county_state}, ${address.postal_zip_code}`, index)
+        })
+
+        state.tabs[1].modal = false
+      })
+    }
+  })
 }
 
 </script>
