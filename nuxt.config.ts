@@ -179,8 +179,6 @@ export default defineNuxtConfig({
       SQUARE_LOCATION_ID: process.env.SQUARE_LOCATION_ID,
       SQUARE_ACCESS_TOKEN: process.env.SQUARE_ACCESS_TOKEN,
       SQUARE_ENVIRONMENT: process.env.SQUARE_ENVIRONMENT,
-      // SendGrid
-      SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
     },
     square: {
       applicationId: process.env.SQUARE_APPLICATION_ID,

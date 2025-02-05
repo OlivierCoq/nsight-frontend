@@ -73,7 +73,6 @@ const _inlineRuntimeConfig = {
     "SQUARE_LOCATION_ID": "L56F5MJM7AFC7",
     "SQUARE_ACCESS_TOKEN": "EAAAlzaGxomxKQFqliNDihMJ4I4l1CpMN90rVRBR1L44k8lr8mFgPq9-f9WP7nda",
     "SQUARE_ENVIRONMENT": "sandbox",
-    "SENDGRID_API_KEY": "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",
     "persistedState": {
       "storage": "cookies",
       "debug": false,
