@@ -182,7 +182,8 @@
                 </div>
 
                 <div v-else>
-                  <div v-for="(address, b) in auth.user.addresses.shipping" :key="b" class="address-card flex gap-10 mb-5">
+                  <AddressCard :address="address" :key="b" :id="b" v-for="(address, b) in auth.user.addresses.shipping" />
+                  <!-- <div v-for="(address, b) in auth.user.addresses.shipping" :key="b" class="address-card flex gap-10 mb-5">
                     <div class="flex-1">
                       <h3 class="text-lg font-semibold text-gray-500 dark:text-gray-100"> {{ address.full_name }} </h3>
                       <p class="text-sm text-gray-500 dark:text-gray-200">
@@ -196,7 +197,7 @@
                       </svg>
                       <p class="text-sm text-white"> {{ address.street }} </p>
                     </div>
-                  </div>
+                  </div> -->
                   
                 </div>
                 
@@ -235,6 +236,9 @@
                             <small v-if="state.errors.address.new_address.street" class="text-red-500 text-sm m-2">Please enter an address street</small>
                           </div>
                           <div class="mx-1 flex-1">
+                            <input type="text" v-model="state.tabs[1].new_address.street_2" placeholder="Street 2 (optional)" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                          </div>
+                          <div class="mx-1 flex-1">
                             <input type="text" required v-model="state.tabs[1].new_address.town_city" @keydown="state.errors.address.new_address.town_city = false" placeholder="Town/City" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
                             <small v-if="state.errors.address.new_address.town_city" class="text-red-500 text-sm m-2">Please enter a town/city</small>
                           </div>
@@ -247,7 +251,7 @@
                             <small v-if="state.errors.address.new_address.postal_zip_code" class="text-red-500 text-sm m-2">Please enter a postal/zip code</small>
                           </div>
                           <div class="mx-1 flex-1">
-                            <input type="tel" required v-model="state.tabs[1].new_address.phone_number" @keydown="state.errors.address.new_address.phone_number" placeholder="Phone Number" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                            <input type="tel" required v-model="state.tabs[1].new_address.phone_number" @keydown="state.errors.address.new_address.phone_number = false" placeholder="Phone Number" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
                             <small v-if="state.errors.address.new_address.phone_number" class="text-red-500 text-sm m-2">Please enter a phone number</small>
                           </div>
                        
@@ -319,6 +323,7 @@ import password from "~/presets/nsight_style_presets/password";
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
+import AddressCard from './components/AddressCard.vue'
 
 
 definePageMeta({
@@ -345,6 +350,7 @@ const state = reactive({
         first_name: "",
         last_name: "",
         street: "",
+        street_2: "",
         town_city: "",
         county_state: "",
         postal_zip_code: "",
@@ -360,7 +366,6 @@ const state = reactive({
     new: "",
     confirm: "",
   },
-
   success: {
     general: null,
     password: null
@@ -411,11 +416,7 @@ const validate_email = (email) => {
 
 const toggle_tab = (tab) => {
   state.open_tab = tab
-  nextTick(() => {
-    if(tab.name === 'Address') {
-      init_address_tab()
-    }
-  })
+
 }
 
 const save_changes = () => {
@@ -510,78 +511,8 @@ const update_password = () => {
     })
 }
 
-// Addresses
-const mapInstances = ref([]);
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
 const open_address_modal = () => {
-  console.log('open address modal')
   state.tabs[1].modal = true
-}
-
-
-const initMap = (lat: string, lon: string, index: number) => {
-
-  // Fix pre initialized maps
-  if (mapInstances.value[index]) {
-    mapInstances.value[index]?.setView([lat, lon], 13);
-    return;
-  }
-
-
-  const mapContainer = document.getElementById(`mapContainer-${index}`)
-  const map = L.map(mapContainer).setView([lat, lon], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
-  nextTick(() => {
-    L.marker([lat, lon]).addTo(map)
-    .bindPopup(auth.user.addresses.shipping[index].street)
-    .openPopup();
-
-    mapInstances.value[index] = map;
-  })
-}
-
-const init_address_tab = () => {
-
-  nextTick(async () => {
-    auth.user.addresses.shipping.forEach(async (address, index) => {
-     await get_coordinates(`${address.street} ${address.town_city} ${address.county_state}, ${address.postal_zip_code}`, index)
-     await delay(2000)
-    })
-  })
-}
-
-const get_coordinates = async (address: string | number | boolean, index: number) => {
-  $fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
-    .then((res) => {
-      console.log('res', res)
-      if(res.length) {
-          // console.log('response', response)
-        // const data = await response
-        // console.log('data', data)
-        // if(data.length) {
-          auth.user.addresses.shipping[auth.user.addresses.shipping.length - 1].coordinates = {
-            lat: res[0].lat,
-            lon: res[0].lon
-          }
-          const { lat, lon } = res[0]
-          initMap(lat, lon, index)
-        // }
-      }
-    })
-  // console.log('response', response)
-  // const data = await response
-  // console.log('data', data)
-  // if(data.length) {
-  //   auth.user.addresses.shipping[auth.user.addresses.shipping.length - 1].coordinates = {
-  //     lat: data[0].lat,
-  //     lon: data[0].lon
-  //   }
-  //   const { lat, lon } = data[0]
-  //   // initMap(lat, lon, index)
-  // }
 }
 
 const add_new_address = async () => {
@@ -609,9 +540,7 @@ const add_new_address = async () => {
       auth.updateUser()
 
       nextTick(() => {
-        auth.user.addresses.shipping.forEach(async (address, index) => {
-          await get_coordinates(`${address.street} ${address.town_city} ${address.county_state}, ${address.postal_zip_code}`, index)
-        })
+
 
         state.tabs[1].modal = false
       })

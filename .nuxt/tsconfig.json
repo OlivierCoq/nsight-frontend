@@ -72,7 +72,7 @@
         "./primevue-style.mjs"
       ],
       "#well-known": [
-        "./well-known"
+        "./well-known.mjs"
       ],
       "#vue-router": [
         "./vue-router-stub"
