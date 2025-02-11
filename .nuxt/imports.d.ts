@@ -26,6 +26,7 @@ export { withCtx, withDirectives, withKeys, withMemo, withModifiers, withScopeId
 export { injectHead, useHead, useSeoMeta, useHeadSafe, useServerHead, useServerSeoMeta, useServerHeadSafe } from '@unhead/vue';
 export { customFetch } from '../composables/custom_fetch';
 export { default as Icons } from '../utils/Icons';
+export { formatPrice } from '../utils/formatPrice';
 export { authStore } from '../stores/auth';
 export { chatStore } from '../stores/chat';
 export { useChatStore } from '../stores/chatStore';

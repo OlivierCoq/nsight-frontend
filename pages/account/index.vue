@@ -183,22 +183,6 @@
 
                 <div v-else>
                   <AddressCard :address="address" :key="b" :id="b" v-for="(address, b) in auth.user.addresses.shipping" />
-                  <!-- <div v-for="(address, b) in auth.user.addresses.shipping" :key="b" class="address-card flex gap-10 mb-5">
-                    <div class="flex-1">
-                      <h3 class="text-lg font-semibold text-gray-500 dark:text-gray-100"> {{ address.full_name }} </h3>
-                      <p class="text-sm text-gray-500 dark:text-gray-200">
-                        {{ address.street }} <br/>
-                        {{ address.town_city }}, {{ address.county_state }} {{ address.postal_zip_code }}
-                      </p>
-                    </div>
-                    <div class="flex flex-col items-center justify-center ctr-address" :id="`mapContainer-${b}`">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-white">
-                        <path d="M12 2C7.03 2 3 6.03 3 11c0 4.5 9 13 9 13s9-8.5 9-13c0-4.97-4.03-9-9-9zm0 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 1a2 2 0 100 4 2 2 0 000-4z"/>
-                      </svg>
-                      <p class="text-sm text-white"> {{ address.street }} </p>
-                    </div>
-                  </div> -->
-                  
                 </div>
                 
                 <div class="w-full flex flex-col py-4">
@@ -299,7 +283,46 @@
                 
               </div>
 
-              <div v-if="state.open_tab.name === 'Orders' " class="min-h-[10rem] p-8 pb-20 fade-in"></div>
+              <div v-if="state.open_tab.name === 'Orders' " class="min-h-[10rem] p-8 pb-20 fade-in">
+                  <!-- Accordion -->
+                <ul class="relative space-y-3 uk-accordion" uk-accordion="active: 0">
+                  <li class="uk-open">
+                    <a class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
+                        All Orders
+                        <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
+                    </a>
+                    <div class="p-2 dark:text-white/80 uk-accordion-content h-[40rem] overflow-y-scroll">
+                      <div class="flex flex-col gap-4">
+
+                        <OrderCard v-for="(order, a) in auth.user.orders.data" :key="a" :order="order" />
+
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li class="">
+                    <a class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
+                        Cancelled
+                        <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
+                    </a>
+                    <div class="p-2 dark:text-white/80 uk-accordion-content h-[40rem] overflow-y-scroll">
+                      <OrderCard v-for="(cancelled_order, b) in auth.user.cancelled_orders.data" :key="b" :order="cancelled_order" />
+                    </div>
+                  </li>
+
+                  <li class="">
+                    <a class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
+                        Returns
+                        <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
+                    </a>
+                    <div class="p-2 dark:text-white/80 uk-accordion-content h-[40rem] overflow-y-scroll">
+                      <OrderCard v-for="(return_order, c) in auth.user.returns.data" :key="c" :order="return_order" />
+                    </div>
+                  </li>
+
+
+                </ul>
+              </div>
 
               <div v-if="state.open_tab.name === 'Payment Methods' " class="min-h-[10rem] p-8 pb-20 fade-in"></div>
               
@@ -318,12 +341,16 @@
 
 import { parsePhoneNumber, AsYouType } from "libphonenumber-js";
 import password from "~/presets/nsight_style_presets/password";
+import { format } from 'date-fns';
+import { formatPrice } from '~/utils/formatPrice';
 
 //Leaflet
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
 import AddressCard from './components/AddressCard.vue'
+import OrderCard from './components/OrderCard.vue'
+
 
 
 definePageMeta({
@@ -412,6 +439,11 @@ const validate_email = (email) => {
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
+}
+
+  
+const formatDate = (dateString: string) => {
+  return format(new Date(dateString), "PPpp");
 }
 
 const toggle_tab = (tab) => {
@@ -567,6 +599,18 @@ const add_new_address = async () => {
 
   .ctr-orders {
     height: 500px;
+  }
+
+
+  .p-accordion-header {
+  a {
+    color: #a3a3a3ad !important;
+    border: 1px solid rgba(191, 185, 185, 0.425) !important;
+    }
+  }
+  .p-accordion-content {
+    background: transparent !important;
+    border: 1px solid rgba(191, 185, 185, 0.425) !important;
   }
 }
 </style>
