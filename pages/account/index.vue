@@ -182,7 +182,7 @@
                 </div>
 
                 <div v-else>
-                  <AddressCard :address="address" :key="b" :id="b" v-for="(address, b) in auth.user.addresses.shipping" />
+                  <AddressCard :address="address" :key="b" :id="b" v-for="(address, b) in auth.user?.addresses?.shipping" />
                 </div>
                 
                 <div class="w-full flex flex-col py-4">

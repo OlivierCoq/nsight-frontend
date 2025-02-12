@@ -51,7 +51,7 @@
         </div>
       </div>  
     </div>
-    <div class="flex flex-col items-center justify-center ctr-address" :id="`mapContainer-${props.id}`">
+    <div v-if="props.address" class="flex flex-col items-center justify-center ctr-address" :id="`mapContainer-${props.id}`">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 text-white">
         <path d="M12 2C7.03 2 3 6.03 3 11c0 4.5 9 13 9 13s9-8.5 9-13c0-4.97-4.03-9-9-9zm0 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 1a2 2 0 100 4 2 2 0 000-4z"/>
       </svg>
@@ -116,8 +116,10 @@ const getCoordinates = async (address: string, id: number) => {
     const data = await response.json();
     if (data.length > 0) {
       const { lat, lon } = data[0];
-      await nextTick();
-      initMap(lat, lon, id);
+      await nextTick(() => {
+        initMap(lat, lon, id);
+      });
+      
     } else {
       console.error('No results found for address:', address);
     }
@@ -167,10 +169,18 @@ const setAddressAsDefault = async (id: number) => {
 };
 
 // Lifecycle hooks
-onMounted(() => {
-  const fullAddress = `${props.address.street}, ${props.address.town_city}, ${props.address.county_state}, ${props.address.postal_zip_code}`;
-  console.log('Fetching coordinates for:', fullAddress);
-  getCoordinates(fullAddress, props.id);
+onMounted(async () => {
+
+  if(!props.address.coordinates) {
+    const fullAddress = `${props.address.street}, ${props.address.town_city}, ${props.address.county_state}, ${props.address.postal_zip_code}`;
+    console.log('Fetching coordinates for:', fullAddress);
+    getCoordinates(fullAddress, props.id);
+  } else {
+    await nextTick(() => {
+      initMap(props.address.coordinates.lat!, props.address.coordinates.lon!, props.id);
+    });
+  }
+  
 });
 </script>
 
