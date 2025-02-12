@@ -12,7 +12,7 @@
 
         </div>
         <div class="flex-1 h-full flex flex-col justify-end items-end align-end">
-          <font-awesome-icon :icon="['fab', `cc-${props.paymentMethod.card.cardBrand.toLowerCase()}`]" class="text-2xl text-white dark:text-zinc-500 text-start" />
+          <font-awesome-icon :icon="['fab', format_card_brand(props.paymentMethod.card.cardBrand)]" class="text-2xl text-white dark:text-zinc-500 text-start" />
         </div>
       </div>
       <div class="w-3/4 h-1/3 pe-2 flex flex-row justify-between items-center">
@@ -61,6 +61,24 @@ const auth = authStore()
 
 
 // Methods
+const format_card_brand = (str: string) => {
+  switch (str) {
+    case "VISA":
+      return "cc-visa";
+    case "MASTERCARD":
+      return "cc-mastercard";
+    case "AMERICAN_EXPRESS":
+      return "cc-amex";
+    case "DISCOVER":
+      return "cc-discover";
+    case "DISCOVER_DINERS":
+      return "cc-diners-club";
+    case "JCB":
+      return "cc-jcb";
+    default:
+      return "credit-card";
+  }
+};
 
   // CRUD methods:
 const deletePaymentMethod = async () => {

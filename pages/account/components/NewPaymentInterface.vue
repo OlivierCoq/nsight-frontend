@@ -27,10 +27,23 @@
         
        
         <div class="w-[90%] h-full mx-auto" :class="state.open_tab.name === 'Credit Card' ? 'uk-active' : ''">
-          <div v-if="state.open_tab.name === 'Credit Card' " id="tab-credit_card" class="min-h-[30rem] mx-10 p-8 pb-20 fade-in">
+          <div v-show="state.open_tab.name === 'Credit Card' " id="tab-credit_card" class="min-h-[30rem] mx-10 p-8 pb-20 fade-in">
             
-            
-
+            <form id="payment-form">
+              <div id="card-container"></div>
+              <button
+                id="card-button"
+                type="button"
+                block
+                class="nsight-btn-primary w-full rounded-md py-2 px-4"
+              >
+                Add card
+            </button>
+            </form>
+            <div id="payment-status-container"></div>
+            <p v-if="state.success" class="text-success mt-2 text-green-300">
+              {{ state.success }}
+            </p>
 
           </div>
         </div>
@@ -44,8 +57,16 @@
 
   // Stores:
   const auth = authStore()
+  
 
   // Setup
+  const runtimeConfig = useRuntimeConfig();
+
+  const appId = runtimeConfig.public.SQUARE_APPLICATION_ID;
+  const locationId = runtimeConfig.public.SQUARE_LOCATION_ID;
+  import { v4 as uuidv4 } from "uuid";
+
+  let square_loaded;
 
   // Props:
 
@@ -99,17 +120,190 @@
   const toggle_tab = (tab) => {
     state.open_tab = tab
 
-}
+    if(tab.name === 'Credit Card') {
+      state.dialog = true
+    }
+
+  }
+  const initializeCard = async (payments) => {
+    const card = await payments.card();
+    await card.attach("#card-container");
+    return card;
+  }
 
   // Lifecycle Hooks
   onMounted(() => {
 
     // Don't fucking question it.
     state.open_tab = state.tabs[0]
+    state.dialog = true
   })
+
+watch(
+  () => state.dialog,
+  async () => {
+    if (!window.Square) {
+      throw new Error("Square.js failed to load properly");
+    } else {
+      // console.log("Square.js loaded", window.Square);
+
+      const payments = window.Square.payments(appId, locationId);
+      square_loaded = payments;
+      let card;
+      try {
+        card = await initializeCard(payments);
+
+        // console.log("card", card);
+        const createPayment = async (token) => {
+          const body = JSON.stringify({
+            locationId,
+            sourceId: token,
+            customerId: auth.user.square_id,
+            idempotencyKey: uuidv4(),
+            amountMoney: {
+              amount: 1,
+              currency: "USD",
+            },
+            appFeeMoney: {
+              amount: 0,
+              currency: "USD",
+            },
+          });
+
+          const paymentResponse = await $fetch("/api/square/payment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body,
+          });
+          console.log("paymentResponse", paymentResponse);
+          if (paymentResponse.status == "COMPLETED") {
+            return paymentResponse;
+          }
+          // const errorBody = await paymentResponse.text();
+          // throw new Error(errorBody);
+        };
+
+        const tokenize = async (paymentMethod) => {
+          const tokenResult = await paymentMethod.tokenize();
+          if (tokenResult.status === "OK") {
+            return tokenResult.token;
+          } else {
+            let errorMessage = `Tokenization failed-status: ${tokenResult.status}`;
+            if (tokenResult.errors) {
+              errorMessage += ` and errors: ${JSON.stringify(
+                tokenResult.errors
+              )}`;
+            }
+            throw new Error(errorMessage);
+          }
+        };
+
+        const displayPaymentResults = (status) => {
+          const statusContainer = document.getElementById(
+            "payment-status-container"
+          );
+          if (status === "SUCCESS") {
+            statusContainer.classList.remove("is-failure");
+            statusContainer.classList.add("is-success");
+          } else {
+            statusContainer.classList.remove("is-success");
+            statusContainer.classList.add("is-failure");
+          }
+
+          statusContainer.style.visibility = "visible";
+        };
+
+        const handlePaymentMethodSubmission = async (event, paymentMethod) => {
+          event.preventDefault();
+
+          try {
+            // disable the submit button as we await tokenization and make a
+            // payment request.
+            cardButton.disabled = true;
+            const token = await tokenize(paymentMethod);
+
+            /*
+              Use card to get the token, then use token to add card to user's payment methods
+            */
+
+            const address = {
+              addressLin1: auth?.user?.addresses?.street,
+              addressLin2: auth?.user?.addresses?.street2 ?? "",
+              locality: auth?.user?.addresses?.town_city,
+              administrativeDistrictLevel1: auth?.user?.addresses?.state,
+              postalCode: auth?.user?.addresses?.postal_zip_code,
+              country: auth?.user?.addresses?.country,
+            };
+
+            const body = JSON.stringify({
+              idempotencyKey: uuidv4(),
+              sourceId: token,
+              card: {
+                cardholderName: `${auth.user.first_name} ${auth.user.last_name}`,
+
+                customerId: auth.user.square_id,
+              },
+            });
+
+            // billingAddress: address,
+
+            const newCard = await $fetch("/api/square/create-card", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body,
+            });
+            console.log("createCardResponse", newCard);
+
+            auth.user.payment_methods.data.push(newCard);
+            if (!auth.user.selected_payment_method) {
+              auth.user.selected_payment_method = newCard;
+            }
+            nextTick(() => {
+              // add payment method to Medusa
+              auth.updateUser();
+              state.success = "Payment method added successfully!";
+              state.dialog = false;
+            });
+
+            // const paymentResults = await createPayment(token);
+            // displayPaymentResults("SUCCESS");
+
+            // console.debug("Payment Success", paymentResults);
+          } catch (e) {
+            cardButton.disabled = false;
+            displayPaymentResults("FAILURE");
+            console.error(e.message);
+          }
+        };
+
+        const cardButton = document.getElementById("card-button");
+        cardButton.addEventListener("click", async function (event) {
+          await handlePaymentMethodSubmission(event, card);
+        });
+      } catch (e) {
+        console.error("Initializing Card failed", e);
+        return;
+      }
+    }
+  }
+)
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
+// Square Credit Cards
+.sq-card-wrapper .sq-card-message-no-error {
+  color: white !important;
+
+  // before:
+  &::before {
+    background-color: white !important;
+  }
+}
 
 </style>
