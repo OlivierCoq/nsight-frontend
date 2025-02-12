@@ -11,10 +11,12 @@
       </div>
       <div class="w-full flex flex-col justify-start items-start">
         <div class="w-full flex flex-row justify-start items-center">
-          <!-- <span
-            v-if="auth.user.selected_addresses && (auth.user?.selected_addresses?.shipping?.street && (auth.user?.selected_addresses?.shipping?.street === props.address.street))"
-          class="py-1.5 px-5 font-semibold text-sm me-2 text-blue-500 uppercase">Default</span>
-          <span v-else @click="setAddressAsDefault(props.id)" class="py-1.5 px-5 font-semibold text-sm me-2 text-blue-300 cursor-pointer">Set as default</span> -->
+          <p v-if="auth.user.selected_addresses">
+            <span
+              v-if="(auth.user?.selected_addresses?.shipping?.street && (auth.user?.selected_addresses?.shipping?.street === props.address.street))"
+            class="py-1.5 px-5 font-semibold text-sm me-2 text-blue-500 uppercase">Default</span>
+            <span v-else @click="setAddressAsDefault(props.id)" class="py-1.5 px-5 font-semibold text-sm me-2 text-blue-300 cursor-pointer">Set as default</span>
+          </p>
           <span @click="state.edit_address = true" class="py-1.5 px-5 font-semibold text-sm me-2 text-yellow-300 cursor-pointer">Edit</span>
           <span @click="state.confirm_delete = true" class="py-1.5 px-5 font-semibold text-sm me-2 text-red-300 cursor-pointer">Delete</span>
         </div>
