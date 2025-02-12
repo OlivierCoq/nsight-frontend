@@ -90,7 +90,7 @@
                     <label class="md:w-32 text-right"> Last Name </label>
                     <div class="flex-1 max-md:mt-4 flex flex-col">
                       <input type="text" v-model="auth.user.last_name" :placeholder="auth.user.last_name" class="lg:w-1/2 w-full">
-                      <small v-if="!validate_name(auth.user.last_name)" class="text-red-500 text-sm mt-2">Please use a full first name.</small>
+                      <small v-if="!validate_name(auth.user.last_name)" class="text-red-500 text-sm mt-2">Please use a full last name.</small>
                     </div>
                   </div>
 
@@ -211,8 +211,8 @@
                             <small v-if="state.errors.address.new_address.first_name" class="text-red-500 text-sm m-2">Please use a full first name.</small>
                           </div>
                           <div class="mx-1 flex-1"> 
-                            <input type="text" v-model="state.tabs[1].new_address.last_name" @keydown="state.errors.address.new_address.last_name = false" placeholder="First Name" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
-                            <small v-if="state.errors.address.new_address.last_name" class="text-red-500 text-sm m-2">Please use a full first name.</small>
+                            <input type="text" v-model="state.tabs[1].new_address.last_name" @keydown="state.errors.address.new_address.last_name = false" placeholder="Last Name" class="w-full p-2 rounded-md border border-gray-300 dark:border-zinc-700">
+                            <small v-if="state.errors.address.new_address.last_name" class="text-red-500 text-sm m-2">Please use a full last name.</small>
                           </div>
                         </div>
                           <div class="mx-1 flex-1">
