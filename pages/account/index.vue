@@ -294,7 +294,12 @@
                     <div class="p-2 dark:text-white/80 uk-accordion-content h-[40rem] overflow-y-scroll">
                       <div class="flex flex-col gap-4">
 
-                        <OrderCard v-for="(order, a) in auth.user.orders.data" :key="a" :order="order" />
+                        <div v-if="auth.user.orders.data?.length" class="w-full">
+                          <OrderCard v-for="(order, a) in auth.user.orders.data" :key="a" :order="order" />
+                        </div>
+                        <div v-else>
+                          <p class="text-gray-500 dark:text-gray-400"> No orders found. </p>
+                        </div>
 
                       </div>
                     </div>
@@ -306,7 +311,12 @@
                         <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content h-[40rem] overflow-y-scroll">
-                      <OrderCard v-for="(cancelled_order, b) in auth.user.cancelled_orders.data" :key="b" :order="cancelled_order" />
+                      <div v-if="auth.user.cancelled_orders.data?.length" class="w-full">
+                        <OrderCard v-for="(cancelled_order, b) in auth.user.cancelled_orders.data" :key="b" :order="cancelled_order" />
+                      </div>
+                      <div v-else>
+                        <p class="text-gray-500 dark:text-gray-400"> No cancelled orders found. </p>
+                      </div>
                     </div>
                   </li>
 
@@ -316,7 +326,13 @@
                         <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content h-[40rem] overflow-y-scroll">
-                      <OrderCard v-for="(return_order, c) in auth.user.returns.data" :key="c" :order="return_order" />
+                      
+                      <div v-if="auth.user.returns.data?.length" class="w-full">
+                        <OrderCard v-for="(return_order, c) in auth.user.returns.data" :key="c" :order="return_order" />
+                      </div> 
+                      <div v-else>
+                        <p class="text-gray-500 dark:text-gray-400"> No returns found. </p>
+                      </div>
                     </div>
                   </li>
 
@@ -324,7 +340,40 @@
                 </ul>
               </div>
 
-              <div v-if="state.open_tab.name === 'Payment Methods' " class="min-h-[10rem] p-8 pb-20 fade-in"></div>
+              <div v-if="state.open_tab.name === 'Payment Methods' " class="min-h-[10rem] p-8 pb-20 fade-in relative z-0">
+                
+                <div class="w-full flex flex-col lg:flex-row">
+                  <div class="w-full lg:w-1/3">
+                    <h3 class="text-lg font-semibold dark:text-white"> Payment Methods </h3>
+                  </div>
+                  <div class="w-full lg:w-2/3 flex flex-col px-4">
+                    <div v-if="!auth.user.payment_methods.data.length" class="w-full flex justify-start mt-1">
+                      <p class="text-gray-500 dark:text-gray-400"> No payment methods added yet. </p>
+                    </div>
+                    <div v-else class="w-full flex flex-col gap-4">
+                      <PaymentMethodCard v-for="(payment_method, d) in auth.user.payment_methods.data" :key="d" :payment-method="payment_method" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="w-full flex flex-col p-4">
+                  <!-- Add new payment method button: -->
+                  <button class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" @click="state.tabs[3].add_new_method = true"> 
+                    Add Payment Method
+                  </button>
+
+                  <div v-if="state.tabs[3].add_new_method" class="fade-in absolute w-full h-full top-0 left-0 bg-black/50 z-10 flex flex-col justify-start items-start">
+                    <div class="w-full flex flex-row justify-end align-end">
+                      <button class="p-4" @click="state.tabs[3].add_new_method = false"> 
+                        <font-awesome-icon :icon="['fas', 'times']" class="text-2xl text-white dark:text-zinc-500" />
+                      </button>
+                    </div>
+                    <NewPaymentInterface @close="state.tabs[3].add_new_method = false" />
+                  </div>
+
+                </div>
+
+              </div>
               
             </div> 
             
@@ -350,7 +399,8 @@ import L from 'leaflet';
 
 import AddressCard from './components/AddressCard.vue'
 import OrderCard from './components/OrderCard.vue'
-
+import PaymentMethodCard from "./components/PaymentMethodCard.vue";
+import NewPaymentInterface from "./components/NewPaymentInterface.vue";
 
 
 definePageMeta({
@@ -385,7 +435,11 @@ const state = reactive({
       }
     },
     { name: "Orders", component: "AccountOrders" },
-    { name: "Payment Methods", component: "AccountPaymentMethods" },
+    { 
+      name: "Payment Methods", 
+      component: "AccountPaymentMethods",
+      add_new_method: false
+    },
   ],
   saving: false,
   password: {
