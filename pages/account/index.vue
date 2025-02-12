@@ -340,7 +340,7 @@
                 </ul>
               </div>
 
-              <div v-if="state.open_tab.name === 'Payment Methods' " class="min-h-[10rem] p-8 pb-20 fade-in relative z-0">
+              <div v-if="state.open_tab.name === 'Payment Methods' " class="min-h-[50rem] p-8 pb-20 fade-in relative z-0">
                 
                 <div class="w-full flex flex-col lg:flex-row">
                   <div class="w-full lg:w-1/3">

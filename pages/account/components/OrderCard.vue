@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row justify-start bg-zinc-100 dark:bg-zinc-700 p-4 rounded-md">
+  <div class="flex flex-row justify-start bg-zinc-100 dark:bg-zinc-700 p-4 rounded-md mb-4">
     <div class="flex flex-col pe-4 justify-start align-start items-start">
       <p class="text-sm text-gray-500 dark:text-gray-400"> Status:  <span class="dark:text-gray-400">{{ props.order.state }}</span></p>
       <p class="text-sm text-gray-500 dark:text-gray-300"> Order ID: <br/><span class="dark:text-gray-400"> {{ props.order.id }} </span> </p>
