@@ -30,7 +30,7 @@
                 <li class="uk-open">
                     <a class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
                         1. Payment Method
-                        <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content">
                         <div v-if="auth.user.payment_methods.data.length"></div>
@@ -39,6 +39,8 @@
                               No payment methods found! Add a payment method to use for your next order.
                             </p>
                             <div class="w-full flex flex-col">
+
+                                <!-- Credit Cards: -->
                               <p v-if="auth.user.payment_methods.data.length" class="text-neutral-900 dark:text-white text-md">Cards on file:</p>
                               <div class="w-full flex flex-row flex-wrap mb-2">
                                 <!-- List existing payment methods here: -->
@@ -93,8 +95,6 @@
                                 </div>
                               </div>
                               <div class="w-1/4 flex flex-row justify-start items-start">
-
-
                                 <button 
                                   v-if="!auth?.user?.payment_methods?.data?.length"
                                   @click="state.update.payment = true"
@@ -149,6 +149,26 @@
 
 
                               </div>
+
+                              <div class="w-full text-center">
+                                <p class="text-white text-lg my-5">OR</p>
+                              </div>
+
+                              <!-- Digital Wallets: -->
+                              <div class="w-full flex flex-col">
+                                <p class="text-neutral-900 dark:text-white text-md mb-5">Digital Wallets:</p>
+                                <div class="w-full flex flex-col py-2 justify-start items-start align-start">
+
+                                  <div v-show="browser == 'Safari'" id="apple-pay" class="my-2">
+                                    <div id="payment-form"></div>
+                                    <div id="payment-status-container"></div>
+                                    <div id="apple-pay-button"></div>
+                                  </div>
+
+
+                                </div>
+                              </div>
+
                             </div>
                         </div>
                     </div>
@@ -156,7 +176,7 @@
                 <li>
                     <a class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
                         2. Shipping
-                        <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content" hidden="">
                         <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
@@ -165,7 +185,7 @@
                 <li>
                     <a class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
                         3. Review and Confirm
-                        <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content" hidden="">
                         <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat proident.</p>
@@ -223,16 +243,19 @@
   const auth = authStore()
   const prodStore = productsStore()
 
-  // UUID
+  // Setup
   import { v4 as uuidv4 } from "uuid";
-
-  // Square:
+  import { detectBrowser } from '~/utils/detectBrowser'
+  const browser = detectBrowser()
+  console.log('BROSWER DETECTED: ', browser)
   const runtimeConfig = useRuntimeConfig();
 
+  // Square:
   const appId = runtimeConfig.public.SQUARE_APPLICATION_ID;
   const locationId = runtimeConfig.public.SQUARE_LOCATION_ID;
-
   let square_loaded;
+  const payments = window.Square.payments(appId, locationId);
+  square_loaded = payments;
 
   // State
   const state = reactive({
@@ -297,6 +320,19 @@
 
   // Methods
 
+    // Formatting:
+      // Currency:
+  const format_currency = (amount: number, currency: string) => {
+      if(currency === 'USD') {
+        return `$${(amount/100).toFixed(2)}`
+      }
+    }
+  const format_num = (str: string) => {
+    return Number(str)
+  } 
+
+
+
     // Credit Cards:
   const format_card_brand = (str: string) => {
     switch (str) {
@@ -317,24 +353,69 @@
     }
   };
 
+    // Apple Pay
+
+  const initApple = async () => {
+
+  const paymentRequest = payments.paymentRequest({
+      countryCode: 'US',
+      currencyCode: 'USD',
+      total: {
+        amount: '1.00',
+        label: 'Total',
+      },
+    });
+
+    const applePayButton = document.getElementById('apple-pay-button');
+
+    try {
+        // There are a number of reason why Apple Pay may not be supported
+        // (e.g. Browser Support, Device Support, Account). Therefore, you should handle
+        // initialization failures while still loading other applicable payment methods.
+        const applePay = await payments.applePay(paymentRequest);
+        // Note: You do not need to `attach` applePay.
+    } catch (e) {
+      if(e.name === "PaymentMethodUnsupportedError" ) {
+        applePayButton.innerHTML = `Apple Pay is unsupported: ${e.message}`
+      }
+      console.error(e);
+    }
+
+    applePayButton.addEventListener('click', async () => {
+      const statusContainer = document.getElementById('payment-status-container');
+
+      try {
+        const tokenResult = await applePay.tokenize();
+        if (tokenResult.status === 'OK') {
+          console.log(`Payment token is ${tokenResult.token}`);
+          statusContainer.innerHTML = "Payment Successful";
+        } else {
+          let errorMessage = `Tokenization failed with status: ${tokenResult.status}`;
+          if (tokenResult.errors) {
+            errorMessage += ` and errors: ${JSON.stringify(
+              tokenResult.errors
+            )}`;
+          }
+
+          throw new Error(errorMessage);
+        }
+      } catch (e) {
+        console.error(e.message);
+        statusContainer.innerHTML = "Payment Failed";
+      }
+    })
+    
+
+  }
+  
+    
+    // Actions:
   const select_payment_method = (method: any) => {
     state.selected_payment_method = method;
   }
-
-    // Currency:
-  const format_currency = (amount: number, currency: string) => {
-      if(currency === 'USD') {
-        return `$${(amount/100).toFixed(2)}`
-      }
-    }
-  const format_num = (str: string) => {
-    return Number(str)
-  } 
-
   const back = () => {
     navigateTo("/cart");
   }
-
   const place_order = async () => {
 
     if (!state.selected_payment_method) {
@@ -570,6 +651,7 @@
     if(auth) {
       state.selected_payment_method = await auth?.user?.selected_payment_method?.card || null
     }
+    if(browser === 'Safari') { initApple() }
   })
 
   watch(
@@ -580,18 +662,17 @@
     } else {
       // console.log("Square.js loaded", window.Square);
 
-      const payments = window.Square.payments(appId, locationId);
-      square_loaded = payments;
-      let card;
+      
+      let card: any;
       try {
         card = await initializeCard(payments);
 
         // console.log("card", card);
-        const createPayment = async (token) => {
+        const createPayment = async (token: string) => {
           const body = JSON.stringify({
             locationId,
             sourceId: token,
-            customerId: auth.user.square_id,
+            customerId: auth.user?.square_id,
             idempotencyKey: uuidv4(),
             amountMoney: {
               amount: 1,
@@ -762,5 +843,16 @@
 }
 .p-dialog-header {
   margin-bottom: -1rem;
+}
+ 
+
+//  Apple Pay:
+#apple-pay-button {
+  height: 48px;
+  width: 100%;
+  display: inline-block;
+  -webkit-appearance: -apple-pay-button;
+  -apple-pay-button-type: plain;
+  -apple-pay-button-style: black;
 }
 </style>
