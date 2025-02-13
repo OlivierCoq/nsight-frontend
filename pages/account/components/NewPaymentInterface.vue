@@ -3,9 +3,9 @@
     
     <div class="relative -mb-px px-2 mt-10 w-full" tabindex="-1" uk-slider="finite: true">
 
-      <h3 class="text-lg font-semibold text-gray-500 dark:text-white text-start ms-3">New Payment Method</h3>
+      <h3 class="text-lg font-semibold text-gray-500 dark:text-white text-start ms-3">New Credit Card</h3>
 
-      <nav class="overflow-hidden rounded-xl uk-slider-container pt-2">
+      <nav class="overflow-hidden rounded-xl uk-slider-container pt-2" style="display: none;">
         <ul class="uk-slider-items w-[calc(100%+10px)] capitalize font-semibold text-gray-500 text-sm dark:text-white" uk-switcher="connect: #setting_tab ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium"> 
             
             <li class="w-auto pr-2.5 mx-auto"> 
@@ -47,6 +47,10 @@
 
           </div>
         </div>
+
+
+
+
       </div>
     </div>
 
@@ -55,20 +59,22 @@
 
 <script setup>
 
+
+  // Props:
+
   // Stores:
   const auth = authStore()
   
 
   // Setup
   const runtimeConfig = useRuntimeConfig();
-
-  const appId = runtimeConfig.public.SQUARE_APPLICATION_ID;
-  const locationId = runtimeConfig.public.SQUARE_LOCATION_ID;
   import { v4 as uuidv4 } from "uuid";
 
+    // Square:
+  const appId = runtimeConfig.public.SQUARE_APPLICATION_ID;
+  const locationId = runtimeConfig.public.SQUARE_LOCATION_ID;
   let square_loaded;
 
-  // Props:
 
   // State:
   const state = reactive({
@@ -125,6 +131,8 @@
     }
 
   }
+
+  // Square Methods
   const initializeCard = async (payments) => {
     const card = await payments.card();
     await card.attach("#card-container");
@@ -132,16 +140,17 @@
   }
 
   // Lifecycle Hooks
-  onMounted(() => {
+onMounted(() => {
 
-    // Don't fucking question it.
-    state.open_tab = state.tabs[0]
-    state.dialog = true
-  })
+  // Don't fucking question it.
+  state.open_tab = state.tabs[0]
+  state.dialog = true
+})
 
 watch(
   () => state.dialog,
   async () => {
+      // Square
     if (!window.Square) {
       throw new Error("Square.js failed to load properly");
     } else {
@@ -154,6 +163,7 @@ watch(
         card = await initializeCard(payments);
 
         // console.log("card", card);
+        // Credit Cards: 
         const createPayment = async (token) => {
           const body = JSON.stringify({
             locationId,
@@ -263,7 +273,7 @@ watch(
               auth.user.selected_payment_method = newCard;
             }
             nextTick(() => {
-              // add payment method to Medusa
+
               auth.updateUser();
               state.success = "Payment method added successfully!";
               state.dialog = false;
@@ -284,6 +294,12 @@ watch(
         cardButton.addEventListener("click", async function (event) {
           await handlePaymentMethodSubmission(event, card);
         });
+      
+      
+      
+
+      
+      
       } catch (e) {
         console.error("Initializing Card failed", e);
         return;

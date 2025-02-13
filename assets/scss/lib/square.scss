@@ -1,0 +1,131 @@
+
+* {
+    box-sizing: border-box;
+}
+
+.dark body{
+    color: #FFFFFF;
+    background: #273240;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    color: #000000;
+    background:  #FBFBFC;
+}
+
+form {
+    max-width: 550px;
+}
+
+#payment-form {
+    width: 300px;
+    margin: auto;
+}
+
+#card-container {
+    margin-top: 45px;
+    /* this height depends on the size of the container element */
+    /* We transition from a single row to double row at 485px */
+    /* Settting this min-height minimizes the impact of the card form loading */
+    min-height: 90px;
+}
+
+#gift-card-container {
+    margin-top: 45px;
+    min-height: 90px;
+}
+
+@media screen and (max-width: 500px) {
+    #card-container {
+        min-height: 140px;
+    }
+}
+
+#ach-button {
+    margin-top: 20px;
+}
+
+p {
+    line-height: 24px;
+}
+
+input {
+    padding: 12px;
+    width: 100%;
+    border-radius: 5px;
+    border-width: 1px;
+    margin-top: 20px;
+    font-size: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: #FFFFFF;
+}
+
+.dark input {
+    border-color: #5C6B7D;
+    background: transparent;
+    border: 1px solid #5C6B7D;
+    color: white;
+}
+
+.dark input::placeholder {
+    color: #CBDCF1;
+}
+
+fieldset {
+    border: none;
+}
+
+input:focus {
+    border: 1px solid #006aff;
+}
+
+button {
+    color: #ffffff;
+    background-color: #006aff;
+    border-radius: 5px;
+    cursor: pointer;
+    border-style: none;
+    user-select: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    padding: 12px;
+    width: 100%;
+    box-shadow: 1px;
+}
+
+.dark button {
+    background-color: #8FC9FF;
+    color: #273240;
+}
+
+button:active {
+    background-color: rgb(0, 85, 204);
+}
+
+button:disabled {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.dark .sq-card-wrapper .sq-card-message {
+    color: #FF8A8C;
+}
+
+.dark .sq-card-wrapper .sq-card-message-no-error::before {
+    background-color: #FF8A8C;
+}
+
+#payment-form h2 {
+    color: #000000;
+}
+
+.dark #payment-form h2 {
+    color: #FFFFFF;
+}

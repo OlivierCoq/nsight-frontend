@@ -344,7 +344,7 @@
                 
                 <div class="w-full flex flex-col lg:flex-row">
                   <div class="w-full lg:w-1/3">
-                    <h3 class="text-lg font-semibold dark:text-white"> Payment Methods </h3>
+                    <h3 class="text-lg font-semibold dark:text-white"> Saved cards </h3>
                   </div>
                   <div class="w-full lg:w-2/3 flex flex-col px-4">
                     <div v-if="!auth.user.payment_methods.data.length" class="w-full flex justify-start mt-1">
@@ -359,9 +359,12 @@
                 <div class="w-full flex flex-col p-4">
                   <!-- Add new payment method button: -->
                   <button class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" @click="state.tabs[3].add_new_method = true"> 
-                    Add Payment Method
+                    Add Credit/Debit Card
                   </button>
 
+                  <small class="text-sm mt-4">* If you'd like to use any other payment methods, such as Google Pay or CashApp, these options are available upon checkout.</small>
+
+                  <!-- Add new payment method modal: -->
                   <div v-if="state.tabs[3].add_new_method" class="fade-in absolute w-full h-full top-0 left-0 bg-black/50 z-10 flex flex-col justify-start items-start">
                     <div class="w-full flex flex-row justify-end align-end">
                       <button class="p-4" @click="state.tabs[3].add_new_method = false"> 

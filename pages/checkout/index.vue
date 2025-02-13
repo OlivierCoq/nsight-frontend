@@ -1,7 +1,7 @@
 <template>
   <div
     id="cart"
-    class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-20"
+    class="min-h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-20"
   >
     <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
       <div class="main__inner">
@@ -39,10 +39,12 @@
                               No payment methods found! Add a payment method to use for your next order.
                             </p>
                             <div class="w-full flex flex-col">
-                              <p v-if="auth.user.payment_methods.data.length" class="text-neutral-900 dark:text-white text-md">Payment methods on file:</p>
+                              <p v-if="auth.user.payment_methods.data.length" class="text-neutral-900 dark:text-white text-md">Cards on file:</p>
                               <div class="w-full flex flex-row flex-wrap mb-2">
                                 <!-- List existing payment methods here: -->
                                 <div v-for="(method, i) in auth.user.payment_methods.data" :key="i" class="w-1/3  h-[110px] fade-in"> 
+
+                                    <!-- Deleting -->
                                   <div v-if="method.deleting" class="w-full h-full flex flex-col items-center justify-center">
                                     <p class="text-sm text-neutral-900 dark:text-white font-thin">Are you sure you want to delete this payment method?</p>
                                     <div class="w-full flex flex-row justify-center items-center">
@@ -54,49 +56,50 @@
                                       </button>
                                     </div>
                                   </div>
+
                                   <div 
                                     v-else
                                     class="w-[95%] h-full overflow-scroll flex flex-col justify-between items-start mb-2 me-2 px-3 py-4 rounded-md cursor-pointer shadow-md"
-                                    :class="auth.user.selected_payment_method && (method.card.id == auth.user.selected_payment_method.card.id) ? 'shadow-xl border bg-white dark:bg-zinc-500' : 'bg-white dark:bg-zinc-900'"
+                                    :class="state.selected_payment_method?.card && (method.card.id == state.selected_payment_method?.card?.id) ? 'shadow-xl border bg-white dark:bg-zinc-500' : 'bg-white dark:bg-zinc-900'"
                                   >
                                     <div class="w-full flex flex-row">
                                       <div class="w-[40px] flex"> 
                                         <font-awesome-icon :icon="['fab', format_card_brand(method.card.cardBrand)]" 
                                           class="text-2xl" 
-                                          :class="auth.user.selected_payment_method && (method.card.id == auth.user.selected_payment_method.card.id) ? 'text-neutral-900' : 'text-neutral-300'"
+                                          :class="state.selected_payment_method && (method.card.id == state.selected_payment_method?.card?.id) ? 'text-neutral-900' : 'text-neutral-300'"
                                         />
                                       </div>
                                       <div class="w-1/2 flex">
                                         <p 
                                           class="text-sm font-thin m-0"
-                                          :class="auth.user.selected_payment_method && (method.card.id == auth.user.selected_payment_method.card.id) ? 'text-neutral-900' : 'text-neutral-300'"
+                                          :class="state.selected_payment_method && (method.card.id === state.selected_payment_method?.card?.id) ? 'text-neutral-900' : 'text-neutral-300'"
                                         >{{ method.card.cardBrand }} | {{ method.card.last4 }}</p>
                                       </div>
                                     </div>
                                     <div class="w-full flex flex-row items-end justify-end">
-                                      <span v-if="auth.user.selected_payment_method && (method.card.id == auth.user.selected_payment_method.card.id)" class="me-2">Default</span>
+                                      <span v-if="state.selected_payment_method && (method.card.id === state.selected_payment_method?.card?.id)" class="me-2">Selected</span>
                                       <button 
                                         v-else
-                                        @click="set_default(method)"
+                                        @click="select_payment_method(method)"
                                         class="text-xs text-yellow-500 font-thin curser-pointer me-2"
                                       >
-                                        <span>Set as Default</span>
+                                        <span>Select</span>
                                       </button>
-                                      <button class="text-xs text-red-500 font-thin curser-pointer me-2" @click="init_delete(method)"> 
+                                      <!-- <button class="text-xs text-red-500 font-thin curser-pointer me-2" @click="init_delete(method)"> 
                                         <span>Delete</span> &nbsp;
-                                      </button>
+                                      </button> -->
                                     </div>
                                   </div>
                                 </div>
                               </div>
                               <div class="w-1/4 flex flex-row justify-start items-start">
 
-                        
 
                                 <button 
+                                  v-if="!auth?.user?.payment_methods?.data?.length"
                                   @click="state.update.payment = true"
                                   class="text-sm text-neutral-900 dark:text-white font-thin curser-pointer bg-yellow-500 hover:bg-yellow-600 w-full rounded-md shadow-md py-2 mb-4"
-                                >Add Payment Method</button>
+                                >Add Card</button>
                               </div>
                               <div v-show="state.update.payment" class="ctr-payment-tabs w-full">
 
@@ -190,10 +193,13 @@
                   <div class="w-full flex flex-col justify-between items-start px-0 pb-2">
                     <button 
                       @click="place_order" 
-                      :disabled="state.processing"
+                      :disabled="state.processing || state.errors.payment.length > 0 || state.errors.shipping.length > 0"
                       class="text-sm text-neutral-900 dark:text-white font-thin curser-pointer bg-yellow-500 hover:bg-yellow-600 w-full rounded-md shadow-md py-2 mb-4"
-                      :class="state.processing ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'"
+                      :class="(state.processing || state.errors.payment) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'"
                     >Place Order</button>
+                    <!-- Errors: -->
+                    <p v-if="state.errors.payment.length" class="text-danger mt-2 text-red-300"> {{ state.errors.payment }} </p>
+                    <p v-if="state.errors.shipping.length" class="text-danger mt-2 text-red-300"> {{ state.errors.shipping }} </p>
                   </div>
 
                 </div>
@@ -258,18 +264,18 @@
         fa_icon: "credit-card",
         component: "CreditCard",
       },
-      {
-        name: "PayPal",
-        fa_class: 'fab',
-        fa_icon: "cc-paypal",
-        component: "PayPal",
-      },
-      {
-        name: "Apple Pay",
-        fa_class: 'fab',
-        fa_icon: "cc-apple-pay",
-        component: "ApplePay",
-      },
+      // {
+      //   name: "PayPal",
+      //   fa_class: 'fab',
+      //   fa_icon: "cc-paypal",
+      //   component: "PayPal",
+      // },
+      // {
+      //   name: "Apple Pay",
+      //   fa_class: 'fab',
+      //   fa_icon: "cc-apple-pay",
+      //   component: "ApplePay",
+      // },
       // {
       //   name: 'Google Pay',
       //   icon: 'mdi-google-wallet',
@@ -280,10 +286,18 @@
       name: "Credit Card",
       icon: "mdi-credit-card-outline",
       component: "CreditCard",
+    },
+    selected_payment_method: null,
+    selected_shipping_method: auth?.user?.addresses?.shipping[0] || null,
+    errors: { 
+      payment: "",
+      shipping: ""
     }
   })
 
   // Methods
+
+    // Credit Cards:
   const format_card_brand = (str: string) => {
     switch (str) {
       case "VISA":
@@ -303,6 +317,11 @@
     }
   };
 
+  const select_payment_method = (method: any) => {
+    state.selected_payment_method = method;
+  }
+
+    // Currency:
   const format_currency = (amount: number, currency: string) => {
       if(currency === 'USD') {
         return `$${(amount/100).toFixed(2)}`
@@ -317,7 +336,18 @@
   }
 
   const place_order = async () => {
-    // Place order
+
+    if (!state.selected_payment_method) {
+      state.payment_error = "Please select a payment method";
+      return;
+    }
+
+    if (!auth.user.selected_addresses) {
+      state.errors.shipping = "Please select a shipping address";
+      return;
+    }
+
+    // CREATE ORDER RECORD:
     state.processing = true
     
       // - Create a JavaScript Order object
@@ -458,13 +488,15 @@
                 }
               }
       
+    // PROCESS PAYMENT:
+
       // - Pay order using client.ordersApi.payOrder('order_id')
         const pay_order_data = await $fetch('/api/square/pay-order', {
           method: 'POST',
           body: JSON.stringify({
             order_id: place_order_data?.data?.result?.order?.id,
             idempotencyKey: uuidv4(),
-            sourceId: auth?.user?.selected_payment_method?.card?.id,
+            sourceId: state.selected_payment_method?.id,
             amountMoney: {
               amount: place_order_data?.data?.result?.order?.totalMoney?.amount,
               currency: place_order_data?.data?.result?.order?.totalMoney?.currency
@@ -531,6 +563,14 @@
       // state.delete_method_dialog = false;
     });
   };
+
+
+  // Lifecycle
+  onMounted(async () => {
+    if(auth) {
+      state.selected_payment_method = await auth?.user?.selected_payment_method?.card || null
+    }
+  })
 
   watch(
   () => state.update.payment,

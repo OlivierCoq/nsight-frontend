@@ -5,13 +5,13 @@
         <h3 class="text-lg font-semibold text-gray-500 dark:text-gray-100"> {{ props.address.full_name }} </h3>
         <p class="text-sm text-gray-500 dark:text-gray-200">
         <span>{{ props.address.street }}</span> <br/>
-        <span v-if="props.address.street_2"> {{ props.address.street_2}} <br/></span> 
+        <span v-if="props.address.street2"> {{ props.address.street2}} <br/></span> 
         <span>{{ props.address.town_city }}, {{ props.address.county_state }} {{ props.address.postal_zip_code }}</span>
         </p>
       </div>
       <div class="w-full flex flex-col justify-start items-start">
         <div class="w-full flex flex-row justify-start items-center">
-          <p v-if="auth.user.selected_addresses">
+          <p v-if="auth.user.selected_addresses" class="m-0">
             <span
               v-if="(auth.user?.selected_addresses?.shipping?.street && (auth.user?.selected_addresses?.shipping?.street === props.address.street))"
             class="py-1.5 px-5 font-semibold text-sm me-2 text-blue-500 uppercase">Default</span>
@@ -41,7 +41,7 @@
               <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700 me-1" v-model="props.address.last_name" />
             </div>
             <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="props.address.street" />
-            <input v-if="props.address.street_2" type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700"  v-model="props.address.street_2" />
+            <input v-if="props.address.street2" type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700"  v-model="props.address.street2" />
             <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="props.address.town_city" />
             <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="props.address.county_state" />
             <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="props.address.postal_zip_code" />
@@ -72,7 +72,7 @@ const props = defineProps<{
   address: {
     full_name: string;
     street: string;
-    street_2: string;
+    street2: string;
     town_city: string;
     county_state: string;
     postal_zip_code: string;
@@ -92,7 +92,7 @@ const state = reactive({
 interface Address {
   full_name: string;
   street: string;
-  street_2: string | null;
+  street2: string | null;
   town_city: string;
   county_state: string;
   postal_zip_code: string;
