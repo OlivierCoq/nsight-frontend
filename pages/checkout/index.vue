@@ -159,12 +159,22 @@
                                 <p class="text-neutral-900 dark:text-white text-md mb-5">Digital Wallets:</p>
                                 <div class="w-full flex flex-col py-2 justify-start items-start align-start">
 
+                                    <!-- Apple Pay -->
                                   <div v-show="browser == 'Safari'" id="apple-pay" class="my-2">
-                                    <div id="payment-form"></div>
-                                    <div id="payment-status-container"></div>
-                                    <div id="apple-pay-button"></div>
+                                    <div id="payment-form">
+                                      <div id="apple-payment-status-container"></div>
+                                      <div id="apple-pay-button" class="cursor-pointer"></div>
+                                    </div>
+                                    
                                   </div>
 
+                                    <!-- Google Pay -->
+                                  <div id="google-pay" class="my-2">
+                                    <div id="payment-form">
+                                      <div id="google-payment-status-container" class="p-4"></div>
+                                      <div id="google-pay-button"></div>
+                                    </div>
+                                  </div>
 
                                 </div>
                               </div>
@@ -311,12 +321,38 @@
       component: "CreditCard",
     },
     selected_payment_method: null,
-    selected_shipping_method: auth?.user?.addresses?.shipping[0] || null,
+    selected_shipping_method: auth?.user?.addresses?.shipping[0] || auth?.user?.selected_addresses?.shipping || null,
     errors: { 
       payment: "",
       shipping: ""
     }
   })
+
+  // Interfaces
+  interface PaymentMethod {
+    card: {
+      billingAddress: {
+        postalCode: string;
+      };
+      bin: number | null;
+      cardBrand: string | null;
+      cardType: string | null;
+      cardholderName: string | null;
+      enabled: boolean;
+      expMonth: number | null;
+      expYear: number | null;
+      fingerprint: string | null;
+      id: string;
+      last4: string | null;
+      merchantId: string | null;
+      prepaidType: string | null;
+      version: number | null;
+    } | null;
+    deleting: boolean;
+    GooglePay: {
+      id: string;
+    } | null;
+  }
 
   // Methods
 
@@ -354,17 +390,35 @@
   };
 
     // Apple Pay
-
   const initApple = async () => {
 
-  const paymentRequest = payments.paymentRequest({
-      countryCode: 'US',
-      currencyCode: 'USD',
-      total: {
-        amount: '1.00',
-        label: 'Total',
-      },
-    });
+    const paymentRequest = payments.paymentRequest({
+        countryCode: state.selected_shipping_method?.country,
+        currencyCode: 'USD',
+        lineItems: prodStore?.cart?.checkout?.order?.order?.lineItems,
+        shippingLineItems: {amount: '0', label: 'Free Shipping', pending: false},
+        taxLineItems: { amount: 0, label: 'Tax', pending: false },
+        discounts: { amount: 0, label: 'Discount', pending: false },
+        requestBillingContact: false,
+        requestShippingContact: false,
+        shippingContact: {
+          addressLines: [state.selected_shipping_method?.street, state.selected_shipping_method?.street2],
+          city: state.selected_shipping_method?.town_city,
+          countryCode: state.selected_shipping_method?.country,
+          email: auth.user.email,
+          familyName: auth.user.frist_name,
+          givenName: auth.user.last_name,
+          phone: auth.user.phone,
+          postalCode: state.selected_shipping_method?.postal_zip_code,
+          state: state.selected_shipping_method?.state,
+        },
+        total: {
+          amount: prodStore?.cart?.checkout?.order?.order?.total?.str,
+          label: 'Total',
+          pending: false,
+        },
+      });
+    console.log('paymentRequest', paymentRequest)
 
     const applePayButton = document.getElementById('apple-pay-button');
 
@@ -382,7 +436,7 @@
     }
 
     applePayButton.addEventListener('click', async () => {
-      const statusContainer = document.getElementById('payment-status-container');
+      const statusContainer = document.getElementById('apple-payment-status-container');
 
       try {
         const tokenResult = await applePay.tokenize();
@@ -401,13 +455,80 @@
         }
       } catch (e) {
         console.error(e.message);
-        statusContainer.innerHTML = "Payment Failed";
+        statusContainer.innerHTML = "Apple Payment Failed";
       }
     })
     
-
   }
   
+  // Google Pay
+  const initGoogle = async () => {
+
+    // create a PaymentRequest with total amount
+    const paymentRequest = payments.paymentRequest({
+        countryCode: state.selected_shipping_method?.country,
+        currencyCode: 'USD',
+        lineItems: prodStore?.cart?.checkout?.order?.order?.lineItems,
+        shippingLineItems: {amount: '0', label: 'Free Shipping', pending: false},
+        taxLineItems: { amount: 0, label: 'Tax', pending: false },
+        discounts: { amount: 0, label: 'Discount', pending: false },
+        requestBillingContact: false,
+        requestShippingContact: false,
+        shippingContact: {
+          addressLines: [state.selected_shipping_method?.street, state.selected_shipping_method?.street2],
+          city: state.selected_shipping_method?.town_city,
+          countryCode: state.selected_shipping_method?.country,
+          email: auth.user.email,
+          familyName: auth.user.frist_name,
+          givenName: auth.user.last_name,
+          phone: auth.user.phone,
+          postalCode: state.selected_shipping_method?.postal_zip_code,
+          state: state.selected_shipping_method?.state,
+        },
+        total: {
+          amount: prodStore?.cart?.checkout?.order?.order?.total?.str,
+          label: 'Total',
+          pending: false,
+        },
+      });
+    console.log('paymentRequest', paymentRequest)
+  
+    // Create a Google Play instance:
+    const googlePay = await payments.googlePay(paymentRequest);
+
+    // Attach to page:
+    await googlePay.attach('#google-pay-button', { buttonColor: 'default', buttonType: 'long' });
+
+    const googlePayButton = document.getElementById('google-pay-button');
+    googlePayButton.addEventListener('click', async () => {
+      const statusContainer = document.getElementById('google-payment-status-container');
+
+      try {
+        const tokenResult = await googlePay.tokenize();
+        if (tokenResult.status === 'OK') {
+          console.log(`Payment token is ${tokenResult.token}`);
+          statusContainer.innerHTML = "Payment Successful!";
+          state.selected_payment_method = { id: tokenResult.token }
+          nextTick(async () => {
+            await place_order()
+          })
+        } else {
+          let errorMessage = `Tokenization failed with status: ${tokenResult.status}`;
+          if (tokenResult.errors) {
+            errorMessage += ` and errors: ${JSON.stringify(
+              tokenResult.errors
+            )}`;
+          }
+
+          throw new Error(errorMessage);
+        }
+      } catch (e) {
+        console.error(e.message);
+        statusContainer.innerHTML = "Payment Failed";
+      }
+    })
+  
+  }
     
     // Actions:
   const select_payment_method = (method: any) => {
@@ -577,7 +698,7 @@
           body: JSON.stringify({
             order_id: place_order_data?.data?.result?.order?.id,
             idempotencyKey: uuidv4(),
-            sourceId: state.selected_payment_method?.id,
+            sourceId: state.selected_payment_method.card ? state.selected_payment_method?.card.id : state.selected_payment_method.id,
             amountMoney: {
               amount: place_order_data?.data?.result?.order?.totalMoney?.amount,
               currency: place_order_data?.data?.result?.order?.totalMoney?.currency
@@ -651,7 +772,8 @@
     if(auth) {
       state.selected_payment_method = await auth?.user?.selected_payment_method?.card || null
     }
-    if(browser === 'Safari') { initApple() }
+    if(browser === 'Safari') { await initApple() }
+    await initGoogle()
   })
 
   watch(
@@ -729,7 +851,7 @@
           statusContainer.style.visibility = "visible";
         };
 
-        const handlePaymentMethodSubmission = async (event, paymentMethod) => {
+        const handlePaymentMethodSubmission = async (event: any, paymentMethod: any) => {
           event.preventDefault();
 
           try {
@@ -796,6 +918,7 @@
 
         const cardButton = document.getElementById("card-button");
         cardButton.addEventListener("click", async function (event) {
+          console.log('Apple Pay button clicked')
           await handlePaymentMethodSubmission(event, card);
         });
       } catch (e) {
