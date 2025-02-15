@@ -130,7 +130,7 @@
                                         <p v-if="state.update.success" class="text-success mt-2 text-green-300"> {{ state.update.success }} </p>
                                       </div>
                                     </div>
-                                    <div :class="state.active_tab.name === 'PayPal' ? 'uk-active' : ''" class="fade-in">
+                                    <!-- <div :class="state.active_tab.name === 'PayPal' ? 'uk-active' : ''" class="fade-in">
                                       <div class="p-6"> 
                                         <p class="font-normal">PayPal</p>
                                       </div>
@@ -139,7 +139,7 @@
                                       <div class="p-6">
                                         <p class="font-normal"> Apple Pay</p>
                                       </div>
-                                    </div>
+                                    </div> -->
                                   </div>
                                 </div>
 
@@ -150,25 +150,22 @@
 
                               </div>
 
-                              <div class="w-full text-center">
+                              <!-- <div class="w-full text-center">
                                 <p class="text-white text-lg my-5">OR</p>
-                              </div>
+                              </div> -->
 
-                              <!-- Digital Wallets: -->
-                              <div class="w-full flex flex-col">
+                              <!-- Digital Wallets are currently not working.  -->
+                              <!-- <div class="w-full flex flex-col">
                                 <p class="text-neutral-900 dark:text-white text-md mb-5">Digital Wallets:</p>
                                 <div class="w-full flex flex-col py-2 justify-start items-start align-start">
 
-                                    <!-- Apple Pay -->
                                   <div v-show="browser == 'Safari'" id="apple-pay" class="my-2">
                                     <div id="payment-form">
                                       <div id="apple-payment-status-container"></div>
                                       <div id="apple-pay-button" class="cursor-pointer"></div>
                                     </div>
-                                    
                                   </div>
 
-                                    <!-- Google Pay -->
                                   <div id="google-pay" class="my-2">
                                     <div id="payment-form">
                                       <div id="google-payment-status-container" class="p-4"></div>
@@ -177,7 +174,7 @@
                                   </div>
 
                                 </div>
-                              </div>
+                              </div> -->
 
                             </div>
                         </div>
@@ -189,7 +186,111 @@
                         <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content" hidden="">
-                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
+
+                      <div v-if="auth.user.addresses.shipping.length">
+                        <p class="text-neutral-900 dark:text-white text-md">Addresses on file:</p>
+                        <div class="w-full flex flex-row flex-wrap mb-2">
+                          <!-- List existing addresses here: -->
+                          <div v-for="(address, a) in auth.user.addresses.shipping" :key="a" class="w-1/3  min-h-[110px] fade-in"> 
+                            <div 
+                              class="w-[95%] h-full  flex flex-col justify-between items-start mb-2 me-2 px-3 py-4 rounded-md cursor-pointer shadow-md"
+                              :class="state.selected_shipping_method && ((address.street + address.street2) == (state.selected_shipping_method.street + state.selected_shipping_method.street2)) ? 'shadow-xl border bg-white dark:bg-zinc-500' : 'bg-white dark:bg-zinc-900'"
+                            >
+                              <div class="w-full flex flex-row">
+                                <p 
+                                  class="text-sm font-thin m-0"
+                                  :class="state.selected_shipping_method && ((address.street + address.street2) == (state.selected_shipping_method.street + state.selected_shipping_method.street2)) ? 'text-neutral-900' : 'text-neutral-300'"
+                                > 
+                                  {{ address.street }} {{ address.street2 }} <br/>
+                                  {{ address.town_city }}, {{ address.state }} {{ address.postal_zip_code }}
+                                </p>
+                              </div>
+                              <div class="w-full flex flex-row">
+                                <span v-if="state.selected_shipping_method && ((address.street + address.street2) == (state.selected_shipping_method.street + state.selected_shipping_method.street2))" class="me-2">Selected</span>
+                                <button 
+                                  v-else
+                                  @click="state.selected_shipping_method = address"
+                                  class="text-xs text-yellow-500 font-thin curser-pointer me-2"
+                                >
+                                  <span>Select</span>
+                                </button>
+                              </div>
+
+                              
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-else class="w-full h-full relative">
+                        <p class="text-neutral-900 dark:text-white font-thin" style="font-size: 1.1rem; line-height: normal; ">
+                          No addresses found! Add an address to use for this order.
+                        </p>
+                        <button 
+                          class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" 
+                          :class="state.errors.address.new_address.disable ? 'opacity-[0.5] hover:bg-amber-500' : ''"
+                          :disable="state.errors.address.new_address.disable"
+                          @click="state.address.new_address_modal = true"> 
+                            Add New Address 
+                          </button>
+
+                          <div v-if="state.address.new_address_modal" class="fade-in absolute top-[6rem] left-[50%] bg-black/50 p-4 flex flex-col shadow-xl" style="z-index: 9999999 !important;">
+                            <div class="w-96 bg-zinc-900 p-5 rounded-lg shadow-lg absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                              <div class="w-full flex flex-row justify-end items-end align-end p-2">
+                                <button @click="state.address.new_address_modal = false" class="text-white text-sm cursor-pointer">
+                                  <font-awesome-icon :icon="['fas', 'times']" />
+                                </button>
+                              </div>
+                              <h3 class="text-lg font-semibold text-gray-500 dark:text-gray-100 text-center m-0">Add New Address</h3>
+                              <div class="w-full flex flex-col gap-2 mt-5">
+                                <div class="w-full flex flex-row">
+                                  <div class="flex flex-col me-2">
+                                    <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="state.address.new_address.first_name" placeholder="First Name" />
+                                    <small v-if="state.errors.address.new_address.first_name" class="text-red-500 text-sm m-2">Please use a full first name.</small>
+                                  </div>
+                                  <div class="flex flex-col">
+                                    <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="state.address.new_address.last_name" placeholder="Last Name" />
+                                    <small v-if="state.errors.address.new_address.last_name" class="text-red-500 text-sm m-2">Please use a full last name.</small>
+                                  </div>
+                                </div>
+                                <div class="w-full flex flex-col">
+                                  <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="state.address.new_address.street" placeholder="Street" />
+                                  <small v-if="state.errors.address.new_address.street" class="text-red-500 text-sm m-2">Please use a full street address.</small>
+                                </div>
+                                <div class="w-full flex flex-col">
+                                  <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="state.address.new_address.street2" placeholder="Street 2" />
+                                  <small v-if="state.errors.address.new_address.street2" class="text-red-500 text-sm m-2">Please use a full street address.</small>
+                                </div>
+                                <div class="w-full flex flex-col">
+                                  <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="state.address.new_address.town_city" placeholder="Town/City" />
+                                  <small v-if="state.errors.address.new_address.town_city" class="text-red-500 text-sm m-2">Please use a full town/city name.</small>
+                                </div>
+                                <div class="w-full flex flex-col">
+                                  <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="state.address.new_address.county_state" placeholder="County/State" />
+                                  <small v-if="state.errors.address.new_address.county_state" class="text-red-500 text-sm m-2">Please use a full county/state name.</small>
+                                </div>
+                                <div class="w-full flex flex-col">
+                                  <input type="text" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700" v-model="state.address.new_address.postal_zip_code" placeholder="Postal/Zip Code" />
+                                  <small v-if="state.errors.address.new_address.postal_zip_code" class="text-red-500 text-sm m-2">Please use a full postal/zip code.</small>
+                                </div>
+                                <div class="w-full flex flex-col">
+                                  <select v-model="state.address.new_address.country" class="w-full p-2 rounded-lg border border-gray-300 dark:border-gray-700">
+                                    <option v-for="country in auth.country_codes" :value="country.code" :key="country.code">{{ country.name }}</option>
+                                  </select>
+                                </div>
+                                <div class="w-full flex flex-row">
+                                  <input type="checkbox" class="me-2" v-model="state.billing_same_as_shipping" />
+                                  <label for="billing_same_as_shipping" class="text-sm text-gray-500 dark:text-gray-100">Billing address same as shipping</label>
+                                </div>
+                                <small v-if="state.errors.address.new_address.disable" class="text-red-500 text-sm m-2">Please fill out all fields.</small>
+ 
+                                <div class="w-full flex flex-row justify-center items-center mt-5">
+                                  <button @click="state.address.new_address_modal = false" class="py-1.5 px-5 font-semibold text-sm me-2 text-blue-300 cursor-pointer">Cancel</button>
+                                  <button @click="add_new_address" class="py-1.5 px-5 font-semibold text-sm me-2 text-yellow-300 cursor-pointer">Add</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
                     </div>
                 </li>
                 <li>
@@ -198,7 +299,85 @@
                         <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content" hidden="">
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat proident.</p>
+                      <div class="flex flex-col">
+                        <!-- Review Order + shipping -->
+                         <div class="my-2 rounded-md bg-zinc-900 flex flex-col">
+                          <div class="w-full flex flex-row justify-between items-center p-4">
+                            <p class="text-lg text-neutral-900 dark:text-white m-0">Order Summary</p>
+                            <button class="text-sm text-yellow-500 font-thin curser-pointer" @click="back">Edit Cart</button>
+                          </div>
+                          <div class="w-full flex flex-col">
+                            <div class="w-full flex flex-row justify-between items-center p-4 border-b dark:border-zinc-700">
+                              <p class="text-lg text-neutral-900 dark:text-white m-0">Items</p>
+                              <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ prodStore.cart?.checkout?.order?.order?.lineItems?.length }}</p>
+                            </div>
+                            <div class="w-full flex flex-col">
+                              <div class="w-full flex flex-row justify-between items-center p-4 border-b dark:border-zinc-700" v-for="(item, i) in prodStore.cart?.checkout?.order?.order?.lineItems" :key="i">
+                                <div class="w-1/3 flex flex-row">
+                                  <img :src="item.images[0]?.url" class="w-12 h-12 me-2" />
+                                  <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ item.name }}</p>
+                                </div>
+                                <div class="w-1/3"></div>
+                                <div class="w-1/3 flex flex-col justify-end items-end">
+                                  <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ item.quantity }}</p>
+                                  <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ format_currency(item.subtotal, item.basePriceMoney.currency) }}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         </div>
+
+                         <div class="my-2 rounded-md bg-zinc-900 flex flex-col">
+                          <div class="w-full flex flex-row justify-between items-center p-4">
+                            <p class="text-lg text-neutral-900 dark:text-white m-0">Shipping</p>
+                          </div>
+                          <div class="w-full flex flex-col">
+                            <div class="w-full flex flex-row justify-between items-center p-4 border-b dark:border-zinc-700">
+                              <p class="text-lg text-neutral-900 dark:text-white m-0">Shipping Address</p>
+                            </div>
+                            <div class="w-full flex flex-col">
+                              <div class="w-full flex flex-row justify-between items-center p-4 border-b dark:border-zinc-700">
+                                <div class="w-1/3 flex flex-row">
+                                  <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ state.selected_shipping_method?.street }} {{ state.selected_shipping_method?.street2 }}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                         </div>
+
+                          <div class="my-2 rounded-md bg-zinc-900 flex flex-col">
+                            <div class="w-full flex flex-row justify-between items-center p-4">
+                              <p class="text-lg text-neutral-900 dark:text-white m-0">Payment</p>
+                            </div>
+                            <div class="w-full flex flex-col">
+                              <div class="w-full flex flex-row justify-between items-center p-4 border-b dark:border-zinc-700">
+                                <p class="text-lg text-neutral-900 dark:text-white m-0">Payment Method</p>
+                              </div>
+                              <div class="w-full flex flex-col">
+                                <div class="w-full flex flex-row justify-between items-center p-4 border-b dark:border-zinc-700">
+                                  <div class="w-1/3 flex flex-row">
+                                    <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ state.selected_payment_method?.card?.cardBrand }} {{ state.selected_payment_method?.card?.last4 }}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="my-2 flex flex-col">
+                            <!-- Checkout button -->
+                             <button 
+                                @click="place_order" 
+                                :disabled="state.processing || state.errors.payment.length > 0 || state.errors.shipping.length > 0"
+                                class="text-sm text-neutral-900 dark:text-white font-thin curser-pointer bg-yellow-500 hover:bg-yellow-600 w-full rounded-md shadow-md py-2 mb-4"
+                                :class="(state.processing || state.errors.payment) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'"
+                              >Place Order</button>
+                              <!-- Errors: -->
+                              <p v-if="state.errors.payment.length" class="text-danger mt-2 text-red-300"> {{ state.errors.payment }} </p>
+                              <p v-if="state.errors.shipping.length" class="text-danger mt-2 text-red-300"> {{ state.errors.shipping }} </p>
+                          </div>
+
+
+                      </div>
                     </div>
                 </li>
             </ul> 
@@ -324,7 +503,33 @@
     selected_shipping_method: auth?.user?.addresses?.shipping[0] || auth?.user?.selected_addresses?.shipping || null,
     errors: { 
       payment: "",
-      shipping: ""
+      shipping: "",
+      address: {
+        new_address: {
+          first_name: '',
+          last_name: '',
+          street: '',
+          street2: '',
+          town_city: '',
+          county_state: '',
+          postal_zip_code: '',
+          country: 'US',
+          disable: false
+        }
+      }
+    },
+    address: {
+      new_address_modal: false,
+      new_address: {
+        first_name: '',
+        last_name: '',
+        street: '',
+        street2: '',
+        town_city: '',
+        county_state: '',
+        postal_zip_code: '',
+        country: 'US',
+      }
     }
   })
 
@@ -732,9 +937,36 @@
         }
   }
 
-    // Payment Method functions:
+  const add_new_address = async () => {
+  Object.keys(state.address.new_address).forEach((key) => {
+    if(!state.address.new_address[key]?.length) {
+      state.errors.address.new_address[key] = `Please enter a ${key.replace('_', ' ')}`
+      state.errors.address.new_address.disable = true
+    } else {
+      state.errors.address.new_address[key] = null
+      state.errors.address.new_address.disable = false
+      // console.log('all clear')
+    }
+    
+  })
+  nextTick(async ()=> {
+    if(!state.errors.address.new_address.disable) {
+      auth.user.addresses.shipping.push(state.address.new_address)
+      if(!auth.user.selected_addresses) {
+        auth.user.selected_addresses = {
+          shipping: state.address.new_address
+        }
+      }
 
-  const set_default = (method) => {
+
+      auth.updateUser()
+      nextTick(() => { state.address.new_address_modal = false })
+    }
+  })
+}
+
+
+  const set_default_method = (method: any) => {
     auth.user.selected_payment_method = method;
     nextTick(() => {
       auth.updateUser();
@@ -770,10 +1002,11 @@
   // Lifecycle
   onMounted(async () => {
     if(auth) {
-      state.selected_payment_method = await auth?.user?.selected_payment_method?.card || null
+      state.selected_payment_method = await auth?.user?.selected_payment_method || null
+      state.selected_shipping_method = await auth?.user?.selected_addresses?.shipping || null
     }
-    if(browser === 'Safari') { await initApple() }
-    await initGoogle()
+    // if(browser === 'Safari') { await initApple() }
+    // await initGoogle()
   })
 
   watch(

@@ -327,7 +327,7 @@
           <ul class="text-sm font-semibold p-2">
             <li>
               <a
-                href="#"
+                :href="`/members/${authData.user.nsight_id.nsight_id}`"
                 class="flex gap-3 rounded-md p-2 text-neutral-800 dark:text-white hover:dark:text-zinc-100 hover:bg-zinc-300/30"
               >
                 Profile
