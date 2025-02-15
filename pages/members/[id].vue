@@ -46,15 +46,18 @@
                         <!-- <button type="submit" class="button bg-pink-600 text-neutral-500">Message</button> -->
                           <!-- Reporting etc. -->
                       <div id="profile_action_button" v-if="user.nsight_id.nsight_id !== auth.user.nsight_id.nsight_id"> 
-                        <button type="submit" class="rounded-lg bg-zinc-200/60 flex px-2 py-1.5 dark:bg-zinc-800" aria-haspopup="true" aria-expanded="false"> <ion-icon class="text-xl md hydrated" name="ellipsis-horizontal" role="img" aria-label="ellipsis horizontal"></ion-icon></button>
+                        <button type="submit" class="rounded-lg bg-zinc-200/60 flex px-2 py-1.5 dark:bg-zinc-800" aria-haspopup="true" aria-expanded="false"> 
+                          <font-awesome-icon :icon="['fas', 'ellipsis-vertical']" class="text-lg text-white" />
+                      </button>
                         <div class="w-[240px] bg-zinc-700 uk-dropdown bg-[#27272a]" style="background: #27272a !important;" uk-dropdown="pos: bottom-right; animation: uk-animation-scale-up uk-transform-origin-top-right; animate-out: true; mode: click;offset:10"> 
                           <nav>
-                            <a href="#"> <ion-icon class="text-xl md hydrated" name="pricetags-outline" role="img" aria-label="pricetags outline"></ion-icon> Unfollow </a>  
-                            <a href="#"> <ion-icon class="text-xl md hydrated" name="time-outline" role="img" aria-label="time outline"></ion-icon>  Mute story </a>  
-                            <a href="#"> <ion-icon class="text-xl md hydrated" name="flag-outline" role="img" aria-label="flag outline"></ion-icon>  Report </a>  
-                            <a href="#"> <ion-icon class="text-xl md hydrated" name="share-outline" role="img" aria-label="share outline"></ion-icon> Share profile </a>  
+                            <a href="#"> <font-awesome-icon :icon="['fas', 'user-minus']" /> Unfollow </a>  
+                            <a href="#"> <font-awesome-icon :icon="['fas', 'bell-slash']" />  Mute story </a>  
+                            <a href="#"> <font-awesome-icon :icon="['fas', 'flag']" />  Report </a>  
+                            <a href="#"> <font-awesome-icon :icon="['fas', 'share-nodes']" /> Share profile </a>  
                             <hr>
-                            <a href="#" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> <ion-icon class="text-xl md hydrated" name="stop-circle-outline" role="img" aria-label="stop circle outline"></ion-icon>  Block </a>  
+                            <a href="#" class="text-red-400 hover:!bg-red-50 dark:hover:!bg-red-500/50"> 
+                              <font-awesome-icon :icon="['fas', 'ban']" />  Block </a>  
                           </nav>
                         </div>
                       </div>
@@ -90,8 +93,9 @@
              <div  class="uk-switcher" style="touch-action: pan-y pinch-zoom;">
 
                 <!-- Posts -->
-              <div id="tab-posts" class="">
-
+              <div v-if="state.active_tab.value === 'posts'" id="tab-posts" :class="[(state.active_tab.value === 'posts' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
+                
+                
               </div>
 
              </div>
@@ -116,6 +120,9 @@ definePageMeta({
 
   // stores
   const auth = authStore()  
+
+  // components
+  import ProfilePost from './components/profile_post.vue'
 
     // Use asyncData to fetch data from the server
   const  { data, error } = await useAsyncData('profile', () => $fetch(
@@ -201,7 +208,7 @@ definePageMeta({
       tab.active = false;
     });
     tab.active = true;
-
+    state.active_tab = tab;
   }
 
 </script>
