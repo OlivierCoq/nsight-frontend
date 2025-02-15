@@ -236,6 +236,9 @@ const new_nsight_member = reactive({
   favorites: {
     products: [],
     users: [],
+    posts: [],
+    pictures: [],
+    videos: [],
   },
   pictures: [],
   chats: {

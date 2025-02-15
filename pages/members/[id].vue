@@ -94,8 +94,10 @@
 
                 <!-- Posts -->
               <div v-if="state.active_tab.value === 'posts'" id="tab-posts" :class="[(state.active_tab.value === 'posts' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
-                
-                
+                <div v-if="profile_data.posts.length" class="w-full h-full overflow-y-scroll flex flex-col">
+                  <NewPostInterface />
+                  <ProfilePost v-for="(post, b) in profile_data.posts" :key="b" :post="post" :user="user" :profile-page="true" />
+                </div>
               </div>
 
              </div>
@@ -123,6 +125,7 @@ definePageMeta({
 
   // components
   import ProfilePost from './components/profile_post.vue'
+  import NewPostInterface from './components/new_post_interface.vue'
 
     // Use asyncData to fetch data from the server
   const  { data, error } = await useAsyncData('profile', () => $fetch(
@@ -141,6 +144,7 @@ definePageMeta({
         "title",
         "body",
         "posts",
+        "posts.user_permissions_user",
         "posts.title",
         "posts.body",
         "posts.pics",
@@ -150,7 +154,13 @@ definePageMeta({
         "posts.profile",
         "posts.tags",
         "posts.reactions",
-        "posts.external_links"
+        "posts.external_links",
+        "posts.comments",
+        "posts.comments.comments",
+        "posts.comments.comments.commenter",
+        "posts.comments.comments.createdAt",
+        "posts.comments.comments.visible",
+        "posts.comments.comments.replies",
       ],
       filters: {
         nsight_id: {
