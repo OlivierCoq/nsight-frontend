@@ -158,9 +158,15 @@ definePageMeta({
         "posts.comments",
         "posts.comments.comments",
         "posts.comments.comments.commenter",
+        "posts.comments.comments.commenter.nsight_id",
+        "posts.comments.comments.commenter.profile_picture",
         "posts.comments.comments.createdAt",
         "posts.comments.comments.visible",
         "posts.comments.comments.replies",
+        "posts.comments.comments.replies.user",
+        "posts.comments.comments.replies.user.nsight_id",
+        "posts.comments.comments.replies.user.profile_picture"
+        
       ],
       filters: {
         nsight_id: {

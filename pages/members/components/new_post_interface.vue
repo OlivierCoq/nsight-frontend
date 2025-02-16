@@ -1,6 +1,42 @@
 <template>
-  <div>
+  <div class="flex flex-col justify-between rounded-md shadow-xl my-4 bg-zinc-100  py-10 px-5">
+    <h3 class="text-xl text-neutral-800 font-bold px-4">Create a new post</h3>
+    <div class="w-full flex flex-col">
+      <input v-model="state.new_post.title" class="w-full p-2 mb-2 rounded-md border border-neutral-300" placeholder="Title" />
+      <Editor v-model="state.new_post.body" class="w-full rounded-md mb-2" placeholder="Share some wisdom" />
+      <div class="w-full flex flex-row justify-between mt-10">
+        <div class="w-1/2 flex">
+          <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="state.adding_link = !state.adding_link">
+            Add Link 
+            <font-awesome-icon :icon="['fas', 'link']" />
+          </button>
+          <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="state.adding_link = !state.adding_link">
+            Add Pics 
+            <font-awesome-icon :icon="['fas', 'image']" />
+          </button>
+          
+          
+        </div>
+      </div>
+    
+      <div v-if="state.adding_link" class="w-full flex flex-col mt-5 fade-in">
+        <input v-model="state.new_external_link.text" class="w-full p-2 mb-2 rounded-md border border-neutral-300" placeholder="Link Text" />
+        <input v-model="state.new_external_link.link" class="w-full p-2 mb-2 rounded-md border border-neutral-300" placeholder="Link URL" />
+        <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="addExternalLink">Add Link</button>
+      </div>
 
+
+
+      <div class="w-full mt-10">
+        <button 
+            class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" 
+            :class="{'bg-amber-300': !state.valid.title || !state.valid.body}"
+            @click="submitPost" :disabled="!state.valid.title || !state.valid.body"
+          >Post</button>
+      </div>
+
+    
+    </div>
   </div>
 </template>
 
@@ -8,14 +44,125 @@
 
   // Setup
   const config = useRuntimeConfig()
+  import Editor from 'primevue/editor';
+  import FileUpload from 'primevue/fileupload';
+ 
+  // Emits
+  const emit = defineEmits(['newpost']);
 
   // Stores
   const auth = authStore()
 
-  // methods:
-const submit_post = () => {
-  console.log('submitting post')
-}
+  // state
+  const state = reactive({
+    new_post: {
+      title: '',
+      body: '',
+      pics: [],
+      external_links: [],
+      visible: true,
+      comments: [],
+      reactions: {
+        upvotes: 0,
+        downvotes: 0,
+        number_of_votes: 0,
+        vote: 0
+      },
+      user: auth.user
+    },
+    new_comment_thread: {
+      post: null,
+      comments: []
+    },
+    new_external_link: {
+      text: '',
+      link: ''
+    },
+    adding_link: false,
+    valid: {
+      title: false,
+      body: false
+    },
+    error: null,
+    mounted: false
+  })
+
+
+  // Methods
+  const uploadPics = (event) => {
+    console.log('event', event.files);
+
+    // Upload files to Strapi:
+    const formData = new FormData();
+    for (let i = 0; i < event.files.length; i++) {
+      formData.append('files', event.files[i]);
+    }
+    $fetch(`${config.public.NUXT_STRAPI_URL}/api/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${auth.token}`
+      },
+      body: formData
+    }).then((response) => {
+      console.log('response', response);
+      state.new_post.pics = response;
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  const addExternalLink = () => {
+    const cloned_link = JSON.parse(JSON.stringify(state.new_external_link));
+    state.new_post.external_links.push(cloned_link);
+    state.new_external_link = {
+      text: '',
+      link: ''
+    }
+    state.adding_link = false;
+  }
+  const submitPost = () => {
+    $fetch(`${config.public.NUXT_STRAPI_URL}/api/posts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${auth.token}`
+      },
+      body: JSON.stringify(state.new_post)
+    }).then((response) => {
+      console.log('response', response);
+      emit('newpost');
+
+      // Reset the form:
+      state.new_post = {
+        title: '',
+        body: '',
+        pics: [],
+        external_links: [],
+        visible: true,
+        comments: [],
+        reactions: {
+          upvotes: 0,
+          downvotes: 0,
+          number_of_votes: 0,
+          vote: 0
+        },
+        user: auth.user
+      }
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
+  
+  const validate_title = (title) => {
+    return title.length > 0
+  }
+
+  // Watchers for title AND body:
+  watch([() => state.new_post.title, () => state.new_post.body], ([title, body]) => {
+    state.valid.title = validate_title(title);
+    state.valid.body = body.length > 0;
+  });
 
 </script>
 
