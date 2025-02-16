@@ -46,6 +46,14 @@
   const config = useRuntimeConfig()
   import Editor from 'primevue/editor';
   import FileUpload from 'primevue/fileupload';
+
+  // props:
+  const props = defineProps({
+    profile: {
+      type: Object,
+      required: true
+    }
+  })
  
   // Emits
   const emit = defineEmits(['newpost']);
@@ -62,6 +70,7 @@
       external_links: [],
       visible: true,
       comments: [],
+      profile: props.profile,
       reactions: {
         upvotes: 0,
         downvotes: 0,
@@ -130,6 +139,45 @@
       body: JSON.stringify(state.new_post)
     }).then((response) => {
       console.log('response', response);
+
+
+      // create a new comment_thread for the post:
+      $fetch(`${config.public.NUXT_STRAPI_URL}/api/comment-threads`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.token}`
+        },
+        body: JSON.stringify({
+          post: response.data,
+          comments: []
+        })
+      }).then((res) => {
+        console.log('new comment thread created', res)
+
+        // update new post with comment thread in databse:
+        $fetch(`${config.public.NUXT_STRAPI_URL}/api/posts/${response.data.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${auth.token}`
+          },
+          body: JSON.stringify({
+            comments: res.data
+          })
+        }).then((res) => {
+          console.log('new comment thread added to post', res)
+        }).catch((err) => {
+          console.log('error adding new comment thread to post', err)
+        })
+
+
+
+      }).catch((err) => {
+        console.log('error creating new comment thread', err)
+      })
+
+
       emit('newpost');
 
       // Reset the form:
@@ -146,10 +194,11 @@
           number_of_votes: 0,
           vote: 0
         },
-        user: auth.user
+        user_permissions_user: auth.user,
+        profile: props.profile.id
       }
     }).catch((error) => {
-      console.log(error);
+      console.log(error); 
     })
   }
 

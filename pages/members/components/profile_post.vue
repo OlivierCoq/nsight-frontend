@@ -17,13 +17,13 @@
         </div>
         <div class="w-1/2 px-2 flex flex-col justify-center items-center">
           <font-awesome-icon :icon="['far', 'comment']" class="cursor-pointer" />
-          <p class="text-xs m-0">{{ post.comments.comments.length }}</p>
+          <p v-if="post.comments" class="text-xs m-0">{{ post.comments?.comments?.length }}</p>
         </div>
       </div>
 
 
 
-      <CommentThread :target="post" :user="user" :profilePage="profilePage" />
+      <CommentThread v-if="post.comments" :target="post" :user="user" :profilePage="profilePage" />
 
     </div>
   </div>

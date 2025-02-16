@@ -95,7 +95,7 @@
                 <!-- Posts -->
               <div v-if="state.active_tab.value === 'posts'" id="tab-posts" :class="[(state.active_tab.value === 'posts' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
                 <div v-if="profile_data.posts.length" class="w-full h-full overflow-y-scroll flex flex-col">
-                  <NewPostInterface />
+                  <NewPostInterface :profile="profile_data" @newpost="" />
                   <ProfilePost v-for="(post, b) in profile_data.posts" :key="b" :post="post" :user="user" :profile-page="true" />
                 </div>
               </div>
@@ -128,7 +128,7 @@ definePageMeta({
   import NewPostInterface from './components/new_post_interface.vue'
 
     // Use asyncData to fetch data from the server
-  const  { data, error } = await useAsyncData('profile', () => $fetch(
+  let  { data, error } = await useAsyncData('profile', () => $fetch(
     `${config.public.NUXT_STRAPI_URL}/api/profiles?${qs.stringify({
       populate: [
         "users_permissions_user", 
@@ -185,9 +185,73 @@ definePageMeta({
     }
   }))
   
-  const profile_data = data.value.data[0]
-  const user = data.value.data[0].users_permissions_user
+  let profile_data = data.value.data[0]
+  let user = data.value.data[0].users_permissions_user
   // console.log(user)
+
+  // Request profile again and replace data
+  const refresh_profile = async () => {
+    let  { data, error } = await useAsyncData('profile', () => $fetch(
+      `${config.public.NUXT_STRAPI_URL}/api/profiles?${qs.stringify({
+        populate: [
+          "users_permissions_user", 
+          "users_permissions_user.nsight_id",
+          "users_permissions_user.email",
+          "users_permissions_user.first_name",
+          "users_permissions_user.last_name",
+          "users_permissions_user.profile_picture",
+          "users_permissions_user.pictures",
+          "users_permissions_user.friends",
+          "users_permissions_user.users",
+          "intro",
+          "title",
+          "body",
+          "posts",
+          "posts.user_permissions_user",
+          "posts.title",
+          "posts.body",
+          "posts.pics",
+          "posts.visible",
+          "posts.createdAt",
+          "posts.updatedAt",
+          "posts.profile",
+          "posts.tags",
+          "posts.reactions",
+          "posts.external_links",
+          "posts.comments",
+          "posts.comments.comments",
+          "posts.comments.comments.commenter",
+          "posts.comments.comments.commenter.nsight_id",
+          "posts.comments.comments.commenter.profile_picture",
+          "posts.comments.comments.createdAt",
+          "posts.comments.comments.visible",
+          "posts.comments.comments.replies",
+          "posts.comments.comments.replies.user",
+          "posts.comments.comments.replies.user.nsight_id",
+          "posts.comments.comments.replies.user.profile_picture"
+          
+        ],
+        filters: {
+          nsight_id: {
+            nsight_id: route.params.id
+          }
+        }
+      },
+      { arrayFormat: 'brackets',
+        encodeValuesOnly: true
+       },)}`
+    , {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${ auth.token }` 
+      }
+    }))
+    
+    profile_data = data.value.data[0]
+    user = data.value.data[0].users_permissions_user
+  }
+
 
   // Interfaces
   interface Tab {
