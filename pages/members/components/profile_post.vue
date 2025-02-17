@@ -8,6 +8,33 @@
     <div class="flex flex-col w-5/6">
       <p class="text-xs">{{ post.createdAt }}</p>
       <h3 class="text-xl text-neutral-800 font-bold mb-3">{{ post.title }}</h3>
+
+
+      <div v-if="post.images && post.images.length">
+        <div class="relative uk-slider uk-slider-container" tabindex="0" uk-slider="finite: true; autoplay: true">
+        
+            <ul class="-ml-2 uk-slider-items grid-small" style="transform: translate3d(0px, 0px, 0px);">
+                <li v-for="image in post.images" :key="image.asset_id" class="w-1/4 uk-active" tabindex="-1">
+                    <img :src="image.secure_url" class="rounded-md w-full h-full object-cover" alt="">
+                </li> 
+            </ul>
+          
+            <!-- dotnav -->
+            <ul class="flex justify-center my-5 uk-dotnav uk-slider-nav gap-2.5" hidden=""><li uk-slider-item="0" hidden="" class="uk-active"><a href=""></a></li><li uk-slider-item="1" hidden=""><a href=""></a></li><li uk-slider-item="2" hidden=""><a href=""></a></li><li uk-slider-item="3" hidden=""><a href=""></a></li><li uk-slider-item="4" hidden=""><a href=""></a></li></ul>
+        
+            <!-- navigation -->
+            <a class="absolute -translate-y-1/2 bg-white rounded-full top-1/2 left-2 grid w-9 h-9 place-items-center shadow dark:bg-dark3 uk-invisible" href="#" uk-slider-item="previous" hidden="">
+              <font-awesome-icon :icon="['fas', 'chevron-left']" />
+            </a>
+            <a class="absolute right-2 -translate-y-1/2 bg-white rounded-full top-1/2 grid w-9 h-9 place-items-center shadow dark:bg-dark3 uk-invisible" href="#" uk-slider-item="next" hidden="">
+              <font-awesome-icon :icon="['fas', 'chevron-right']" />
+            </a>
+        
+        
+        </div>
+
+      </div>
+
       <p class="text-md text-neutral-800" v-html="post.body"></p>
       
       <div class="w-1/6 flex flex-row justify-between">

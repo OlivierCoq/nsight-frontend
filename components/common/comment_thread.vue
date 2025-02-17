@@ -13,7 +13,7 @@
       <ul class="relative space-y-3 uk-accordion" uk-accordion="active: 0">
         <li class="uk-open">
           <a :id="`accordion-handler-${target.id}`" class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
-              comments ({{ state.comment_thread.comments.length }})
+              comment threads ({{ state.comment_thread.comments.length }})
               <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
           </a>
           <div class="p-2 dark:text-white/80 uk-accordion-content h-[25vh] overflow-y-auto pb-10">
@@ -127,7 +127,7 @@ const add_new_comment = async () => {
       },
       body: JSON.stringify(postObj)
     }).then((res) => {
-      console.log('new comment added', res)
+      // console.log('new comment added', res)
 
       // update the local state
       state.comment_thread.comments.push({
@@ -182,7 +182,7 @@ const add_new_reply = async (comment) => {
         },
         body: JSON.stringify(postObj)
       }).then((res) => {
-        console.log('new reply added', res)
+        // console.log('new reply added', res)
         // update the local state
         comment.new_reply = {
           body: '',

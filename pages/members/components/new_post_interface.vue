@@ -29,7 +29,7 @@
         <div class="w-full min-h-[200px] border-thin border-zinc-200 p-4">
           <p class="text-neutral-800 font-thin">Upload images</p>
           <!-- <input type="file" multiple /> -->
-          <FileUpload name="pics[]" url="/api/upload" @upload="uploadPics($event)" :multiple="true" accept="image/*" :maxFileSize="1000000" ref="fileupload">
+          <FileUpload name="files" url="/api/upload/images" @upload="uploadPics($event)" :multiple="true" accept="image/*" :maxFileSize="1000000" ref="fileupload">
             <template #empty>
               <span class="text-neutral-800">Drag and drop files to here, and then click the Upload button.</span>
             </template>
@@ -116,35 +116,31 @@
 
 const fileupload = ref()
 const uploadPics = async (event) => {
-  const files = event.files;
-  if (!files || files.length === 0) {
-    console.error('No files selected');
-    return;
-  }
-  console.log('event', files);
-
   const formData = new FormData();
-  for (let i = 0; i < files.length; i++) {
-    console.log('file', files[i]);
-    formData.append('files', files[i]);
-  }
 
-  for (let pair of formData.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
-
-  await $fetch('/api/upload', {
-    method: 'POST',
-    body: formData
-  }).then((response) => {
-    console.log('response', response);
-    if(response.results.length) {
-      state.new_post.images.data = response.results;
-    }
-  }).catch((error) => {
-    console.log(error);
+  event.files.forEach((file) => {
+    formData.append('files', file); // Ensure correct property
   });
-}
+
+  console.log('Sending to backend:', [...formData.entries()]); // Debugging log
+
+  try {
+    const response = await fetch('/api/upload/images', {
+      method: 'POST',
+      body: formData
+    });
+
+    console.log('Upload success:', response);
+    if(response.ok) {
+      const data = await response.json();
+      // console.log('Data:', data);
+      state.new_post.images = data.data;
+    }
+  } catch (error) {
+    console.error('Upload error:', error);
+  }
+};
+
 
 
   const addExternalLink = () => {

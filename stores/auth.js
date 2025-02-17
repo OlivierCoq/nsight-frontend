@@ -388,7 +388,7 @@ export const authStore = defineStore({
               Authorization: `Bearer ${this.token}`,
             },
           }).then(async (res) => {
-            console.log('Profile check: ', res);
+            // console.log('Profile check: ', res);
 
             if(!res?.data?.length) {
               // create a profile for the user

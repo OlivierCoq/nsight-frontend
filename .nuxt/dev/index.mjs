@@ -10,7 +10,8 @@ import crypto from 'crypto';
 import { Client, Environment, ApiError } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/cjs/index.js';
 import JSONBig from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/json-bigint/index.js';
 import { v2 } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/cloudinary/cloudinary.js';
-import { IncomingForm } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/formidable/src/index.js';
+import multiparty from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/multiparty/index.js';
+import fs from 'fs';
 import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { stringify, uneval } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/devalue/index.js';
 import { renderSSRHead } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@unhead/ssr/dist/index.mjs';
@@ -3257,7 +3258,7 @@ const _lazy_hWPhL2 = () => Promise.resolve().then(function () { return payOrder_
 const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_post$1; });
 const _lazy_D8ffMl = () => Promise.resolve().then(function () { return placeOrder_post$1; });
 const _lazy_3k04uK = () => Promise.resolve().then(function () { return retrieveItem_post$1; });
-const _lazy_q8EOIR = () => Promise.resolve().then(function () { return upload_post$1; });
+const _lazy_so3cps = () => Promise.resolve().then(function () { return images_post$1; });
 const _lazy_z4QTko = () => Promise.resolve().then(function () { return add_post$1; });
 const _lazy_wN5pgk = () => Promise.resolve().then(function () { return update_password$1; });
 const _lazy_Q675bI = () => Promise.resolve().then(function () { return update_post$1; });
@@ -3282,7 +3283,7 @@ const handlers = [
   { route: '/api/square/payment', handler: _lazy_lOjqNk, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/place-order', handler: _lazy_D8ffMl, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/retrieve-item', handler: _lazy_3k04uK, lazy: true, middleware: false, method: "post" },
-  { route: '/api/upload', handler: _lazy_q8EOIR, lazy: true, middleware: false, method: "post" },
+  { route: '/api/upload/images', handler: _lazy_so3cps, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/add', handler: _lazy_z4QTko, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/update_password', handler: _lazy_wN5pgk, lazy: true, middleware: false, method: undefined },
   { route: '/api/user/update', handler: _lazy_Q675bI, lazy: true, middleware: false, method: "post" },
@@ -4257,60 +4258,52 @@ const retrieveItem_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
   secure: true
 });
-let results = [];
-const upload_post = defineEventHandler(async (event) => {
-  const form = new IncomingForm({
-    keepExtensions: true,
-    multiples: true
-  });
-  return new Promise((resolve) => {
-    form.parse(event.req, async (err, fields, files) => {
-      if (err) {
-        console.error("Form parse error", err);
+const uploadToCloudinary = (filePath) => {
+  return new Promise((resolve, reject) => {
+    v2.uploader.upload(filePath, { folder: "uploads" }, (error, result) => {
+      if (error) {
+        console.error("Cloudinary Upload Error:", error);
+        return reject(error);
       }
-      console.log("Files:", files);
-      const fileArray = files["pics[]"] ? Array.isArray(files["pics[]"]) ? files["pics[]"] : [files["pics[]"]] : [];
-      if (!fileArray || fileArray.length === 0 || !fileArray[0]) {
-        console.log("No files found in request");
-      }
-      const uploadPromises = fileArray.map(async (file) => {
-        const options = {
-          use_filename: true,
-          unique_filename: false,
-          overwrite: true
-        };
-        try {
-          const result = await v2.uploader.upload(file.filepath, options);
-          console.log("Cloudinary upload result", result);
-          results.push(result);
-          return {
-            status: "success",
-            result
-          };
-        } catch (error) {
-          console.error("Cloudinary upload error", error);
-          return {
-            status: "error",
-            error
-          };
-        }
-      });
-      const uploadResults = await Promise.all(uploadPromises);
-      resolve({
-        status: "success",
-        message: "Files processed",
-        data: uploadResults,
-        results
-      });
+      resolve(result);
     });
   });
+};
+const images_post = defineEventHandler(async (event) => {
+  try {
+    const form = new multiparty.Form();
+    const data = await new Promise((resolve, reject) => {
+      form.parse(event.node.req, (err, fields, files) => {
+        if (err)
+          reject(err);
+        else
+          resolve({ fields, files });
+      });
+    });
+    if (!data.files.files || data.files.files.length === 0) {
+      console.warn("No files received in formData");
+      return { statusCode: 400, message: "No files received" };
+    }
+    console.log("Received files:", data.files.files.map((f) => f.originalFilename));
+    const uploadResults = await Promise.all(
+      data.files.files.map((file) => uploadToCloudinary(file.path))
+    );
+    data.files.files.forEach((file) => fs.unlinkSync(file.path));
+    return { statusCode: 200, message: "Images uploaded successfully", data: uploadResults };
+  } catch (error) {
+    console.error("Upload failed:", error);
+    return { statusCode: 500, message: "Upload failed", error: error.message };
+  }
 });
 
-const upload_post$1 = /*#__PURE__*/Object.freeze({
+const images_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: upload_post
+  default: images_post
 });
 
 const add_post = defineEventHandler(async (event) => {
