@@ -107,12 +107,12 @@
                 60vh] fade-in flex flex-col gap-4">
                 <div class="w-full h-full overflow-y-scroll flex flex-col relative">
                   <div class="grid sm:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
-                    <FriendCard v-show="a <= state.tabs[1].feed_num" v-for="(friend, a) in auth.user.friends" :key="a" :member="friend" />
+                    <FriendCard v-show="a <= state.tabs[1].feed_num" v-for="(friend, a) in user.friends" :key="a" :member="friend" />
                   </div>
                   <div class="flex justify-center my-10">
                     <button
                         v-if="
-                        auth.user.friends.length > 14 &&
+                        user.friends.length > 14 &&
                         state.tabs[1].feed_num < auth.user.friends.length
                         "
                         type="button"
@@ -124,6 +124,20 @@
                   </div>
                 </div>
               </div>  
+
+              <!-- Photos -->
+              <div v-if="state.active_tab.value === 'photos'" id="tab-photos" :class="[(state.active_tab.value === 'photos' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
+                <div class="w-full h-full overflow-y-scroll flex flex-col relative">
+                  <div class="grid grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
+                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
+                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
+                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
+                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
+                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
+                  </div>
+                </div>
+              </div>
               
 
              </div>
@@ -166,6 +180,8 @@ definePageMeta({
         "users_permissions_user.profile_picture",
         "users_permissions_user.pictures",
         "users_permissions_user.friends",
+        "users_permissions_user.friends.nsight_id",
+        "users_permissions_user.friends.profile_picture",
         "users_permissions_user.users",
         "intro",
         "title",
