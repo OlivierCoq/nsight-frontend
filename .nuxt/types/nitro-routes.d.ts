@@ -48,6 +48,9 @@ declare module 'nitropack' {
     '/api/square/retrieve-item': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/retrieve-item.post').default>>>>
     }
+    '/api/upload': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/upload.post').default>>>>
+    }
     '/api/user/add': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/user/add.post').default>>>>
     }

@@ -9,6 +9,8 @@ import qs from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-front
 import crypto from 'crypto';
 import { Client, Environment, ApiError } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/square/dist/cjs/index.js';
 import JSONBig from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/json-bigint/index.js';
+import { v2 } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/cloudinary/cloudinary.js';
+import { IncomingForm } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/formidable/src/index.js';
 import { getRequestDependencies, getPreloadLinks, getPrefetchLinks, createRenderer } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { stringify, uneval } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/devalue/index.js';
 import { renderSSRHead } from 'file:///Applications/MAMP/htdocs/www/NSIGHT_PROJECT/nsight-frontend/node_modules/@unhead/ssr/dist/index.mjs';
@@ -3255,6 +3257,7 @@ const _lazy_hWPhL2 = () => Promise.resolve().then(function () { return payOrder_
 const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_post$1; });
 const _lazy_D8ffMl = () => Promise.resolve().then(function () { return placeOrder_post$1; });
 const _lazy_3k04uK = () => Promise.resolve().then(function () { return retrieveItem_post$1; });
+const _lazy_q8EOIR = () => Promise.resolve().then(function () { return upload_post$1; });
 const _lazy_z4QTko = () => Promise.resolve().then(function () { return add_post$1; });
 const _lazy_wN5pgk = () => Promise.resolve().then(function () { return update_password$1; });
 const _lazy_Q675bI = () => Promise.resolve().then(function () { return update_post$1; });
@@ -3279,6 +3282,7 @@ const handlers = [
   { route: '/api/square/payment', handler: _lazy_lOjqNk, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/place-order', handler: _lazy_D8ffMl, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/retrieve-item', handler: _lazy_3k04uK, lazy: true, middleware: false, method: "post" },
+  { route: '/api/upload', handler: _lazy_q8EOIR, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/add', handler: _lazy_z4QTko, lazy: true, middleware: false, method: "post" },
   { route: '/api/user/update_password', handler: _lazy_wN5pgk, lazy: true, middleware: false, method: undefined },
   { route: '/api/user/update', handler: _lazy_Q675bI, lazy: true, middleware: false, method: "post" },
@@ -4250,6 +4254,63 @@ const retrieveItem_post = defineEventHandler(async (event) => {
 const retrieveItem_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: retrieveItem_post
+});
+
+v2.config({
+  secure: true
+});
+let results = [];
+const upload_post = defineEventHandler(async (event) => {
+  const form = new IncomingForm({
+    keepExtensions: true,
+    multiples: true
+  });
+  return new Promise((resolve) => {
+    form.parse(event.req, async (err, fields, files) => {
+      if (err) {
+        console.error("Form parse error", err);
+      }
+      console.log("Files:", files);
+      const fileArray = files["pics[]"] ? Array.isArray(files["pics[]"]) ? files["pics[]"] : [files["pics[]"]] : [];
+      if (!fileArray || fileArray.length === 0 || !fileArray[0]) {
+        console.log("No files found in request");
+      }
+      const uploadPromises = fileArray.map(async (file) => {
+        const options = {
+          use_filename: true,
+          unique_filename: false,
+          overwrite: true
+        };
+        try {
+          const result = await v2.uploader.upload(file.filepath, options);
+          console.log("Cloudinary upload result", result);
+          results.push(result);
+          return {
+            status: "success",
+            result
+          };
+        } catch (error) {
+          console.error("Cloudinary upload error", error);
+          return {
+            status: "error",
+            error
+          };
+        }
+      });
+      const uploadResults = await Promise.all(uploadPromises);
+      resolve({
+        status: "success",
+        message: "Files processed",
+        data: uploadResults,
+        results
+      });
+    });
+  });
+});
+
+const upload_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: upload_post
 });
 
 const add_post = defineEventHandler(async (event) => {

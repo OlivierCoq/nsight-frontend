@@ -135,6 +135,15 @@ const add_new_comment = async () => {
         commenter: props.user
       })
 
+      state.comment_thread.comments.forEach((comment) => {
+
+      comment['new_reply'] = {
+        body: '',
+        user: auth.user
+      }
+    
+  })
+
     }).catch((err) => {
       console.log('error adding new comment', err)
     })

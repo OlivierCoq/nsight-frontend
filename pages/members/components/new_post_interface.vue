@@ -10,7 +10,7 @@
             Add Link 
             <font-awesome-icon :icon="['fas', 'link']" />
           </button>
-          <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="state.adding_link = !state.adding_link">
+          <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="state.adding_pictures = !state.adding_pictures">
             Add Pics 
             <font-awesome-icon :icon="['fas', 'image']" />
           </button>
@@ -25,7 +25,17 @@
         <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="addExternalLink">Add Link</button>
       </div>
 
-
+      <div v-else-if="state.adding_pictures">
+        <div class="w-full min-h-[200px] border-thin border-zinc-200 p-4">
+          <p class="text-neutral-800 font-thin">Upload images</p>
+          <!-- <input type="file" multiple /> -->
+          <FileUpload name="pics[]" url="/api/upload" @upload="uploadPics($event)" :multiple="true" accept="image/*" :maxFileSize="1000000" ref="fileupload">
+            <template #empty>
+              <span class="text-neutral-800">Drag and drop files to here, and then click the Upload button.</span>
+            </template>
+          </FileUpload>
+        </div>
+      </div>
 
       <div class="w-full mt-10">
         <button 
@@ -88,6 +98,7 @@
       link: ''
     },
     adding_link: false,
+    adding_pictures: false,
     valid: {
       title: false,
       body: false
@@ -98,27 +109,37 @@
 
 
   // Methods
-  const uploadPics = (event) => {
-    console.log('event', event.files);
 
-    // Upload files to Strapi:
-    const formData = new FormData();
-    for (let i = 0; i < event.files.length; i++) {
-      formData.append('files', event.files[i]);
-    }
-    $fetch(`${config.public.NUXT_STRAPI_URL}/api/upload`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${auth.token}`
-      },
-      body: formData
-    }).then((response) => {
-      console.log('response', response);
-      state.new_post.pics = response;
-    }).catch((error) => {
-      console.log(error);
-    });
+const fileupload = ref()
+const uploadPics = async (event) => {
+  const files = event.files;
+  if (!files || files.length === 0) {
+    console.error('No files selected');
+    return;
   }
+  console.log('event', files);
+
+  const formData = new FormData();
+  for (let i = 0; i < files.length; i++) {
+    console.log('file', files[i]);
+    formData.append('files', files[i]);
+  }
+
+  for (let pair of formData.entries()) {
+    console.log(pair[0] + ', ' + pair[1]);
+  }
+
+  await $fetch('/api/upload', {
+    method: 'POST',
+    body: formData
+  }).then((response) => {
+    console.log('response', response);
+    state.new_post.pics = response;
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
 
   const addExternalLink = () => {
     const cloned_link = JSON.parse(JSON.stringify(state.new_external_link));
@@ -215,6 +236,18 @@
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
+// File input
+input[type="file"] {
+  display: none;
+}
+
+.p-fileupload-file,
+.p-fileupload-file-name  {
+  color: rgb(37, 36, 36) !important;
+}
+.p-badge {
+  padding: 2px 10px !important;
+}
 </style>
