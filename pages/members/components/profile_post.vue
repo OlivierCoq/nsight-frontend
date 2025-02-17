@@ -15,7 +15,18 @@
         
             <ul class="-ml-2 uk-slider-items grid-small" style="transform: translate3d(0px, 0px, 0px);">
                 <li v-for="image in post.images" :key="image.asset_id" class="w-1/4 uk-active" tabindex="-1">
-                    <img :src="image.secure_url" class="rounded-md w-full h-full object-cover" alt="">
+                    <img :src="image.secure_url" class="rounded-md w-full h-full object-cover cursor-pointer" :alt="`${image.original_filename}`" :uk-toggle="`target: #modal-${image.asset_id}`">
+
+                    <div class="lg:p-20 p-10 uk-modal" :id="`modal-${image.asset_id}`" uk-modal="">
+
+                      <div class="uk-modal-dialog tt relative mx-auto bg-white rounded-lg shadow-xl w-[400px]">
+                        <button class="absolute top-2 right-2 uk-modal-close" type="button" uk-modal-close>
+                          <font-awesome-icon :icon="['fas', 'times']" />
+                        </button>
+                        <img :src="image.secure_url" class="rounded-md w-full h-full object-cover cursor-pointer" :alt="`${image.original_filename}`">
+                      </div>
+                    </div>
+
                 </li> 
             </ul>
           
