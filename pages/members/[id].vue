@@ -94,9 +94,11 @@
 
                 <!-- Posts -->
               <div v-if="state.active_tab.value === 'posts'" id="tab-posts" :class="[(state.active_tab.value === 'posts' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
-                <div v-if="profile_data.posts.length" class="w-full h-full overflow-y-scroll flex flex-col relative">
+                <div class="w-full h-full overflow-y-scroll flex flex-col relative">
                   <NewPostInterface v-if="route.params.id === auth.user.nsight_id.nsight_id" :profile="profile_data" @newpost="add_new_post" />
-                  <ProfilePost v-for="post in profile_data.posts" :key="post.id" :post="post" :user="user" :profile-page="true" />
+                  <div v-if="profile_data.posts.length" >
+                    <ProfilePost v-for="post in profile_data.posts" :key="post.id" :post="post" :user="user" :profile-page="true" />
+                  </div>
                 </div>
               </div>
 

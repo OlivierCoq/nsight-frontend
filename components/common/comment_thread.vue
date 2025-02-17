@@ -17,7 +17,7 @@
               <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
           </a>
           <div class="p-2 dark:text-white/80 uk-accordion-content h-[25vh] overflow-y-auto pb-10">
-            <ul class="space-y-3 pb-10">
+            <ul class="space-y-3 mb-10">
               <li v-for="comment in state.comment_thread.comments" :key="comment.id" class="flex flex-row">
                 <a :href="`/members/${comment.commenter?.nsight_id?.nsight_id}`" class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
                   <img 
@@ -33,7 +33,7 @@
                   <div class="w-3/5 h-[1px] bg-zinc-800 opacity-[0.2] mt-5"></div>
                   <!-- Replies -->
                   <div class="w-full flex flex-col">
-                    <div v-for="reply in comment.replies" :key="reply.id" class="flex flex-row my-4">
+                    <div v-for="reply in comment.replies" :key="`${reply.id}-${comment.id}`" class="flex flex-row my-4">
                       <a :href="`/members/${reply.user?.nsight_id?.nsight_id}`" class="flex flex-col w-[40px] items-center justify-start cursor-arrow me-3">
                         <img 
                           class="rounded-full w-8 h-8"
@@ -152,8 +152,16 @@ const add_new_comment = async () => {
 
 const add_new_reply = async (comment) => {
 
+  
+  
+
   if(comment.new_reply.body.length) {
-    comment.replies.push(comment.new_reply)
+    comment?.replies?.push(comment.new_reply)
+
+    // console.log('comment', comment)
+    // console.log('comment.new_reply', comment.new_reply)
+
+
 
     nextTick(() => {
 
@@ -162,6 +170,8 @@ const add_new_reply = async (comment) => {
         post: props.target.id,
         comments: state.comment_thread.comments
       }
+
+      // console.log('postObj', postObj)
 
       // PUT REQUEST:
       $fetch(`${config.public.NUXT_STRAPI_URL}/api/comment-threads/${postObj.id}`, {
