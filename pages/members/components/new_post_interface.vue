@@ -77,6 +77,9 @@
       title: '',
       body: '',
       pics: [],
+      images: {
+        data: [],
+      },
       external_links: [],
       visible: true,
       comments: [],
@@ -134,7 +137,9 @@ const uploadPics = async (event) => {
     body: formData
   }).then((response) => {
     console.log('response', response);
-    state.new_post.pics = response;
+    if(response.results.length) {
+      state.new_post.images.data = response.results;
+    }
   }).catch((error) => {
     console.log(error);
   });
@@ -188,6 +193,8 @@ const uploadPics = async (event) => {
           })
         }).then((res) => {
           console.log('new comment thread added to post', res)
+          // emit
+          emit('newpost');
         }).catch((err) => {
           console.log('error adding new comment thread to post', err)
         })
@@ -198,10 +205,11 @@ const uploadPics = async (event) => {
         console.log('error creating new comment thread', err)
       })
 
+      // emit// export response with emit:
+      emit('newpost', response.data);
 
-      emit('newpost');
-
-      // Reset the form:
+      nextTick((() => {
+        // Reset the form:
       state.new_post = {
         title: '',
         body: '',
@@ -218,6 +226,7 @@ const uploadPics = async (event) => {
         user_permissions_user: auth.user,
         profile: props.profile.id
       }
+      }))
     }).catch((error) => {
       console.log(error); 
     })
