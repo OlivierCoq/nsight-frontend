@@ -61,7 +61,7 @@
 
 
 
-      <CommentThread  :target="post" :user="user" :profilePage="profilePage" />
+      <CommentThread :target="post" :user="user" :profilePage="profilePage" />
 
     </div>
   </div>

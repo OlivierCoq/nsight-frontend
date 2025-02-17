@@ -133,7 +133,7 @@ const uploadPics = async (event) => {
     console.log('Upload success:', response);
     if(response.ok) {
       const data = await response.json();
-      // console.log('Data:', data);
+      console.log('Data:', data);
       state.new_post.images = data.data;
     }
   } catch (error) {
