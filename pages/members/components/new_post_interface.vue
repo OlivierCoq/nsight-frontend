@@ -4,7 +4,7 @@
     <div class="w-full flex flex-col">
       <input v-model="state.new_post.title" class="w-full p-2 mb-2 rounded-md border border-neutral-300" placeholder="Title" />
       <Editor v-model="state.new_post.body" class="w-full rounded-md mb-2" placeholder="Share some wisdom" />
-      <div class="w-full flex flex-row justify-between mt-10">
+      <div class="w-full flex flex-row justify-between mt-[5rem]">
         <div class="w-1/2 flex">
           <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="state.adding_link = !state.adding_link">
             Add Link 
@@ -54,6 +54,7 @@
 
   // Setup
   const config = useRuntimeConfig()
+  import qs from 'qs'
   import Editor from 'primevue/editor';
   import FileUpload from 'primevue/fileupload';
 
@@ -194,7 +195,49 @@ const uploadPics = async (event) => {
         }).then((res) => {
           console.log('new comment thread added to post', res)
           // emit
-          emit('newpost');
+
+          // yoink from db:
+          $fetch(`${config.public.NUXT_STRAPI_URL}/api/posts/${response.data.id}?${qs.stringify({
+           populate: [
+            "user_permissions_user",
+            "user_permissions_user.nsight_id",
+            "user_permissions_user.profile_picture",
+            "title",
+            "body",
+            "pics",
+            "images",
+            "external_links",
+            "reactions",
+            "visible",
+            "tags",
+            "comments",
+            "comments.post",
+            "comments.comments",
+            "comments.comments.body",
+            "comments.comments.commenter",
+            "comments.comments.commenter.nsight_id",
+            "comments.comments.commenter.profile_picture",
+            "comments.comments.visible",
+            "comments.comments.replies",
+            "comments.comments.replies.body",
+            "comments.comments.replies.user",
+            "comments.comments.replies.user.nsight_id",
+            "comments.comments.replies.user.profile_picture"
+           ]
+          })}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${auth.token}`
+            }
+          }).then((res) => {
+            console.log('new post', res)
+            emit('newpost', res.data)
+          }).catch((err) => {
+            console.log('error getting new post', err)
+          })
+          
+          
         }).catch((err) => {
           console.log('error adding new comment thread to post', err)
         })
@@ -206,7 +249,8 @@ const uploadPics = async (event) => {
       })
 
       // emit// export response with emit:
-      emit('newpost', response.data);
+      
+      
 
       nextTick((() => {
         // Reset the form:

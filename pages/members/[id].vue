@@ -96,7 +96,7 @@
               <div v-if="state.active_tab.value === 'posts'" id="tab-posts" :class="[(state.active_tab.value === 'posts' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
                 <div v-if="profile_data.posts.length" class="w-full h-full overflow-y-scroll flex flex-col relative">
                   <NewPostInterface v-if="route.params.id === auth.user.nsight_id.nsight_id" :profile="profile_data" @newpost="add_new_post" />
-                  <ProfilePost v-for="(post, b) in profile_data.posts" :key="b" :post="post" :user="user" :profile-page="true" />
+                  <ProfilePost v-for="post in profile_data.posts" :key="post.id" :post="post" :user="user" :profile-page="true" />
                 </div>
               </div>
 
@@ -280,6 +280,7 @@ definePageMeta({
   // Mounted
   onMounted(() => {
     state.active_tab = state.tabs.find((tab: Tab) => tab.pinned);
+    auto_sort_posts()
     nextTick(() => {
       auto_sort_posts()
     })
@@ -296,14 +297,19 @@ definePageMeta({
 
   const add_new_post = (new_post: any) => {
     profile_data.posts.unshift(new_post)
-    nextTick(() => {
-      auto_sort_posts()
-    })
+    // nextTick(() => {
+    //   auto_sort_posts()
+    // })
   }
 
   // sort posts by date:
   const auto_sort_posts = () => {
     profile_data.posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    nextTick(() => {
+      profile_data.posts.forEach((post) => {
+        post.comments.comments.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      })
+    })
   }
 
 

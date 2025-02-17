@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row rounded-lg bg-zinc-300 shadow-xl  w-full p-10 my-2">
+  <div class="flex flex-row rounded-lg bg-zinc-300 shadow-xl  w-full p-10 my-2 fade-in">
     <a v-if="!profilePage" :href="`/members/${user.nsight_id.nsight_id}` " class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
       <img class="rounded-full w-16 h-16" :src="user.profile_picture.url" alt="profile picture">
       <p class="text-xs m-0 text-neutral-800">{{ user.first_name }}</p>
@@ -17,13 +17,13 @@
         </div>
         <div class="w-1/2 px-2 flex flex-col justify-center items-center">
           <font-awesome-icon :icon="['far', 'comment']" class="cursor-pointer" />
-          <p v-if="post.comments" class="text-xs m-0">{{ post.comments?.comments?.length }}</p>
+          <p class="text-xs m-0">{{ post.comments?.comments?.length }}</p>
         </div>
       </div>
 
 
 
-      <CommentThread v-if="post.comments" :target="post" :user="user" :profilePage="profilePage" />
+      <CommentThread  :target="post" :user="user" :profilePage="profilePage" />
 
     </div>
   </div>
@@ -53,16 +53,6 @@ const props = defineProps({
   }
 })
 
-// State
-// const state = reactive({
-//   show_comments: false,
-//   new_comment: {
-//     body: '',
-//     post: props.post.id,
-//     visible: true,
-//     commenter: auth.user?.id
-//   }
-// })
 
 // components
 import CommentThread from '~/components/common/comment_thread.vue'
