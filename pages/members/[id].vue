@@ -102,6 +102,30 @@
                 </div>
               </div>
 
+              <!-- Friends -->
+              <div v-if="state.active_tab.value === 'friends'" id="tab-friends" :class="[(state.active_tab.value === 'friends' ? 'uk-active' : '')]" class="w-full h-[
+                60vh] fade-in flex flex-col gap-4">
+                <div class="w-full h-full overflow-y-scroll flex flex-col relative">
+                  <div class="grid sm:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+                    <FriendCard v-show="a <= state.tabs[1].feed_num" v-for="(friend, a) in auth.user.friends" :key="a" :member="friend" />
+                  </div>
+                  <div class="flex justify-center my-10">
+                    <button
+                        v-if="
+                        auth.user.friends.length > 14 &&
+                        state.tabs[1].feed_num < auth.user.friends.length
+                        "
+                        type="button"
+                        class="bg-white py-2 px-5 rounded-full shadow-md font-semibold text-sm dark:bg-zinc-900 dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition duration-200 ease-in-out"
+                        @click="state.tabs[1].feed_num += 15"
+                        >
+                      Load more...
+                    </button>
+                  </div>
+                </div>
+              </div>  
+              
+
              </div>
 
           </div>
@@ -128,6 +152,7 @@ definePageMeta({
   // components
   import ProfilePost from './components/profile_post.vue'
   import NewPostInterface from './components/new_post_interface.vue'
+  import FriendCard from '~/components/common/FriendCard.vue'
 
     // Use asyncData to fetch data from the server
   let  { data, error } = await useAsyncData('profile', () => $fetch(
@@ -254,6 +279,16 @@ definePageMeta({
     user = data.value.data[0].users_permissions_user
   }
 
+      // FRIENDS
+ const feedNum = () => {
+    let criteria;
+    if (auth.user.friends.length > 14) {
+      criteria = 14;
+    } else if (auth.user.friends.length < 14) {
+      criteria = auth.user.friends.length;
+    }
+    return criteria;
+  };
 
   // Interfaces
   interface Tab {
@@ -268,7 +303,7 @@ definePageMeta({
   const state = reactive({
     tabs: [
       { value: "posts", label: "Posts", pinned: true, active: true, icon: 'note-sticky' },
-      { value: "friends", label: "Friends", pinned: false, active: false, icon: 'user-group' },
+      { value: "friends", label: "Friends", pinned: false, active: false, icon: 'user-group', feed_num: feedNum(), },
       { value: "photos", label: "Photos", pinned: false, active: false, icon: 'photo-film' },
       { value: "videos", label: "Videos", pinned: false, active: false, icon: 'video' },
       // { value: "events", label: "Events", pinned: false, active: false },
@@ -289,6 +324,8 @@ definePageMeta({
   })
 
   // Methods
+
+    // POSTS
   const toggle_active_tab = (tab: any) => {
     state.tabs.forEach((tab) => {
       tab.active = false;
@@ -296,14 +333,12 @@ definePageMeta({
     tab.active = true;
     state.active_tab = tab;
   }
-
   const add_new_post = (new_post: any) => {
     profile_data.posts.unshift(new_post)
     // nextTick(() => {
     //   auto_sort_posts()
     // })
   }
-
   // sort posts by date:
   const auto_sort_posts = () => {
     profile_data.posts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
@@ -313,6 +348,7 @@ definePageMeta({
       })
     })
   }
+
 
 
 </script>
