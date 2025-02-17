@@ -41,8 +41,8 @@
         <button 
             class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" 
             :class="{'bg-amber-300 cursor-not-allowed': !state.valid.title || !state.valid.body || state.processing}"
-            :disabled="state.processing"
-            @click="submitPost" :disabled="!state.valid.title || !state.valid.body"
+            
+            @click="submitPost" :disabled="!state.valid.title || !state.valid.body || state.processing"
           >Post</button>
       </div>
 
