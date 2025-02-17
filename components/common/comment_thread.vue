@@ -111,7 +111,7 @@ const add_new_comment = async () => {
       ...props.target.comments.comments,
       {
         body: state.new_comment.body,
-        commenter: props.user
+        commenter: auth.user
       }
     ]
     
@@ -132,7 +132,7 @@ const add_new_comment = async () => {
       // update the local state
       state.comment_thread.comments.push({
         body: state.new_comment.body,
-        commenter: props.user
+        commenter: auth.user
       })
 
       state.comment_thread.comments.forEach((comment) => {
