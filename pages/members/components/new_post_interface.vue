@@ -40,7 +40,8 @@
       <div class="w-full mt-10">
         <button 
             class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" 
-            :class="{'bg-amber-300': !state.valid.title || !state.valid.body}"
+            :class="{'bg-amber-300 cursor-not-allowed': !state.valid.title || !state.valid.body || state.processing}"
+            :disabled="state.processing"
             @click="submitPost" :disabled="!state.valid.title || !state.valid.body"
           >Post</button>
       </div>
@@ -108,7 +109,8 @@
       body: false
     },
     error: null,
-    mounted: false
+    mounted: false,
+    processing: false
   })
 
 
@@ -123,6 +125,7 @@ const uploadPics = async (event) => {
   });
 
   console.log('Sending to backend:', [...formData.entries()]); // Debugging log
+  state.processing = true;
 
   try {
     const response = await fetch('/api/upload/images', {
@@ -135,6 +138,9 @@ const uploadPics = async (event) => {
       const data = await response.json();
       console.log('Data:', data);
       state.new_post.images = data.data;
+      nextTick(() => {
+        state.processing = false;
+      });
     }
   } catch (error) {
     console.error('Upload error:', error);
