@@ -25,7 +25,7 @@
                   <div class="flex sm:gap-10 gap-6 sm:text-sm text-xs max-sm:absolute max-sm:top-10 max-sm:left-36">
                     <div>
                       <p class="text-zinc-100">Posts</p>
-                      <h3 class="sm:text-xl sm:font-bold mt-1 text-neutral-800 dark:text-zinc-100 text-base font-normal">{{ profile_data.posts.length }}</h3>
+                      <h3 v-if="profile_data.posts" class="sm:text-xl sm:font-bold mt-1 text-neutral-800 dark:text-zinc-100 text-base font-normal">{{ profile_data.posts.length }}</h3>
                     </div>
                     <div>
                       <p class="text-zinc-100">Friends</p>
@@ -96,7 +96,7 @@
               <div v-if="state.active_tab.value === 'posts'" id="tab-posts" :class="[(state.active_tab.value === 'posts' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
                 <div class="w-full h-full overflow-y-scroll flex flex-col relative">
                   <NewPostInterface v-if="route.params.id === auth.user.nsight_id.nsight_id" :profile="profile_data" @newpost="add_new_post" />
-                  <div v-if="profile_data.posts.length" >
+                  <div v-if="profile_data.posts" >
                     <ProfilePost v-for="post in profile_data.posts" :key="post.id" :post="post" :user="user" :profile-page="true" />
                   </div>
                 </div>
@@ -185,30 +185,8 @@ definePageMeta({
         "users_permissions_user.users",
         "intro",
         "title",
-        "body",
-        "posts",
-        "posts.user_permissions_user",
-        "posts.title",
-        "posts.body",
-        "posts.pics",
-        "posts.visible",
-        "posts.createdAt",
-        "posts.updatedAt",
-        "posts.profile",
-        "posts.tags",
-        "posts.reactions",
-        "posts.external_links",
-        "posts.comments",
-        "posts.comments.comments",
-        "posts.comments.comments.commenter",
-        "posts.comments.comments.commenter.nsight_id",
-        "posts.comments.comments.commenter.profile_picture",
-        "posts.comments.comments.createdAt",
-        "posts.comments.comments.visible",
-        "posts.comments.comments.replies",
-        "posts.comments.comments.replies.user",
-        "posts.comments.comments.replies.user.nsight_id",
-        "posts.comments.comments.replies.user.profile_picture"
+        "body"
+
         
       ],
       filters: {
@@ -232,68 +210,6 @@ definePageMeta({
   let user = data.value.data[0].users_permissions_user
   // console.log(user)
 
-  // Request profile again and replace data
-  const refresh_profile = async () => {
-    let  { data, error } = await useAsyncData('profile', () => $fetch(
-      `${config.public.NUXT_STRAPI_URL}/api/profiles?${qs.stringify({
-        populate: [
-          "users_permissions_user", 
-          "users_permissions_user.nsight_id",
-          "users_permissions_user.email",
-          "users_permissions_user.first_name",
-          "users_permissions_user.last_name",
-          "users_permissions_user.profile_picture",
-          "users_permissions_user.pictures",
-          "users_permissions_user.friends",
-          "users_permissions_user.users",
-          "intro",
-          "title",
-          "body",
-          "posts",
-          "posts.user_permissions_user",
-          "posts.title",
-          "posts.body",
-          "posts.pics",
-          "posts.visible",
-          "posts.createdAt",
-          "posts.updatedAt",
-          "posts.profile",
-          "posts.tags",
-          "posts.reactions",
-          "posts.external_links",
-          "posts.comments",
-          "posts.comments.comments",
-          "posts.comments.comments.commenter",
-          "posts.comments.comments.commenter.nsight_id",
-          "posts.comments.comments.commenter.profile_picture",
-          "posts.comments.comments.createdAt",
-          "posts.comments.comments.visible",
-          "posts.comments.comments.replies",
-          "posts.comments.comments.replies.user",
-          "posts.comments.comments.replies.user.nsight_id",
-          "posts.comments.comments.replies.user.profile_picture"
-          
-        ],
-        filters: {
-          nsight_id: {
-            nsight_id: route.params.id
-          }
-        }
-      },
-      { arrayFormat: 'brackets',
-        encodeValuesOnly: true
-       },)}`
-    , {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${ auth.token }` 
-      }
-    }))
-    
-    profile_data = data.value.data[0]
-    user = data.value.data[0].users_permissions_user
-  }
 
       // FRIENDS
  const feedNum = () => {
@@ -321,7 +237,7 @@ definePageMeta({
       { value: "posts", label: "Posts", pinned: true, active: true, icon: 'note-sticky' },
       { value: "friends", label: "Friends", pinned: false, active: false, icon: 'user-group', feed_num: feedNum(), },
       { value: "photos", label: "Photos", pinned: false, active: false, icon: 'photo-film' },
-      { value: "videos", label: "Videos", pinned: false, active: false, icon: 'video' },
+      // { value: "videos", label: "Videos", pinned: false, active: false, icon: 'video' },
       // { value: "events", label: "Events", pinned: false, active: false },
       // { value: "groups", label: "Groups", pinned: false, active: false },
       // { value: "marketplace", label: "Marketplace", pinned: false, active: false },
@@ -333,15 +249,63 @@ definePageMeta({
   // Mounted
   onMounted(() => {
     state.active_tab = state.tabs.find((tab: Tab) => tab.pinned);
-    auto_sort_posts()
+    // auto_sort_posts()
     nextTick(() => {
-      auto_sort_posts()
+      // auto_sort_posts()
+      if(profile_data) {
+        // console.log('profile_data', profile_data)
+        fetch_posts()
+      }
     })
   })
 
   // Methods
 
     // POSTS
+  const fetch_posts = async () => {
+    let { data, error } = await useAsyncData('posts', () => $fetch(
+      `${config.public.NUXT_STRAPI_URL}/api/posts?${qs.stringify({
+        populate: [
+          "user_permissions_user",
+          "user_permissions_user.nsight_id",
+          "user_permissions_user.profile_picture",
+          "title",
+          "body",
+          "pics",
+          "visible",
+          "images",
+          "tags",
+          "reactions",
+          "external_links",
+          "comments",
+          "comments.comments",
+          "comments.comments.commenter",
+          "comments.comments.commenter.nsight_id",
+          "comments.comments.commenter.profile_picture",
+          "comments.comments.replies",
+          "comments.comments.replies.user",
+          "comments.comments.replies.user.nsight_id",
+          "comments.comments.replies.user.profile_picture"
+        ],
+        filters: {
+          profile: profile_data.id
+        },
+        sort: 'createdAt:desc'
+      },
+      { arrayFormat: 'brackets',
+        encodeValuesOnly: true
+      },)}`
+    , {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${ auth.token }` 
+      }
+    }))
+    profile_data['posts'] = data.value.data
+    auto_sort_posts()
+  }
+
   const toggle_active_tab = (tab: any) => {
     state.tabs.forEach((tab) => {
       tab.active = false;
