@@ -240,6 +240,7 @@ const new_nsight_member = reactive({
     products: [],
     users: [],
     posts: [],
+    picture_posts: [],
     pictures: [],
     videos: [],
   },

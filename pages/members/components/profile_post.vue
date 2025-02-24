@@ -47,20 +47,8 @@
       </div>
 
       <p class="text-md text-neutral-800" v-html="post.body"></p>
-      
-      <div class="w-1/6 flex flex-row justify-between">
-        <div class="w-1/2 px-2 flex flex-col justify-center items-center">
-          <font-awesome-icon :icon="[in_favorites() ? 'fas' : 'far', 'heart']" class="cursor-pointer" @click="toggle_favorite" />
-          <p class="text-xs m-0">{{ post.reactions.upvotes }}</p>
-        </div>
-        <div class="w-1/2 px-2 flex flex-col justify-center items-center">
-          <font-awesome-icon :icon="['far', 'comment']" class="cursor-pointer" />
-          <p class="text-xs m-0">{{ post.comments?.comments?.length }}</p>
-        </div>
-      </div>
 
-
-
+      <Reactions :post="post" :post-type="'posts'" :user="user" :profilePage="profilePage" />
       <CommentThread :target="post" :user="user" :profilePage="profilePage" />
 
     </div>
@@ -94,6 +82,7 @@ const props = defineProps({
 
 // components
 import CommentThread from '~/components/common/comment_thread.vue'
+import Reactions from '~/components/common/reactions.vue'
 
 // Methods
 const in_favorites = () => {

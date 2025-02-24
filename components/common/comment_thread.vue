@@ -50,9 +50,9 @@
                   <div class="w-full flex flex-row">
                     <p class="text-xs mx-0 my-1 text-neutral-800">replies ({{ comment.replies?.length }})</p>
                   </div>
-                  <div class="ctr-reply w-3/4 mt-2 flex flex-row">
+                  <div class="ctr-reply w-4/5 mt-2 flex flex-row">
                     <textarea v-if="comment.new_reply" class="w-full p-2 rounded-md border border-neutral-300" placeholder="Add a reply..." v-model="comment.new_reply.body"></textarea>
-                    <button class="w-1/6 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="add_new_reply(comment)">Reply</button>
+                    <button class="bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="add_new_reply(comment)">Reply</button>
                   </div>
                 </div>
               </li>
@@ -83,6 +83,10 @@ const props = defineProps({
   profilePage: {
     type: Boolean,
     default: false
+  },
+  postType: {
+    type: String,
+    required: false
   }
 })
 
@@ -106,7 +110,7 @@ const add_new_comment = async () => {
 
   const postObj = {
     id: props.target.comments.id,
-    post: props.target.id,
+    
     comments: [
       ...props.target.comments.comments,
       {
@@ -115,6 +119,11 @@ const add_new_comment = async () => {
       }
     ]
     
+  }
+  if(props.postType === 'picture-post') {
+    postObj['picture-post'] = props.target.id
+  } else {
+    postObj['post'] = props.target.id
   }
   
   // PUT REQUEST:

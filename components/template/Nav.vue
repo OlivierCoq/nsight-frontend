@@ -265,6 +265,7 @@
             class="rounded-full md:w-7 md:h-7 w-5 h-5 shrink-0 overflow-hidden flex flex-col justify-center items-center"
           >
             <img
+              v-if="authData.user"
               :src="
                 authData.user.profile_picture
                   ? authData.user.profile_picture.url

@@ -132,7 +132,7 @@
               <!-- Photos -->
               <div v-if="state.active_tab.value === 'photos'" id="tab-photos" :class="[(state.active_tab.value === 'photos' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
                 <div class="w-full h-full overflow-y-scroll flex flex-col relative">
-                  <div class="w-full flex flex-row p-2 justify-center align-center">
+                  <div v-if="(route.params.id === auth.user.nsight_id.nsight_id) && auth.user" class="w-full flex flex-row p-2 justify-center align-center">
                     <button 
                       class="bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1"
                       uk-toggle="target: #new_picture_post_modal"
@@ -144,15 +144,15 @@
                       <!-- close button uk  large modal-->
                       <div class="uk-modal-dialog uk-modal-body uk-padding-remove new-post-modal">
                         <button class="uk-modal-close-default" type="button" uk-close></button>
-                        <NewPicturePostInterface v-if="(route.params.id === auth.user.nsight_id.nsight_id) && auth.user" :user="auth.user" /> 
+                        <NewPicturePostInterface  :user="auth.user" /> 
                       </div>
                       
                     </div>
 
                   </div>
                   <!-- -->
-                  <div class="grid grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
-                    <!-- <PicturePost v-for="(post, a) in profile_data.posts" :key="a" :post="post" /> -->
+                  <div v-if="profile_data.picture_posts" class="grid grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+                    <PicturePost v-for="(post, a) in profile_data.picture_posts" :key="a" :post="post" :user="user" :profile-page="true" />
                   </div>
                 </div>
               </div>
@@ -365,6 +365,8 @@ definePageMeta({
         "caption",
         "data",
         "visible",
+        "reactions",
+        "tags",
         "comments",
         "comments.comments",
         "comments.comments.commenter",
@@ -376,7 +378,7 @@ definePageMeta({
         "comments.comments.replies.user.profile_picture"
       ],
       filters: {
-        users_permissions_user: auth?.user?.id
+        users_permissions_user: user.id
       },
       sort: 'createdAt:desc'
     },
