@@ -117,7 +117,7 @@
                     <button
                         v-if="
                         user.friends.length > 14 &&
-                        state.tabs[1].feed_num < auth.user.friends.length
+                        state.tabs[1].feed_num < user.friends.length
                         "
                         type="button"
                         class="bg-white py-2 px-5 rounded-full shadow-md font-semibold text-sm dark:bg-zinc-900 dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition duration-200 ease-in-out"
@@ -235,10 +235,10 @@ definePageMeta({
       // FRIENDS
  const feedNum = () => {
     let criteria;
-    if (auth.user.friends.length > 14) {
+    if (user.friends.length > 14) {
       criteria = 14;
-    } else if (auth.user.friends.length < 14) {
-      criteria = auth.user.friends.length;
+    } else if (user.friends.length < 14) {
+      criteria = user.friends.length;
     }
     return criteria;
   };
