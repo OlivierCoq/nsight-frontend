@@ -22,10 +22,10 @@
           <div class="w-full h-full flex flex-col lg:flex-row ">
             <div class="w-full lg:w-2/3 flex flex-col justify-center p-4">
 
-              <div class="img-slider relative uk-visible-toggle uk-slideshow" tabindex="-1" uk-slideshow="finite: true; autoplay: true">
-                <ul class="uk-slideshow-items"> 
-                  <li v-for="(image, a) in post.data.images" :key="a" class="w-full overflow-hidden rounded-md uk-active uk-transition-active" tabindex="-1" style="transform: translate3d(0px, 0px, 0px);">
-                      <img :src="image.url" alt="" uk-cover="">
+              <div class="img-slider relative uk-visible-toggle uk-slideshow" tabindex="-1" uk-slideshow="finite: true; autoplay: false">
+                <ul class="uk-slideshow-items min-h-[120%]"> 
+                  <li v-for="(image, a) in post.data.images" :key="a" class="w-full h-full overflow-hidden rounded-md uk-active uk-transition-active" tabindex="-1" style="transform: translate3d(0px, 0px, 0px);">
+                      <img :src="image.url" alt="" uk-cover="" style="width: auto !important;">
                   </li>
                 </ul>
                   <!-- Dots -->

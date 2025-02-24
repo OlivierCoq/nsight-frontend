@@ -143,8 +143,8 @@
                     <div id="new_picture_post_modal" class="flex flex-col" uk-modal="">
                       <!-- close button uk  large modal-->
                       <div class="uk-modal-dialog uk-modal-body uk-padding-remove new-post-modal">
-                        <button class="uk-modal-close-default" type="button" uk-close></button>
-                        <NewPicturePostInterface  :user="auth.user" /> 
+                        <button id="close_new_picture_post" class="uk-modal-close-default" type="button" uk-close></button>
+                        <NewPicturePostInterface :key="state.comp" :user="auth.user" @newpost="update_picture_posts" /> 
                       </div>
                       
                     </div>
@@ -264,7 +264,8 @@ definePageMeta({
       // { value: "marketplace", label: "Marketplace", pinned: false, active: false },
       // { value: "more", label: "More", pinned: false, active: false },
     ],
-    active_tab:  { value: "posts", label: "Posts", pinned: true, active: true, icon: 'note-sticky' } as Tab
+    active_tab:  { value: "posts", label: "Posts", pinned: true, active: true, icon: 'note-sticky' } as Tab,
+    comp: 0
   })
 
   // Mounted
@@ -392,7 +393,20 @@ definePageMeta({
       }
     }).then(async (result) => {
       profile_data['picture_posts'] = result.data
-      console.log('picture_posts', profile_data.picture_posts)
+      // console.log('picture_posts', profile_data.picture_posts)
+    })
+  }
+
+  const update_picture_posts = () => {
+    grab_picture_posts()
+    
+    nextTick(() => {
+      // Find in dom id of '#close_new_picture_post' and click it
+      document.getElementById('close_new_picture_post').click()
+      nextTick(() => {
+        state.comp += 1
+        document.getElementById('close_new_picture_post').click()
+      })
     })
   }
 

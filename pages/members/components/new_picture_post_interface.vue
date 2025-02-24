@@ -70,7 +70,11 @@
       },
       visible: true,
       users_permissions_user: props?.user?.id,
-      comments: null
+      comments: null,
+      reactions: {
+        upvotes: 0,
+        downvotes: 0
+      }
     },
     processing: false
   })
