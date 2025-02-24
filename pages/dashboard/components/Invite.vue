@@ -232,6 +232,9 @@ const new_nsight_member = reactive({
   password: generate_random_password(),
   users: [auth?.user],
   friends: [auth?.user],
+  pending_friends: {
+    data: [],
+  },
   profile_picture: {},
   favorites: {
     products: [],

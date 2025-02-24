@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col justify-between rounded-md shadow-xl my-4 bg-zinc-100  py-10 px-5">
-    <h3 class="text-xl text-neutral-800 font-bold px-4">Create a new post</h3>
+    <h3 class="text-xl text-neutral-800 px-4">Create a new post</h3>
     <div class="w-full flex flex-col">
       <input v-model="state.new_post.title" class="w-full p-2 mb-2 rounded-md border border-neutral-300" placeholder="Title" />
       <Editor v-model="state.new_post.body" class="w-full rounded-md mb-2" placeholder="Share some wisdom" />
@@ -25,16 +25,9 @@
         <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="addExternalLink">Add Link</button>
       </div>
 
-      <div v-else-if="state.adding_pictures">
-        <div class="w-full min-h-[200px] border-thin border-zinc-200 p-4">
-          <p class="text-neutral-800 font-thin">Upload images</p>
-          <!-- <input type="file" multiple /> -->
-          <FileUpload name="files" url="/api/upload/images" @upload="uploadPics($event)" :multiple="true" accept="image/*" :maxFileSize="1000000" ref="fileupload">
-            <template #empty>
-              <span class="text-neutral-800">Drag and drop files to here, and then click the Upload button.</span>
-            </template>
-          </FileUpload>
-        </div>
+        <!-- Image gallery -->
+      <div v-if="state.adding_pictures" class="w-full min-h-[200px] fade-in mt-5">
+        <ImageDropZone :post="state.new_post" @pictureUploaded="receive_pictures_upload" />
       </div>
 
       <div class="w-full mt-10">
@@ -57,7 +50,11 @@
   const config = useRuntimeConfig()
   import qs from 'qs'
   import Editor from 'primevue/editor';
-  import FileUpload from 'primevue/fileupload';
+
+
+  // Imports
+  import ImageDropZone from './ImageDropzone.vue'
+
 
   // props:
   const props = defineProps({
@@ -78,12 +75,11 @@
     new_post: {
       title: '',
       body: '',
-      pics: [],
       images: {
         data: [],
       },
       external_links: [],
-      visible: true,
+      visible: true, 
       comments: [],
       profile: props.profile,
       reactions: {
@@ -110,45 +106,13 @@
     },
     error: null,
     mounted: false,
-    processing: false
   })
 
 
   // Methods
-
-const fileupload = ref()
-const uploadPics = async (event) => {
-  const formData = new FormData();
-
-  event.files.forEach((file) => {
-    formData.append('files', file); // Ensure correct property
-  });
-
-  console.log('Sending to backend:', [...formData.entries()]); // Debugging log
-  state.processing = true;
-
-  try {
-    const response = await fetch('/api/upload/images', {
-      method: 'POST',
-      body: formData
-    });
-
-    console.log('Upload success:', response);
-    if(response.ok) {
-      const data = await response.json();
-      console.log('Data:', data);
-      state.new_post.images = data.data;
-      nextTick(() => {
-        state.processing = false;
-      });
-    }
-  } catch (error) {
-    console.error('Upload error:', error);
+  const receive_pictures_upload = (data) => {
+    state.new_post.images.data = data;
   }
-};
-
-
-
   const addExternalLink = () => {
     const cloned_link = JSON.parse(JSON.stringify(state.new_external_link));
     state.new_post.external_links.push(cloned_link);
@@ -167,7 +131,7 @@ const uploadPics = async (event) => {
       },
       body: JSON.stringify(state.new_post)
     }).then((response) => {
-      console.log('response', response);
+      // console.log('response', response);
 
 
       // create a new comment_thread for the post:
@@ -182,7 +146,7 @@ const uploadPics = async (event) => {
           comments: []
         })
       }).then((res) => {
-        console.log('new comment thread created', res)
+        // console.log('new comment thread created', res)
 
         // update new post with comment thread in databse:
         $fetch(`${config.public.NUXT_STRAPI_URL}/api/posts/${response.data.id}`, {
@@ -195,7 +159,7 @@ const uploadPics = async (event) => {
             comments: res.data
           })
         }).then((res) => {
-          console.log('new comment thread added to post', res)
+          // console.log('new comment thread added to post', res)
           // emit
 
           // yoink from db:
@@ -233,7 +197,7 @@ const uploadPics = async (event) => {
               'Authorization': `Bearer ${auth.token}`
             }
           }).then((res) => {
-            console.log('new post', res)
+            // console.log('new post', res)
             emit('newpost', res.data)
           }).catch((err) => {
             console.log('error getting new post', err)

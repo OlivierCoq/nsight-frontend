@@ -31,6 +31,10 @@
                       <p class="text-zinc-100">Friends</p>
                       <h3 class="sm:text-xl sm:font-bold mt-1 text-black dark:text-white text-base font-normal">{{ user.friends.length }}</h3>
                     </div>
+                    <div v-if="profile_data && (profile_data?.picture_posts?.length)">
+                      <p class="text-zinc-100">Pictures</p>
+                      <h3 class="sm:text-xl sm:font-bold mt-1 text-black dark:text-white text-base font-normal">{{ profile_data?.picture_posts?.length }}</h3>
+                    </div>
                     <!-- <div>
                         <p>Followers</p>
                         <h3 class="sm:text-xl sm:font-bold mt-1 text-black dark:text-white text-base font-normal">8,542</h3>
@@ -128,13 +132,27 @@
               <!-- Photos -->
               <div v-if="state.active_tab.value === 'photos'" id="tab-photos" :class="[(state.active_tab.value === 'photos' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
                 <div class="w-full h-full overflow-y-scroll flex flex-col relative">
+                  <div class="w-full flex flex-row p-2 justify-center align-center">
+                    <button 
+                      class="bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1"
+                      uk-toggle="target: #new_picture_post_modal"
+                    >
+                      New Post <font-awesome-icon :icon="['fas', 'plus']" />
+                    </button>
+
+                    <div id="new_picture_post_modal" class="flex flex-col" uk-modal="">
+                      <!-- close button uk  large modal-->
+                      <div class="uk-modal-dialog uk-modal-body uk-padding-remove new-post-modal">
+                        <button class="uk-modal-close-default" type="button" uk-close></button>
+                        <NewPicturePostInterface v-if="(route.params.id === auth.user.nsight_id.nsight_id) && auth.user" :user="auth.user" /> 
+                      </div>
+                      
+                    </div>
+
+                  </div>
+                  <!-- -->
                   <div class="grid grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
-                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
-                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
-                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
-                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
-                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
-                    <div class="w-full h-[200px] bg-zinc-200 dark:bg-zinc-900 rounded-lg shadow-xl"></div>
+                    <!-- <PicturePost v-for="(post, a) in profile_data.posts" :key="a" :post="post" /> -->
                   </div>
                 </div>
               </div>
@@ -167,12 +185,15 @@ definePageMeta({
   import ProfilePost from './components/profile_post.vue'
   import NewPostInterface from './components/new_post_interface.vue'
   import FriendCard from '~/components/common/FriendCard.vue'
+  import NewPicturePostInterface from './components/new_picture_post_interface.vue'
+  import PicturePost from './components/picture_post.vue'
+
 
     // Use asyncData to fetch data from the server
   let  { data, error } = await useAsyncData('profile', () => $fetch(
     `${config.public.NUXT_STRAPI_URL}/api/profiles?${qs.stringify({
       populate: [
-        "users_permissions_user", 
+
         "users_permissions_user.nsight_id",
         "users_permissions_user.email",
         "users_permissions_user.first_name",
@@ -247,14 +268,17 @@ definePageMeta({
   })
 
   // Mounted
-  onMounted(() => {
+  onMounted(async () => {
     state.active_tab = state.tabs.find((tab: Tab) => tab.pinned);
     // auto_sort_posts()
-    nextTick(() => {
+    nextTick(async () => {
       // auto_sort_posts()
       if(profile_data) {
         // console.log('profile_data', profile_data)
         fetch_posts()
+        nextTick(() => {
+          grab_picture_posts()
+        })
       }
     })
   })
@@ -304,6 +328,7 @@ definePageMeta({
     }))
     profile_data['posts'] = data.value.data
     auto_sort_posts()
+    
   }
 
   const toggle_active_tab = (tab: any) => {
@@ -329,6 +354,45 @@ definePageMeta({
     })
   }
 
+  // Grab Picture posts
+  const grab_picture_posts =  () => {
+     $fetch(`${config.public.NUXT_STRAPI_URL}/api/picture-posts?${qs.stringify({
+      populate: [
+        "users_permissions_user",
+        "users_permissions_user.nsight_id",
+        "users_permissions_user.profile_picture",
+        "title",
+        "caption",
+        "data",
+        "visible",
+        "comments",
+        "comments.comments",
+        "comments.comments.commenter",
+        "comments.comments.commenter.nsight_id",
+        "comments.comments.commenter.profile_picture",
+        "comments.comments.replies",
+        "comments.comments.replies.user",
+        "comments.comments.replies.user.nsight_id",
+        "comments.comments.replies.user.profile_picture"
+      ],
+      filters: {
+        users_permissions_user: auth?.user?.id
+      },
+      sort: 'createdAt:desc'
+    },
+    { arrayFormat: 'brackets',
+      encodeValuesOnly: true
+    },)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${ auth.token }`
+      }
+    }).then(async (result) => {
+      profile_data['picture_posts'] = result.data
+      console.log('picture_posts', profile_data.picture_posts)
+    })
+  }
 
 
 </script>
@@ -336,5 +400,8 @@ definePageMeta({
 
   .active-tab {
     border-top: 1px solid #f9f9f9;
+  }
+  .new-post-modal {
+    width: 60vw !important;
   }
 </style>
