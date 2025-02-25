@@ -75,67 +75,8 @@
             v-show="state.active_tab == 0"
             :class="state.active_tab == 0 ? 'uk-active' : ''"
             >
-            <div
-              class="grid sm:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100"
-              >
-              <div
-                class="fade-in"
-                v-for="(friend, a) in auth.user.friends"
-                :key="a"
-                >
-                <div
-                  v-show="a <= state.feed_num"
-                  :class="[
-                  settings.dark_mode ? 'dark' : '#',
-                  friend.nsight_id ? 'opacity-1' : 'opacity-50',
-                  ]"
-                  class="flex gap-4 items-center flex-wrap justify-between p-5 rounded-lg shadow-sm border1 bg-zinc-100 dark:bg-zinc-900"
-                  :disabled="!friend.nsight_id"
-                  >
-                  <a
-                    :href="
-                    friend.nsight_id
-                    ? `/members/${friend.nsight_id?.nsight_id}`
-                    : ''
-                    "
-                    >
-                    <div
-                      class="rounded-full lg:w-16 lg:h-16 w-10 h-10 overflow-hidden flex flex-col justify-center items-center"
-                      >
-                      <img
-                        :src="
-                        friend.profile_picture?.url
-                        ? friend.profile_picture.url
-                        : '/assets/images/mock_data/placeholder_pfp.jpeg'
-                        "
-                        :alt="friend.first_name"
-                        class="w-[110%]"
-                        />
-                    </div>
-                  </a>
-                  <div class="flex-1">
-                    <a
-                      :href="
-                      friend.nsight_id
-                      ? `/members/${friend.nsight_id.nsight_id}`
-                      : '#'
-                      "
-                      :disabled="!friend.nsight_id"
-                      >
-                      <h4
-                        class="font-semibold text-sm text-neutral-900 dark:text-white"
-                        >
-                        {{ friend.first_name }} {{ friend.last_name }}
-                      </h4>
-                    </a>
-                    <div v-if="friend.friends" class="mt-0.5">
-                      {{ friend.friends.length }} following
-                    </div>
-                    <div v-else class="mt-0.5">Invited</div>
-                  </div>
-                  <!-- <button type="button" class="button bg-amber-500 rounded-full py-1.5 font-semibold">Fallow</button> -->
-                </div>
-              </div>
+            <div class="grid sm:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+              <FriendCard v-show="a <= state.feed_num" v-for="(friend, a) in auth.user.friends" :key="a" :member="friend" />
             </div>
             <div class="flex justify-center my-10">
               <button
@@ -182,6 +123,7 @@
   
   // Components
   import InviteForm from "./components/Invite.vue";
+  import FriendCard from "~/components/common/FriendCard.vue"
   
   // Stores
   const auth = authStore();

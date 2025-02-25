@@ -42,11 +42,11 @@
                   </div>
                     <div class="flex items-center gap-3 text-sm">
                       <button type="submit" class="button text-gray-600 bg-slate-200 hidden">Follow</button>
-                      <button
+                      <!-- <button
                         v-if="user.nsight_id.nsight_id !== auth.user.nsight_id.nsight_id"
                         type="button" class="button bg-amber-100 text-black border border-amber-200">
                         <span class="text-zinc-800">Unfollow</span>
-                      </button>
+                      </button> -->
                         <!-- <button type="submit" class="button bg-pink-600 text-neutral-500">Message</button> -->
                           <!-- Reporting etc. -->
                       <div id="profile_action_button" v-if="user.nsight_id.nsight_id !== auth.user.nsight_id.nsight_id"> 
@@ -193,7 +193,7 @@ definePageMeta({
   let  { data, error } = await useAsyncData('profile', () => $fetch(
     `${config.public.NUXT_STRAPI_URL}/api/profiles?${qs.stringify({
       populate: [
-
+        "users_permissions_user",
         "users_permissions_user.nsight_id",
         "users_permissions_user.email",
         "users_permissions_user.first_name",
@@ -203,7 +203,6 @@ definePageMeta({
         "users_permissions_user.friends",
         "users_permissions_user.friends.nsight_id",
         "users_permissions_user.friends.profile_picture",
-        "users_permissions_user.users",
         "intro",
         "title",
         "body"

@@ -233,7 +233,7 @@ const new_nsight_member = reactive({
   users: [auth?.user],
   friends: [auth?.user],
   pending_friends: {
-    data: [],
+    data: []
   },
   profile_picture: {},
   favorites: {
