@@ -229,6 +229,13 @@ definePageMeta({
   let profile_data = data.value.data[0]
   let user = data.value.data[0].users_permissions_user
   // console.log(user)
+  user.friends.forEach((friend: any) => {
+    if(Array.isArray(friend.pending_friends)){
+      friend.pending_friends = {
+        data: friend.pending_friends
+      }
+    }
+  })
 
 
       // FRIENDS
