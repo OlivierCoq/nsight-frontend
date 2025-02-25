@@ -109,12 +109,10 @@
                   class="flex h-full flex-col opacity-1 top-[8px] justify-start items-start p-1 text-gray-600 rounded-lg ml-auto uk-alert-close"
                   @click="state.toast.show = false"
                 >
-                  <ion-icon
-                    name="close"
-                    class="text-xl md hydrated"
-                    role="img"
-                    aria-label="close"
-                  ></ion-icon>
+                  <font-awesome-icon
+                    :icon="['fas', 'times']"
+                    class="text-gray-600"
+                  />
                 </button>
               </div>
             </div>

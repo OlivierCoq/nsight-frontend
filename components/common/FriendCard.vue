@@ -85,7 +85,7 @@
           }
         })
       }).then(async (result) => {
-        console.log('Friend request sent', result)
+        // console.log('Friend request sent', result)
         state.pending_request = true
       }).catch((error) => {
         console.error('Error sending friend request', error)

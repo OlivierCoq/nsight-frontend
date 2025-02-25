@@ -158,7 +158,7 @@ export const productsStore = defineStore({
 
       const auth = authStore()
 
-      this.cart.checkout.order.order.lineItems.push(product)
+      this.cart?.checkout?.order?.order?.lineItems?.push(product)
       // auth.user.cart_obj.data = this.cart 
       this.update_cart()
     },

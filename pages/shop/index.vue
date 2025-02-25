@@ -56,7 +56,7 @@
                 <span>Cart</span>
                 <!-- Number of items in cart: -->
                 <span
-                  v-if="prodStore.cart.checkout.order.order.lineItems.length"
+                  v-if="prodStore?.cart?.checkout?.order?.order?.lineItems?.length"
                   class="bg-yellow-500 text-white text-sm rounded-full h-[25px] w-[25px] flex items-center justify-center"
                 >
                   {{ prodStore.cart.checkout.order.order.lineItems.length }}
