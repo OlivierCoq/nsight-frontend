@@ -88,8 +88,9 @@
           <span class="max-xl:hidden"> Search </span>
         </a>
         <div
-          class="sm:w-[397px] w-full bg-white shadow-lg md:!left-[73px] hidden !left-0 dark:bg-zinc-900 dark:border1 max-md:bottom-[57px]"
+          class="ctr-search_body sm:w-[397px] w-full bg-white shadow-lg md:!left-[73px] hidden !left-0 dark:bg-zinc-900 dark:border1 max-md:bottom-[57px]"
           uk-drop="pos: left-center;animate-out: true; animation: uk-animation-slide-left-medium; mode:click; offset: 9"
+          style="border: 1px solid #ffffff33 !important;"
         >
           <div class="md:h-screen overflow-y-auto h-[calc(100vh-120px)]">
             <!-- header -->
@@ -165,7 +166,7 @@
                 <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
                     <img src="https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
                     <div class="fldex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white">  {{ authData?.user.first_name }} {{ authData?.user.last_name }} </h4>
+                        <h4 class="font-medium text-sm text-black dark:text-white">  {{ auth?.user.first_name }} {{ auth?.user.last_name }} </h4>
                         <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> Parker . following </div>
                     </div>
                 </a> -->
@@ -256,6 +257,110 @@
           </svg>
           <span class="max-xl:hidden"> Shop </span>
         </a>
+
+        <!-- Notifications -->
+         <a href="#!" class="max-md:!fixed max-md:top-2 max-md:right-14 relative"> 
+            <svg id="icon__outline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+            </svg>
+            <svg id="icon__solid" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden">
+                <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+            </svg>
+            <span  class="max-xl:hidden"> Notifications </span>
+            <div v-if="state.notifications.total" class="w-2 h-2 bg-red-600 rounded-full absolute left-7 top-2.5"></div>
+        </a>
+
+        <div 
+          class="ctr-notif_body w-[397px] md:w-[400px] w-full bg-white shadow-lg md:!left-[73px] hidden !left-0 dark:bg-zinc-900 dark:border1 max-md:bottom-[57px]" 
+          uk-drop="pos: left-center;animate-out: true; animation: uk-animation-slide-left-medium ; mode:click"
+            style="border: 1px solid #ffffff33 !important;"
+          > 
+          <div class="md:h-screen overflow-y-auto h-[calc(100vh-120px)]">
+
+              <!-- header -->
+              <div class="flex items-center justify-between px-5 py-4 mt-3">
+                <h3 class="md:text-xl text-lg font-medium mt-3 text-black dark:text-white">Notifications</h3>
+              </div>
+
+              <!-- contents list -->
+              <div class="px-2 -mt-2 text-sm font-normal">
+
+                  <div class="px-5 py-3 -mx-2">
+                    <h4 class="font-thin text-white mb-5">New</h4>
+                    <h3 class="font-thin text-white text-sm">Friend Requests</h3>
+                  </div>
+
+                  <div v-if="state.notifications.friend_requests" class="w-full px-2 flex flex-col">
+                    <!-- All Friend Requests -->
+                     <div v-for="user in state.notifications.friend_requests" :key="user.id" class="m-1 shadow-xl w-full bg-zinc-200 dark:bg-zinc-800 rounded-xl p-2 flex flex-col">
+                      <div class="flex flex-row w-full">
+                        <div class="w-1/4">
+                          <div class="h-[50px] w-[50px] rounded-full overflow-hidden flex flex-col justify-center">
+                             <a :href="`/members/${user.nsight_id.nsight_id}`">
+                              <img
+                                :src="user.profile_picture ? user.profile_picture.url : '/assets/images/mock_data/placeholder_pfp.jpeg'"
+                                :alt="`${user.first_name} ${user.last_name}`"
+                                class="w-[110%]"
+                              />
+                             </a>
+                          </div>
+                        </div>
+                        <div class="w-3/4 flex flex-col flex-wrap">
+                          <div class="text-sm text-neutral-900 dark:text-white mt-2 p-0 flex flex-wrap">
+                            <a :href="`/members/${user.nsight_id.nsight_id}`" class="text-amber-500">
+                              <strong>{{ user.first_name }} {{ user.last_name }}</strong>
+                            </a> sent you a friend request!
+                          </div>
+                          <div class="flex flex-row justify-between items-center align-center mt-4 mb-2 me-2">
+                            <button
+                              @click="acceptFriendRequest(user.nsight_id.nsight_id)"
+                              class="button text-white bg-amber-400 hover:bg-amber-500 mx-1"
+                            >
+                              Accept
+                            </button>
+                            <button
+                              @click="declineFriendRequest(user.nsight_id.nsight_id)"
+                              class="button text-white mx-1"
+                            >
+                              Decline
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                     </div>
+                  </div>
+
+                  <!-- <a href="#" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-secondery">
+                      <div class="relative w-12 h-12 shrink-0"> <img src="/assets/images/mock_data/placeholder_pfp.jpeg" alt="" class="object-cover w-full h-full rounded-full"></div>
+                      <div class="flex-1 "> 
+                          <p> <b class="font-bold mr-1"> John Michael</b> who you might know,  is on Instello.</p>
+                          <div class="text-xs text-gray-500 mt-1.5 dark:text-white/80"> 2 hours ago </div>
+                      </div>
+                      <button type="button" class="button text-white bg-primary">fallow</button>
+                  </a> -->
+
+
+                  <div class="border-t px-5 py-3 -mx-2 mt-4 dark:border-slate-700/40">
+                      <h4 class="font-thin text-white mb-5">General</h4>
+                  </div>
+
+                  
+                  <!-- <a href="#" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-secondery">
+                      <div class="relative w-12 h-12 shrink-0"> <img src="/assets/images/mock_data/placeholder_pfp.jpeg" alt="" class="object-cover w-full h-full rounded-full"></div>
+                      <div class="flex-1 ">
+                          <p> <b class="font-bold mr-1"> Jesse Steeve</b> sarah tagged you <br> in a photo of your birthday party. 📸 </p>
+                          <div class="text-xs text-gray-500 mt-1.5 dark:text-white/80"> 8 hours ago </div>
+                      </div> 
+                  </a> -->
+
+                  
+              </div>
+
+          </div>
+        </div> 
+
+
+
       </nav>
 
       <!-- profile -->
@@ -265,18 +370,18 @@
             class="rounded-full md:w-7 md:h-7 w-5 h-5 shrink-0 overflow-hidden flex flex-col justify-center items-center"
           >
             <img
-              v-if="authData.user"
+              v-if="auth.user"
               :src="
-                authData.user.profile_picture
-                  ? authData.user.profile_picture.url
+                auth.user.profile_picture
+                  ? auth.user.profile_picture.url
                   : '/assets/images/mock_data/placeholder_pfp.jpeg'
               "
-              :alt="`${authData?.user.first_name} ${authData?.user.last_name} `"
+              :alt="`${auth?.user.first_name} ${auth?.user.last_name} `"
               class="w-[110%]"
             />
           </div>
           <span class="font-semibold text-sm max-xl:hidden">
-            {{ authData?.user.first_name }} {{ authData?.user.last_name }} 
+            {{ auth?.user.first_name }} {{ auth?.user.last_name }} 
           </span>
         </a>
 
@@ -290,7 +395,7 @@
 
           <div class="p-4 text-xs font-medium">
             <a
-              :href="`/members/${authData.user.nsight_id.nsight_id}`"
+              :href="`/members/${auth.user.nsight_id.nsight_id}`"
               class="text-neutral-800 dark:text-white"
             >
               <div
@@ -298,17 +403,17 @@
               >
                 <img
                   :src="
-                    authData.user.profile_picture
-                      ? authData.user.profile_picture.url
+                    auth.user.profile_picture
+                      ? auth.user.profile_picture.url
                       : '/assets/images/mock_data/placeholder_pfp.jpeg'
                   "
-                  :alt="`${authData?.user.first_name} ${authData?.user.last_name} `"
+                  :alt="`${auth?.user.first_name} ${auth?.user.last_name} `"
                   class="w-[110%]"
                 />
               </div>
               <div class="mt-2 space-y-0.5">
                 <div class="text-base font-semibold">
-                  {{ authData?.user.first_name }} {{ authData?.user.last_name }}
+                  {{ auth?.user.first_name }} {{ auth?.user.last_name }}
                 </div>
                 <!-- <div class="text-gray-400 dark:text-white/80"> @monroe </div> -->
               </div>
@@ -327,8 +432,7 @@
           <hr class="opacity-60" />
           <ul class="text-sm font-semibold p-2">
             <li>
-              <a
-                :href="`/members/${authData.user.nsight_id.nsight_id}`"
+              <a :href="`/members/${auth.user.nsight_id.nsight_id}`"
                 class="flex gap-3 rounded-md p-2 text-neutral-800 dark:text-white hover:dark:text-zinc-100 hover:bg-zinc-300/30"
               >
                 Profile
@@ -361,7 +465,11 @@
 <script setup lang="ts">
 import logo from "~/assets/images/logo/nsight_clear.png";
 
-const auth = authStore();
+  // Setup
+const config = useRuntimeConfig();
+import qs from "qs";
+
+// State
 const state = reactive({
   drawer: false,
   search: {
@@ -370,9 +478,14 @@ const state = reactive({
     searching: false,
     loading: false,
   },
+  notifications: {
+    friend_requests: [],
+    messages: [],
+    total: 0,
+  }
 });
 // computed
-const authData = computed(() => authStore());
+const auth = authStore()
 const prodStore = productsStore();
 const settings = settingsStore();
 
@@ -380,15 +493,23 @@ const settings = settingsStore();
 const sign_out = async () => {
   await auth.logout();
 };
+
+
+// Shop:
 const goToCart = () => {
   navigateTo("/cart");
 };
+
+// Searching
 const toggleSearch = () => {
   state.search.searching = !state.search.searching;
 };
 const doSearch = () => {
   // console.log('searching', state.search)
 };
+
+
+// General
 const toggle_theme = () => {
   auth.user.preferences[0].dark_mode = !auth.user.preferences[0].dark_mode
   auth.updateUser()
@@ -396,6 +517,83 @@ const toggle_theme = () => {
     settings.dark_mode = auth.user.preferences[0].dark_mode
   })
 }
+
+// Notifications
+const getFriendRequests = async () => {
+  
+if (!auth?.user?.pending_friends?.data?.length) {
+  state.notifications.friend_requests = [];
+  return;
+}
+
+// auth?.user?.pending_friends?.data
+  try {
+    $fetch(`${config.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
+      populate: [
+        "username",
+        "first_name",
+        "last_name",
+        "profile_picture",
+        "pending_friends",
+        "nsight_id",
+        "friends"
+      ],
+      filters: {
+          nsight_id: {
+            nsight_id: {
+              $in: auth?.user?.pending_friends?.data
+            }
+          }
+        }
+    })}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${auth.token}`
+      }
+    }).then(async (result) => {
+      console.log('Friend requests', result)
+      state.notifications.friend_requests =  result
+        nextTick(async() => {
+      await notifications_total()
+    })
+    }).catch((error) => {
+      console.log('Error getting friend requests', error)
+    })
+  } catch (error) {
+    console.log('Error getting friend requests', error)
+  }  
+}
+
+const acceptFriendRequest = async (nsight_id) => {
+  console.log('accepting friend request', nsight_id)
+}
+
+const declineFriendRequest = async (nsight_id) => {
+  console.log('declining friend request', nsight_id)
+}
+
+const notifications_total = async () => {
+  state.notifications.total = 
+    state.notifications?.friend_requests?.length + 
+    state.notifications?.messages?.length;
+}
+
+const getNotifications = async () => {
+  console.log('getting notifications')
+
+  // Get friend requests
+  await getFriendRequests()
+  
+
+}
+
+// Mounted
+onMounted(() => {
+  getNotifications()
+})
+
+
 </script>
 <style lang="scss">
 a {
