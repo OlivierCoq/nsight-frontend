@@ -90,11 +90,14 @@
             >
             <div class="w-full h-full px-2 py-4 flex flex-col">
               <p
-                v-if="!auth.suggested_friends.length"
+                v-if="!state.tabs[1].data.length"
                 class="text-neutral-900 dark:text-white text-md my-5 text-start"
                 >
                 No suggested friends at the moment. Reach out to more people!
               </p>
+              <div v-else class="grid sm:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+                <FriendCard v-for="(member, a) in state.tabs[1].data" :key="a" :member="member" />
+              </div>
             </div>
           </div>
         </div>
@@ -154,6 +157,7 @@
         label: "People You May Know",
         pinned: false,
         active: false,
+        data: []
       },
     ],
     validate: false,
@@ -215,8 +219,9 @@
           'Authorization': `Bearer ${auth?.token}`
         }
       }).then(async (result) => {
-        console.log('result', result);
+        // console.log('result', result);
         state.tabs[0].data = result;
+        await fetchPotentialFriends()
       }).catch((error) => {
         console.error('Error fetching friends', error)
       })
@@ -224,6 +229,64 @@
 
 
     
+  }
+  const fetchPotentialFriends = async () => {
+    console.log('fetching potential friends...');
+
+    let suggested_friends: string[] = []
+
+    if(!state.tabs[0]?.data?.length) {
+      return
+    } else {
+      state.tabs[0]?.data?.forEach((friend) => {
+        friend.friends.data.forEach((f)=> {
+          if(!auth?.user?.friends?.data.includes(f) && (f !== auth?.user?.nsight_id.nsight_id)) {
+            suggested_friends.push(f)
+          }
+        })
+      })
+
+      nextTick(() => {
+        // console.log('suggested_friends', suggested_friends);
+        if(suggested_friends.length) {
+
+          $fetch(`${config.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
+            populate: [
+              "id",
+              "username",
+              "email",
+              "first_name",
+              "last_name",
+              "favorites",
+              "profile_picture",
+              "friends",
+              "pending_friends",
+              "nsight_id"
+            ],
+            filters: {
+              nsight_id: {
+                nsight_id: {
+                  $in: suggested_friends
+                }
+              }
+            }
+          })}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application',
+              'Authorization': `Bearer ${auth?.token}`
+            }
+          }).then(async (result) => {
+            // console.log('result', result);
+            state.tabs[1].data = result;
+          }).catch((error) => {
+            console.error('Error fetching friends', error)
+          })
+
+
+        }
+      })
+    }
   }
 
 </script>
