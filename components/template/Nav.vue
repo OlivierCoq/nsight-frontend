@@ -270,6 +270,8 @@
             <div v-if="state.notifications.total" class="w-2 h-2 bg-red-600 rounded-full absolute left-7 top-2.5"></div>
         </a>
 
+        
+
         <div 
           class="ctr-notif_body w-[397px] md:w-[400px] w-full bg-white shadow-lg md:!left-[73px] hidden !left-0 dark:bg-zinc-900 dark:border1 max-md:bottom-[57px]" 
           uk-drop="pos: left-center;animate-out: true; animation: uk-animation-slide-left-medium ; mode:click"
@@ -285,50 +287,18 @@
               <!-- contents list -->
               <div class="px-2 -mt-2 text-sm font-normal">
 
-                  <div class="px-5 py-3 -mx-2">
-                    <h4 class="font-thin text-white mb-5">New</h4>
-                    <h3 class="font-thin text-white text-sm">Friend Requests</h3>
+                  <div class="py-3">
+                    <div class="px-2">
+                      <h4 class="font-thin text-white mb-5">New</h4>
+                      <h3 class="font-thin text-white text-sm">Friend Requests</h3>
+                    </div>
+                      <!-- All Friend Requests -->
+                    <div v-if="state.notifications.friend_requests" class="w-full px-2 flex flex-col">
+                      <FriendRequest v-for="user in state.notifications.friend_requests" :key="user.id" :user="user" @update="getNotifications" />
+                    </div>
                   </div>
 
-                  <div v-if="state.notifications.friend_requests" class="w-full px-2 flex flex-col">
-                    <!-- All Friend Requests -->
-                     <div v-for="user in state.notifications.friend_requests" :key="user.id" class="m-1 shadow-xl w-full bg-zinc-200 dark:bg-zinc-800 rounded-xl p-2 flex flex-col">
-                      <div class="flex flex-row w-full">
-                        <div class="w-1/4">
-                          <div class="h-[50px] w-[50px] rounded-full overflow-hidden flex flex-col justify-center">
-                             <a :href="`/members/${user.nsight_id.nsight_id}`">
-                              <img
-                                :src="user.profile_picture ? user.profile_picture.url : '/assets/images/mock_data/placeholder_pfp.jpeg'"
-                                :alt="`${user.first_name} ${user.last_name}`"
-                                class="w-[110%]"
-                              />
-                             </a>
-                          </div>
-                        </div>
-                        <div class="w-3/4 flex flex-col flex-wrap">
-                          <div class="text-sm text-neutral-900 dark:text-white mt-2 p-0 flex flex-wrap">
-                            <a :href="`/members/${user.nsight_id.nsight_id}`" class="text-amber-500">
-                              <strong>{{ user.first_name }} {{ user.last_name }}</strong>
-                            </a> sent you a friend request!
-                          </div>
-                          <div class="flex flex-row justify-between items-center align-center mt-4 mb-2 me-2">
-                            <button
-                              @click="acceptFriendRequest(user.nsight_id.nsight_id)"
-                              class="button text-white bg-amber-400 hover:bg-amber-500 mx-1"
-                            >
-                              Accept
-                            </button>
-                            <button
-                              @click="declineFriendRequest(user.nsight_id.nsight_id)"
-                              class="button text-white mx-1"
-                            >
-                              Decline
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                     </div>
-                  </div>
+
 
                   <!-- <a href="#" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-secondery">
                       <div class="relative w-12 h-12 shrink-0"> <img src="/assets/images/mock_data/placeholder_pfp.jpeg" alt="" class="object-cover w-full h-full rounded-full"></div>
@@ -460,6 +430,47 @@
         </div>
       </div>
     </div>
+
+      <!-- Toasts -->
+    <div class="ctr-toasts flex flex-col absolute right-[1rem] top-[1rem] left-[80vw] z-50  w-[300px]">
+      <div
+        v-for="(toast, index) in state.toasts"
+        :key="index"
+        class="toast flex items-center justify-between p-3 rounded-lg shadow-lg text-white mb-2 fade-in"
+        :class="toast.type == 'success' ? 'bg-green-500 border-2 border-green-900' : 'bg-red-100'"
+      >
+        <div class="flex flex-row justify-between items-center w-full">
+          <div class="flex-1"></div>
+          <div class="flex flex-col justify-start text-start">
+            <div class="text-sm font-semibold">{{ toast.title }}</div>
+            <div class="text-sm me-5">{{ toast.message }}</div>
+          </div>
+          <div class="flex flex-col justify-start align-start items-start w-[20px] h-[40px]">
+              <!-- removal button -->
+            <button
+              @click="state.toasts.splice(index, 1)"
+              class="text-white"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="w-4 h-4"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 <script setup lang="ts">
@@ -482,12 +493,18 @@ const state = reactive({
     friend_requests: [],
     messages: [],
     total: 0,
-  }
+  },
+  // Any:
+  toasts: [] as any[],
 });
-// computed
+// Stores
 const auth = authStore()
 const prodStore = productsStore();
 const settings = settingsStore();
+
+// Components
+import FriendRequest from './components/friend-requests/friend_request.vue'
+
 
 // methods
 const sign_out = async () => {
@@ -521,10 +538,10 @@ const toggle_theme = () => {
 // Notifications
 const getFriendRequests = async () => {
   
-if (!auth?.user?.pending_friends?.data?.length) {
-  state.notifications.friend_requests = [];
-  return;
-}
+  if (!auth?.user?.pending_friends?.data?.length) {
+    state.notifications.friend_requests = [];
+    return;
+  }
 
 // auth?.user?.pending_friends?.data
   try {
@@ -533,7 +550,7 @@ if (!auth?.user?.pending_friends?.data?.length) {
         "username",
         "first_name",
         "last_name",
-        "profile_picture",
+        "profile_picture", 
         "pending_friends",
         "nsight_id",
         "friends"
@@ -552,7 +569,7 @@ if (!auth?.user?.pending_friends?.data?.length) {
         'Authorization': `Bearer ${auth.token}`
       }
     }).then(async (result) => {
-      console.log('Friend requests', result)
+      // console.log('Friend requests', result)
       state.notifications.friend_requests =  result
         nextTick(async() => {
       await notifications_total()
@@ -565,22 +582,25 @@ if (!auth?.user?.pending_friends?.data?.length) {
   }  
 }
 
-const acceptFriendRequest = async (nsight_id) => {
-  console.log('accepting friend request', nsight_id)
-}
-
-const declineFriendRequest = async (nsight_id) => {
-  console.log('declining friend request', nsight_id)
-}
-
 const notifications_total = async () => {
   state.notifications.total = 
     state.notifications?.friend_requests?.length + 
     state.notifications?.messages?.length;
 }
 
-const getNotifications = async () => {
-  console.log('getting notifications')
+
+const getNotifications = async (toast: any) => {
+  // console.log('getting notifications')
+  if(toast) {
+    console.log('toast', toast)
+    state.toasts.push(toast)
+    // Cascade removal of toasts interval:
+    setTimeout(() => {
+      state.toasts.shift()
+    }, 5000)
+  }
+
+  state.notifications.total = 0
 
   // Get friend requests
   await getFriendRequests()
@@ -590,7 +610,7 @@ const getNotifications = async () => {
 
 // Mounted
 onMounted(() => {
-  getNotifications()
+  getNotifications(false)
 })
 
 

@@ -46,7 +46,7 @@
 
   // methods
   const friend_check = () => {
-    return auth.user?.friends?.find(friend => friend.email === props.member.email)
+    return auth.user?.friends?.data?.find(friend => friend === props?.member?.nsight_id?.nsight_id)
   }
 
   const self = () => {
@@ -61,16 +61,18 @@
     // 
     //  This is the most insane shit I have ever witnessed. I have no clue why this is happening, and I am too tired to research it:
     // Check to see if props.member.pending_friends is an array or an object:
-    if(Array.isArray(props.member?.pending_friends)) {
-      props.member.pending_friends = {
-        data: []
-      }
-      nextTick(()=> {
-        props.member?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
-      })
-    } else {
-      props.member?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
-    }
+    // if(Array.isArray(props.member?.pending_friends)) {
+    //   props.member.pending_friends = {
+    //     data: []
+    //   }
+    //   nextTick(()=> {
+    //     props.member?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
+    //   })
+    // } else {
+    //   props.member?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
+    // }
+
+    props.member?.pending_friends?.data.push(auth?.user?.nsight_id?.nsight_id)
 
     nextTick(() => {
       $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${props.member.id}`, {

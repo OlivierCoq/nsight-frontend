@@ -1,7 +1,7 @@
 <template>
   <div
       id="profile"
-      class="min-h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-20"
+      class="min-h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-20 relative"
     >
       <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
         <div class="main__inner">
@@ -11,25 +11,25 @@
             <div class="flex md:gap-16 gap-4 max-md:flex-col">
               <div class="relative md:p-1 rounded-full h-full max-md:w-16 bg-gradient-to-tr from-amber-400 to-amber-600 shadow-md hover:scale-110 duration-500 uk-animation-scale-up">
                 <div class="relative md:w-40 md:h-40 h-16 w-16 rounded-full overflow-hidden md:border-[6px] border-gray-100 shrink-0 dark:border-slate-900"> 
-                  <img :src="user.profile_picture ? user.profile_picture?.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" alt="" class="w-full h-full absolute object-cover">
+                  <img :src="user?.profile_picture ? user?.profile_picture?.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" alt="" class="w-full h-full absolute object-cover">
                 </div>
                   <!-- <button type="button" class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-white shadow p-1.5 rounded-full sm:flex hidden"> <ion-icon name="camera" class="text-2xl md hydrated" role="img" aria-label="camera"></ion-icon></button> -->
               </div>
               <div class="max-w-2x flex-1">
-                <h3 class="md:text-xl text-base font-semibold text-black dark:text-white"> {{ user.first_name }} {{ user.last_name }}</h3>        
-                <p class="sm:text-sm text-blue-600 mt-1 font-normal text-xs">{{ user.nsight_id.nsight_id }}</p>                
-                <p v-if="profile_data.intro" class="text-sm lg:text-md mt-2 md:font-normal text-white" v-html="profile_data.intro"></p>
+                <h3 class="md:text-xl text-base font-semibold text-black dark:text-white"> {{ user?.first_name }} {{ user?.last_name }}</h3>        
+                <p class="sm:text-sm text-blue-600 mt-1 font-normal text-xs">{{ user?.nsight_id?.nsight_id }}</p>                
+                <p v-if="profile_data?.intro" class="text-sm lg:text-md mt-2 md:font-normal text-white" v-html="profile_data?.intro"></p>
                 <p class="mt-2 space-x-2 text-gray-500 text-sm hidden" style="margin-top: 11px; "><a href="#" class="inline-block">Travel</a> . <a href="#" class="inline-block">Business</a> . <a href="#" class="inline-block">Technolgy</a>  </p>
                 
                 <div class="flex md:items-end justify-between md:mt-8 mt-4 max-md:flex-col gap-4">
                   <div class="flex sm:gap-10 gap-6 sm:text-sm text-xs max-sm:absolute max-sm:top-10 max-sm:left-36">
                     <div>
                       <p class="text-zinc-100">Posts</p>
-                      <h3 v-if="profile_data.posts" class="sm:text-xl sm:font-bold mt-1 text-neutral-800 dark:text-zinc-100 text-base font-normal">{{ profile_data.posts.length }}</h3>
+                      <h3 v-if="profile_data?.posts" class="sm:text-xl sm:font-bold mt-1 text-neutral-800 dark:text-zinc-100 text-base font-normal">{{ profile_data?.posts?.length }}</h3>
                     </div>
                     <div>
                       <p class="text-zinc-100">Friends</p>
-                      <h3 class="sm:text-xl sm:font-bold mt-1 text-black dark:text-white text-base font-normal">{{ user.friends.length }}</h3>
+                      <h3 class="sm:text-xl sm:font-bold mt-1 text-black dark:text-white text-base font-normal">{{ user?.friends?.length }}</h3>
                     </div>
                     <div v-if="profile_data && (profile_data?.picture_posts?.length)">
                       <p class="text-zinc-100">Pictures</p>
@@ -49,7 +49,7 @@
                       </button> -->
                         <!-- <button type="submit" class="button bg-pink-600 text-neutral-500">Message</button> -->
                           <!-- Reporting etc. -->
-                      <div id="profile_action_button" v-if="user.nsight_id.nsight_id !== auth.user.nsight_id.nsight_id"> 
+                      <div id="profile_action_button" v-if="user?.nsight_id?.nsight_id !== auth?.user?.nsight_id?.nsight_id"> 
                         <button type="submit" class="rounded-lg bg-zinc-200/60 flex px-2 py-1.5 dark:bg-zinc-800" aria-haspopup="true" aria-expanded="false"> 
                           <font-awesome-icon :icon="['fas', 'ellipsis-vertical']" class="text-lg text-white" />
                       </button>
@@ -111,7 +111,7 @@
                 60vh] fade-in flex flex-col gap-4">
                 <div class="w-full h-full overflow-y-scroll flex flex-col relative">
                   <div class="grid sm:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
-                    <FriendCard v-show="a <= state.tabs[1].feed_num" v-for="(friend, a) in user.friends" :key="a" :member="friend" />
+                    <FriendCard v-show="a <= state.tabs[1].feed_num" v-for="(friend, a) in profile_friends" :key="a" :member="friend" />
                   </div>
                   <div class="flex justify-center my-10">
                     <button
@@ -201,8 +201,6 @@ definePageMeta({
         "users_permissions_user.profile_picture",
         "users_permissions_user.pictures",
         "users_permissions_user.friends",
-        "users_permissions_user.friends.nsight_id",
-        "users_permissions_user.friends.profile_picture",
         "intro",
         "title",
         "body"
@@ -228,7 +226,7 @@ definePageMeta({
   
   let profile_data = data.value.data[0]
   let user = data.value.data[0].users_permissions_user
-  // console.log(user)
+  // console.log('heeeeelp', user)
   user.friends.forEach((friend: any) => {
     if(Array.isArray(friend.pending_friends)){
       friend.pending_friends = {
@@ -239,15 +237,57 @@ definePageMeta({
 
 
       // FRIENDS
+
+let profile_friends 
  const feedNum = () => {
     let criteria;
-    if (user.friends.length > 14) {
+    if (user?.friends?.length > 14) {
       criteria = 14;
-    } else if (user.friends.length < 14) {
-      criteria = user.friends.length;
+    } else if (user?.friends?.length < 14) {
+      criteria = user?.friends?.length;
     }
     return criteria;
   };
+
+  const fetchFriends = () => {
+    // console.log('fetching friends', user.friends)
+    if(!user?.friends?.length) {
+      console.log('no friends. womp womp')
+      return
+    } else {
+      $fetch(`${config.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
+        populate: [
+          "id",
+          "username",
+          "email",
+          "first_name",
+          "last_name",
+          "favorites",
+          "profile_picture",
+          "friends",
+          "pending_friends",
+          "nsight_id"
+        ],
+        filters: {
+          nsight_id: {
+            nsight_id: {
+              $in: user.friends
+            }
+          }
+        }
+      })}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.token}`
+        },
+      }).then(async (result) => {
+        profile_friends = result;
+      }).catch((error) => {
+        console.error('Error fetching friends', error)
+      })
+    }
+  }
 
   // Interfaces
   interface Tab {
@@ -278,11 +318,15 @@ definePageMeta({
   onMounted(async () => {
     state.active_tab = state.tabs.find((tab: Tab) => tab.pinned);
     // auto_sort_posts()
+    
     nextTick(async () => {
       // auto_sort_posts()
       if(profile_data) {
         // console.log('profile_data', profile_data)
         fetch_posts()
+        if(user) {
+          fetchFriends()
+        }
         nextTick(() => {
           grab_picture_posts()
         })
@@ -363,6 +407,10 @@ definePageMeta({
 
   // Grab Picture posts
   const grab_picture_posts =  () => {
+
+    if(!user) {
+      return
+    } else {
      $fetch(`${config.public.NUXT_STRAPI_URL}/api/picture-posts?${qs.stringify({
       populate: [
         "users_permissions_user",
@@ -385,7 +433,7 @@ definePageMeta({
         "comments.comments.replies.user.profile_picture"
       ],
       filters: {
-        users_permissions_user: user.id
+        users_permissions_user: user?.id
       },
       sort: 'createdAt:desc'
     },
@@ -401,6 +449,9 @@ definePageMeta({
       profile_data['picture_posts'] = result.data
       // console.log('picture_posts', profile_data.picture_posts)
     })
+    }
+
+
   }
 
   const update_picture_posts = () => {

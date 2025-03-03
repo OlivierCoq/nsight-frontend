@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-[90%] flex flex-col justify-start items-start"
+    class="h-full flex flex-col justify-start items-start"
     :class="settings.dark_mode ? 'dark' : ''"
   >
     <div
@@ -230,8 +230,10 @@ const new_nsight_member = reactive({
   // password: thisObj.generate_random_password()
   // password: "P@ssW3rd9756",
   password: generate_random_password(),
-  users: [auth?.user],
-  friends: [auth?.user],
+  progenitor: [auth?.user],
+  friends: {
+    data: [auth?.user?.nsight_id?.nsight_id],
+  },
   pending_friends: {
     data: []
   },
@@ -422,8 +424,7 @@ const post_new_member = async () => {
                             new_strapi_user.nsight_id.nsight_id =
                               new_strapi_nsight_id.nsight_id;
 
-                            auth?.user?.friends.push(new_strapi_user);
-                            auth?.user?.users.push(new_strapi_user);
+                            auth?.user?.friends.data.push(new_strapi_user?.nsight_id?.nsight_id);
 
                             // Update logged in user with new friend:
                             await $fetch(
@@ -484,11 +485,11 @@ const post_new_member = async () => {
                               method: "POST",
                               headers: headers_obj,
                               body: JSON.stringify({
-                                full_name: `${new_nsight_member.first_name} ${new_nsight_member.last_name}`,
-                                email: new_nsight_member.email,
-                                inviting_member_name: `${auth.user.first_name} ${auth.user.last_name}`,
-                                username: new_nsight_member.email,
-                                password: new_nsight_member.password,
+                                full_name: `${new_nsight_member?.first_name} ${new_nsight_member?.last_name}`,
+                                email: new_nsight_member?.email,
+                                inviting_member_name: `${auth?.user?.first_name} ${auth?.user?.last_name}`,
+                                username: new_nsight_member?.email,
+                                password: new_nsight_member?.password,
                               }),
                             })
                               .then(async (data) => {
@@ -499,10 +500,64 @@ const post_new_member = async () => {
                                 state.posting_new = false;
                                 state.success.message = `${new_nsight_member.first_name}'s been invited and added to your friends list! 🎉 <br/><br/> An email's been sent to them with their login credentials. Let them know that it might be in their spam folder. If they don't see it, they can request a new password. `;
 
-                                emit("post_new_member");
+                                
 
                                 nextTick(() => {
                                   state.success.show = true;
+
+                                  // Fetch user from database:
+                                  $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/users/${new_strapi_user.id}?${qs.stringify({
+                                    populate: [
+                                      "id",
+                                      "username",
+                                      "email",
+                                      "first_name",
+                                      "last_name",
+                                      "favorites",
+                                      "profile_picture",
+                                      "friends",
+                                      "pending_friends",
+                                      "nsight_id"
+                                    ]
+                                  })}`, {
+                                    method: 'GET',
+                                    headers: {
+                                      'Content-Type': 'application/json',
+                                      'Authorization': `Bearer ${auth.token}`
+                                    }
+                                  }).then(async (new_member) => {
+                                    console.log('member found', new_member)
+                                    //gabbi.is.tuff@test.com
+                                    
+                                    // Create a profile in database:
+                                  $fetch(`${runtimeConfig.public.NUXT_STRAPI_URL}/api/profiles`, {
+                                    method: 'POST',
+                                    headers: {
+                                      'Content-Type': 'application/json',
+                                      'Authorization': `Bearer ${auth.token}`
+                                    },
+                                    body: JSON.stringify({ 
+                                      users_permissions_user: new_member?.id,
+                                      nsight_id: new_member.nsight_id,
+                                      intro: `Hi, I'm new here, excited to meet new people.`,
+                                      posts: [],
+                                    })
+                                  }).then(async (result) => {
+                                    console.log('profile created', result)
+                                    emit("post_new_member");
+                                  }).catch((error) => {
+                                    console.error('Error creating profile', error)
+                                  })
+
+
+                                    emit("post_new_member");
+                                  }).catch((error) => {
+                                    console.error('Error creating profile', error)
+                                  })
+                                    
+
+                                  
+
                                 });
                               })
                               .catch((err) => {

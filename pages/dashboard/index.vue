@@ -2,7 +2,7 @@
   <div
     v-if="auth?.user"
     id="dashboard"
-    class="min-h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-10"
+    class="min-h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-10 relative"
     >
     <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
       <div class="max-w-4xl p-6 mx-auto">
@@ -10,7 +10,6 @@
         <div class="page__heading flex flex-row justify-between">
           <h1 class="lowercase">friends</h1>
           <button
-            @click="state.invite_modal = true"
             uk-toggle="target: #invite_modal"
             class="text-neutral-100 dark:text-white px-4 py-0 bg-amber-400 h-10 rounded-lg shadow-md"
             >
@@ -18,24 +17,16 @@
           </button>
           <!-- invite modal -->
           <div
-            v-if="state.invite_modal"
-            class="fade-in w-[90vw] md:w-[50vw] h-[90vh] md:h-[22vh] p-0 bg-zinc-200 dark:bg-zinc-900 shadow-xl mx-auto mt-20"
+            class="fade-in w-[90vw] md:w-[50vw] h-[90vh] md:h-[22vh] p-0 bg-zinc-200 dark:bg-zinc-900 shadow-xl mx-auto mt-20 rounded-lg overflow-hidden"
             id="invite_modal"
             uk-modal
             style="padding: 0 !important"
             >
             <div
-              class="uk-modal-dialog tt relative mx-auto rounded-lg shadow-xl overflow-hidden w-full"
+              class="uk-modal-dialog uk-modal-body uk-padding-remove  relative mx-auto rounded-lg shadow-xl overflow-hidden w-full"
               style="width: 100% !important; height: 100% !important"
-              >
-              <div class="w-full bg-zinc-200 dark:bg-zinc-900 h-[10%]">
-                <button
-                  class="absolute top-[10px] right-[8px] p-4"
-                  type="button"
-                  uk-close
-                  @click="state.invite_modal = false"
-                  ></button>
-              </div>
+            >
+              <button id="close_invite" class="uk-modal-close-default" type="button" uk-close></button>
               <InviteForm @post_new_member="post_member" />
             </div>
           </div>
@@ -53,7 +44,7 @@
               @click="state.active_tab = 0"
               >
               <a href="#" class="inline-block py-5 border-b-2 border-transparent aria-expanded:text-black aria-expanded:border-black aria-expanded:dark:text-white text-neutral-900 dark:text-white aria-expanded:dark:border-white">
-               friends - {{ auth.user.friends.length }}
+               friends - {{ auth?.user?.data?.friends.length }}
               </a>
             </li>
             <li
@@ -76,13 +67,13 @@
             :class="state.active_tab == 0 ? 'uk-active' : ''"
             >
             <div class="grid sm:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
-              <FriendCard v-show="a <= state.feed_num" v-for="(friend, a) in auth.user.friends" :key="a" :member="friend" />
+              <FriendCard v-for="(friend, a) in state.tabs[0].data" :key="a" :member="friend" />
             </div>
             <div class="flex justify-center my-10">
               <button
                 v-if="
-                auth.user.friends.length > 14 &&
-                state.feed_num < auth.user.friends.length
+                auth?.user?.friends.data.length > 14 &&
+                state.feed_num < auth?.user?.friends.data.length
                 "
                 type="button"
                 class="bg-white py-2 px-5 rounded-full shadow-md font-semibold text-sm dark:bg-zinc-900 dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition duration-200 ease-in-out"
@@ -112,6 +103,7 @@
   </div>
 </template>
 <script setup lang="ts">
+
   // Page meta
   definePageMeta({
     title: "Dashboard",
@@ -120,10 +112,14 @@
     middleware: ["auth"],
     layout: "inner",
   });
+
+  // Setup
+  const config = useRuntimeConfig();
+  import qs from "qs";
   
   // Components
   import InviteForm from "./components/Invite.vue";
-  import FriendCard from "~/components/common/FriendCard.vue"
+  import FriendCard from "~/components/common/FriendCard.vue";
   
   // Stores
   const auth = authStore();
@@ -133,10 +129,10 @@
   
   const feedNum = () => {
     let criteria;
-    if (auth.user.friends.length > 14) {
+    if (auth?.user?.data?.friends.length > 14) {
       criteria = 14;
-    } else if (auth.user.friends.length < 14) {
-      criteria = auth.user.friends.length;
+    } else if (auth?.user?.data?.friends.length < 14) {
+      criteria = auth?.user?.data?.friends.length;
     }
     return criteria;
   };
@@ -152,7 +148,7 @@
     feed_num: feedNum(),
     active_tab: 0,
     tabs: [
-      { value: "friends", label: "Friends", pinned: false, active: true },
+      { value: "friends", label: "Friends", pinned: false, active: true, data: [] },
       {
         value: "people_you_may_know",
         label: "People You May Know",
@@ -170,6 +166,7 @@
   
   // Mounted
   onMounted(() => {
+    fetchFriends();
     state.tabs.forEach((tab) => {
       tab.pinned = tab.value === auth.user.preferences[0].default_dashboard_tab;
     });
@@ -186,6 +183,49 @@
     tab.pinned = true;
     settings.pinDashboardTab(tab);
   };
+
+  const fetchFriends = () => {
+    if(!auth?.user?.friends?.data?.length) {
+      return
+    } else {
+      $fetch(`${config.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
+        populate: [
+          "id",
+          "username",
+          "email",
+          "first_name",
+          "last_name",
+          "favorites",
+          "profile_picture",
+          "friends",
+          "pending_friends",
+          "nsight_id"
+        ],
+        filters: {
+          nsight_id: {
+            nsight_id: {
+              $in: auth?.user?.friends?.data
+            }
+          }
+        }
+      })}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application',
+          'Authorization': `Bearer ${auth?.token}`
+        }
+      }).then(async (result) => {
+        console.log('result', result);
+        state.tabs[0].data = result;
+      }).catch((error) => {
+        console.error('Error fetching friends', error)
+      })
+    }
+
+
+    
+  }
+
 </script>
 <style lang="scss">
   .active-tab {
