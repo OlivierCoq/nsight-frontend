@@ -284,7 +284,7 @@ const feedNum = () => {
         filters: {
           nsight_id: {
             nsight_id: {
-              $in: user.friends.data
+              $in: user.friends
             }
           }
         }

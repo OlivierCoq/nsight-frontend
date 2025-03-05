@@ -54,7 +54,7 @@
   }
 
   const sent_request = () => {
-    return props.member?.pending_friends?.find((request) => request == auth.user.nsight_id.nsight_id) ? true : false
+    return props.member?.pending_friends.find((request) => request == auth.user.nsight_id.nsight_id) ? true : false
   }
 
   const send_friend_request =  () => {
@@ -66,13 +66,13 @@
     //     data: []
     //   }
     //   nextTick(()=> {
-    //     props.member?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
+    //     props.member?.pending_friends?.push(auth.user.nsight_id.nsight_id)
     //   })
     // } else {
-    //   props.member?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
+    //   props.member?.pending_friends?.push(auth.user.nsight_id.nsight_id)
     // }
 
-    props.member?.pending_friends?.data.push(auth?.user?.nsight_id?.nsight_id)
+    props.member?.pending_friends?.push(auth?.user?.nsight_id?.nsight_id)
 
     nextTick(() => {
       $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${props.member.id}`, {
