@@ -68,7 +68,7 @@ const acceptFriendRequest = (nsight_id: string) => {
   props.user.pending_friends = props.user.pending_friends.filter((request: string) => request !== auth?.user?.nsight_id.nsight_id);
 
   // update database:
-  if(props?.user?.friends?.data?.includes(auth?.user?.nsight_id.nsight_id)){
+  if(props?.user?.friends?.includes(auth?.user?.nsight_id.nsight_id)){
     $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${props.user.id}`, {
       method: 'PUT',
       headers: {
@@ -86,10 +86,10 @@ const acceptFriendRequest = (nsight_id: string) => {
   }
 
   // Add props.user to auth.user.friends
-  auth.user?.friends?.data?.push(props.user.nsight_id.nsight_id);
+  auth.user?.friends?.push(props.user.nsight_id.nsight_id);
   auth.user.pending_friends = auth.user?.pending_friends?.filter((request: string) => request !== props.user.nsight_id.nsight_id);
   nextTick(async ()=> {
-    if(auth.user?.friends?.data?.includes(props.user?.nsight_id.nsight_id) && !auth.user.pending_friends.includes(props.user.nsight_id.nsight_id)){ 
+    if(auth.user?.friends?.includes(props.user?.nsight_id.nsight_id) && !auth.user.pending_friends.includes(props.user.nsight_id.nsight_id)){ 
       auth.updateUser();
 
       const toast_obj = {

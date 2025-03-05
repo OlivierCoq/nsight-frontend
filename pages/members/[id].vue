@@ -507,16 +507,8 @@ const friend_check = () => {
     // 
     //  This is the most insane shit I have ever witnessed. I have no clue why this is happening, and I am too tired to research it:
     // Check to see if user.pending_friends is an array or an object:
-    if(Array.isArray(user?.pending_friends)) {
-      user.pending_friends = {
-        data: []
-      }
-      nextTick(()=> {
-        user?.pending_friends?.push(auth.user.nsight_id.nsight_id)
-      })
-    } else {
-      user?.pending_friends?.push(auth.user.nsight_id.nsight_id)
-    }
+
+
 
     user?.pending_friends?.push(auth?.user?.nsight_id?.nsight_id)
 
@@ -528,7 +520,7 @@ const friend_check = () => {
           'Authorization': `Bearer ${auth.token}`
         },
         body: JSON.stringify({
-          pending_friends: user.pending_friends.data
+          pending_friends: user.pending_friends
         })
       }).then(async (result) => {
         // console.log('Friend request sent', result)
