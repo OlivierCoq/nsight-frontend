@@ -500,12 +500,7 @@ const friend_check = () => {
   }
 
   const sent_request = () => {
-    if(Array.isArray(user?.pending_friends)) {
-      return user?.pending_friends?.find((request) => request == auth.user.nsight_id.nsight_id) ? true : false
-    } else {
-      return user?.pending_friends?.find((request) => request == auth.user.nsight_id.nsight_id) ? true : false
-    }
-    
+    return user?.pending_friends?.find((request) => request == auth.user.nsight_id.nsight_id) ? true : false
   }
 
   const send_friend_request =  () => {
@@ -533,9 +528,7 @@ const friend_check = () => {
           'Authorization': `Bearer ${auth.token}`
         },
         body: JSON.stringify({
-          pending_friends: {
-            data: user.pending_friends.data
-          }
+          pending_friends: user.pending_friends.data
         })
       }).then(async (result) => {
         // console.log('Friend request sent', result)

@@ -82,9 +82,7 @@
           'Authorization': `Bearer ${auth.token}`
         },
         body: JSON.stringify({
-          pending_friends: {
-            data: props.member.pending_friends
-          }
+          pending_friends: props.member.pending_friends
         })
       }).then(async (result) => {
         // console.log('Friend request sent', result)
@@ -107,9 +105,7 @@
           'Authorization': `Bearer ${auth.token}`
         },
         body: JSON.stringify({
-          friends: {
-            data: auth.user.friends
-          }
+          friends: auth.user.friends
         })
       }).then(async (result) => {
         // console.log('Friend removed', result)
@@ -132,9 +128,7 @@
           'Authorization': `Bearer ${auth.token}`
         },
         body: JSON.stringify({
-          pending_friends: {
-            data: props.member.pending_friends
-          }
+          pending_friends: props.member.pending_friends
         })
       }).then(async (result) => {
         // console.log('Friend request cancelled', result)
