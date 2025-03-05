@@ -41,12 +41,30 @@
                     </div> -->
                   </div>
                     <div class="flex items-center gap-3 text-sm">
-                      <button type="submit" class="button text-gray-600 bg-slate-200 hidden">Follow</button>
-                      <!-- <button
-                        v-if="user.nsight_id.nsight_id !== auth.user.nsight_id.nsight_id"
-                        type="button" class="button bg-amber-100 text-black border border-amber-200">
-                        <span class="text-zinc-800">Unfollow</span>
-                      </button> -->
+                      <button
+                        v-if="state.friends"
+                        type="button" class="button bg-green-500 text-black border border-green-800"
+                        @click="remove_friend"  
+                      >
+                        <span class="text-zinc-100">Friends</span>
+                        <font-awesome-icon :icon="['fas', 'user-check']" class="text-md text-white ms-2" />
+                      </button>
+                      <button
+                        v-else-if="!state.friends && !state.self && !state.pending_request"
+                        type="button" class="button bg-amber-500 text-black border border-amber-800"
+                        @click="send_friend_request"
+                      >
+                        <span class="text-zinc-100">Add Friend</span>
+                        <font-awesome-icon :icon="['fas', 'user-plus']" class="text-md text-white ms-2" />
+                      </button>
+                      <button
+                        v-else-if="!state.friends && !state.self && state.pending_request"
+                        type="button" class="button bg-blue-500 text-black border border-blue-800"
+                        @click="cancel_friend_request"  
+                      >
+                        <span class="text-zinc-100">Friend Request sent</span>
+                        <font-awesome-icon :icon="['fas', 'user-check']" class="text-md text-white ms-2" />
+                      </button>
                         <!-- <button type="submit" class="button bg-pink-600 text-neutral-500">Message</button> -->
                           <!-- Reporting etc. -->
                       <div id="profile_action_button" v-if="user?.nsight_id?.nsight_id !== auth?.user?.nsight_id?.nsight_id"> 
@@ -200,7 +218,7 @@ definePageMeta({
         "users_permissions_user.last_name",
         "users_permissions_user.profile_picture",
         "users_permissions_user.pictures",
-        "users_permissions_user.friends",
+        "users_permissions_user.friends.additional",
         "intro",
         "title",
         "body"
@@ -226,28 +244,23 @@ definePageMeta({
   
   let profile_data = data.value.data[0]
   let user = data.value.data[0].users_permissions_user
-  // console.log('heeeeelp', user)
-  user.friends.forEach((friend: any) => {
-    if(Array.isArray(friend.pending_friends)){
-      friend.pending_friends = {
-        data: friend.pending_friends
-      }
-    }
-  })
+  // console.log('heeeeelp', user.friends)
+  
+
 
 
       // FRIENDS
 
-let profile_friends 
- const feedNum = () => {
-    let criteria;
-    if (user?.friends?.length > 14) {
-      criteria = 14;
-    } else if (user?.friends?.length < 14) {
-      criteria = user?.friends?.length;
-    }
-    return criteria;
-  };
+let profile_friends:any = null 
+const feedNum = () => {
+  let criteria;
+  if (user?.friends?.length > 14) {
+    criteria = 14;
+  } else if (user?.friends?.length < 14) {
+    criteria = user?.friends?.length;
+  }
+  return criteria;
+};
 
   const fetchFriends = () => {
     // console.log('fetching friends', user.friends)
@@ -271,7 +284,7 @@ let profile_friends
         filters: {
           nsight_id: {
             nsight_id: {
-              $in: user.friends
+              $in: user.friends.data
             }
           }
         }
@@ -311,13 +324,21 @@ let profile_friends
       // { value: "more", label: "More", pinned: false, active: false },
     ],
     active_tab:  { value: "posts", label: "Posts", pinned: true, active: true, icon: 'note-sticky' } as Tab,
-    comp: 0
+    comp: 0,
+    friends: null,
+    pending_request: null,
+    self: null
   })
 
   // Mounted
   onMounted(async () => {
     state.active_tab = state.tabs.find((tab: Tab) => tab.pinned);
     // auto_sort_posts()
+
+    // Follow/Unfollow
+    state.friends = friend_check()
+    state.self = self()
+    state.pending_request = sent_request()
     
     nextTick(async () => {
       // auto_sort_posts()
@@ -335,6 +356,8 @@ let profile_friends
   })
 
   // Methods
+  // Format friends
+
 
     // POSTS
   const fetch_posts = async () => {
@@ -467,6 +490,106 @@ let profile_friends
     })
   }
 
+  // Follow/Unfollow
+const friend_check = () => {
+    return auth.user?.friends?.find(friend => friend === user.nsight_id?.nsight_id)
+  }
+
+  const self = () => {
+    return user.email === auth.user.email
+  }
+
+  const sent_request = () => {
+    if(Array.isArray(user?.pending_friends)) {
+      return user?.pending_friends?.find((request) => request == auth.user.nsight_id.nsight_id) ? true : false
+    } else {
+      return user?.pending_friends?.find((request) => request == auth.user.nsight_id.nsight_id) ? true : false
+    }
+    
+  }
+
+  const send_friend_request =  () => {
+    // 
+    //  This is the most insane shit I have ever witnessed. I have no clue why this is happening, and I am too tired to research it:
+    // Check to see if user.pending_friends is an array or an object:
+    if(Array.isArray(user?.pending_friends)) {
+      user.pending_friends = {
+        data: []
+      }
+      nextTick(()=> {
+        user?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
+      })
+    } else {
+      user?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
+    }
+
+    user?.pending_friends?.data.push(auth?.user?.nsight_id?.nsight_id)
+
+    nextTick(() => {
+      $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.token}`
+        },
+        body: JSON.stringify({
+          pending_friends: {
+            data: user.pending_friends.data
+          }
+        })
+      }).then(async (result) => {
+        // console.log('Friend request sent', result)
+        state.pending_request = true
+      }).catch((error) => {
+        console.error('Error sending friend request', error)
+      })
+    })
+  }
+
+  const remove_friend = () => {
+    // console.log('removing friend')
+    user.friends.data = user.friends.data.filter((friend) => friend !== auth.user.nsight_id.nsight_id)
+    auth.user.friends.data = auth.user.friends.data.filter((friend) => friend !== user.nsight_id.nsight_id)
+    nextTick(() => {
+      $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.token}`
+        },
+        body: JSON.stringify({
+          friends: user.friends
+        })
+      }).then(async (result) => {
+        // console.log('Friend removed', result)
+        state.friends = false
+      }).catch((error) => {
+        console.error('Error removing friend', error)
+      })
+    })
+    
+  }
+
+  const cancel_friend_request = () => {
+    user.pending_friends.data = user.pending_friends.data.filter((request) => request !== auth.user.nsight_id.nsight_id)
+    nextTick(() => {
+      $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.token}`
+        },
+        body: JSON.stringify({
+          pending_friends: user.pending_friends
+        })
+      }).then(async (result) => {
+        // console.log('Friend request cancelled', result)
+        state.pending_request = false
+      }).catch((error) => {
+        console.error('Error cancelling friend request', error)
+      })
+    })
+  }
 
 </script>
 <style lang="scss">

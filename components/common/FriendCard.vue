@@ -12,7 +12,7 @@
       <div class="w-full flex flex-row justify-between items-center align-center">
         <font-awesome-icon v-if="state.friends" :icon="['fas', 'user-check']" class="text-green-300 text-md me-2" />
         <font-awesome-icon v-else-if="!state.friends && !state.self && !state.pending_request" :icon="['fas', 'user-plus']" class="text-amber-300 text-md cursor-pointer me-2" @click="send_friend_request" />
-        <font-awesome-icon v-else-if="!state.friends && !state.self && state.pending_request" :icon="['fas', 'user-plus']" class="text-blue-300 text-md cursor-pointer me-2" />
+        <font-awesome-icon v-else-if="!state.friends && !state.self && state.pending_request" :icon="['fas', 'user-plus']" class="text-blue-300 text-md cursor-pointer me-2" @click="cancel_friend_request" />
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@
 
   // methods
   const friend_check = () => {
-    return auth.user?.friends?.data?.find(friend => friend === props?.member?.nsight_id?.nsight_id)
+    return auth.user?.friends?.find(friend => friend === props?.member?.nsight_id?.nsight_id)
   }
 
   const self = () => {
@@ -54,7 +54,7 @@
   }
 
   const sent_request = () => {
-    return props.member?.pending_friends?.data?.find((request) => request == auth.user.nsight_id.nsight_id) ? true : false
+    return props.member?.pending_friends?.find((request) => request == auth.user.nsight_id.nsight_id) ? true : false
   }
 
   const send_friend_request =  () => {
@@ -83,7 +83,7 @@
         },
         body: JSON.stringify({
           pending_friends: {
-            data: props.member.pending_friends.data
+            data: props.member.pending_friends
           }
         })
       }).then(async (result) => {
@@ -95,6 +95,55 @@
     })
   }
 
+  const remove_friend = () => {
+    // console.log('removing friend')
+    const friend_index = auth.user.friends.findIndex(friend => friend === props.member.nsight_id.nsight_id)
+    auth.user.friends.splice(friend_index, 1)
+    nextTick(() => {
+      $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${auth.user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.token}`
+        },
+        body: JSON.stringify({
+          friends: {
+            data: auth.user.friends
+          }
+        })
+      }).then(async (result) => {
+        // console.log('Friend removed', result)
+        state.friends = false
+      }).catch((error) => {
+        console.error('Error removing friend', error)
+      })
+    })
+  }
+
+  const cancel_friend_request = () => {
+    // console.log('cancelling friend request')
+    const request_index = props.member.pending_friends.findIndex(request => request === auth.user.nsight_id.nsight_id)
+    props.member.pending_friends.splice(request_index, 1)
+    nextTick(() => {
+      $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${props.member.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${auth.token}`
+        },
+        body: JSON.stringify({
+          pending_friends: {
+            data: props.member.pending_friends
+          }
+        })
+      }).then(async (result) => {
+        // console.log('Friend request cancelled', result)
+        state.pending_request = false
+      }).catch((error) => {
+        console.error('Error cancelling friend request', error)
+      })
+    })
+  }
 
   // lifecycle hooks
   onMounted(() => {

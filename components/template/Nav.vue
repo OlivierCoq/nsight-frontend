@@ -342,16 +342,16 @@
             <img
               v-if="auth.user"
               :src="
-                auth.user.profile_picture
-                  ? auth.user.profile_picture.url
+                auth?.user?.profile_picture
+                  ? auth?.user?.profile_picture.url
                   : '/assets/images/mock_data/placeholder_pfp.jpeg'
               "
-              :alt="`${auth?.user.first_name} ${auth?.user.last_name} `"
+              :alt="`${auth?.user?.first_name} ${auth?.user?.last_name} `"
               class="w-[110%]"
             />
           </div>
           <span class="font-semibold text-sm max-xl:hidden">
-            {{ auth?.user.first_name }} {{ auth?.user.last_name }} 
+            {{ auth?.user?.first_name }} {{ auth?.user?.last_name }} 
           </span>
         </a>
 
@@ -365,7 +365,7 @@
 
           <div class="p-4 text-xs font-medium">
             <a
-              :href="`/members/${auth.user.nsight_id.nsight_id}`"
+              :href="`/members/${auth.user?.nsight_id?.nsight_id}`"
               class="text-neutral-800 dark:text-white"
             >
               <div
@@ -373,17 +373,17 @@
               >
                 <img
                   :src="
-                    auth.user.profile_picture
-                      ? auth.user.profile_picture.url
+                    auth?.user?.profile_picture
+                      ? auth?.user?.profile_picture.url
                       : '/assets/images/mock_data/placeholder_pfp.jpeg'
                   "
-                  :alt="`${auth?.user.first_name} ${auth?.user.last_name} `"
+                  :alt="`${auth?.user?.first_name} ${auth?.user?.last_name} `"
                   class="w-[110%]"
                 />
               </div>
               <div class="mt-2 space-y-0.5">
                 <div class="text-base font-semibold">
-                  {{ auth?.user.first_name }} {{ auth?.user.last_name }}
+                  {{ auth?.user?.first_name }} {{ auth?.user?.last_name }}
                 </div>
                 <!-- <div class="text-gray-400 dark:text-white/80"> @monroe </div> -->
               </div>
@@ -402,7 +402,7 @@
           <hr class="opacity-60" />
           <ul class="text-sm font-semibold p-2">
             <li>
-              <a :href="`/members/${auth.user.nsight_id.nsight_id}`"
+              <a :href="`/members/${auth?.user?.nsight_id?.nsight_id}`"
                 class="flex gap-3 rounded-md p-2 text-neutral-800 dark:text-white hover:dark:text-zinc-100 hover:bg-zinc-300/30"
               >
                 Profile

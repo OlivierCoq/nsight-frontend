@@ -72,8 +72,8 @@
             <div class="flex justify-center my-10">
               <button
                 v-if="
-                auth?.user?.friends.data.length > 14 &&
-                state.feed_num < auth?.user?.friends.data.length
+                auth?.user?.friends?.length > 14 &&
+                state.feed_num < auth?.user?.friends?.length
                 "
                 type="button"
                 class="bg-white py-2 px-5 rounded-full shadow-md font-semibold text-sm dark:bg-zinc-900 dark:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition duration-200 ease-in-out"
@@ -189,7 +189,7 @@
   };
 
   const fetchFriends = () => {
-    if(!auth?.user?.friends?.data?.length) {
+    if(!auth?.user?.friends?.length) {
       return
     } else {
       $fetch(`${config.public.NUXT_STRAPI_URL}/api/users?${qs.stringify({
@@ -208,7 +208,7 @@
         filters: {
           nsight_id: {
             nsight_id: {
-              $in: auth?.user?.friends?.data
+              $in: auth?.user?.friends
             }
           }
         }
@@ -239,8 +239,8 @@
       return
     } else {
       state.tabs[0]?.data?.forEach((friend) => {
-        friend.friends.data.forEach((f)=> {
-          if(!auth?.user?.friends?.data.includes(f) && (f !== auth?.user?.nsight_id.nsight_id)) {
+        friend.friends.forEach((f)=> {
+          if(!auth?.user?.friends.includes(f) && (f !== auth?.user?.nsight_id.nsight_id)) {
             suggested_friends.push(f)
           }
         })
