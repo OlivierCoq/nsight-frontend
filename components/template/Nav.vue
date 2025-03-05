@@ -538,7 +538,7 @@ const toggle_theme = () => {
 // Notifications
 const getFriendRequests = async () => {
   
-  if (!auth?.user?.pending_friends?.data?.length) {
+  if (!auth?.user?.pending_friends?.length) {
     state.notifications.friend_requests = [];
     return;
   }
@@ -558,7 +558,7 @@ const getFriendRequests = async () => {
       filters: {
           nsight_id: {
             nsight_id: {
-              $in: auth?.user?.pending_friends?.data
+              $in: auth?.user?.pending_friends
             }
           }
         }

@@ -64,8 +64,8 @@ const settings = settingsStore();
 const acceptFriendRequest = (nsight_id: string) => {
   console.log('accepting friend request', nsight_id);
 
-  props.user.friends.data.push(auth?.user?.nsight_id.nsight_id);
-  props.user.pending_friends.data = props.user.pending_friends.data.filter((request: string) => request !== auth?.user?.nsight_id.nsight_id);
+  props.user.friends.push(auth?.user?.nsight_id.nsight_id);
+  props.user.pending_friends = props.user.pending_friends.filter((request: string) => request !== auth?.user?.nsight_id.nsight_id);
 
   // update database:
   if(props?.user?.friends?.data?.includes(auth?.user?.nsight_id.nsight_id)){
@@ -87,9 +87,9 @@ const acceptFriendRequest = (nsight_id: string) => {
 
   // Add props.user to auth.user.friends
   auth.user?.friends?.data?.push(props.user.nsight_id.nsight_id);
-  auth.user.pending_friends.data = auth.user?.pending_friends.data?.filter((request: string) => request !== props.user.nsight_id.nsight_id);
+  auth.user.pending_friends = auth.user?.pending_friends?.filter((request: string) => request !== props.user.nsight_id.nsight_id);
   nextTick(async ()=> {
-    if(auth.user?.friends?.data?.includes(props.user?.nsight_id.nsight_id) && !auth.user.pending_friends.data.includes(props.user.nsight_id.nsight_id)){ 
+    if(auth.user?.friends?.data?.includes(props.user?.nsight_id.nsight_id) && !auth.user.pending_friends.includes(props.user.nsight_id.nsight_id)){ 
       auth.updateUser();
 
       const toast_obj = {
@@ -105,7 +105,7 @@ const acceptFriendRequest = (nsight_id: string) => {
 
   const declineFriendRequest = async (nsight_id: string) => {
     console.log('declining friend request', nsight_id)
-    auth.user.pending_friends.data = auth.user.pending_friends.data.filter((request: string) => request !== props.user.nsight_id.nsight_id);
+    auth.user.pending_friends = auth.user.pending_friends.filter((request: string) => request !== props.user.nsight_id.nsight_id);
     auth.updateUser();
 
     emit('update', false)
