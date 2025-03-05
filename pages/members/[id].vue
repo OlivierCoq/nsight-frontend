@@ -512,13 +512,13 @@ const friend_check = () => {
         data: []
       }
       nextTick(()=> {
-        user?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
+        user?.pending_friends?.push(auth.user.nsight_id.nsight_id)
       })
     } else {
-      user?.pending_friends?.data.push(auth.user.nsight_id.nsight_id)
+      user?.pending_friends?.push(auth.user.nsight_id.nsight_id)
     }
 
-    user?.pending_friends?.data.push(auth?.user?.nsight_id?.nsight_id)
+    user?.pending_friends?.push(auth?.user?.nsight_id?.nsight_id)
 
     nextTick(() => {
       $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${user.id}`, {
@@ -541,8 +541,8 @@ const friend_check = () => {
 
   const remove_friend = () => {
     // console.log('removing friend')
-    user.friends.data = user.friends.data.filter((friend) => friend !== auth.user.nsight_id.nsight_id)
-    auth.user.friends.data = auth.user.friends.data.filter((friend) => friend !== user.nsight_id.nsight_id)
+    user.friends.data = user.friends.filter((friend) => friend !== auth.user.nsight_id.nsight_id)
+    auth.user.friends.data = auth.user.friends.filter((friend) => friend !== user.nsight_id.nsight_id)
     nextTick(() => {
       $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${user.id}`, {
         method: 'PUT',
@@ -564,7 +564,7 @@ const friend_check = () => {
   }
 
   const cancel_friend_request = () => {
-    user.pending_friends.data = user.pending_friends.data.filter((request) => request !== auth.user.nsight_id.nsight_id)
+    user.pending_friends.data = user.pending_friends.filter((request) => request !== auth.user.nsight_id.nsight_id)
     nextTick(() => {
       $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${user.id}`, {
         method: 'PUT',
