@@ -3250,6 +3250,7 @@ const _lazy_1X6zm6 = () => Promise.resolve().then(function () { return updateUse
 const _lazy_7XOvC1 = () => Promise.resolve().then(function () { return forgotPassword_post$1; });
 const _lazy_wLAu0m = () => Promise.resolve().then(function () { return newUserConfirmation_post$1; });
 const _lazy_2ghplS = () => Promise.resolve().then(function () { return resetPassword_post$1; });
+const _lazy_5BBo0f = () => Promise.resolve().then(function () { return fetch_post$1; });
 const _lazy_xsVbzw = () => Promise.resolve().then(function () { return createCard_post$1; });
 const _lazy_xPwnBM = () => Promise.resolve().then(function () { return createCheckout_post$1; });
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$1; });
@@ -3275,6 +3276,7 @@ const handlers = [
   { route: '/api/email/forgot-password', handler: _lazy_7XOvC1, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/new-user-confirmation', handler: _lazy_wLAu0m, lazy: true, middleware: false, method: "post" },
   { route: '/api/email/reset-password', handler: _lazy_2ghplS, lazy: true, middleware: false, method: "post" },
+  { route: '/api/feed/fetch', handler: _lazy_5BBo0f, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-card', handler: _lazy_xsVbzw, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-checkout', handler: _lazy_xPwnBM, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
@@ -3883,6 +3885,16 @@ const resetPassword_post = defineEventHandler(async (event) => {
 const resetPassword_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: resetPassword_post
+});
+
+const fetch_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("body", post_data);
+});
+
+const fetch_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: fetch_post
 });
 
 const square_client$7 = new Client({

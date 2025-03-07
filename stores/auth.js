@@ -417,8 +417,8 @@ export const authStore = defineStore({
 
 
           setTimeout(() => {
-            navigateTo("/dashboard");
-          }, 1000);
+            navigateTo("/home");
+          }, 500);
         });
       }
     },

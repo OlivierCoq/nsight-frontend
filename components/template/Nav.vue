@@ -11,7 +11,7 @@
       <div
         class="flex h-20 px-2 max-md:fixed max-md:top-0 max-md:w-full max-md:bg-white/80 max-md:left-0 max-md:px-4 max-md:h-14 max-md:shadow-sm max-md:dark:bg-zinc-900/80 backdrop-blur-xl"
       >
-        <a href="/dashboard" id="logo" class="flex items-center gap-3">
+        <a href="/home" id="logo" class="flex items-center gap-3">
           <!-- logo icon -->
           <img
             id="logo__icon"
@@ -39,7 +39,7 @@
       <!-- nav -->
       <nav class="flex-1 max-md:flex max-md:justify-around md:space-y-2">
         <!-- Home -->
-        <a href="/dashboard">
+        <a href="/home">
           <svg
             id="icon__outline"
             xmlns="http://www.w3.org/2000/svg"
