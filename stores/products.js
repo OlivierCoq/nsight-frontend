@@ -77,7 +77,7 @@ export const productsStore = defineStore({
       const auth = authStore()
 
       if (auth?.user?.cart_obj) {
-        this.cart = auth?.user?.cart_obj.data
+        this.cart = auth?.user?.cart_obj
       }
     },
     format_currency(amount, currency) {
@@ -92,12 +92,12 @@ export const productsStore = defineStore({
 
       const update_user = () => {
         const auth = authStore()
-        // auth.user.cart_obj.data = this.cart 
+        auth.user.cart_obj = this?.cart 
         auth.updateUser()
       }
 
       // In line items, multiply price by quantity for each item:
-      if(this.cart.checkout.order.order.lineItems.length) {
+      if(this.cart.checkout?.order?.order?.lineItems?.length) {
         this.cart.checkout.order.order.lineItems = this.cart?.checkout?.order?.order?.lineItems?.map(item => {
           item['subtotal'] = item.basePriceMoney.amount * Number(item.quantity)
           // console.log('item.subtotal', item.subtotal)

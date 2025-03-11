@@ -33,18 +33,18 @@
                         <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
                     </a>
                     <div class="p-2 dark:text-white/80 uk-accordion-content">
-                        <div v-if="auth.user.payment_methods.data.length"></div>
+                        <div v-if="auth.user.payment_methods.length"></div>
                         <div>
-                            <p v-if="!auth.user.payment_methods.data.length" class="text-neutral-900 dark:text-white font-thin" style="font-size: 1.1rem; line-height: normal; ">
+                            <p v-if="!auth.user.payment_methods.length" class="text-neutral-900 dark:text-white font-thin" style="font-size: 1.1rem; line-height: normal; ">
                               No payment methods found! Add a payment method to use for your next order.
                             </p>
                             <div class="w-full flex flex-col">
 
                                 <!-- Credit Cards: -->
-                              <p v-if="auth.user.payment_methods.data.length" class="text-neutral-900 dark:text-white text-md">Cards on file:</p>
+                              <p v-if="auth.user.payment_methods.length" class="text-neutral-900 dark:text-white text-md">Cards on file:</p>
                               <div class="w-full flex flex-row flex-wrap mb-2">
                                 <!-- List existing payment methods here: -->
-                                <div v-for="(method, i) in auth.user.payment_methods.data" :key="i" class="w-1/3  h-[110px] fade-in"> 
+                                <div v-for="(method, i) in auth.user.payment_methods" :key="i" class="w-1/3  h-[110px] fade-in"> 
 
                                     <!-- Deleting -->
                                   <div v-if="method.deleting" class="w-full h-full flex flex-col items-center justify-center">
@@ -791,7 +791,7 @@
           });
           nextTick(() => {
             // Update the user's account in Strapi with the updated order details
-            auth?.user?.orders?.data?.push(place_order_data?.data?.result?.order)
+            auth?.user?.orders?.push(place_order_data?.data?.result?.order)
           });
         }
       
@@ -987,7 +987,7 @@
   }
 
   const delete_method = (method) => {
-    auth.user.payment_methods.data = auth.user.payment_methods.data.filter(
+    auth.user.payment_methods = auth.user.payment_methods.filter(
       (m) => {
         return m.card.id !== method.card.id;
       }
@@ -1127,7 +1127,7 @@
             });
             console.log("createCardResponse", newCard);
 
-            auth.user.payment_methods.data.push(newCard);
+            auth.user.payment_methods?.push(newCard);
             if (!auth.user.selected_payment_method) {
               auth.user.selected_payment_method = newCard;
             }

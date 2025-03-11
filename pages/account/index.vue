@@ -300,8 +300,8 @@
                     <div class="p-2 dark:text-white/80 uk-accordion-content h-[40rem] overflow-y-scroll">
                       <div class="flex flex-col gap-4">
 
-                        <div v-if="auth.user.orders.data?.length" class="w-full">
-                          <OrderCard v-for="(order, a) in auth.user.orders.data" :key="a" :order="order" />
+                        <div v-if="auth.user.orders?.length" class="w-full">
+                          <OrderCard v-for="(order, a) in auth.user.orders" :key="a" :order="order" />
                         </div>
                         <div v-else>
                           <p class="text-gray-500 dark:text-gray-400"> No orders found. </p>
@@ -353,31 +353,31 @@
                     <h3 class="text-lg font-semibold dark:text-white"> Saved cards </h3>
                   </div>
                   <div class="w-full lg:w-2/3 flex flex-col px-4">
-                    <div v-if="!auth.user.payment_methods.data.length" class="w-full flex justify-start mt-1">
+                    <div v-if="!auth.user.payment_methods.length" class="w-full flex justify-start mt-1">
                       <p class="text-gray-500 dark:text-gray-400"> No payment methods added yet. </p>
                     </div>
                     <div v-else class="w-full flex flex-col gap-4">
-                      <PaymentMethodCard v-for="(payment_method, d) in auth.user.payment_methods.data" :key="d" :payment-method="payment_method" />
+                      <PaymentMethodCard v-for="(payment_method, d) in auth.user.payment_methods" :key="d" :payment-method="payment_method" />
                     </div>
                   </div>
                 </div>
 
                 <div class="w-full flex flex-col p-4">
                   <!-- Add new payment method button: -->
-                  <button class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" @click="state.tabs[3].add_new_method = true"> 
+                  <button class="w-full bg-amber-500 hover:bg-amber-600 text-white rounded-md py-2" @click="state.tabs[2].add_new_method = true"> 
                     Add Credit/Debit Card
                   </button>
 
-                  <small class="text-sm mt-4">* If you'd like to use any other payment methods, such as Google Pay or CashApp, these options are available upon checkout.</small>
+                  <!-- <small class="text-sm mt-4">* If you'd like to use any other payment methods, such as Google Pay or CashApp, these options are available upon checkout.</small> -->
 
                   <!-- Add new payment method modal: -->
-                  <div v-if="state.tabs[3].add_new_method" class="fade-in absolute w-full h-full top-0 left-0 bg-black/50 z-10 flex flex-col justify-start items-start">
+                  <div v-if="state.tabs[2].add_new_method" class="fade-in absolute w-full h-full top-0 left-0 bg-black/50 z-10 flex flex-col justify-start items-start">
                     <div class="w-full flex flex-row justify-end align-end">
-                      <button class="p-4" @click="state.tabs[3].add_new_method = false"> 
+                      <button class="p-4" @click="state.tabs[2].add_new_method = false"> 
                         <font-awesome-icon :icon="['fas', 'times']" class="text-2xl text-white dark:text-zinc-500" />
                       </button>
                     </div>
-                    <NewPaymentInterface @close="state.tabs[3].add_new_method = false" />
+                    <NewPaymentInterface @close="state.tabs[2].add_new_method = false" />
                   </div>
 
                 </div>
@@ -444,12 +444,13 @@ const state = reactive({
         phone_number: "",
       }
     },
-    { name: "Orders", component: "AccountOrders" },
     { 
       name: "Payment Methods", 
       component: "AccountPaymentMethods",
       add_new_method: false
     },
+    { name: "Orders", component: "AccountOrders" },
+
   ],
   saving: false,
   password: {

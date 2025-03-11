@@ -232,12 +232,8 @@ const new_nsight_member = reactive({
   // password: "P@ssW3rd9756",
   password: generate_random_password(),
   progenitor: [auth?.user],
-  friends: {
-    data: [auth?.user?.nsight_id?.nsight_id],
-  },
-  pending_friends: {
-    data: []
-  },
+  friends: [auth?.user?.nsight_id?.nsight_id],
+  pending_friends: [],
   profile_picture: {},
   favorites: {
     products: [],
@@ -247,12 +243,8 @@ const new_nsight_member = reactive({
     pictures: [],
     videos: [],
   },
-  pictures: {
-    data: [],
-  },
-  chats: {
-    data: [],
-  },
+  pictures:[],
+  chats: [],
   addresses: {
     shipping: [],
     billing: [],
@@ -266,17 +258,11 @@ const new_nsight_member = reactive({
     data: [],
   },
   cart_obj: {
-    data: [],
+
   },
-  orders: {
-    data: [],
-  },
-  returns: {
-    data: [],
-  },
-  cancelled_orders: {
-    data: [],
-  },
+  orders: [],
+  returns: [],
+  cancelled_orders: [],
   role: {
     id: 1,
     name: "Authenticated",
@@ -425,7 +411,7 @@ const post_new_member = async () => {
                             new_strapi_user.nsight_id.nsight_id =
                               new_strapi_nsight_id.nsight_id;
 
-                            auth?.user?.friends.data.push(new_strapi_user?.nsight_id?.nsight_id);
+                            auth?.user?.friends.push(new_strapi_user?.nsight_id?.nsight_id);
 
                             // Update logged in user with new friend:
                             await $fetch(

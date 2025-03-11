@@ -32,7 +32,7 @@
           
         </div>
 
-         <div class="max-w-[1200px] mx-auto flex flex-col lg:flex-row w-full h-[90vh]">
+         <div class="max-w-[95%] mx-auto flex flex-col lg:flex-row w-full h-[90vh]">
           <!-- feed -->
           <div class="w-full lg:w-1/2 flex flex-col h-full m-2 overflow-y-scroll">
 
@@ -101,9 +101,10 @@
                 <span class="text-xs text-gray-500 dark:text-white/80">({{ state.potential_friends.length }})</span>
               </h3>
               <div class="flex flex-1 flex-col w-full overflow-y-scroll">
-                <div class="grid sm:grid-cols-2 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+                <div v-if="state.potential_friends.length" class="grid sm:grid-cols-2 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                   <FriendCard v-for="(friend, a) in state.potential_friends" :key="a" :member="friend" />
                 </div>
+                <p v-else class=""></p>
               </div>
             </div>
              

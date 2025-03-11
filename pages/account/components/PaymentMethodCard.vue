@@ -84,9 +84,9 @@ const format_card_brand = (str: string) => {
 const deletePaymentMethod = async () => {
   try {
     // Find the payment method in the user's payment methods array:
-    const paymentMethodIndex = auth.user.payment_methods.data.findIndex((paymentMethod: any) => paymentMethod.card.id === props.paymentMethod.id)
+    const paymentMethodIndex = auth.user.payment_methods.findIndex((paymentMethod: any) => paymentMethod.card.id === props.paymentMethod.id)
     // Remove the payment method from the user's payment methods array:
-    auth.user.payment_methods.data.splice(paymentMethodIndex, 1)
+    auth.user.payment_methods.splice(paymentMethodIndex, 1)
     // Update the user's payment methods in the database:
     await auth.updateUser()
     nextTick(() => {

@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-row rounded-lg bg-zinc-300 shadow-xl  w-full p-10 my-2 fade-in">
+  <div class="flex flex-row rounded-lg bg-zinc-300 shadow-xl  w-full p-10 my-2 fade-in justify-center">
     <a v-if="!profilePage" :href="`/members/${user.nsight_id.nsight_id}` " class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
       <img class="rounded-full w-16 h-16" :src="user.profile_picture.url" alt="profile picture">
       <p class="text-xs m-0 text-neutral-800">{{ user.first_name }}</p>
     </a>
-    <div v-else class="flex-1 flex"></div>
-    <div class="flex flex-col w-5/6">
+    <!-- <div v-else class="flex-1 flex"></div> -->
+    <div class="flex flex-col flex-1">
       <p class="text-xs">{{ post.createdAt }}</p>
       <h3 class="text-xl text-neutral-800 font-bold mb-3">{{ post.title }}</h3>
 

@@ -24,8 +24,8 @@ declare module 'nitropack' {
     '/api/email/reset-password': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/email/reset-password.post').default>>>>
     }
-    '/api/feed': {
-      'post': Simplify<Serialize<Awaited<ReturnType<typeof import(../../server/api/feed/index.postst').default>>>>
+    '/api/feed/fetch': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/feed/fetch.post').default>>>>
     }
     '/api/square/create-card': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/create-card.post').default>>>>

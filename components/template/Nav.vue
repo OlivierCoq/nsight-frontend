@@ -9,30 +9,30 @@
     >
       <!-- logo -->
       <div
-        class="flex h-20 px-2 max-md:fixed max-md:top-0 max-md:w-full max-md:bg-white/80 max-md:left-0 max-md:px-4 max-md:h-14 max-md:shadow-sm max-md:dark:bg-zinc-900/80 backdrop-blur-xl"
+        class="flex h-20 px-2 hidden md:block mt-5 max-md:fixed max-md:top-0 max-md:w-[28px]  max-md:bg-white/80 max-md:left-0 max-md:px-4 max-md:h-14 max-md:shadow-sm max-md:dark:bg-zinc-900/80 backdrop-blur-xl"
       >
         <a href="/home" id="logo" class="flex items-center gap-3">
           <!-- logo icon -->
-          <img
+          <!-- <img
             id="logo__icon"
             src="https://res.cloudinary.com/nsight/image/upload/v1721087388/logo_neutral_6e6fab0ffd.png"
             alt=""
             class="md:w-8 hidden text-2xl max-xl:!block max-md:!hidden shrink-0 uk-animation-scale-up"
-          />
+          /> -->
 
           <!-- text logo -->
           <img
             id="logo__text"
             src="https://res.cloudinary.com/nsight/image/upload/v1721087388/logo_neutral_6e6fab0ffd.png"
             alt=""
-            class="w-full h-6 ml-1 max-xl:hidden max-md:block dark:!hidden"
+            class="w-[28px] h-[28px] h-6 ml-1 "
           />
-          <img
+          <!-- <img
             id="logo__text"
             src="https://res.cloudinary.com/nsight/image/upload/v1721087388/logo_neutral_6e6fab0ffd.png"
             alt=""
-            class="w-full h-6 ml-1 !hidden max-xl:!hidden max-md:block dark:max-md:!block dark:!block"
-          />
+            class="w-[28px] h-[28px] h-6 ml-1 !hidden max-xl:!hidden max-md:block dark:max-md:!block dark:!block"
+          /> -->
         </a>
       </div>
 
@@ -259,7 +259,7 @@
         </a>
 
         <!-- Notifications -->
-         <a href="#!" class="max-md:!fixed max-md:top-2 max-md:right-14 relative"> 
+         <a href="#!" class="max-md:!fixed max-md:top-2 right-[1px] relative"> 
             <svg id="icon__outline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
             </svg>

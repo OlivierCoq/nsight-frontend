@@ -439,8 +439,8 @@ export const authStore = defineStore({
     },
     async format_payment_methods() {
       // console.log('Formatting payment methods: ', this.user.payment_methods);
-      if(this.user.payment_methods.data.length > 0) {
-        this.user.payment_methods.data.forEach((payment_method) => {
+      if(this.user.payment_methods.length > 0) {
+        this.user.payment_methods.forEach((payment_method) => {
           // console.log('Formatting payment method: ', payment_method.card);
             payment_method['deleting'] = false;
         });

@@ -268,7 +268,7 @@ watch(
             });
             console.log("createCardResponse", newCard);
 
-            auth.user.payment_methods.data.push(newCard);
+            auth.user.payment_methods.push(newCard);
             if (!auth.user.selected_payment_method) {
               auth.user.selected_payment_method = newCard;
             }

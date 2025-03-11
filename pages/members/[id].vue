@@ -4,7 +4,7 @@
       class="min-h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-20 relative"
     >
       <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
-        <div class="main__inner">
+        <div class="main__inner px-6">
 
           <!-- Head -->
           <div id="header_section" class="py-6 relative">
@@ -169,7 +169,7 @@
 
                   </div>
                   <!-- -->
-                  <div v-if="profile_data.picture_posts" class="grid grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+                  <div v-if="profile_data.picture_posts" class="grid grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                     <PicturePost v-for="(post, a) in profile_data.picture_posts" :key="a" :post="post" :user="user" :profile-page="true" />
                   </div>
                 </div>
@@ -533,8 +533,8 @@ const friend_check = () => {
 
   const remove_friend = () => {
     // console.log('removing friend')
-    user.friends.data = user.friends.filter((friend) => friend !== auth.user.nsight_id.nsight_id)
-    auth.user.friends.data = auth.user.friends.filter((friend) => friend !== user.nsight_id.nsight_id)
+    user.friends = user.friends.filter((friend) => friend !== auth.user.nsight_id.nsight_id)
+    auth.user.friends = auth.user.friends.filter((friend) => friend !== user.nsight_id.nsight_id)
     nextTick(() => {
       $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${user.id}`, {
         method: 'PUT',
@@ -556,7 +556,7 @@ const friend_check = () => {
   }
 
   const cancel_friend_request = () => {
-    user.pending_friends.data = user.pending_friends.filter((request) => request !== auth.user.nsight_id.nsight_id)
+    user.pending_friends = user.pending_friends.filter((request) => request !== auth.user.nsight_id.nsight_id)
     nextTick(() => {
       $fetch(`${config.public.NUXT_STRAPI_URL}/api/users/${user.id}`, {
         method: 'PUT',
