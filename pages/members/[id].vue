@@ -118,7 +118,7 @@
               <div v-if="state.active_tab.value === 'posts'" id="tab-posts" :class="[(state.active_tab.value === 'posts' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
                 <div class="w-full h-full overflow-y-scroll flex flex-col relative">
                   <NewPostInterface v-if="route.params.id === auth.user.nsight_id.nsight_id" :profile="profile_data" @newpost="add_new_post" />
-                  <div v-if="profile_data.posts" >
+                  <div v-if="profile_data.posts && state.friends" >
                     <ProfilePost v-for="post in profile_data.posts" :key="post.id" :post="post" :user="user" :profile-page="true" />
                   </div>
                 </div>
@@ -150,7 +150,7 @@
               <!-- Photos -->
               <div v-if="state.active_tab.value === 'photos'" id="tab-photos" :class="[(state.active_tab.value === 'photos' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
                 <div class="w-full h-full overflow-y-scroll flex flex-col relative">
-                  <div v-if="(route.params.id === auth.user.nsight_id.nsight_id) && auth.user" class="w-full flex flex-row p-2 justify-center align-center">
+                  <div v-if="(route.params.id === auth.user?.nsight_id?.nsight_id) && auth.user" class="w-full flex flex-row p-2 justify-center align-center">
                     <button 
                       class="bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1"
                       uk-toggle="target: #new_picture_post_modal"
@@ -169,7 +169,7 @@
 
                   </div>
                   <!-- -->
-                  <div v-if="profile_data.picture_posts" class="grid grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+                  <div v-if="profile_data.picture_posts && state.friends" class="grid grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                     <PicturePost v-for="(post, a) in profile_data.picture_posts" :key="a" :post="post" :user="user" :profile-page="true" />
                   </div>
                 </div>

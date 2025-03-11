@@ -19,14 +19,14 @@
           <div class="p-2 dark:text-white/80 uk-accordion-content h-[25vh] overflow-y-auto pb-10">
             <ul class="space-y-3 mb-10">
               <li v-for="comment in state.comment_thread.comments" :key="comment.id" class="flex flex-row px-4 pt-4 pb-6 shadow-md bg-zinc-100 dark:bg-neutral-400 rounded-md">
-                <a :href="`/members/${comment.commenter?.nsight_id?.nsight_id}`" class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
+                <a v-if="comment.visible" :href="`/members/${comment.commenter?.nsight_id?.nsight_id}`" class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
                   <img 
                     class="rounded-full w-12 h-12"
                     :src="comment.commenter.profile_picture ? comment.commenter.profile_picture.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" alt="profile picture"
                   >
                   <p class="text-xs m-0 text-neutral-800">{{ comment.commenter.first_name }}</p>
                 </a>
-                <div class="flex-1 flex flex-col justify-start items-start align-start ps-4">
+                <div v-if="comment.visible" class="flex-1 flex flex-col justify-start items-start align-start ps-4">
                   <p class="text-xs">{{ comment.createdAt }}</p>
                   <p class="text-md text-neutral-800 m-0" v-html="comment.body"></p>
                   <!-- thin divider: -->

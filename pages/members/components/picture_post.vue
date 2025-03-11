@@ -1,5 +1,6 @@
 <template>
   <div 
+    v-if="post.visible"
     class="picture-post w-full h-[380px] bg-cover bg-center rounded-lg shadow-xl relative" 
     :style="{ backgroundImage: `url(${post.data.images[0]?.url})` }"
   >
