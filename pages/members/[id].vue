@@ -153,7 +153,7 @@
               <div v-if="state.active_tab.value === 'posts'" id="tab-posts" :class="[(state.active_tab.value === 'posts' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
                 <div class="w-full h-full overflow-y-scroll flex flex-col relative">
                   <NewPostInterface v-if="route.params.id === auth.user.nsight_id.nsight_id" :profile="profile_data" @newpost="add_new_post" />
-                  <div v-if="profile_data.posts && state.friends" >
+                  <div v-if="(profile_data.posts && state.friends) || (profile_data.posts && state.self)" >
                     <ProfilePost v-for="post in profile_data.posts" :key="post.id" :post="post" :user="user" :profile-page="true" />
                   </div>
                 </div>
@@ -204,7 +204,7 @@
 
                   </div>
                   <!-- -->
-                  <div v-if="profile_data.picture_posts && state.friends" class="grid grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+                  <div v-if="(profile_data.picture_posts && state.friends) || (profile_data.picture_posts && state.self)" class="grid grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                     <PicturePost v-for="(post, a) in profile_data.picture_posts" :key="a" :post="post" :user="user" :profile-page="true" />
                   </div>
                 </div>
