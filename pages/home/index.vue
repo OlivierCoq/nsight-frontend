@@ -79,7 +79,7 @@
             </div>
             <!-- Feed body -->
             <div class="w-full overflow-y-scroll  pb-20 flex flex-col flex-1 mb-10">
-              <FeedCard v-for="(post, a) in state.feed" :key="a" :post="post" />
+              <FeedCard v-for="(post, a) in state.feed" :key="a" :post="post" :profile-page="false" :user="post?.users_permissions_user" />
             </div>
           </div>
           <div class="w-full lg:w-1/2 flex flex-col h-full m-2">

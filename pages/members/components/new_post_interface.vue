@@ -88,7 +88,8 @@
         number_of_votes: 0,
         vote: 0
       },
-      user: auth.user
+      users_permissions_user: auth.user?.id,
+      nsight_id: auth.user?.nsight_id?.nsigh_id
     },
     new_comment_thread: {
       post: null,

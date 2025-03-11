@@ -1,5 +1,5 @@
 <template>
-  <div class="pb-10"> 
+  <div class=""> 
     <div class="ctr-new-comment w-full mt-5 flex flex-row">
       <textarea v-model="state.new_comment.body" class="w-full p-2 rounded-md border border-neutral-300" placeholder="Add a comment..."></textarea>
       <button 
@@ -10,24 +10,28 @@
       >Post</button>
     </div>
     <div v-show="state.show_comments" class="ctr-comments flex flex-col mt-5 fade-in">
-      <ul class="relative space-y-3 uk-accordion" uk-accordion="active: 0">
-        <li class="uk-open">
-          <a :id="`accordion-handler-${target.id}`" class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#">
-              comment threads ({{ state.comment_thread.comments.length }})
+      <ul class="relative space-y-3 " uk-accordion>
+        <li :id="`comments_list-${target.id}`" >
+          <a 
+            :id="`accordion-handler-${target.id}`" 
+            class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#"
+
+          >
+              comment threads ({{ state.comment_thread?.comments?.length }})
               <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
           </a>
-          <div class="p-2 dark:text-white/80 uk-accordion-content h-[25vh] overflow-y-auto pb-10">
-            <ul class="space-y-3 mb-10">
-              <li v-for="comment in state.comment_thread.comments" :key="comment.id" class="flex flex-row px-4 pt-4 pb-6 shadow-md bg-zinc-100 dark:bg-neutral-400 rounded-md">
+          <div class="p-2 dark:text-white/80 uk-accordion-content h-[20vh] overflow-y-scroll pb-10">
+            <ul v-if="state.comment_thread?.comments?.length" class="space-y-3 mb-10">
+              <li v-for="comment in state.comment_thread?.comments" :key="comment.id" class="flex flex-row px-4 pt-4 pb-6 shadow-md bg-zinc-100 dark:bg-neutral-400 rounded-md">
                 <a v-if="comment.visible" :href="`/members/${comment.commenter?.nsight_id?.nsight_id}`" class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
                   <img 
                     class="rounded-full w-12 h-12"
-                    :src="comment.commenter.profile_picture ? comment.commenter.profile_picture.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" alt="profile picture"
+                    :src="comment?.commenter?.profile_picture ? comment?.commenter?.profile_picture?.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" alt="profile picture"
                   >
-                  <p class="text-xs m-0 text-neutral-800">{{ comment.commenter.first_name }}</p>
+                  <p class="text-xs m-0 text-neutral-800">{{ comment?.commenter?.first_name }}</p>
                 </a>
-                <div v-if="comment.visible" class="flex-1 flex flex-col justify-start items-start align-start ps-4">
-                  <p class="text-xs">{{ comment.createdAt }}</p>
+                <div v-if="comment?.visible" class="flex-1 flex flex-col justify-start items-start align-start ps-4">
+                  <p class="text-xs">{{ comment?.createdAt }}</p>
                   <p class="text-md text-neutral-800 m-0" v-html="comment.body"></p>
                   <!-- thin divider: -->
                   <div class="w-3/5 h-[1px] bg-zinc-800 opacity-[0.2] mt-5"></div>
@@ -160,8 +164,11 @@ const add_new_comment = async () => {
 
         const accordion_handler = document.getElementById(`accordion-handler-${props.target.id}`)
           // automatically click the accordion handler
-          nextTick(() => {
-            // accordion_handler.click()
+          // accordion_handler?.click()
+          nextTick(async() => {
+            // accordion_handler?.click()
+
+            
             state.show_comments = true
           })
 
@@ -225,7 +232,7 @@ const add_new_reply = async (comment) => {
 onMounted(() => {
 
 
-  props.target.comments.comments.forEach((comment) => {
+  props.target?.comments?.comments?.forEach((comment) => {
 
       comment['new_reply'] = {
         body: '',
@@ -239,6 +246,11 @@ onMounted(() => {
   state.show_comments = true
   nextTick(() => {
     // accordion_handler.click()
+    const comments_list = document.getElementById(`comments_list-${props.target.id}`)
+    // console.log('comments_list', comments_list)
+      // remove 'uk-open' class:
+      comments_list.classList.remove('uk-open')
+      state.show_comments = true
   })
 
   
