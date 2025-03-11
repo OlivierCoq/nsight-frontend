@@ -108,10 +108,45 @@ export default defineEventHandler(async (event) => {
       console.log("feed_arr", feed_arr);
     };
 
+    // Randomize order of feed_arr
+    const randomize = async () => {
+      feed_arr = feed_arr.sort(() => Math.random() - 0.5); 
+      await rankByUpvotes(feed_arr);
+    } 
+
+    // Sort feed_arr by post.reactions.upvotes:
+    const rankByUpvotes = async (arr: any) => {
+      let new_arr = arr
+      feed_arr = await new_arr.sort((a, b) => (a.reactions.upvotes < b.reactions.upvotes) ? 1 : -1);
+      await rankByDate(feed_arr);
+    }
+
+    // Then sort new feed_arr by post.createdAt. So highest ranking, AND newest posts are at the top.
+    const rankByDate = async (arr: any) => {
+      let new_arr = arr;
+      feed_arr = await new_arr.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
+      await rankByComments(new_arr);
+    }
+
+    // Sort by highest number of post.comments.comments.length
+    const rankByComments = async (arr: any) => {
+      feed_arr = await arr.sort((a, b) => (a.comments.comments.length < b.comments.comments.length) ? 1 : -1);
+      // await rankByReplies(feed_arr);
+    }
+
+    // Sort by highest number of post.comments.comments.replies.length
+    const rankByReplies = async (arr: any) => {
+      feed_arr = await arr.sort((a, b) => (a.comments?.comments?.replies?.length > b.comments?.comments?.replies?.length) ? 1 : -1);
+    }
 
     // Call the fetchPosts function and wait for it to complete
     await fetchPosts();
     await fetchPicturePosts();
+    await randomize();
+    
+    
+
+
 
     // Return the response only after all fetch calls are completed
     if (feed_arr.length) {

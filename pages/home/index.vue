@@ -32,7 +32,7 @@
           
         </div>
 
-         <div class="max-w-[85%] mx-auto flex flex-col lg:flex-row w-full h-[90vh]">
+         <div class="max-w-[90%] mx-auto flex flex-col lg:flex-row w-full h-[90vh]">
           <!-- feed -->
           <div class="w-full lg:w-1/2 flex flex-col h-full m-2 overflow-y-scroll">
 
@@ -325,7 +325,8 @@
       },
       body: JSON.stringify({
         user: auth?.user,
-        token: auth?.token
+        token: auth?.token,
+        tags: []
       })
     }).then(async (result) => {
       console.log('feed result', result);

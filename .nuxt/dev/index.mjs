@@ -3987,8 +3987,32 @@ const fetch_post = defineEventHandler(async (event) => {
       feed_arr = [...feed_arr, ...posts_response.data];
       console.log("feed_arr", feed_arr);
     };
+    const randomize = async () => {
+      feed_arr = feed_arr.sort(() => Math.random() - 0.5);
+      await rankByUpvotes(feed_arr);
+    };
+    const rankByUpvotes = async (arr) => {
+      let new_arr = arr;
+      feed_arr = await new_arr.sort((a, b) => a.reactions.upvotes < b.reactions.upvotes ? 1 : -1);
+      await rankByDate(feed_arr);
+    };
+    const rankByDate = async (arr) => {
+      let new_arr = arr;
+      feed_arr = await new_arr.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1);
+      await rankByComments(new_arr);
+    };
+    const rankByComments = async (arr) => {
+      feed_arr = await arr.sort((a, b) => a.comments.comments.length < b.comments.comments.length ? 1 : -1);
+    };
+    const rankByReplies = async (arr) => {
+      feed_arr = await arr.sort((a, b) => {
+        var _a2, _b, _c, _d, _e, _f;
+        return ((_c = (_b = (_a2 = a.comments) == null ? void 0 : _a2.comments) == null ? void 0 : _b.replies) == null ? void 0 : _c.length) > ((_f = (_e = (_d = b.comments) == null ? void 0 : _d.comments) == null ? void 0 : _e.replies) == null ? void 0 : _f.length) ? 1 : -1;
+      });
+    };
     await fetchPosts();
     await fetchPicturePosts();
+    await randomize();
     if (feed_arr.length) {
       return {
         status: 200,
