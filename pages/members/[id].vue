@@ -13,12 +13,47 @@
                 <div class="relative md:w-40 md:h-40 h-16 w-16 rounded-full overflow-hidden md:border-[6px] border-gray-100 shrink-0 dark:border-slate-900"> 
                   <img :src="user?.profile_picture ? user?.profile_picture?.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" alt="" class="w-full h-full absolute object-cover">
                 </div>
-                  <!-- <button type="button" class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-white shadow p-1.5 rounded-full sm:flex hidden"> <ion-icon name="camera" class="text-2xl md hydrated" role="img" aria-label="camera"></ion-icon></button> -->
+                  <button v-if="state.self" type="button" class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-white shadow p-1.5 rounded-full sm:flex hidden" uk-toggle="target: #upload_pfp_modal"> 
+                    <font-awesome-icon :icon="['fas', 'camera']" class="text-lg text-amber-500" />
+                  </button>
+
+                  <!-- Upload profile picture: -->
+                   <div v-if="state.self" class="lg:p-20 p-10 uk-modal" id="upload_pfp_modal" uk-modal="">
+ 
+                    <div class="uk-modal-dialog tt relative mx-auto bg-zinc-900 rounded-lg shadow-xl w-[400px]" :key="state.comp">
+                      <div>
+                        <EditProfilePicture :profile="profile_data" @update-profile-pic="update_profile_pic" :post="{}" />
+                      </div>
+                      <button id="close_pfp_modal" class="absolute top-2 right-2 uk-modal-close" type="button" uk-modal-close>
+                        <font-awesome-icon :icon="['fas', 'times']" />
+                      </button>
+                    </div>
+                  </div>
+                   
               </div>
               <div class="max-w-2x flex-1">
                 <h3 class="md:text-xl text-base font-semibold text-black dark:text-white"> {{ user?.first_name }} {{ user?.last_name }}</h3>        
                 <p class="sm:text-sm text-blue-600 mt-1 font-normal text-xs">{{ user?.nsight_id?.nsight_id }}</p>                
-                <p v-if="profile_data?.intro" class="text-sm lg:text-md mt-2 md:font-normal text-white" v-html="profile_data?.intro"></p>
+                <div
+                  class="relative"
+                >
+                  <p v-if="profile_data?.intro" class="text-sm lg:text-md mt-2 md:font-normal text-white" v-html="profile_data?.intro"></p>
+                  <div v-if="state.self" class="absolute top-0 right-0 bg-zinc-900/60 rounded-full p-2 hover:bg-amber-500/80 cursor-pointer h-[40px] w-[40px] flex justify-center items-center" uk-toggle="target: #edit_intro_modal">
+                    <font-awesome-icon :icon="['fas', 'pen']" class="text-md text-white" />
+                  </div>
+                  <div v-if="state.self" class="lg:p-20 p-10 uk-modal" id="edit_intro_modal" uk-modal="" :key="state.comp">
+ 
+                    <div class="uk-modal-dialog tt relative mx-auto bg-zinc-900 rounded-lg shadow-xl w-[400px]">
+                      <div>
+                        <EditIntro :profile="profile_data" @update-intro="update_intro" />
+                      </div>
+                      <button id="close_edit_intro_modal" class="absolute top-2 right-2 uk-modal-close" type="button" uk-modal-close>
+                        <font-awesome-icon :icon="['fas', 'times']" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                </div>
                 <p class="mt-2 space-x-2 text-gray-500 text-sm hidden" style="margin-top: 11px; "><a href="#" class="inline-block">Travel</a> . <a href="#" class="inline-block">Business</a> . <a href="#" class="inline-block">Technolgy</a>  </p>
                 
                 <div class="flex md:items-end justify-between md:mt-8 mt-4 max-md:flex-col gap-4">
@@ -205,6 +240,10 @@ definePageMeta({
   import FriendCard from '~/components/common/FriendCard.vue'
   import NewPicturePostInterface from './components/new_picture_post_interface.vue'
   import PicturePost from './components/picture_post.vue'
+
+    // Editing Profile
+  import EditIntro from './components/profile/EditIntro.vue'
+  import EditProfilePicture from './components/profile/EditProfilePicture.vue'
 
 
     // Use asyncData to fetch data from the server
@@ -573,6 +612,28 @@ const friend_check = () => {
       }).catch((error) => {
         console.error('Error cancelling friend request', error)
       })
+    })
+  }
+
+  // Profile
+  const update_intro = (data: any) => {
+    profile_data.intro = data
+    let close_edit_intro_modal = document.getElementById('close_edit_intro_modal')
+    close_edit_intro_modal?.click()
+    nextTick(()=> {
+      state.comp += 1
+      close_edit_intro_modal?.click()
+    })
+  }
+
+  const update_profile_pic = (data: any) => {
+    console.log('data', data)
+    user.profile_picture = data
+    let close_pfp_modal = document.getElementById('close_pfp_modal')
+    close_pfp_modal?.click()
+    nextTick(()=> {
+      state.comp += 1
+      close_pfp_modal?.click()
     })
   }
 

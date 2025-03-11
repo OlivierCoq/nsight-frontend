@@ -234,7 +234,9 @@ const new_nsight_member = reactive({
   progenitor: [auth?.user],
   friends: [auth?.user?.nsight_id?.nsight_id],
   pending_friends: [],
-  profile_picture: {},
+  profile_picture: {
+    url: "https://res.cloudinary.com/nsight/image/upload/v1741669063/placeholder_pfp_204bc22162.jpg"
+  },
   favorites: {
     products: [],
     users: [],
