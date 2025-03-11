@@ -329,7 +329,10 @@
           </div>
         </div> 
 
-
+        <div class="w-[80%] ms-2 min-h-[40px] bg-black/20 rounded-lg shadow-xl fade-in p-4 absolute bottom-[6rem] hidden xl:block flex flex-col  flex-wrap">
+          <p class="font-thin text-sm text-zinc-200 text-start">{{ state.quote?.quote_body[0]?.children[0]?.text }}</p>
+          <a class="text-amber-200 hover:text-amber-300 text-xs text-end ms-10" :href="state.quote?.link ?? '#'">- {{ state.quote.author }}</a>
+        </div>
 
       </nav>
 
@@ -494,6 +497,8 @@ const state = reactive({
     messages: [],
     total: 0,
   },
+  quote: "",
+  quotes: [],
   // Any:
   toasts: [] as any[],
 });
@@ -581,14 +586,11 @@ const getFriendRequests = async () => {
     console.log('Error getting friend requests', error)
   }  
 }
-
 const notifications_total = async () => {
   state.notifications.total = 
     state.notifications?.friend_requests?.length + 
     state.notifications?.messages?.length;
 }
-
-
 const getNotifications = async (toast: any) => {
   // console.log('getting notifications')
   if(toast) {
@@ -608,8 +610,30 @@ const getNotifications = async (toast: any) => {
 
 }
 
+// Quotes
+const pull_quote = () => {
+  if (state.quotes) {
+    let random = Math.floor(Math.random() * state.quotes.length);
+    state.quote = state.quotes[random];
+  }
+};
+const quotes = async () => {
+  const res = await $fetch(
+    `${config.public.NUXT_STRAPI_URL}/api/quotes?populate=*`,
+    { method: "GET" }
+  )
+    .then((res) => {
+      state.quotes = res.data;
+      pull_quote();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // Mounted
 onMounted(() => {
+  quotes()
   getNotifications(false)
 })
 

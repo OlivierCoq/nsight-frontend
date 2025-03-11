@@ -38,12 +38,12 @@
                   class="relative"
                 >
                   <p v-if="profile_data?.intro" class="text-sm lg:text-md mt-2 md:font-normal text-white" v-html="profile_data?.intro"></p>
-                  <div v-if="state.self" class="absolute top-0 right-0 bg-zinc-900/60 rounded-full p-2 hover:bg-amber-500/80 cursor-pointer h-[40px] w-[40px] flex justify-center items-center" uk-toggle="target: #edit_intro_modal">
+                  <div v-if="state.self" class="absolute top-0 right-0 bg-zinc-900/60 rounded-full p-2 hover:bg-amber-500/80 cursor-pointer h-[40px] w-[40px] flex justify-center items-center"  uk-toggle="target: #edit_intro_modal">
                     <font-awesome-icon :icon="['fas', 'pen']" class="text-md text-white" />
                   </div>
                   <div v-if="state.self" class="lg:p-20 p-10 uk-modal" id="edit_intro_modal" uk-modal="" :key="state.comp">
  
-                    <div class="uk-modal-dialog tt relative mx-auto bg-zinc-900 rounded-lg shadow-xl w-[400px]">
+                    <div class="uk-modal-dialog tt relative mx-auto bg-zinc-900 rounded-lg shadow-xl w-[400px] h-[400px]">
                       <div>
                         <EditIntro :profile="profile_data" @update-intro="update_intro" />
                       </div>
@@ -221,7 +221,7 @@
   </template>
 <script setup lang="ts">
 
-definePageMeta({
+  definePageMeta({
     middleware: ["auth"],
     layout: "inner",
   })
@@ -366,7 +366,9 @@ const feedNum = () => {
     comp: 0,
     friends: null,
     pending_request: null,
-    self: null
+    self: null,
+    intro_modal: false,
+    pfp_modal: false
   })
 
   // Mounted
@@ -645,5 +647,8 @@ const friend_check = () => {
   }
   .new-post-modal {
     width: 60vw !important;
+  }
+  .p-editor-content {
+    min-height: 10rem !important;
   }
 </style>

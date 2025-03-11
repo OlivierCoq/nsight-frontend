@@ -1,8 +1,12 @@
 <template>
   <div class="w-full flex flex-col p-4">
     <h3 class="text-xl text-neutral-800 px-4">Edit your intro</h3>
-    <div class="w-full flex flex-col">
-      <Editor v-model="state.intro" class="w-full rounded-md mb-2" :placeholder="state.intro" />
+    <div :id="`ctr-editor-${profile.id}`" class="w-full flex flex-col">
+      <textarea 
+        class="intro_text w-full p-2 rounded-md border border-neutral-300 bg-transparent" 
+        placeholder="Add an intro..."
+        v-model="state.intro"
+      ></textarea>
       <div class="w-full mt-10">
         <button 
             class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" 
@@ -18,7 +22,7 @@
   // Setup
   const config = useRuntimeConfig()
   import qs from 'qs'
-  import Editor from 'primevue/editor';
+  // import Editor from 'primevue/editor';
 
   // props:
   const props = defineProps({
@@ -38,6 +42,7 @@
   const state = reactive({
     intro: props.profile.intro
   })
+  
 
   // methods
   const update_profile = async () => {
@@ -61,6 +66,8 @@
 
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+  .intro_text {
+    min-height: 14rem !important;
+  }
 </style>

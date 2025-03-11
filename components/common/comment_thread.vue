@@ -161,7 +161,7 @@ const add_new_comment = async () => {
         const accordion_handler = document.getElementById(`accordion-handler-${props.target.id}`)
           // automatically click the accordion handler
           nextTick(() => {
-            accordion_handler.click()
+            // accordion_handler.click()
             state.show_comments = true
           })
 
