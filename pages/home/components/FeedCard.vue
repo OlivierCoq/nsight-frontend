@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2 shadow-xl bg-zinc-900 rounded-md px-4 lg:px-10 py-6 lg:py-8 flex flex-col fade-in">
+  <div class="mb-4 shadow-xl bg-zinc-900 rounded-md px-4 lg:px-10 py-6 lg:py-8 flex flex-col fade-in">
     <div class="w-full flex flex-row">
       <a :href="`/members/${user?.nsight_id?.nsight_id}`">
         <div class="rounded-full lg:w-16 lg:h-16 w-10 h-10 overflow-hidden flex flex-col justify-center items-center">

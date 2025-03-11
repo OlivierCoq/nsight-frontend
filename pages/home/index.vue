@@ -32,7 +32,7 @@
           
         </div>
 
-         <div class="max-w-[95%] mx-auto flex flex-col lg:flex-row w-full h-[90vh]">
+         <div class="max-w-[85%] mx-auto flex flex-col lg:flex-row w-full h-[90vh]">
           <!-- feed -->
           <div class="w-full lg:w-1/2 flex flex-col h-full m-2 overflow-y-scroll">
 
@@ -338,6 +338,7 @@
   const add_new_post = (new_post: any) => {
     
     new_post['users_permissions_user'] = auth?.user
+    new_post['type'] = 'post'
     if(!state.feed?.length) {
       console.log(new_post)
       state?.feed?.push(new_post)

@@ -70,7 +70,7 @@
       },
       visible: true,
       users_permissions_user: props?.user?.id,
-      nsight_id: props?.user?.nsight_id?.nsigh_id,
+      nsight_id: props?.user?.nsight_id?.nsight_id,
       comments: null,
       reactions: {
         upvotes: 0,
