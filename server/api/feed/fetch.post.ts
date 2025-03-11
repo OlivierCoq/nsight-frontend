@@ -51,7 +51,9 @@ export default defineEventHandler(async (event) => {
           'Authorization': `Bearer ${post_data.token}`
         }
       });
-
+      posts_response.data.forEach((post: any) => { 
+        post.type = 'post';
+      });
       feed_arr = [...feed_arr, ...posts_response.data];
       console.log("feed_arr", feed_arr);
     };
@@ -99,6 +101,9 @@ export default defineEventHandler(async (event) => {
         }
       });
 
+      posts_response.data.forEach((post: any) => { 
+        post.type = 'picture-post';
+      });
       feed_arr = [...feed_arr, ...posts_response.data];
       console.log("feed_arr", feed_arr);
     };

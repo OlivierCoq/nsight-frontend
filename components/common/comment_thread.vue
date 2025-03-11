@@ -20,8 +20,8 @@
               comment threads ({{ state.comment_thread?.comments?.length }})
               <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
           </a>
-          <div class="p-2 dark:text-white/80 uk-accordion-content h-[20vh] overflow-y-scroll pb-10">
-            <ul v-if="state.comment_thread?.comments?.length" class="space-y-3 mb-10">
+          <div class="p-2 dark:text-white/80 uk-accordion-content h-[20vh] overflow-y-auto pb-10">
+            <ul class="space-y-3 mb-10"> 
               <li v-for="comment in state.comment_thread?.comments" :key="comment.id" class="flex flex-row px-4 pt-4 pb-6 shadow-md bg-zinc-100 dark:bg-neutral-400 rounded-md">
                 <a v-if="comment.visible" :href="`/members/${comment.commenter?.nsight_id?.nsight_id}`" class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
                   <img 
@@ -120,13 +120,14 @@ const add_new_comment = async () => {
       ...props.target.comments.comments,
       {
         body: state.new_comment.body,
-        commenter: auth.user
+        commenter: auth.user,
+        visible: true
       }
     ]
     
   }
   if(props.postType === 'picture-post') {
-    postObj['picture-post'] = props.target.id
+    postObj['picture_post'] = props.target.id
   } else {
     postObj['post'] = props.target.id
   }
@@ -141,12 +142,13 @@ const add_new_comment = async () => {
       },
       body: JSON.stringify(postObj)
     }).then((res) => {
-      // console.log('new comment added', res)
+      console.log('new comment added', res)
 
       // update the local state
       state.comment_thread.comments.push({
           body: state.new_comment.body,
-          commenter: auth.user
+          commenter: auth.user,
+          visible: true
         })
 
         state.comment_thread.comments.forEach((comment) => {

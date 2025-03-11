@@ -12,7 +12,7 @@
         </div>
         <p class="text-2xl text-gray-400 mt-2 mb-4">{{ post.title }}</p>
         <!-- Pictures -->
-        <div class="w-full flex flex-col justify-center align-center items-center mb-4">
+        <div v-if="post.type === 'picture-post'" class="w-full flex flex-col justify-center align-center items-center mb-4">
           <div v-if="post.data && post?.data?.images && post?.data?.images?.length">
             <div class="relative uk-slider uk-slider-container" tabindex="0" uk-slider="finite: true; autoplay: true">
             
@@ -51,7 +51,7 @@
         </div>
         <div class="text-lg text-gray-400" v-html="post.body"></div>
         <Reactions :post="post" :post-type="'posts'" :user="user" :profilePage="profilePage" />
-        <CommentThread :target="post" :user="user" :profilePage="profilePage" />
+        <CommentThread :target="post" :user="user" :profilePage="profilePage" :post-type="post.type" />
       </div>
     </div>
 
