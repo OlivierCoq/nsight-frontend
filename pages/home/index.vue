@@ -337,7 +337,7 @@
 
   const add_new_post = (new_post: any) => {
     
-    new_post['user'] = user
+    new_post['users_permissions_user'] = auth?.user
     if(!state.feed?.length) {
       console.log(new_post)
       state?.feed?.push(new_post)
@@ -348,6 +348,7 @@
     nextTick(() => {
       // auto_sort_posts()
       // get element with id of close_new_post_modal and click it
+      state.comp += 1
       document.getElementById('close_new_post_modal').click()
 
     })

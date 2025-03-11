@@ -89,7 +89,7 @@
         vote: 0
       },
       users_permissions_user: auth.user?.id,
-      nsight_id: auth.user?.nsight_id?.nsigh_id
+      nsight_id: auth.user?.nsight_id?.nsight_id
     },
     new_comment_thread: {
       post: null,
