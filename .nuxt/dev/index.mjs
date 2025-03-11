@@ -3890,6 +3890,20 @@ const resetPassword_post$1 = /*#__PURE__*/Object.freeze({
 const fetch_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("body", post_data);
+  let feed_arr = [];
+  try {
+  } catch {
+    return {
+      status: 500,
+      data: [],
+      message: "Error"
+    };
+  } finally {
+    return {
+      status: 200,
+      data: feed_arr
+    };
+  }
 });
 
 const fetch_post$1 = /*#__PURE__*/Object.freeze({

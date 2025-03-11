@@ -328,8 +328,8 @@
         token: auth?.token
       })
     }).then(async (result) => {
-      console.log('result', result);
-      // state.feed = result;
+      console.log('feed result', result);
+      state.feed = result?.data;
     }).catch((error) => {
       console.error('Error fetching feed', error)
     })

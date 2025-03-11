@@ -37,7 +37,7 @@
           <!-- quotes -->
           <div class="w-full mt-20 mx-auto my-5">
             <p v-if="state.quote" class="text-neutral-900 dark:text-white text-xl">
-                " {{ state.quote.quote_body[0].children[0].text }} "
+                " {{ state.quote?.body }} "
             </p>
             <small class="text-md ">
             <a :href="state.quote.link ? state.quote.link : 'javascript:(0)'"
