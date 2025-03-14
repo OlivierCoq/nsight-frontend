@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="prodStore?.products"
     id="products"
     class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-20 relative"
   >
@@ -18,48 +17,14 @@
               <div
                 class="flex items-center gap-4 text-neutral-900 dark:text-white"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  width="24"
-                  class="hover:cursor-pointer"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M9 19c0 1.1.9 2 2 2s2-.9 2-2"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M9 19c0 1.1.9 2 2 2s2-.9 2-2"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16 19c0 1.1.9 2 2 2s2-.9 2-2"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16 19c0 1.1.9 2 2 2s2-.9 2-2"
-                  />
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M5 5h14M5 5l7 14L5 5z"
-                  />
-                </svg>
+                <font-awesome-icon :icon="['fas', 'shopping-cart']" class="hover:cursor-pointer" />
                 <span>Cart</span>
                 <!-- Number of items in cart: -->
                 <span
                   v-if="prodStore?.cart?.checkout?.order?.order?.lineItems?.length"
                   class="bg-yellow-500 text-white text-sm rounded-full h-[25px] w-[25px] flex items-center justify-center"
                 >
-                  {{ prodStore.cart.checkout.order.order.lineItems.length }}
+                  {{ prodStore?.cart?.checkout?.order?.order?.lineItems?.length }}
                 </span>
               </div>
             </a>
@@ -82,7 +47,7 @@
                     href="#"
                     class="flex items-center md:p-4 p-2.5 border-transparent text-black border-black dark:text-white dark:border-white"
                     :class="{ 'active-tab': state.active_tab == a }"
-                    @click="state.active_tab = a"
+                    @click="send_category(tab.name, tab.pagination, a)"
                   >
                     {{ tab.name }}
                   </a>
@@ -124,6 +89,7 @@
                 >
                   <option
                     v-for="(filter, a) in state.filters"
+                    :key="a"
                     @click="set_filter(filter.id)"
                     class="hover:cursor-pointer"
                   >
@@ -133,23 +99,45 @@
               </div>
             </div>
           </div>
-          <div
-            v-if="state.active_filter == 0"
-            class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 mt-2"
-            uk-scrollspy="target: > div; cls: uk-animation-slide-bottom-small; delay: 100"
-          >
-            <ProductCard
-              v-for="(product, i) in prodStore.products"
-              :key="i"
-              :product="product"
-            />
+
+          <!-- tab content -->
+          <div v-if="!state.search.isActive" class="flex flex-col items-center">
+            <div v-for="(tab, a) in state.tabs" :key="a">
+              <div
+                id="market_tab"
+                class="flex flex-col items-center"
+                uk-switcher="connect: #product-nav ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium"
+              >
+                <div class="flex flex-col items-center">
+                  <div
+                    v-if="state.active_tab == a"
+                    class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 mt-2"
+                    uk-scrollspy="target: > div; cls: uk-animation-slide-bottom-small; delay: 100"
+                  >
+                    <ProductCard
+                      v-for="(product, b) in tab.products"
+                      :key="b"
+                      :product="product"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!-- search content -->
+           <div v-else>
+
+           </div>
+
+
         </div>
       </div>
     </main>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
+
 definePageMeta({
   middleware: ["auth"],
   layout: "inner",
@@ -160,6 +148,7 @@ definePageMeta({
 import ProductCard from "./components/ProductCard.vue";
 
 const prodStore = productsStore();
+
 const state = reactive({
   search: {
     isActive: false,
@@ -193,31 +182,67 @@ const state = reactive({
       id: 0,
       name: "All",
       isActive: true,
+      pagination: {
+        page: 1,
+        limit: 10
+      },
+      products: []
     },
     {
       id: 1,
       name: "Men",
       isActive: false,
+      pagination: {
+        page: 1,
+        limit: 10
+      },
+      products: []
     },
     {
       id: 2,
       name: "Women",
       isActive: false,
+      pagination: {
+        page: 1,
+        limit: 10
+      },
+      product: []
     },
     {
       id: 3,
       name: "Kids",
       isActive: false,
+      pagination: {
+        page: 1,
+        limit: 10
+      },
+      products: []
     },
   ],
-  active_tab: 0,
+  active_tab: 0
 });
 
-const set_filter = (id) => {
+// Lifecycle
+onMounted( () => {
+  
+  state.tabs[0].products = prodStore?.products;
+})
+
+
+const set_filter = (id: Number) => {
   state.filters.forEach((filter) => {
     filter.isActive = filter.id === id;
   });
 };
+
+const send_category = async (category: string, pagination: any, index: number) => {
+
+
+    // Future callback to get products by category
+  state.active_tab = index
+}
+
+
 </script>
 <style lang="scss">
 .active-tab {

@@ -59,6 +59,7 @@
               </div>
               <div class="ctr-new_picture_posts">
                 <button 
+                  id="close_new_picture_post"
                   class="bg-amber-400 hover:bg-amber-500 text-center text-neutral-100 dark:text-white px-4 py-2 rounded-lg shadow-md mx-1"
                   uk-toggle="target: #new_picture_post_modal"
                 >
@@ -355,9 +356,18 @@
 
     })
   }
-  const update_picture_posts = () => {
+  const update_picture_posts = (new_post: any) => {
     // grab_picture_posts()
-    
+    new_post['users_permissions_user'] = auth?.user
+    new_post['type'] = 'picture-post'
+    new_post['type'] = 'post'
+    if(!state.feed?.length) {
+      console.log(new_post)
+      state?.feed?.push(new_post)
+    } else {
+      console.log(new_post)
+      state?.feed?.unshift(new_post)
+    }
     nextTick(() => {
       // Find in dom id of '#close_new_picture_post' and click it
       document.getElementById('close_new_picture_post').click()

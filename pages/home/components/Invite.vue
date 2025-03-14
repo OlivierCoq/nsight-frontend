@@ -256,9 +256,7 @@ const new_nsight_member = reactive({
     billing: null,
   },
   selected_payment_method: null,
-  payment_methods: {
-    data: [],
-  },
+  payment_methods: [],
   cart_obj: {
 
   },

@@ -3,6 +3,9 @@ import type { Serialize, Simplify } from 'nitropack'
 declare module 'nitropack' {
   type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
   interface InternalApi {
+    '/api/boilerplate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/boilerplate.post').default>>>>
+    }
     '/api/chat/actions/send-message': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/chat/actions/send-message.post').default>>>>
     }
@@ -27,6 +30,9 @@ declare module 'nitropack' {
     '/api/feed/fetch': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/feed/fetch.post').default>>>>
     }
+    '/api/square/boilerplate': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/boilerplate.post').default>>>>
+    }
     '/api/square/create-card': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/create-card.post').default>>>>
     }
@@ -35,6 +41,9 @@ declare module 'nitropack' {
     }
     '/api/square/create-customer': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/create-customer.post').default>>>>
+    }
+    '/api/square/customers/create-card': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/customers/create-card.post').default>>>>
     }
     '/api/square/list-catalog': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/list-catalog.post').default>>>>
@@ -47,6 +56,12 @@ declare module 'nitropack' {
     }
     '/api/square/place-order': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/place-order.post').default>>>>
+    }
+    '/api/square/products/list': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/products/list.post').default>>>>
+    }
+    '/api/square/products/retrieve-item': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/products/retrieve-item.post').default>>>>
     }
     '/api/square/retrieve-item': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/retrieve-item.post').default>>>>

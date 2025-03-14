@@ -64,6 +64,9 @@
 
   // Stores:
   const auth = authStore()
+
+  // Emits:
+  const emits = defineEmits(['close'])
   
 
   // Setup
@@ -119,8 +122,6 @@
     },
   });
   
-  // Emits:
-  const emit = defineEmits(['close'])
 
   // Methods
   const toggle_tab = (tab) => {
@@ -259,24 +260,26 @@ watch(
 
             // billingAddress: address,
 
-            const newCard = await $fetch("/api/square/create-card", {
+            const newCard = await $fetch("/api/square/customers/create-card", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body,
             });
-            console.log("createCardResponse", newCard);
+            // console.log("createCardResponse", newCard);
 
-            auth.user.payment_methods.push(newCard);
+            auth.user.payment_methods.push(JSON.parse(newCard?.body?.card));
             if (!auth.user.selected_payment_method) {
-              auth.user.selected_payment_method = newCard;
+              auth.user.selected_payment_method = JSON.parse(newCard?.body?.card)
             }
             nextTick(() => {
 
               auth.updateUser();
               state.success = "Payment method added successfully!";
               state.dialog = false;
+
+              emits('close')
             });
 
             // const paymentResults = await createPayment(token);

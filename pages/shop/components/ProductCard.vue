@@ -6,8 +6,8 @@
           class="relative w-full md:h-60 h-56 transition-all group-hover:scale-110 duration-300"
         >
           <img
-            :src="props.product.images[0]?.url"
-            :alt="props.product.item_data?.name"
+            :src="props.product.images[0]?.imageData?.url"
+            :alt="props.product.itemData?.name"
             class="object-cover w-full h-full inset-0 hover:cursor-pointer"
           />
         </div>
@@ -26,6 +26,7 @@
 
     <!-- Product modal -->
     <div
+      v-if="state.modal"
       class="lg:p-20 p-10 uk-modal"
       id="product_modal"
       uk-modal=""
@@ -39,7 +40,7 @@
           <div class="w-full md:w-[66%]">
             <img
               :src="state.main_img"
-              :alt="props.product.item_data?.name"
+              :alt="props.product.itemData?.name"
               class="object-cover w-full h-full inset-0 hover:cursor-pointer"
             />
           </div>
@@ -52,22 +53,10 @@
             >
               <button
                 type="button"
-                class="bg-white rounded-full p-2 absolute right-0 top-0 m-3 dark:bg-zinc-600 uk-modal-close"
+                class="bg-white rounded-full p-2 absolute right-0 top-0 m-3 dark:bg-zinc-600 uk-modal-close h-[30px] w-[30px] flex flex-col justify-center items-center"
+                @click="close_modal"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  :stroke="settings.dark_mode ? 'white' : 'black'"
-                  class="w-6 h-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  ></path>
-                </svg>
+                <font-awesome-icon :icon="['fas', 'times']" class="text-white" />
               </button>
             </div>
 
@@ -123,11 +112,11 @@
               <h2
                 class="text-2xl font-bold text-neutral-900 dark:text-white mb-5"
               >
-                {{ props.product.item_data?.name }}
+                {{ props.product.itemData?.name }}
               </h2>
               <p
                 class="text-lg font-thin text-neutral-900 dark:text-white mb-10"
-                v-html="props.product.item_data?.description"
+                v-html="props.product.itemData?.description"
               ></p>
               <div class="ctr-price">
                 <p
@@ -143,17 +132,40 @@
               <div
                 class="w-full flex flex-col justify-center place-content-center"
               >
-                <label
-                  for="quantity"
-                  class="text-neutral-800 dark:text-white text-sm mb-2"
-                  >Quantity</label
-                >
+                
                 <div class="flex flex-col">
-                  <input
-                    type="number"
-                    v-model="state.quantity"
-                    class="my-2 bg-transparent border border-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-1/2 p-2.5 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  />
+                  
+                  <div class="w-full flex flex-col justify-start mb-2">
+                    <label for="quantity" class="text-neutral-800 dark:text-white text-sm mb-2">Quantity</label>
+                    <input
+                      type="number"
+                      v-model="state.quantity"
+                      class="my-2 bg-transparent border border-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-1/2 p-2.5 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    />
+                  </div>
+                  
+                  <div v-if="state.product.options[0]?.itemOptionData?.name == 'Size'" class="w-full flex flex-col justify-start mb-2">
+                    <label
+                      for="size"
+                      class="text-neutral-800 dark:text-white text-sm mb-2"
+                    >
+                      Size
+                    </label>
+                    <!-- Select: -->
+                    <select
+                      v-model="state.selected"
+                      class="my-2 bg-transparent border border-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-1/2 p-2.5 dark:bg-transparent dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                      <option
+                        v-for="(variation, a) in state.product?.itemData?.variations"
+                        :key="a"
+                        :value="variation"
+                      >
+                        {{ variation.itemVariationData.name }}
+                      </option>
+                    </select>
+                  </div>
+                  
                   <div class="w-full flex flex-row">
                     <!-- add to cart button -->
                     <button
@@ -180,6 +192,7 @@
                     </button>
                   </div>
                 </div>
+                
               </div>
 
               <!-- Variation details: -->
@@ -192,23 +205,24 @@
                   <p
                     class="text-md font-thin text-neutral-900 dark:text-white lowercase"
                   >
-                    <strong>Style:</strong> &nbsp;
-                    <span v-if="state.selected">{{
+                    <strong v-if="state.product.options[0]?.itemOptionData?.name !== 'Size'">Options:</strong> &nbsp;
+                    <span v-if="state.selected && state.product.options[0]?.itemOptionData?.name !== 'Size'">{{
                       state.selected?.itemVariationData.name
                     }}</span>
                   </p>
+
                   <ul
                     v-if="
-                      state.product.item &&
-                      state.product.item.itemData.variations.length
+                      state.selected &&
+                      state.product.itemData?.variations?.length &&
+                      state.product.options[0]?.itemOptionData?.name !== 'Size'
                     "
                     class="-ml-2 uk-slider-items w-[calc(100%+0.875rem)]"
                     uk-scrollspy="target: > li; cls: uk-animation-slide-right-small; delay: 50"
                     uk-lightbox=""
                   >
                     <li
-                      v-for="variation in state.product.item.itemData
-                        .variations"
+                      v-for="(variation, a) in state.product?.itemData?.variations" :key="a"
                       class="lg:w-1/2 sm:w-[90%] w-1/2 pr-3.5 max-lg:hidden uk-animation-fade"
                       uk-scrollspy-class="uk-animation-fade"
                     >
@@ -225,8 +239,8 @@
                         >
                           <img
                             class="rounded-lg w-full h-full object-cover inset-0"
-                            :src="variation.images[0]?.url"
-                            :alt="variation.name"
+                            :src="variation.images[0]?.imageData?.url"
+                            :alt="variation.itemVariationData?.name"
                             @click="select_variation(variation)"
                           />
                         </div>
@@ -243,14 +257,14 @@
 
     <div class="py-2 flex flex-col justify-between">
       <span class="text-neutral-900 dark:text-white font-thin">
-        {{ props.product.item_data?.name }}
+        {{ props.product.itemData?.name }}
       </span>
       <span class="text-neutral-900 dark:text-white font-thin text-sm">
         $
         {{
           format_price(
-            props.product.item_data.variations[0].item_variation_data
-              .price_money.amount,
+            props.product?.itemData?.variations[0]?.itemVariationData?.priceMoney?.amount
+
           )
         }}
       </span>
@@ -280,11 +294,13 @@ const state = reactive({
     message: "",
   },
   selected_option: null,
+  selected: null,
   quantity: 1,
   variations: {
     selected: null,
     options: [],
   },
+  options: [],
 });
 
 const go_to_product = (permalink) => {
@@ -304,7 +320,7 @@ const in_favorites = () => {
   return auth?.user?.favorites?.products?.includes(props.product.id);
 };
 
-const toggle_favorite = (product) => {
+const toggle_favorite = (product) => { 
   if (!auth.user.favorites) {
     auth.user.favorites = { products: [] };
   }
@@ -327,66 +343,31 @@ const format_currency = (amount, currency) => {
 };
 
 const open_modal = () => {
-  $fetch("/api/square/retrieve-item", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(props.product.id),
-  })
-    .then((res) => {
-      state.product = res;
-      state.product["images"] = [];
-      state.product["categories"] = [];
+  state.loading = false
+  state.product = props.product;
+  
 
-      state.product.related.forEach((obj) => {
-        if (obj.type === "IMAGE") {
-          obj["modal"] = false;
-          state.product["images"].push(obj);
-        }
-        if (obj.type === "CATEGORY") {
-          state.product["categories"].push(obj);
-        }
-      });
+  // Set the selected variation to the first one
+  state.selected = props.product.itemData.variations[0];
+  state.main_img = props.product.itemData.variations[0].images[0]?.imageData?.url;
 
-      state.selected = state?.product?.item?.itemData?.variations?.length
-        ? state.product.item.itemData.variations[0]
-        : state.product.item;
-      state.main_img = state.product.images[0].imageData.url;
+  nextTick(() => {
+    state.modal = true;
+  });
 
-      // Loop through every variation and loop through each variation's customAttributeValues, and then push the name into state.variations.titles. Make sure to remove duplicates
-      state.product.item.itemData.variations?.forEach((variation) => {
-        // push variation.customAttributeValues.name into state.variations.titles. Make sure to remove duplicates
-        if (
-          !state.variations?.titles?.includes(
-            Object.entries(variation.customAttributeValues)[0][1],
-          ).name
-        ) {
-          state.variations?.titles?.push(
-            Object.entries(variation?.customAttributeValues)[0][1]?.name,
-          );
-        }
-        if (
-          !state.variations?.titles?.includes(
-            Object.entries(variation.customAttributeValues)[0][1],
-          )
-        ) {
-          state.variations?.options.push(
-            Object.entries(variation?.customAttributeValues)[0][1],
-          );
-        }
-      });
-
-      state.loading = false;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 };
+
+const close_modal = () => {
+  state.loading = true;
+  state.product = null;
+  state.modal = false;
+}
 
 const select_variation = (variation) => {
   state.selected = variation;
-  state.main_img = variation.images[0].url;
+  nextTick(() => {
+    state.main_img = state.selected?.images[0]?.imageData?.url;
+  });
 };
 
 const add_to_cart = () => {
@@ -394,11 +375,11 @@ const add_to_cart = () => {
   state.loading = true;
 
   const line_item_obj = {
-    id: state.selected?.id ? state.selected?.id : state.product.item.id,
+    id: state.selected?.id ? state.selected?.id : state.product.id,
     quantity: state.quantity,
     name: state.selected?.itemVariationData?.name
       ? state.selected?.itemVariationData?.name
-      : state.product.item.itemData.name,
+      : state.product.itemData.name,
     images: state.selected?.images
       ? state.selected?.images
       : state.product.images,
@@ -407,10 +388,10 @@ const add_to_cart = () => {
     basePriceMoney: {
       amount: state.selected?.itemVariationData?.priceMoney?.amount
         ? state.selected?.itemVariationData?.priceMoney?.amount
-        : state.product.item.itemData.variations[0].priceMoney.amount,
+        : state.product.itemData.variations[0].priceMoney.amount,
       currency: state.selected?.itemVariationData?.priceMoney?.currency
         ? state.selected?.itemVariationData?.priceMoney?.currency
-        : state.product.item.itemData.variations[0].priceMoney.currency,
+        : state.product.itemData.variations[0].priceMoney.currency,
     },
   };
 
@@ -420,7 +401,9 @@ const add_to_cart = () => {
   state.toast.show = true;
   state.toast.message = `"${state.selected.itemVariationData.name}" added to cart!`;
   setTimeout(() => {
-    state.toast.show = false;
+    nextTick(() => {
+      state.toast.show = false;
+    });
   }, 4000);
 };
 

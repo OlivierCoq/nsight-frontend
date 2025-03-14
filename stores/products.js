@@ -141,17 +141,24 @@ export const productsStore = defineStore({
       }
     },
     getProducts() {
+
+      console.log('getting products...')
     
-      $fetch(`/api/square/list-catalog`, {
+      $fetch(`/api/square/products/list`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",
         },
+        body: JSON.stringify({
+          category: 'All'
+        })
       }).then((square_res) => {
         // console.log('square_res', square_res);
-        this.products = square_res.products
-        this.categories = square_res.categories
+        this.products = JSON.parse(square_res?.body?.products)
+        this.categories = JSON.parse(square_res?.body?.categories)
+      }).catch((err) => {
+        console.error('Error fetching products', err)
       });
     },
     add_to_cart(product) { 

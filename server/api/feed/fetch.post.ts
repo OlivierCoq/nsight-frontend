@@ -55,7 +55,7 @@ export default defineEventHandler(async (event) => {
         post.type = 'post';
       });
       feed_arr = [...feed_arr, ...posts_response.data];
-      console.log("feed_arr", feed_arr);
+      // console.log("feed_arr", feed_arr);
     };
 
     // Fetch picture posts
@@ -105,7 +105,7 @@ export default defineEventHandler(async (event) => {
         post.type = 'picture-post';
       });
       feed_arr = [...feed_arr, ...posts_response.data];
-      console.log("feed_arr", feed_arr);
+      // console.log("feed_arr", feed_arr);
     };
 
     // Randomize order of feed_arr
@@ -132,7 +132,7 @@ export default defineEventHandler(async (event) => {
     const rankByComments = async (arr: any) => {
       feed_arr = await arr.sort((a, b) => (a.comments.comments.length < b.comments.comments.length) ? 1 : -1);
       // await rankByReplies(feed_arr);
-    }
+    } 
 
     // Sort by highest number of post.comments.comments.replies.length
     const rankByReplies = async (arr: any) => {
