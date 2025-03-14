@@ -35,6 +35,7 @@
 //     lineItem['catalogObjectId'] = lineItem.id
 //     // remove lineItem.name, because it's not a valid field for the Square API:
 //     delete lineItem.name
+//     if ( lineItem.parent_name ) { delete lineItem.parent_name }
 //   });
 //   // Square API doesn't like BigInts, so we need to convert them to strings.
 //   const post_data_string = JSONBig.stringify(post_data.order, (_, v) => typeof v === 'bigint' ? v.toString() : v);

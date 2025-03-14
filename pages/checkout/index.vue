@@ -313,9 +313,11 @@
                             </div>
                             <div class="w-full flex flex-col">
                               <div class="w-full flex flex-row justify-between items-center p-4 border-b dark:border-zinc-700" v-for="(item, i) in prodStore.cart?.checkout?.order?.order?.lineItems" :key="i">
-                                <div class="w-1/3 flex flex-row">
-                                  <img :src="item.images[0]?.url" class="w-12 h-12 me-2" />
-                                  <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ item.name }}</p>
+                                <div class="w-1/3 flex flex-col">
+                                  <!-- <img :src=""  /> -->
+                                  <div class="w-12 h-12 me-2 bg-cover bg-center mb-4" :style="{backgroundImage : `url(${item.images[0]?.imageData?.url})`}"></div>
+                                  <p class="text-sm text-neutral-900 dark:text-white font-thin m-0">{{ item.parent_name }}</p>
+                                  <small class="text-xs text-neutral-900 dark:text-white font-thin m-0">{{ item.name }}</small>
                                 </div>
                                 <div class="w-1/3"></div>
                                 <div class="w-1/3 flex flex-col justify-end items-end">
@@ -623,7 +625,7 @@
           pending: false,
         },
       });
-    console.log('paymentRequest', paymentRequest)
+    // console.log('paymentRequest', paymentRequest)
 
     const applePayButton = document.getElementById('apple-pay-button');
 
@@ -761,7 +763,7 @@
 
       // - Send to Square's API via a POST request to /api/square/create-checkout:
       // - recieve object with order details
-      const place_order_data = await $fetch('/api/square/place-order', {
+      const place_order_data = await $fetch('/api/square/orders/place-order', {
         method: 'POST',
         body: JSON.stringify( prodStore?.cart?.checkout?.order )
       })
@@ -777,10 +779,10 @@
       */
 
       // Update user's account in Strapi with order details:
-        // GitHub Copilot, please loop through place_order_data?.data?.result?.order?.lineItems, match with prodStore.cart.checkout.order.order.lineItems, and add images to each item:
+        // GitHub Copilot, please loop through place_order_data?.data?.order?.lineItems, match with prodStore.cart.checkout.order.order.lineItems, and add images to each item:
         // Assuming place_order_data and prodStore are defined and have the expected structure
-        if (place_order_data?.data?.result?.order?.lineItems && prodStore.cart.checkout.order.order.lineItems) {
-          place_order_data.data.result.order.lineItems.forEach((item: any) => {
+        if (place_order_data?.data?.order?.lineItems && prodStore.cart.checkout.order.order.lineItems) {
+          place_order_data.data.order.lineItems.forEach((item: any) => {
             const matchingItem = prodStore.cart.checkout.order.order.lineItems.find(
               (prodItem: any) => prodItem.id === item.catalogObjectId
             );
@@ -791,7 +793,7 @@
           });
           nextTick(() => {
             // Update the user's account in Strapi with the updated order details
-            auth?.user?.orders?.push(place_order_data?.data?.result?.order)
+            auth?.user?.orders?.push(place_order_data?.data?.order)
           });
         }
       
@@ -898,21 +900,21 @@
     // PROCESS PAYMENT:
 
       // - Pay order using client.ordersApi.payOrder('order_id')
-        const pay_order_data = await $fetch('/api/square/pay-order', {
+        const pay_order_data = await $fetch('/api/square/orders/pay-order', {
           method: 'POST',
           body: JSON.stringify({
-            order_id: place_order_data?.data?.result?.order?.id,
+            order_id: place_order_data?.data?.order?.id,
             idempotencyKey: uuidv4(),
             sourceId: state.selected_payment_method.card ? state.selected_payment_method?.card.id : state.selected_payment_method.id,
             amountMoney: {
-              amount: place_order_data?.data?.result?.order?.totalMoney?.amount,
-              currency: place_order_data?.data?.result?.order?.totalMoney?.currency
+              amount: place_order_data?.data?.order?.totalMoney?.amount,
+              currency: place_order_data?.data?.order?.totalMoney?.currency
             },
-            customerId: place_order_data?.data?.result?.order?.customerId,
-            locationId: place_order_data?.data?.result?.order?.locationId
+            customerId: place_order_data?.data?.order?.customerId,
+            locationId: place_order_data?.data?.order?.locationId
           })
         })
-        console.log('pay_order_data', pay_order_data)
+        // console.log('pay_order_data', pay_order_data)
 
           // - recieve object with order 
       // - User gets email with Order info
@@ -923,9 +925,9 @@
         // - Shipping Status
 
         // - Order appears in Admin Dashboard > Orders tab, with:
-        if(pay_order_data?.data?.result?.payment?.status === 'COMPLETED') {
+        if(pay_order_data?.status === 200) {
 
-          console.log('Payment successful', pay_order_data?.data?.result?.payment?.status)
+          console.log('Payment successful')
 
 
 
@@ -1046,7 +1048,7 @@
             },
             body,
           });
-          console.log("paymentResponse", paymentResponse);
+          // console.log("paymentResponse", paymentResponse);
           if (paymentResponse.status == "COMPLETED") {
             return paymentResponse;
           }
@@ -1118,14 +1120,14 @@
 
             // billingAddress: address,
 
-            const newCard = await $fetch("/api/square/create-card", {
+            const newCard = await $fetch("/api/square/customers/create-card", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body,
             });
-            console.log("createCardResponse", newCard);
+            // console.log("createCardResponse", newCard);
 
             auth.user.payment_methods?.push(newCard);
             if (!auth.user.selected_payment_method) {

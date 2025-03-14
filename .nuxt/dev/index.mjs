@@ -3258,6 +3258,8 @@ const _lazy_xPwnBM = () => Promise.resolve().then(function () { return createChe
 const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post; });
 const _lazy_0w5yvC = () => Promise.resolve().then(function () { return createCard_post$1; });
 const _lazy_ocOO4q = () => Promise.resolve().then(function () { return listCatalog_post; });
+const _lazy_WI6bJW = () => Promise.resolve().then(function () { return payOrder_post$2; });
+const _lazy_zs2xcI = () => Promise.resolve().then(function () { return placeOrder_post$2; });
 const _lazy_hWPhL2 = () => Promise.resolve().then(function () { return payOrder_post; });
 const _lazy_lOjqNk = () => Promise.resolve().then(function () { return payment_post; });
 const _lazy_D8ffMl = () => Promise.resolve().then(function () { return placeOrder_post; });
@@ -3289,6 +3291,8 @@ const handlers = [
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/customers/create-card', handler: _lazy_0w5yvC, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/list-catalog', handler: _lazy_ocOO4q, lazy: true, middleware: false, method: "post" },
+  { route: '/api/square/orders/pay-order', handler: _lazy_WI6bJW, lazy: true, middleware: false, method: "post" },
+  { route: '/api/square/orders/place-order', handler: _lazy_zs2xcI, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/pay-order', handler: _lazy_hWPhL2, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/payment', handler: _lazy_lOjqNk, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/place-order', handler: _lazy_D8ffMl, lazy: true, middleware: false, method: "post" },
@@ -4058,13 +4062,13 @@ const fetch_post$1 = /*#__PURE__*/Object.freeze({
   default: fetch_post
 });
 
-const environment$2 = SquareEnvironment.Sandbox;
-const token$2 = process.env.SQUARE_ACCESS_TOKEN;
+const environment$4 = SquareEnvironment.Sandbox;
+const token$4 = process.env.SQUARE_ACCESS_TOKEN;
 const boilerplate_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("Coming from the front end", post_data);
   try {
-    const client = new SquareClient({ environment: environment$2, token: token$2 });
+    const client = new SquareClient({ environment: environment$4, token: token$4 });
   } catch (error) {
     console.error("Error retrieving item", error);
     return {
@@ -4141,6 +4145,151 @@ const createCard_post$1 = /*#__PURE__*/Object.freeze({
 
 const listCatalog_post = /*#__PURE__*/Object.freeze({
   __proto__: null
+});
+
+const environment$3 = SquareEnvironment.Sandbox;
+const token$3 = process.env.SQUARE_ACCESS_TOKEN;
+const payOrder_post$1 = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  console.log("Pay Order Data front end", post_data);
+  try {
+    const client = new SquareClient({ environment: environment$3, token: token$3 });
+    const response = await client.payments.create({
+      idempotencyKey: post_data.idempotencyKey,
+      sourceId: post_data.sourceId,
+      customerId: post_data.customerId,
+      locationId: post_data.locationId,
+      orderId: post_data.order_id,
+      amountMoney: {
+        amount: BigInt(post_data.amountMoney.amount),
+        currency: post_data.amountMoney.currency
+      }
+    });
+    return {
+      status: 200,
+      body: JSONBig.parse(JSONBig.stringify(response))
+    };
+  } catch (error) {
+    console.error("Error retrieving item", error);
+    return {
+      status: 500,
+      body: {
+        message: `An error occurred processing payment: ${error}`,
+        errors: JSON.parse(error == null ? void 0 : error.body)
+      }
+    };
+  }
+});
+
+const payOrder_post$2 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: payOrder_post$1
+});
+
+const rnds8Pool = new Uint8Array(256); // # of random values to pre-allocate
+
+let poolPtr = rnds8Pool.length;
+function rng() {
+  if (poolPtr > rnds8Pool.length - 16) {
+    crypto.randomFillSync(rnds8Pool);
+    poolPtr = 0;
+  }
+
+  return rnds8Pool.slice(poolPtr, poolPtr += 16);
+}
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+
+const byteToHex = [];
+
+for (let i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).slice(1));
+}
+
+function unsafeStringify(arr, offset = 0) {
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  return byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]];
+}
+
+const native = {
+  randomUUID: crypto.randomUUID
+};
+
+function v4(options, buf, offset) {
+  if (native.randomUUID && !buf && !options) {
+    return native.randomUUID();
+  }
+
+  options = options || {};
+  const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (let i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return unsafeStringify(rnds);
+}
+
+const environment$2 = SquareEnvironment.Sandbox;
+const token$2 = process.env.SQUARE_ACCESS_TOKEN;
+const placeOrder_post$1 = defineEventHandler(async (event) => {
+  var _a;
+  const post_data = await readBody(event);
+  console.log("Coming from the front end", post_data);
+  const client = new SquareClient({ environment: environment$2, token: token$2 });
+  if (!((_a = post_data == null ? void 0 : post_data.order) == null ? void 0 : _a.lineItems)) {
+    throw new Error("Missing required fields in post_data");
+  }
+  post_data.idempotencyKey = v4();
+  post_data.order.idempotencyKey = v4();
+  post_data.order.lineItems.forEach((lineItem) => {
+    if (typeof lineItem.quantity !== "number" || typeof lineItem.basePriceMoney.amount !== "number") {
+      throw new Error("Invalid data types in lineItem");
+    }
+    lineItem.quantity = lineItem.quantity.toString();
+    lineItem.basePriceMoney.amount = BigInt(lineItem.basePriceMoney.amount);
+    lineItem["catalogObjectId"] = lineItem.id;
+    delete lineItem.name;
+    if (lineItem.parent_name) {
+      delete lineItem.parent_name;
+    }
+  });
+  try {
+    const response = await client.orders.create({
+      idempotencyKey: v4(),
+      order: post_data.order
+    });
+    return {
+      statusCode: 200,
+      data: JSONBig.parse(JSONBig.stringify(response))
+    };
+  } catch (error) {
+    console.error("An error occurred:", error);
+    return {
+      statusCode: 500,
+      data: {
+        error
+      }
+    };
+  }
+});
+
+const placeOrder_post$2 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: placeOrder_post$1
 });
 
 const payOrder_post = /*#__PURE__*/Object.freeze({

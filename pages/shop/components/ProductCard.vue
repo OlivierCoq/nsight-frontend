@@ -249,6 +249,13 @@
                   </ul>
                 </div>
               </div>
+
+              <div class="flex min-h-[50px] w-full mb-5">
+                <div v-show="state.toast.show" class="w-full h-full bg-green-400 border border-2 border-green-500 rounded-lg shadow-xl p-4 flex flex-col justify-start fade-in">
+                  <p class="text-white text-xl" v-html="state.toast.message"></p>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -345,15 +352,26 @@ const format_currency = (amount, currency) => {
 const open_modal = () => {
   state.loading = false
   state.product = props.product;
+
+  if(state.product.itemData.variations) {
+    state.product.itemData.variations.forEach((variation) => {
+      variation['parent_name'] = state.product.itemData.name;
+    })
+  }
   
 
-  // Set the selected variation to the first one
-  state.selected = props.product.itemData.variations[0];
-  state.main_img = props.product.itemData.variations[0].images[0]?.imageData?.url;
-
   nextTick(() => {
-    state.modal = true;
-  });
+      // Set the selected variation to the first one
+    state.selected = props.product.itemData.variations[0];
+    state.main_img = props.product.itemData.variations[0].images[0]?.imageData?.url;
+
+    nextTick(() => {
+      state.modal = true;
+    });
+
+  })
+  
+
 
 };
 
@@ -373,9 +391,14 @@ const select_variation = (variation) => {
 const add_to_cart = () => {
   // add product to cart
   state.loading = true;
+  state.toast.show = false
+  state.toast.message = ""
 
   const line_item_obj = {
     id: state.selected?.id ? state.selected?.id : state.product.id,
+    parent_name: state.selected?.parent_name
+      ? state.selected?.parent_name
+      : state.product.itemData.name,
     quantity: state.quantity,
     name: state.selected?.itemVariationData?.name
       ? state.selected?.itemVariationData?.name
@@ -398,11 +421,14 @@ const add_to_cart = () => {
   // Add to cart
   prodStore.add_to_cart(line_item_obj);
 
-  state.toast.show = true;
-  state.toast.message = `"${state.selected.itemVariationData.name}" added to cart!`;
+  nextTick(()=> {
+    state.toast.show = true;
+    state.toast.message = `"${state.selected.parent_name}" (${line_item_obj.name}) <br/> added to cart!`;
+  })
   setTimeout(() => {
     nextTick(() => {
       state.toast.show = false;
+      state.toast.message = "";
     });
   }, 4000);
 };

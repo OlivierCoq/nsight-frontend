@@ -48,6 +48,12 @@ declare module 'nitropack' {
     '/api/square/list-catalog': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/list-catalog.post').default>>>>
     }
+    '/api/square/orders/pay-order': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/orders/pay-order.post').default>>>>
+    }
+    '/api/square/orders/place-order': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/orders/place-order.post').default>>>>
+    }
     '/api/square/pay-order': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/pay-order.post').default>>>>
     }

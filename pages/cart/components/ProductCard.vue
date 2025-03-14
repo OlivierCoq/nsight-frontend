@@ -1,10 +1,13 @@
 <template>
   <div class="fade-in w-full mb-3 me-3">  
-    <div class="w-full flex items-center h-[175px] flex-wrap justify-between overflow-hidden rounded-lg shadow-sm border1 bg-zinc-100 dark:bg-zinc-900">
-       <div class="bg-cover bg-center w-1/4 h-full" :style="{ backgroundImage: `url(${props?.product?.images[0]?.url})` }"></div>
-       <div class="w-3/4 h-full flex flex-col p-4 items-start justify-start align-start">
-        <div class="w-full flex flex-row justify-between items-start align-start mb-6">
-          <h5 class="text-md text-neutral-900 dark:text-white m-0 w-1/2">{{ props?.product?.name }}</h5>  
+    <div class="w-full flex items-center h-[185px] flex-wrap justify-between overflow-hidden rounded-lg shadow-sm border1 bg-zinc-100 dark:bg-zinc-900">
+       <div class="bg-cover bg-center w-1/4 h-full" :style="{ backgroundImage: `url(${props?.product?.images[0]?.imageData?.url})` }"></div>
+       <div class="w-3/4 h-full flex flex-col py-4 px-6 items-start justify-start align-start">
+        <div class="w-full flex flex-row justify-between items-start align-start mb-1">
+          <div class="w-full">
+            <h5 class="text-xl text-neutral-900 dark:text-white m-0 w-1/2">{{ props?.product?.parent_name }}</h5>  
+            <h6 class="text-lg text-neutral-900 dark:text-white m-0 w-1/2 font-thin">{{ props?.product?.name }}</h6>  
+          </div>
           <p class="text-lg text-neutral-700 dark:text-neutral-300 font-thin m-0">
             {{ format_currency(props?.product?.basePriceMoney?.amount, props?.product?.basePriceMoney?.currency) }}
           </p>
