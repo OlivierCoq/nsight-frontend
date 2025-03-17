@@ -154,7 +154,7 @@ export const productsStore = defineStore({
           category: 'All'
         })
       }).then((square_res) => {
-        // console.log('square_res', square_res);
+        console.log('square_res', square_res);
         this.products = JSON.parse(square_res?.body?.products)
         this.categories = JSON.parse(square_res?.body?.categories)
       }).catch((err) => {

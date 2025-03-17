@@ -63,6 +63,7 @@
                   type="text"
                   class="!bg-transparent focus:!border-transparent focus:!ring-transparent w-full"
                   placeholder="Search"
+                  @input="active_search"
                 />
               </div>
 
@@ -102,16 +103,17 @@
 
           <!-- tab content -->
           <div v-if="!state.search.isActive" class="flex flex-col items-center">
-            <div v-for="(tab, a) in state.tabs" :key="a">
+            <div v-for="(tab, a) in state.tabs" :key="a" class="w-full">
               <div
+                v-if="state.active_tab == a"
                 id="market_tab"
-                class="flex flex-col items-center"
+                class="flex flex-col items-center w-full"
                 uk-switcher="connect: #product-nav ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium"
               >
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center w-full">
                   <div
-                    v-if="state.active_tab == a"
-                    class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 mt-2"
+                    
+                    class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 mt-2 w-full"
                     uk-scrollspy="target: > div; cls: uk-animation-slide-bottom-small; delay: 100"
                   >
                     <ProductCard
@@ -127,7 +129,24 @@
 
           <!-- search content -->
            <div v-else>
-
+              <div
+                id="market_tab"
+                class="flex flex-col items-center w-full"
+                uk-switcher="connect: #product-nav ; animation: uk-animation-slide-right-medium, uk-animation-slide-left-medium"
+              >
+                <div class="flex flex-col items-center w-full">
+                  <div
+                    class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 mt-2 w-full"
+                    uk-scrollspy="target: > div; cls: uk-animation-slide-bottom-small; delay: 100"
+                  >
+                    <ProductCard
+                      v-for="(product, b) in state.search.items"
+                      :key="b"
+                      :product="product"
+                    />
+                  </div>
+                </div>
+              </div>
            </div>
 
 
@@ -153,6 +172,7 @@ const state = reactive({
   search: {
     isActive: false,
     query: "",
+    items: []
   },
   filters: [
     {
@@ -179,7 +199,6 @@ const state = reactive({
   active_filter: 0,
   tabs: [
     {
-      id: 0,
       name: "All",
       isActive: true,
       pagination: {
@@ -189,8 +208,7 @@ const state = reactive({
       products: []
     },
     {
-      id: 1,
-      name: "Men",
+      name: "Men's",
       isActive: false,
       pagination: {
         page: 1,
@@ -199,8 +217,7 @@ const state = reactive({
       products: []
     },
     {
-      id: 2,
-      name: "Women",
+      name: "Women's",
       isActive: false,
       pagination: {
         page: 1,
@@ -209,8 +226,8 @@ const state = reactive({
       product: []
     },
     {
-      id: 3,
-      name: "Kids",
+
+      name: "Accessories",
       isActive: false,
       pagination: {
         page: 1,
@@ -218,14 +235,32 @@ const state = reactive({
       },
       products: []
     },
+    {
+      id: 5,
+      name: "Uni",
+      isActive: false,
+      pagination: {
+        page: 1,
+        limit: 10
+      },
+      products: []
+    }
   ],
   active_tab: 0
 });
 
 // Lifecycle
-onMounted( () => {
+onMounted( async() => {
   
   state.tabs[0].products = prodStore?.products;
+  nextTick(async() => {
+
+    state.search.items = state.tabs[0].products;
+    await auto_sort("Men's", 1);
+    await auto_sort("Women's", 2);
+    await auto_sort("Accessories", 3);
+    await auto_sort("Uni", 4);
+  })
 })
 
 
@@ -242,6 +277,33 @@ const send_category = async (category: string, pagination: any, index: number) =
   state.active_tab = index
 }
 
+// interface Tab {
+//   id: number;
+//   name: string;
+//   isActive: boolean;
+//   pagination: {
+//     page: number;
+//     limit: number;
+//   };
+//   products: any[];
+// }
+
+const auto_sort = async (category: string, index: number) => {
+  prodStore?.categories?.forEach((cat) => {
+    if(cat?.categoryData.name === category) {
+      state.tabs[index].products = cat?.products;
+    }
+  })
+
+}
+
+
+const active_search = () => {
+  // state.search.items filled with search results:
+  state.search.items = state.tabs[0].products.filter((product) => {
+    return product.itemData.name.toLowerCase().includes(state.search.query.toLowerCase());
+  });
+}
 
 </script>
 <style lang="scss">

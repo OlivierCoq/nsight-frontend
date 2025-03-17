@@ -60,13 +60,15 @@
               </button>
             </div>
 
-            <!-- purchase toast -->
+            <!-- purchase toast 
+              v-show="state.toast.show" 
+            -->
             <div
-              v-show="state.toast.show"
+              v-if="state.toast.library"
               class="p-2 border fade-in fade-out bg-green-50 border-green-500/30 rounded-xl dark:bg-zinc-700 fixed top-[15px] right-[30px] z-50 min-w-[26rem]"
             >
               <div class="flex flex-row items-start align-center">
-                <!-- icon -->
+               
                 <div
                   class="p-1 text-white bg-green-500 shadow rounded-xl shadow-green-300 me-4"
                 >
@@ -144,7 +146,7 @@
                     />
                   </div>
                   
-                  <div v-if="state.product.options[0]?.itemOptionData?.name == 'Size'" class="w-full flex flex-col justify-start mb-2">
+                  <div v-if=" state.product.options && state.product.options[0]?.itemOptionData?.name == 'Size'" class="w-full flex flex-col justify-start mb-2">
                     <label
                       for="size"
                       class="text-neutral-800 dark:text-white text-sm mb-2"
@@ -205,8 +207,8 @@
                   <p
                     class="text-md font-thin text-neutral-900 dark:text-white lowercase"
                   >
-                    <strong v-if="state.product.options[0]?.itemOptionData?.name !== 'Size'">Options:</strong> &nbsp;
-                    <span v-if="state.selected && state.product.options[0]?.itemOptionData?.name !== 'Size'">{{
+                    <strong v-if="state.product.options && state.product.options[0]?.itemOptionData?.name !== 'Size'">Options:</strong> &nbsp;
+                    <span v-if="state.selected && state.product.options && state.product.options[0]?.itemOptionData?.name !== 'Size'">{{
                       state.selected?.itemVariationData.name
                     }}</span>
                   </p>
@@ -215,6 +217,7 @@
                     v-if="
                       state.selected &&
                       state.product.itemData?.variations?.length &&
+                      state.product.options &&
                       state.product.options[0]?.itemOptionData?.name !== 'Size'
                     "
                     class="-ml-2 uk-slider-items w-[calc(100%+0.875rem)]"
@@ -362,8 +365,8 @@ const open_modal = () => {
 
   nextTick(() => {
       // Set the selected variation to the first one
-    state.selected = props.product.itemData.variations[0];
-    state.main_img = props.product.itemData.variations[0].images[0]?.imageData?.url;
+    state.selected =  props.product.itemData.variations[0];
+    state.main_img = props.product.itemData.variations[0].images ? props.product.itemData.variations[0].images[0]?.imageData?.url : props.product.images[0]?.imageData?.url;
 
     nextTick(() => {
       state.modal = true;

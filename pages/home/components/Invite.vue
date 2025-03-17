@@ -231,7 +231,7 @@ const new_nsight_member = reactive({
   // password: thisObj.generate_random_password()
   // password: "P@ssW3rd9756",
   password: generate_random_password(),
-  progenitor: [auth?.user],
+  progenitor: [auth?.user?.id],
   friends: [auth?.user?.nsight_id?.nsight_id],
   pending_friends: [],
   profile_picture: {

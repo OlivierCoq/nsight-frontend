@@ -60,51 +60,63 @@ export default defineEventHandler(async (event) => {
     }
 
     const fetchProductOptions = async (product: any) => {
-      if(product.itemData?.itemOptions && product.itemData?.itemOptions?.length > 0) {
-        console.log('grabbing options..')
-        const optionPromises = product?.itemData?.itemOptions?.map(async (option: any) => {
-          const optionResponse = await client.catalog.object.get({
-            objectId: option.itemOptionId
+      console.log('product itemData options', product.itemData.itemOptions);
+      if(!product.itemData.itemOptions) {
+        console.log('no options found');
+        return;
+      } 
+      else {
+        if(product.itemData?.itemOptions && (product.itemData?.itemOptions?.length > 0)) {
+          console.log('grabbing options..')
+          const optionPromises = product.itemData.itemOptions.map(async (option: any) => {
+            const optionResponse = await client.catalog.object.get({
+              objectId: option.itemOptionId
+            });
+            return optionResponse.object;
           });
-          return optionResponse.object;
-        });
-        product['options'] = await Promise.all(optionPromises);
-        console.log('product options', product.options);
+          product['options'] = await Promise.all(optionPromises);
+          // console.log('product options', product.options);
+        }
       }
     }
 
-    // Black Front, Yellow Visor, Black Mesh
-    // White Front, Black Visor, Black Mesh
-
     const fetchProductImages = async (product: any) => {
       // console.log('product itemData', product.itemData.imageIds);
-
-      if (product.itemData?.imageIds && product?.itemData?.imageIds?.length > 0) {
+      if(!product.itemData.imageIds) {
+        await fetchProductOptions(product);
+        products.push(product);
+        return;
+      }
+      else {
+        if (product.itemData?.imageIds && product?.itemData?.imageIds?.length > 0) {
         
-        const imagePromises = product.itemData.imageIds.map(async (imageId: string) => {
+        const imagePromises = product?.itemData?.imageIds?.map(async (imageId: string) => {
           const imageResponse = await client.catalog.object.get({
             objectId: imageId
           });
           return imageResponse.object;
         });
         product['images'] = await Promise.all(imagePromises);
-        // console.log('product images', product.images);
-        // console.log('product', product);
-        if(product.itemData.variations && product.itemData.variations.length > 0) {
-          
-          for (const variation of product.itemData.variations) {
-            const variationImagePromises = variation.itemVariationData.imageIds.map(async (imageId: string) => {
-              const imageResponse = await client.catalog.object.get({
-                objectId: imageId
-              });
-              return imageResponse.object;
+          // console.log('product images', product.images);
+          // console.log('product', product);
+          if(product?.itemData?.variations && (product?.itemData?.variations?.length > 0)) {
+            // console.log('variation images...', product.itemData.variations);
+            for (const variation of product.itemData.variations) {
+              if(variation.itemVariationData?.imageIds && (variation.itemVariationData?.imageIds?.length > 0)) {
+                const variationImagePromises = variation?.itemVariationData?.imageIds?.map(async (imageId: string) => {
+                const imageResponse = await client.catalog.object.get({
+                    objectId: imageId
+                  });
+                  return imageResponse.object;
+                }
+              );
+              variation['images'] = await Promise.all(variationImagePromises);
+              }
             }
-            );
-            variation['images'] = await Promise.all(variationImagePromises);
           }
+          await fetchProductOptions(product);
+          products.push(product);
         }
-        await fetchProductOptions(product);
-        products.push(product);
       }
     };
 
@@ -131,7 +143,24 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    const populate_categories = async () => {
+      categories.forEach(async (category) => {
+        category['products'] = [];
+        for(const product of products) {
+          if(product.itemData.categories) {
+            product.itemData.categories.forEach((prod_category: any) => {
+              if(prod_category.id === category.id) {
+                category.products.push(product);
+              }
+            })
+          }
+        }
+      })
+    }
+
     await fetchProducts();
+    await populate_categories();
+    // await fetchCategories();
 
     if(products.length) {
 
@@ -159,11 +188,11 @@ export default defineEventHandler(async (event) => {
     }
   }
 }
-  catch {
+  catch (error) {
     return {
       status: 400,
       body: {
-        message: "An error occurred while fetching products."
+        message: `An error occurred while fetching products: ${error}`
       }
     }
   }

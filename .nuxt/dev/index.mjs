@@ -4317,44 +4317,57 @@ const list_post = defineEventHandler(async (event) => {
       token: token$1
     });
     const fetchProductOptions = async (product) => {
-      var _a, _b, _c, _d, _e;
-      if (((_a = product.itemData) == null ? void 0 : _a.itemOptions) && ((_c = (_b = product.itemData) == null ? void 0 : _b.itemOptions) == null ? void 0 : _c.length) > 0) {
-        console.log("grabbing options..");
-        const optionPromises = (_e = (_d = product == null ? void 0 : product.itemData) == null ? void 0 : _d.itemOptions) == null ? void 0 : _e.map(async (option) => {
-          const optionResponse = await client.catalog.object.get({
-            objectId: option.itemOptionId
+      var _a, _b, _c;
+      console.log("product itemData options", product.itemData.itemOptions);
+      if (!product.itemData.itemOptions) {
+        console.log("no options found");
+        return;
+      } else {
+        if (((_a = product.itemData) == null ? void 0 : _a.itemOptions) && ((_c = (_b = product.itemData) == null ? void 0 : _b.itemOptions) == null ? void 0 : _c.length) > 0) {
+          console.log("grabbing options..");
+          const optionPromises = product.itemData.itemOptions.map(async (option) => {
+            const optionResponse = await client.catalog.object.get({
+              objectId: option.itemOptionId
+            });
+            return optionResponse.object;
           });
-          return optionResponse.object;
-        });
-        product["options"] = await Promise.all(optionPromises);
-        console.log("product options", product.options);
+          product["options"] = await Promise.all(optionPromises);
+        }
       }
     };
     const fetchProductImages = async (product) => {
-      var _a, _b, _c;
-      if (((_a = product.itemData) == null ? void 0 : _a.imageIds) && ((_c = (_b = product == null ? void 0 : product.itemData) == null ? void 0 : _b.imageIds) == null ? void 0 : _c.length) > 0) {
-        const imagePromises = product.itemData.imageIds.map(async (imageId) => {
-          const imageResponse = await client.catalog.object.get({
-            objectId: imageId
-          });
-          return imageResponse.object;
-        });
-        product["images"] = await Promise.all(imagePromises);
-        if (product.itemData.variations && product.itemData.variations.length > 0) {
-          for (const variation of product.itemData.variations) {
-            const variationImagePromises = variation.itemVariationData.imageIds.map(
-              async (imageId) => {
-                const imageResponse = await client.catalog.object.get({
-                  objectId: imageId
-                });
-                return imageResponse.object;
-              }
-            );
-            variation["images"] = await Promise.all(variationImagePromises);
-          }
-        }
+      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
+      if (!product.itemData.imageIds) {
         await fetchProductOptions(product);
         products.push(product);
+        return;
+      } else {
+        if (((_a = product.itemData) == null ? void 0 : _a.imageIds) && ((_c = (_b = product == null ? void 0 : product.itemData) == null ? void 0 : _b.imageIds) == null ? void 0 : _c.length) > 0) {
+          const imagePromises = (_e = (_d = product == null ? void 0 : product.itemData) == null ? void 0 : _d.imageIds) == null ? void 0 : _e.map(async (imageId) => {
+            const imageResponse = await client.catalog.object.get({
+              objectId: imageId
+            });
+            return imageResponse.object;
+          });
+          product["images"] = await Promise.all(imagePromises);
+          if (((_f = product == null ? void 0 : product.itemData) == null ? void 0 : _f.variations) && ((_h = (_g = product == null ? void 0 : product.itemData) == null ? void 0 : _g.variations) == null ? void 0 : _h.length) > 0) {
+            for (const variation of product.itemData.variations) {
+              if (((_i = variation.itemVariationData) == null ? void 0 : _i.imageIds) && ((_k = (_j = variation.itemVariationData) == null ? void 0 : _j.imageIds) == null ? void 0 : _k.length) > 0) {
+                const variationImagePromises = (_m = (_l = variation == null ? void 0 : variation.itemVariationData) == null ? void 0 : _l.imageIds) == null ? void 0 : _m.map(
+                  async (imageId) => {
+                    const imageResponse = await client.catalog.object.get({
+                      objectId: imageId
+                    });
+                    return imageResponse.object;
+                  }
+                );
+                variation["images"] = await Promise.all(variationImagePromises);
+              }
+            }
+          }
+          await fetchProductOptions(product);
+          products.push(product);
+        }
       }
     };
     const fetchProducts = async () => {
@@ -4376,7 +4389,22 @@ const list_post = defineEventHandler(async (event) => {
         categories.push(categoryResponse.object);
       }
     };
+    const populate_categories = async () => {
+      categories.forEach(async (category) => {
+        category["products"] = [];
+        for (const product of products) {
+          if (product.itemData.categories) {
+            product.itemData.categories.forEach((prod_category) => {
+              if (prod_category.id === category.id) {
+                category.products.push(product);
+              }
+            });
+          }
+        }
+      });
+    };
     await fetchProducts();
+    await populate_categories();
     if (products.length) {
       const return_obj = {
         status: 200,
@@ -4395,11 +4423,11 @@ const list_post = defineEventHandler(async (event) => {
         }
       };
     }
-  } catch {
+  } catch (error) {
     return {
       status: 400,
       body: {
-        message: "An error occurred while fetching products."
+        message: `An error occurred while fetching products: ${error}`
       }
     };
   }
