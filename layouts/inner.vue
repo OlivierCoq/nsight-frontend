@@ -1,5 +1,5 @@
 <template>
-  <div id="nsight" class="relative" :class="settings?.dark_mode ? 'dark' : ''">
+  <div id="nsight" class="relative overflow-hidden" :class="settings?.dark_mode ? 'dark' : ''">
     <TemplateNav />
     <slot />
   </div>

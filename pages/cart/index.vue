@@ -25,7 +25,7 @@
         <div class="w-full flex">
            <div v-if="!prodStore?.cart?.checkout?.order?.order?.lineItems.length" class="w-full flex flex-row">
               <p class="text-neutral-900 dark:text-white text-lg my-3 font-thin">
-                There are no items in your cart! Check out what we've got at our <a href="/shop/products"><strong>shop</strong></a>!
+                There are no items in your cart! Check out what we've got at our <a href="/shop"><strong>shop</strong></a>!
               </p>
             </div>
             <div v-else class="flex flex-col md:flex-row w-full gap-2">

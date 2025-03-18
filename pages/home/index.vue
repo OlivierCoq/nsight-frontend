@@ -4,7 +4,7 @@
     id="home_feed"
     class="min-h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-10 relative"
   >
-    <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small] h-[100vh]">
+    <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small] min-h-[100vh]">
       <div class="max-w-[1400px] mx-auto">
         <div class="max-w-4xl p-6 mx-auto">
                     <!-- heading title -->

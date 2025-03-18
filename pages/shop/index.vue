@@ -1,7 +1,7 @@
 <template>
   <div
     id="products"
-    class="h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-20 relative"
+    class="min-h-[100vh] w-full bg-zinc-200 dark:bg-zinc-800 flex flex-col pt-20 relative"
   >
     <main class="2xl:ml-[--w-side] xl:ml-[--w-side-md] md:ml-[--w-side-small]">
       <div class="main__inner">
@@ -163,11 +163,14 @@ definePageMeta({
 });
 
 // components:
-
 import ProductCard from "./components/ProductCard.vue";
 
+// Stores:
 const prodStore = productsStore();
 
+const route = useRoute();
+
+// State:
 const state = reactive({
   search: {
     isActive: false,
@@ -260,6 +263,7 @@ onMounted( async() => {
     await auto_sort("Women's", 2);
     await auto_sort("Accessories", 3);
     await auto_sort("Uni", 4);
+    await auto_search();
   })
 })
 
@@ -297,6 +301,20 @@ const auto_sort = async (category: string, index: number) => {
 
 }
 
+const auto_search = async () => {
+
+  // Check to see if route has a query:
+  // console.log('route query:', route?.query?.item);
+  // shop?item=shoe
+  if(route?.query?.item) {
+      state.search.isActive = true;
+      state.search.items = state.tabs[0].products.filter((product) => {
+        return product.itemData.name.toLowerCase().includes(route?.query?.item.toLowerCase());
+      });
+  }
+
+
+}
 
 const active_search = () => {
   // state.search.items filled with search results:

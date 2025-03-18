@@ -71,7 +71,10 @@
         </a>
 
         <!-- Search -->
-        <a href="#">
+        <a  
+          href="#"
+          uk-toggle="target: #search_modal"
+        > 
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -87,144 +90,23 @@
           </svg>
           <span class="max-xl:hidden"> Search </span>
         </a>
-        <div
-          class="ctr-search_body sm:w-[397px] w-full bg-white shadow-lg md:!left-[73px] hidden !left-0 dark:bg-zinc-900 dark:border1 max-md:bottom-[57px]"
-          uk-drop="pos: left-center;animate-out: true; animation: uk-animation-slide-left-medium; mode:click; offset: 9"
-          style="border: 1px solid #ffffff33 !important;"
-        >
-          <div class="md:h-screen overflow-y-auto h-[calc(100vh-120px)]">
-            <!-- header -->
-            <div
-              class="px-5 py-4 space-y-5 border-b border-gray-100 dark:border-zinc-700"
-            >
-              <h3
-                class="md:text-xl text-lg font-medium mt-3 text-black dark:text-white"
-              >
-                Search
-              </h3>
+  
 
-              <div class="relative -mx-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  class="w-5 h-5 absolute left-3 bottom-1/2 translate-y-1/2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                  />
-                </svg>
-                <input
-                  type="text"
-                  placeholder="Search"
-                  class="bg-transparen w-full !pl-10 !py-2 !rounded-lg"
-                />
-              </div>
-            </div>
+        <div class="lg:p-20 p-10 uk-modal" id="search_modal" uk-modal="">
+ 
+          <div id="ctr-search_modal_body" class=" uk-modal-dialog tt relative mx-auto  rounded-lg shadow-xl w-[80vw]">
 
-            <!-- contents list -->
-            <div class="p-2 space-y-2 dark:text-white">
-              <div
-                class="flex items-center justify-between py-2.5 px-3 font-semibold"
-              >
-                <h4 class="dark:text-white">Recent</h4>
-                <button type="button" class="text-blue-500 text-sm">
-                  Clear all
-                </button>
-              </div>
+            <SearchModal />
 
-              <!-- <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <img src="https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                    <div class="fldex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white">  Johnson smith </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> Suggested For You </div>
-                    </div>
-                </a> -->
-              <!-- <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <img src="https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white"> James Lewis </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> Followed By Johnson </div>
-                    </div>
-                    <button type="button" class="text-sm rounded-full py-1.5 px-4 font-semibold bg-secondery"> Follow </button>
-                </a> -->
 
-              <!-- <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="border border-gray-200 p-2.5 rounded-full w-9 h-9 fill-black">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5" />
-                    </svg>
-                    <div class="fldex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white">   artificial intelligence  </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> 13,352K post </div>
-                    </div>
-                </a> -->
-              <!--
-                <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <img src="https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                    <div class="fldex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white">  {{ auth?.user.first_name }} {{ auth?.user.last_name }} </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> Parker . following </div>
-                    </div>
-                </a> -->
-
-              <!-- <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <img src="https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                    <div class="fldex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white">  Johnson smith </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> Suggested For You </div>
-                    </div>
-                </a> -->
-              <!-- <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <img src="https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white"> James Lewis </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> Followed By Johnson </div>
-                    </div>
-                    <button type="button" class="text-sm rounded-full py-1.5 px-4 font-semibold bg-secondery"> Follow </button>
-                </a> -->
-
-              <!-- <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="border border-gray-200 p-2.5 rounded-full w-9 h-9 fill-black">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5" />
-                    </svg>
-                    <div class="fldex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white">  Ui Designers </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> 9,362K post </div>
-                    </div>
-                </a>
-
-                <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="border border-gray-200 p-2.5 rounded-full w-9 h-9 fill-black">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5l-3.9 19.5m-2.1-19.5l-3.9 19.5" />
-                    </svg>
-                    <div class="fldex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white"> Affiliate marketing  </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> 4,248K post </div>
-                    </div>
-                </a>
-
-                <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <img src="https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                    <div class="fldex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white">  Johnson smith </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> Suggested For You </div>
-                    </div>
-                </a>
-                <a href="profile.html" class="relative flex items-center gap-3 p-2 duration-200 rounded-xl hover:bg-zinc-300/30">
-                    <img src="https://res.cloudinary.com/nsight/image/upload/v1693447226/placeholder_pfp_sv2pgb.jpg" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-medium text-sm text-black dark:text-white"> James Lewis </h4>
-                        <div class="text-xs text-gray-500 font-normal mt-0.5 dark:text-white-80"> Followed By Johnson </div>
-                    </div>
-                    <button type="button" class="text-sm rounded-full py-1.5 px-4 font-semibold bg-secondery"> Follow </button>
-                </a> -->
-            </div>
+            <!-- Close -->
+             <button type="button" class="rounded-full absolute right-0 top-0 m-3 bg-zinc-600 uk-modal-close h-[30px] w-[30px]">
+              <font-awesome-icon :icon="['fas', 'times']" class="text-black text-white" />
+            </button>
           </div>
         </div>
+ 
+
 
         <!-- shop -->
         <a href="/shop">
@@ -486,12 +368,6 @@ import qs from "qs";
 // State
 const state = reactive({
   drawer: false,
-  search: {
-    query: "",
-    results: [],
-    searching: false,
-    loading: false,
-  },
   notifications: {
     friend_requests: [],
     messages: [],
@@ -509,6 +385,7 @@ const settings = settingsStore();
 
 // Components
 import FriendRequest from './components/friend-requests/friend_request.vue'
+import SearchModal from './components/search/Modal.vue'
 
 
 // methods
@@ -520,14 +397,6 @@ const sign_out = async () => {
 // Shop:
 const goToCart = () => {
   navigateTo("/cart");
-};
-
-// Searching
-const toggleSearch = () => {
-  state.search.searching = !state.search.searching;
-};
-const doSearch = () => {
-  // console.log('searching', state.search)
 };
 
 
@@ -644,5 +513,10 @@ a {
   &:hover {
     text-decoration: none !important;
   }
+}
+#ctr-search_modal_body {
+  width: 95vw !important;
+  height: 95vh !important;
+  background: transparent !important;
 }
 </style>
