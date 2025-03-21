@@ -22,7 +22,7 @@
           </a>
           <div class="p-2 dark:text-white/80 uk-accordion-content h-[20vh] overflow-y-auto pb-10">
             <ul class="space-y-3 mb-10"> 
-              <li v-for="comment in state.comment_thread?.comments" :key="comment.id" class="flex flex-row px-4 pt-4 pb-6 shadow-md bg-zinc-100 dark:bg-neutral-400 rounded-md">
+              <li v-for="comment in state.comment_thread?.comments" :key="comment.id" class="flex flex-row px-4 pt-4 pb-6 shadow-md bg-zinc-100 rounded-md">
                 <a v-if="comment.visible" :href="`/members/${comment.commenter?.nsight_id?.nsight_id}`" class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
                   <img 
                     class="rounded-full w-12 h-12"

@@ -43,7 +43,7 @@
 
       <div v-if="state?.search?.results?.people?.length" class="full lg:w-1/2 p-4 m-4 fade-in">
         <h3 class="text-3xl text-white font-thin mb-4">People</h3>
-        <div class="full lg:w-1/2 p-4 m-4 fade-in">
+        <div class="full lg:w-1/2 fade-in">
           <div class="grid sm:grid-cols-2 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
             <FriendCard v-for="(friend, c) in state.search.results.people" :key="c" :member="friend" />
           </div>

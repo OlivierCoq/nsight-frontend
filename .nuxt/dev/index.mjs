@@ -3914,43 +3914,53 @@ const api_root = `${process.env.STRAPI_URL}/api`;
 const fetch_post = defineEventHandler(async (event) => {
   var _a;
   const post_data = await readBody(event);
+  console.log("body", post_data == null ? void 0 : post_data.tag);
   const friends = (_a = post_data == null ? void 0 : post_data.user) == null ? void 0 : _a.friends;
+  let popular_tags = [];
   try {
     let feed_arr = [];
-    const fetchPosts = async () => {
-      const posts_response = await $fetch(`${api_root}/posts?${qs.stringify({
-        populate: [
-          "title",
-          "users_permissions_user",
-          "users_permissions_user.nsight_id",
-          "users_permissions_user.profile_picture",
-          "pics",
-          "caption",
-          "visible",
-          "profile",
-          "tags",
-          "reactions",
-          "external_links",
-          "comments",
-          "comments.comments",
-          "comments.comments.commenter",
-          "comments.comments.commenter.nsight_id",
-          "comments.comments.replies",
-          "comments.comments.replies.user",
-          "comments.comments.replies.user.nsight_id",
-          "images"
-        ],
-        filters: {
-          nsight_id: {
-            $in: friends
-          }
-        },
-        sort: "createdAt:desc",
-        pagination: {
-          page: 1,
-          pageSize: 10
+    let query = {
+      populate: [
+        "title",
+        "users_permissions_user",
+        "users_permissions_user.nsight_id",
+        "users_permissions_user.profile_picture",
+        "pics",
+        "caption",
+        "visible",
+        "profile",
+        "tags",
+        "reactions",
+        "external_links",
+        "comments",
+        "comments.comments",
+        "comments.comments.commenter",
+        "comments.comments.commenter.nsight_id",
+        "comments.comments.replies",
+        "comments.comments.replies.user",
+        "comments.comments.replies.user.nsight_id",
+        "images"
+      ],
+      filters: {
+        nsight_id: {
+          $in: friends
         }
-      })}`, {
+      },
+      sort: "createdAt:desc",
+      pagination: {
+        page: 1,
+        pageSize: 10
+      }
+    };
+    if (post_data == null ? void 0 : post_data.tag) {
+      query.filters["tags"] = {
+        tag_name: {
+          $eq: post_data == null ? void 0 : post_data.tag
+        }
+      };
+    }
+    const fetchPosts = async () => {
+      const posts_response = await $fetch(`${api_root}/posts?${qs.stringify(query)}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -3959,44 +3969,68 @@ const fetch_post = defineEventHandler(async (event) => {
       });
       posts_response.data.forEach((post) => {
         post.type = "post";
+        if (post.tags && post.tags.length) {
+          post.tags.forEach((tag) => {
+            if (!popular_tags.includes(tag.tag_name)) {
+              tag["count"] = 1;
+              popular_tags.push(tag);
+            } else {
+              let index = popular_tags.findIndex((t) => t.tag_name === tag.tag_name);
+              popular_tags[index].count++;
+            }
+          });
+        }
       });
       feed_arr = [...feed_arr, ...posts_response.data];
+      if (post_data == null ? void 0 : post_data.tags) {
+        feed_arr = feed_arr.filter((post) => {
+          return post.tags.some((tag) => post_data.tag === tag.tag_name);
+        });
+      }
     };
-    const fetchPicturePosts = async () => {
-      const posts_response = await $fetch(`${api_root}/picture-posts?${qs.stringify({
-        populate: [
-          "title",
-          "data",
-          "users_permissions_user",
-          "users_permissions_user.nsight_id",
-          "users_permissions_user.profile_picture",
-          "pics",
-          "caption",
-          "visible",
-          "profile",
-          "tags",
-          "reactions",
-          "external_links",
-          "comments",
-          "comments.comments",
-          "comments.comments.commenter",
-          "comments.comments.commenter.nsight_id",
-          "comments.comments.replies",
-          "comments.comments.replies.user",
-          "comments.comments.replies.user.nsight_id",
-          "images"
-        ],
-        filters: {
-          nsight_id: {
-            $in: friends
-          }
-        },
-        sort: "createdAt:desc",
-        pagination: {
-          page: 1,
-          pageSize: 10
+    let picture_query = {
+      populate: [
+        "title",
+        "data",
+        "users_permissions_user",
+        "users_permissions_user.nsight_id",
+        "users_permissions_user.profile_picture",
+        "pics",
+        "caption",
+        "visible",
+        "profile",
+        "tags",
+        "reactions",
+        "external_links",
+        "comments",
+        "comments.comments",
+        "comments.comments.commenter",
+        "comments.comments.commenter.nsight_id",
+        "comments.comments.replies",
+        "comments.comments.replies.user",
+        "comments.comments.replies.user.nsight_id",
+        "images"
+      ],
+      filters: {
+        nsight_id: {
+          $in: friends
         }
-      })}`, {
+      },
+      sort: "createdAt:desc",
+      pagination: {
+        page: 1,
+        pageSize: 10
+      }
+    };
+    if (post_data == null ? void 0 : post_data.tag) {
+      picture_query.filters["tags"] = {
+        tag_name: {
+          $eq: post_data == null ? void 0 : post_data.tag
+        }
+      };
+    }
+    const fetchPicturePosts = async () => {
+      const posts_response = await $fetch(`${api_root}/picture-posts?${qs.stringify(picture_query)}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -4005,6 +4039,17 @@ const fetch_post = defineEventHandler(async (event) => {
       });
       posts_response.data.forEach((post) => {
         post.type = "picture-post";
+        if (post.tags && post.tags.length) {
+          post.tags.forEach((tag) => {
+            if (!popular_tags.includes(tag.tag_name)) {
+              tag["count"] = 1;
+              popular_tags.push(tag);
+            } else {
+              let index = popular_tags.findIndex((t) => t.tag_name === tag.tag_name);
+              popular_tags[index].count++;
+            }
+          });
+        }
       });
       feed_arr = [...feed_arr, ...posts_response.data];
     };
@@ -4031,13 +4076,18 @@ const fetch_post = defineEventHandler(async (event) => {
         return ((_c = (_b = (_a2 = a.comments) == null ? void 0 : _a2.comments) == null ? void 0 : _b.replies) == null ? void 0 : _c.length) > ((_f = (_e = (_d = b.comments) == null ? void 0 : _d.comments) == null ? void 0 : _e.replies) == null ? void 0 : _f.length) ? 1 : -1;
       });
     };
+    const rankTags = async (arr) => {
+      popular_tags = popular_tags.sort((a, b) => a.count < b.count ? 1 : -1);
+    };
     await fetchPosts();
     await fetchPicturePosts();
     await randomize();
+    await rankTags(popular_tags);
     if (feed_arr.length) {
       return {
         status: 200,
         data: feed_arr,
+        popular_tags,
         message: "Successfully fetched feed"
       };
     } else {

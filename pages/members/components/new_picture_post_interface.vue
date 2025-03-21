@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col lg:flex-row justify-between rounded-md shadow-xl my-4 bg-zinc-100 py-2 px-5 min-h-[700px]">
+  <div class="flex flex-col lg:flex-row justify-between rounded-md shadow-xl bg-zinc-100 py-2 px-5 min-h-[700px]">
     <!--  -->
     <div class="w-full lg:w-2/3 h-full flex flex-col">
       <ImageDropZone :post="state.new_post" @pictureUploaded="receive_pictures_upload" :expand="true" />

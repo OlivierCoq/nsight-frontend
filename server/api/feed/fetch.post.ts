@@ -3,16 +3,16 @@ const api_root = `${process.env.STRAPI_URL}/api`;
 
 export default defineEventHandler(async (event) => {
   const post_data = await readBody(event);
-  // console.log("body", post_data); 
+  console.log("body", post_data?.tag); 
 
-  const friends = post_data?.user?.friends;
+  const friends = post_data?.user?.friends
+  let popular_tags: any[] = []
 
   try {
-    let feed_arr: any[] = [];
+    let feed_arr: any[] = []
+        
 
-    // Fetch regular posts
-    const fetchPosts = async () => {
-      const posts_response = await $fetch(`${api_root}/posts?${qs.stringify({
+    let query = {
         populate: [
           'title',
           'users_permissions_user',
@@ -35,6 +35,7 @@ export default defineEventHandler(async (event) => {
           'images',
         ],
         filters: {
+          
           nsight_id: {
             $in: friends
           }
@@ -44,7 +45,19 @@ export default defineEventHandler(async (event) => {
           page: 1,
           pageSize: 10
         }
-      })}`, {
+      }
+
+      if(post_data?.tag) {
+        query.filters['tags'] = {
+            tag_name: {
+              $eq: post_data?.tag
+            }
+          }
+      }
+
+    // Fetch regular posts
+    const fetchPosts = async () => {
+      const posts_response = await $fetch(`${api_root}/posts?${qs.stringify(query)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -53,14 +66,34 @@ export default defineEventHandler(async (event) => {
       });
       posts_response.data.forEach((post: any) => { 
         post.type = 'post';
+        if(post.tags && post.tags.length) {
+          post.tags.forEach((tag: any) => {
+            if(!popular_tags.includes(tag.tag_name)) {
+              tag['count'] = 1;
+              popular_tags.push(tag);
+            } else {
+              let index = popular_tags.findIndex((t: any) => t.tag_name === tag.tag_name);
+              popular_tags[index].count++;
+            }
+          });
+        }
       });
       feed_arr = [...feed_arr, ...posts_response.data];
       // console.log("feed_arr", feed_arr);
+
+      // Filter by tag
+      if(post_data?.tags) {
+        feed_arr = feed_arr.filter((post: any) => {
+          return post.tags.some((tag: any) => post_data.tag === tag.tag_name);
+        });
+      }
+
+
+
     };
 
-    // Fetch picture posts
-    const fetchPicturePosts = async () => {
-      const posts_response = await $fetch(`${api_root}/picture-posts?${qs.stringify({
+    let picture_query = {
+
         populate: [
           'title',
           'data',
@@ -93,7 +126,19 @@ export default defineEventHandler(async (event) => {
           page: 1,
           pageSize: 10
         }
-      })}`, {
+      }
+
+    if(post_data?.tag) {
+        picture_query.filters['tags'] = {
+            tag_name: {
+              $eq: post_data?.tag
+            }
+          }
+      }
+
+    // Fetch picture posts
+    const fetchPicturePosts = async () => {
+      const posts_response = await $fetch(`${api_root}/picture-posts?${qs.stringify(picture_query)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -103,6 +148,17 @@ export default defineEventHandler(async (event) => {
 
       posts_response.data.forEach((post: any) => { 
         post.type = 'picture-post';
+        if(post.tags && post.tags.length) {
+          post.tags.forEach((tag: any) => {
+            if(!popular_tags.includes(tag.tag_name)) {
+              tag['count'] = 1;
+              popular_tags.push(tag);
+            } else {
+              let index = popular_tags.findIndex((t: any) => t.tag_name === tag.tag_name);
+              popular_tags[index].count++;
+            }
+          });
+        }
       });
       feed_arr = [...feed_arr, ...posts_response.data];
       // console.log("feed_arr", feed_arr);
@@ -139,10 +195,15 @@ export default defineEventHandler(async (event) => {
       feed_arr = await arr.sort((a, b) => (a.comments?.comments?.replies?.length > b.comments?.comments?.replies?.length) ? 1 : -1);
     }
 
+    // rank tags by count
+    const rankTags = async (arr: any) => {
+      popular_tags = popular_tags.sort((a, b) => (a.count < b.count) ? 1 : -1);
+    }
     // Call the fetchPosts function and wait for it to complete
     await fetchPosts();
     await fetchPicturePosts();
     await randomize();
+    await rankTags(popular_tags);
     
     
 
@@ -153,6 +214,7 @@ export default defineEventHandler(async (event) => {
       return {
         status: 200,
         data: feed_arr,
+        popular_tags: popular_tags,
         message: "Successfully fetched feed"
       };
     } else {

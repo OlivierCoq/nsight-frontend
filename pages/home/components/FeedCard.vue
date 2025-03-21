@@ -92,6 +92,12 @@
 
         <div class="text-lg text-gray-400" v-html="post.body"></div>
         <Reactions :post="post" :post-type="'posts'" :user="user" :profilePage="profilePage" />
+        
+        <div v-if="post.tags?.length" class="w-full flex flex-wrap">
+          <a v-for="tag in post.tags" :key="tag.id" class="m-2" :href="`/home?tag=${tag.tag_name}`">
+            <p class="text-amber-500 cursor-pointer hover:font-bold">#{{ tag.tag_name }}</p>
+          </a>
+        </div>
         <CommentThread :target="post" :user="user" :profilePage="profilePage" :post-type="post.type" />
       </div>
     </div>

@@ -1,38 +1,40 @@
 <template>
-  <div class="flex flex-col justify-between rounded-md shadow-xl my-4 bg-zinc-100  py-10 px-5">
+  <div class="flex flex-col justify-between rounded-md shadow-xl  bg-zinc-100  py-10 px-5">
     <h3 class="text-xl text-neutral-800 px-4">Create a new post</h3>
-    <div class="w-full flex flex-col">
+    <div class="w-full flex flex-col justify-between">
       <input v-model="state.new_post.title" class="w-full p-2 mb-2 rounded-md border border-neutral-300" placeholder="Title" />
-      <Editor v-model="state.new_post.body" class="w-full rounded-md mb-2" placeholder="Share some wisdom" />
-      <div class="w-full flex flex-row justify-between mt-[5rem]">
-        <div class="w-1/2 flex">
-          <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="state.adding_link = !state.adding_link">
-            Add Link 
-            <font-awesome-icon :icon="['fas', 'link']" />
-          </button>
-          <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="state.adding_pictures = !state.adding_pictures">
-            Add Pics 
-            <font-awesome-icon :icon="['fas', 'image']" />
-          </button>
-          
-          
-        </div>
+      <div class="mb-2">
+        <Editor v-model="state.new_post.body" class="w-full rounded-md mb-2" placeholder="Share some wisdom" />
       </div>
-    
-      <div v-if="state.adding_link" class="w-full flex flex-col mt-5 fade-in">
-        <input v-model="state.new_external_link.text" class="w-full p-2 mb-2 rounded-md border border-neutral-300" placeholder="Link Text" />
-        <input v-model="state.new_external_link.link" class="w-full p-2 mb-2 rounded-md border border-neutral-300" placeholder="Link URL" />
-        <button class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" @click="addExternalLink">Add Link</button>
-      </div>
-
-        <!-- Image gallery -->
-      <div v-if="state.adding_pictures" class="w-full min-h-[200px] fade-in mt-5">
+      <div class="w-full flex flex-col justify-between overflow-y-scroll">
         <ImageDropZone :post="state.new_post" @pictureUploaded="receive_pictures_upload" />
       </div>
-
+      <div class="w-full flex flex-col p-2">
+        <p class="text-zinc-500 text-md mb-2">Tags</p>
+        <div class="w-full flex flex-wrap">
+          <div 
+            class="tag_pill new_tag rounded-full flex flex-row items-center bg-amber-500 px-4 py-2 min-w-[100px] m-1 shadow-lg"
+            :class="state.new_post.tags[0]?.tag_name.length ? 'opacity-1' : 'opacity-[0.7]'"
+          >
+            <span class="text-white">#</span>
+            <input type="text" v-model="state.new_post.tags[0].tag_name" class="bg-transparent text-white w-full rounded-full" placeholder="Add a tag" @keydown.enter="add_tag(state.new_post.tags[0])" />
+            <button @click="add_tag(state.new_post.tags[0])" :disabled="!state.new_post.tags[0].tag_name.length">
+              <font-awesome-icon :icon="['fa', 'plus']" class="text-white ms-3 mt-1"  />
+            </button>
+          </div>
+          <div v-for="(tag, a) in state.new_post.tags" :key="a" >
+            <div v-if="a > 0" class="tag_pill rounded-full flex flex-row items-center bg-amber-500 px-4 py-2 min-w-[100px] m-1 shadow-lg">
+              <div class="flex-1">
+                <p class="text-white m-0">#{{ tag.tag_name }}</p>
+              </div>
+              <font-awesome-icon :icon="['fa', 'times']" class="text-white ms-3 mt-1 cursor-pointer" @click="remove_tag(a)" />
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="w-full mt-10">
         <button 
-            class="w-1/2 bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" 
+            class="w-full bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1" 
             :class="{'bg-amber-300 cursor-not-allowed': !state.valid.title || !state.valid.body || state.processing}"
             
             @click="submitPost" :disabled="!state.valid.title || !state.valid.body || state.processing"
@@ -82,6 +84,11 @@
       visible: true, 
       comments: [],
       profile: props.profile,
+      tags: [
+        {
+          tag_name: ''
+        }
+      ],
       reactions: {
         upvotes: 0,
         downvotes: 0,
@@ -123,7 +130,27 @@
     }
     state.adding_link = false;
   }
+
+  const add_tag = (tag) => {
+    // add to beginning of array:
+    state.new_post.tags.unshift({
+      tag_name: tag.tag_name
+    })
+    nextTick(() => {
+      state.new_post.tags[0].tag_name = ''
+    })
+  }
+
+  const remove_tag = (index) => {
+    state.new_post.tags.splice(index, 1)
+  }
+
   const submitPost = () => {
+
+    // Remove first tag from state.new_psot.tags:
+    state.new_post.tags.shift()
+
+
     $fetch(`${config.public.NUXT_STRAPI_URL}/api/posts`, {
       method: 'POST',
       headers: {
@@ -199,6 +226,26 @@
             }
           }).then((res) => {
             // console.log('new post', res)
+            // clear out state.new_post:
+            state.new_post = {
+              title: '',
+              body: '',
+              pics: [],
+              external_links: [],
+              visible: true,
+              comments: [],
+              tags: [{
+                tag_name: ''
+              }],
+              reactions: {
+                upvotes: 0,
+                downvotes: 0,
+                number_of_votes: 0,
+                vote: 0
+              },
+              user_permissions_user: auth.user,
+              profile: props.profile.id
+            }
             emit('newpost', res.data)
           }).catch((err) => {
             console.log('error getting new post', err)
@@ -269,5 +316,31 @@ input[type="file"] {
 }
 .p-badge {
   padding: 2px 10px !important;
+}
+.ql-editor {
+  min-height: 14rem;
+}
+.new_tag {
+  input {
+    background: transparent !important;
+    border-bottom: white 1px solid !important;
+    padding: 0 5px !important;
+
+    // Remove annoying border on focus: 
+    
+
+    &:focus,
+    &:active,
+    &:focus-within,
+    &:focus-visible {
+      border-left: none !important;
+      border-right: none !important;
+      border-top: none !important;
+      outline: none !important;
+    }
+  }
+  input:focus {
+    outline: none !important;
+  }
 }
 </style>

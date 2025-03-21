@@ -79,6 +79,10 @@
               </div>
             </div>
             <!-- Feed body -->
+            <div v-if="state.tag" class="w-full mt-3 mb-1 rounded-xl pt-4 px-4 flex flex-col align-start justify-start ">
+              <h3 class="text-3xl text-white"><span class="text-lg">tagged: </span><span class="text-amber-400">#{{ state.tag }}</span></h3>
+              <a href="/home" class="text-xs text-amber-400 hover:text-amber-500 text-start mb-3">clear tag</a>
+            </div>
             <div class="w-full overflow-y-scroll  pb-20 flex flex-col flex-1 mb-10">
               <FeedCard v-for="(post, a) in state.feed" :key="a" :post="post" :profile-page="false" :user="post?.users_permissions_user" />
             </div>
@@ -108,6 +112,16 @@
                 <p v-else class=""></p>
               </div>
             </div>
+
+            <!-- Popular tags: -->
+            <div class="flex flex-col items-start align-start justify-start min-h-[10rem] w-full mt-4 backdrop-blur-xl bg-black/20 rounded-lg px-6 pt-8 pb-8">
+              <h3 class="text-white text-xl">popular tags</h3>
+              <div class="flex flex-wrap" :class="state.popular_tags.length > 16 ? 'overflow-y-scroll h-[10rem]' : ''">
+                <div v-for="(tag, b) in state.popular_tags" :key="b" class="tag_pill rounded-full flex flex-row items-center bg-amber-500 px-4 min-w-[100px] m-1 h-[40px] shadow-lg">
+                  <a :href="`/home?tag=${tag.tag_name}`" class="text-white hover:text-zinc-800 m-0">#{{ tag.tag_name }}</a>
+                </div>
+              </div>
+            </div>
              
           </div>
          </div>
@@ -131,6 +145,8 @@
   // Setup
   const config = useRuntimeConfig();
   import qs from "qs";
+
+  const route = useRoute();
   
   // Components
   import InviteForm from "./components/Invite.vue";
@@ -161,13 +177,20 @@
     potential_friends: [],
     feed: [],
     comp: 0,
+    tag: route.query.tag,
+    popular_tags: [
+    ]
   })
 
 
   // Lifecycle
   onMounted(() => {
     fetchFriends()
-    if(auth) fetchFeed(auth)
+
+    const tag = route.query.tag
+    if(tag) {fetchFeed(auth, tag)}
+    else { fetchFeed(auth, false) }
+
   })
 
   // methods
@@ -278,7 +301,7 @@
         })
       }
   }
-    // Fetching Feed
+    // Fetching Profile
   let  { data, error } = await useAsyncData('profile', () => $fetch(
     `${config.public.NUXT_STRAPI_URL}/api/profiles?${qs.stringify({
       populate: [
@@ -315,26 +338,28 @@
   
   let profile_data = data.value.data[0]
   let user = data.value.data[0].users_permissions_user
-  const fetchFeed = async (auth:any) => {
-    console.log('fetching feed...');
 
+
+  const fetchFeed = async (auth:any, tag:any) => {
+    console.log('tag', tag);
     $fetch('/api/feed/fetch', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application',
-        'Authorization': `Bearer ${auth?.token}`
-      },
-      body: JSON.stringify({
-        user: auth?.user,
-        token: auth?.token,
-        tags: []
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application',
+          'Authorization': `Bearer ${auth?.token}`
+        },
+        body: JSON.stringify({
+          user: auth?.user,
+          token: auth?.token,
+          tag
+        })
+      }).then(async (result) => {
+        console.log('feed result', result);
+        state.feed = result?.data;
+        state.popular_tags = result?.popular_tags;
+      }).catch((error) => {
+        console.error('Error fetching feed', error)
       })
-    }).then(async (result) => {
-      console.log('feed result', result);
-      state.feed = result?.data;
-    }).catch((error) => {
-      console.error('Error fetching feed', error)
-    })
   }
 
   const add_new_post = (new_post: any) => {
@@ -377,6 +402,7 @@
       })
     })
   }
+
 
 </script>
 <style lang="scss">

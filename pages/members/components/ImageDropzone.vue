@@ -1,7 +1,7 @@
 <template>
   <div class="w-full mt-5">
     <div 
-      class="w-full h-[95%] border-2 border-dashed border-gray-300 p-4 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-amber-500 transition"
+      class="w-full  border-2 border-dashed border-gray-300 p-4 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-amber-500 transition"
       @dragover.prevent="dragging = true"
       @dragleave.prevent="dragging = false"
       @drop.prevent="handleDrop"
