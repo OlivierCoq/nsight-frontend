@@ -17,7 +17,7 @@
       <div v-if="state.search?.results?.products?.length" class="full lg:w-1/2 p-4 m-4 fade-in">
         <h3 class="text-3xl text-white font-thin mb-4">Products</h3>
         <div
-          class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 mt-2 w-full"
+          class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 mt-2 w-full dark"
           uk-scrollspy="target: > div; cls: uk-animation-slide-bottom-small; delay: 100"
         >
           <ProductCard

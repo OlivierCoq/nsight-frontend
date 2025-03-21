@@ -87,11 +87,12 @@
                 </svg>
                 <select
                   class="!bg-transparent focus:!border-transparent focus:!ring-transparent max-sm:hidden md:w-40"
+                  @change="handleFilterChange($event, state.active_tab)"  
                 >
                   <option
                     v-for="(filter, a) in state.filters"
                     :key="a"
-                    @click="set_filter(filter.id)"
+                    :value="filter.id" 
                     class="hover:cursor-pointer"
                   >
                     {{ filter.name }}
@@ -185,19 +186,19 @@ const state = reactive({
     },
     {
       id: 1,
-      name: "New",
+      name: "Newest",
       isActive: false,
     },
-    {
-      id: 2,
-      name: "Popular",
-      isActive: false,
-    },
-    {
-      id: 3,
-      name: "Sale",
-      isActive: false,
-    },
+    // {
+    //   id: 2,
+    //   name: "Popular",
+    //   isActive: false,
+    // },
+    // {
+    //   id: 3,
+    //   name: "Sale",
+    //   isActive: false,
+    // },
   ],
   active_filter: 0,
   tabs: [
@@ -255,6 +256,17 @@ const state = reactive({
 // Lifecycle
 onMounted( async() => {
   
+  if(prodStore?.products) {
+    await set_items();
+  }
+  else {
+    await prodStore?.getProducts();
+    await set_items();
+  }
+  
+})
+
+const set_items = async () =>  {
   state.tabs[0].products = prodStore?.products;
   nextTick(async() => {
 
@@ -265,13 +277,50 @@ onMounted( async() => {
     await auto_sort("Uni", 4);
     await auto_search();
   })
-})
+}
+
+const set_filter = async (id: number, tab: number) => {
+  console.log('filter:', id);
+  state.active_filter = id;
+  // console.log('tab:', tab);
 
 
-const set_filter = (id: Number) => {
-  state.filters.forEach((filter) => {
-    filter.isActive = filter.id === id;
-  });
+
+  switch(id) {
+    case 0:
+      // Reset products:
+      console.log('reset products');
+      state.tabs[tab].products = state.tabs[tab].products.sort((a, b) => {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      });
+      break;
+    case 1:
+      console.log('filter by new');
+      // Filter by product.created_at:
+      state.tabs[tab].products = state.tabs[tab].products.sort((a, b) => {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      });
+      break;
+    case 2:
+      state.tabs[tab].products = prodStore?.products.filter((product) => {
+        return product.itemData.isPopular === true;
+      });
+      break;
+    case 3:
+      state.tabs[tab].products = prodStore?.products.filter((product) => {
+        return product.itemData.isOnSale === true;
+      });
+      break;
+    default:
+      state.tabs[tab].products = state.tabs[tab].products.sort((a, b) => {
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      });
+  }
+};
+
+const handleFilterChange = (event: Event, tab: number) => {
+  const selectedFilterId = parseInt((event.target as HTMLSelectElement).value);
+  set_filter(selectedFilterId, tab);
 };
 
 const send_category = async (category: string, pagination: any, index: number) => {
@@ -298,7 +347,6 @@ const auto_sort = async (category: string, index: number) => {
       state.tabs[index].products = cat?.products;
     }
   })
-
 }
 
 const auto_search = async () => {
