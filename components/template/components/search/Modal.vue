@@ -14,7 +14,7 @@
     </div>
     <div class="w-full flex-1 flex flex-row">
 
-      <div v-if="state.search.results.products.length" class="full lg:w-1/2 p-4 m-4 fade-in">
+      <div v-if="state.search?.results?.products?.length" class="full lg:w-1/2 p-4 m-4 fade-in">
         <h3 class="text-3xl text-white font-thin mb-4">Products</h3>
         <div
           class="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-3 mt-2 w-full"
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <div v-if="state.search.results.posts.length" class="full lg:w-1/2 p-4 m-4 fade-in">
+      <div v-if="state.search?.results?.posts?.length" class="full lg:w-1/2 p-4 m-4 fade-in">
         <h3 class="text-3xl text-white font-thin mb-4">Posts</h3>
         <div class="full lg:w-1/2 fade-in">
           <div v-for="(post, b) in state.search.results.posts" :key="b" class="w-full flex flex-col p-4 bg-zinc-800 rounded-lg mb-2 shadow-xl">

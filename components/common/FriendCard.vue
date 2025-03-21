@@ -6,9 +6,9 @@
       </div>
     </a>
     <div class="flex-1 flex flex-col gap-1 justify-start items-start">
-      <a :href="`/members/${props.member?.nsight_id?.nsight_id}`">
+      <NuxtLink :to="`/members/${props.member?.nsight_id?.nsight_id}`">
         <h4 class="font-semibold text-sm text-neutral-900 dark:text-white">{{ props.member.first_name }} {{ props.member.last_name }}</h4>
-      </a>
+      </NuxtLink>
       <div class="w-full flex flex-row justify-between items-center align-center">
         <font-awesome-icon v-if="state.friends" :icon="['fas', 'user-check']" class="text-green-300 text-md me-2" />
         <font-awesome-icon v-else-if="!state.friends && !state.self && !state.pending_request" :icon="['fas', 'user-plus']" class="text-amber-300 text-md cursor-pointer me-2" @click="send_friend_request" />

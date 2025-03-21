@@ -46,6 +46,13 @@
               <div class="text-lg text-neutral-700 mb-10" v-html="post.caption"></div>
               <div class=" ">
                 <Reactions :post="post" :user="user" :profilePage="profilePage" :post-type="'picture-posts'" />
+
+                <div v-if="post.tags?.length" class="w-full flex flex-wrap">
+                  <a v-for="tag in post.tags" :key="tag.id" class="m-2" :href="`/home?tag=${tag.tag_name}`">
+                    <p class="text-neutral-900 cursor-pointer hover:font-bold">#{{ tag.tag_name }}</p>
+                  </a>
+                </div>
+
                 <CommentThread :target="post" :post-type="'picture-post'" :user="user" :profilePage="profilePage" />
               </div>
             </div>

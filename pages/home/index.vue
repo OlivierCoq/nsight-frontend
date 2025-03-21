@@ -93,7 +93,7 @@
               <h3 class="text-white text-xl">friends 
                 <span class="text-xs text-gray-500 dark:text-white/80">({{ state.friends.length }})</span>
               </h3>
-              <div class="flex flex-1 flex-col w-full overflow-y-scroll">
+              <div class="flex flex-1 flex-col w-full" :class="state.friends?.length > 6 ? 'overflow-y-scroll' : ''">
                 <div class="grid sm:grid-cols-2 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                   <FriendCard v-for="(friend, a) in state.friends" :key="a" :member="friend" />
                 </div>
@@ -105,7 +105,7 @@
                 text-xl">people you may know 
                 <span class="text-xs text-gray-500 dark:text-white/80">({{ state.potential_friends.length }})</span>
               </h3>
-              <div class="flex flex-1 flex-col w-full overflow-y-scroll">
+              <div class="flex flex-1 flex-col w-full" :class="state.potential_friends?.length > 6 ? 'overflow-y-scroll' : ''">
                 <div v-if="state.potential_friends.length" class="grid sm:grid-cols-2 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                   <FriendCard v-for="(friend, a) in state.potential_friends" :key="a" :member="friend" />
                 </div>
@@ -356,7 +356,7 @@
       }).then(async (result) => {
         console.log('feed result', result);
         state.feed = result?.data;
-        state.popular_tags = result?.popular_tags;
+        state.popular_tags = [...result?.popular_tags];
       }).catch((error) => {
         console.error('Error fetching feed', error)
       })

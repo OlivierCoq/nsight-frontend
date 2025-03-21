@@ -13,8 +13,30 @@
       <div class="w-full flex flex-col">
         <Editor v-model="state.new_post.caption" class="w-full rounded-md mb-2" placeholder="Add a caption.." @change="validate()" />
         <!-- <small class="text-red-500">Required</small> -->
-        
-      </div>
+        <div class="w-full flex flex-col p-2">
+          <p class="text-zinc-500 text-md mb-2">Tags</p>
+          <div class="w-full flex flex-wrap">
+            <div 
+              class="tag_pill new_tag rounded-full flex flex-row items-center bg-amber-500 px-4 py-2 min-w-[100px] m-1 shadow-lg"
+              :class="state.new_post.tags[0]?.tag_name.length ? 'opacity-1' : 'opacity-[0.7]'"
+            >
+              <span class="text-white">#</span>
+              <input type="text" v-model="state.new_post.tags[0].tag_name" class="bg-transparent text-white w-full rounded-full" placeholder="Add a tag" @keydown.enter="add_tag(state.new_post.tags[0])" />
+              <button @click="add_tag(state.new_post.tags[0])" :disabled="!state.new_post.tags[0].tag_name.length">
+                <font-awesome-icon :icon="['fa', 'plus']" class="text-white ms-3 mt-1"  />
+              </button>
+            </div>
+              <div v-for="(tag, a) in state.new_post.tags" :key="a" >
+                <div v-if="a > 0" class="tag_pill rounded-full flex flex-row items-center bg-amber-500 px-4 py-2 min-w-[100px] m-1 shadow-lg">
+                  <div class="flex-1">
+                    <p class="text-white m-0">#{{ tag.tag_name }}</p>
+                  </div>
+                  <font-awesome-icon :icon="['fa', 'times']" class="text-white ms-3 mt-1 cursor-pointer" @click="remove_tag(a)" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       <div class="flex-1"></div>
       <div>
         <button 
@@ -68,6 +90,11 @@
         mentions: [],
         hashtags: [],
       },
+      tags: [
+        {
+          tag_name: ''
+        }
+      ],
       visible: true,
       users_permissions_user: props?.user?.id,
       nsight_id: props?.user?.nsight_id?.nsight_id,
@@ -94,6 +121,21 @@
     state.new_post.data.images = data;
   }
 
+
+  const add_tag = (tag) => {
+    // add to beginning of array:
+    state.new_post.tags.unshift({
+      tag_name: tag.tag_name
+    })
+    nextTick(() => {
+      state.new_post.tags[0].tag_name = ''
+    })
+  }
+
+  const remove_tag = (index) => {
+    state.new_post.tags.splice(index, 1)
+  }
+
   const submitPost = async () => {
     state.processing = true
 
@@ -108,6 +150,34 @@
       body: JSON.stringify(state.new_post)
     }).then(async (response_data) => {
       console.log(response_data)
+
+      // clear out state.new_post:
+      state.new_post = {
+        title: '',
+        caption: '',
+        data: {
+          images: [],
+          videos: [],
+          links: [],
+          location: [],
+          tags: [],
+          mentions: [],
+          hashtags: [],
+        },
+        tags: [
+          {
+            tag_name: ''
+          }
+        ],
+        visible: true,
+        users_permissions_user: props?.user?.id,
+        nsight_id: props?.user?.nsight_id?.nsight_id,
+        comments: null,
+        reactions: {
+          upvotes: 0,
+          downvotes: 0
+        }
+      }
 
       // create a new comment thread for the post:
       await $fetch(`${config.public.NUXT_STRAPI_URL}/api/comment-threads`, {
