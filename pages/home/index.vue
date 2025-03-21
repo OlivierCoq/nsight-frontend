@@ -116,9 +116,9 @@
             <!-- Popular tags: -->
             <div class="flex flex-col items-start align-start justify-start min-h-[10rem] w-full mt-4 backdrop-blur-xl bg-black/20 rounded-lg px-6 pt-8 pb-8">
               <h3 class="text-white text-xl">popular tags</h3>
-              <div class="flex flex-wrap" :class="state.popular_tags.length > 16 ? 'overflow-y-scroll h-[10rem]' : ''">
+              <div class="flex flex-wrap" :class="state.popular_tags?.length > 16 ? 'overflow-y-scroll h-[10rem]' : ''">
                 <div v-for="(tag, b) in state.popular_tags" :key="b" class="tag_pill rounded-full flex flex-row items-center bg-amber-500 px-4 min-w-[100px] m-1 h-[40px] shadow-lg">
-                  <a :href="`/home?tag=${tag.tag_name}`" class="text-white hover:text-zinc-800 m-0">#{{ tag.tag_name }}</a>
+                  <a :href="`/home?tag=${tag.tag_name}`" class="text-white hover:text-zinc-800 m-0">#{{ tag?.tag_name }}</a>
                 </div>
               </div>
             </div>
