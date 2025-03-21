@@ -37,15 +37,23 @@
         style="min-width: 80vw !important"
       >
         <div class="p-0 rounded-md overflow-hidden flex flex-col md:flex-row">
-          <div class="w-full md:w-[66%]">
+          <div class="w-full md:w-[66%]  relative z-10 py-20">
             <img
               :src="state.main_img"
               :alt="props.product.itemData?.name"
-              class="object-cover w-full h-full inset-0 hover:cursor-pointer"
+              class="object-cover w-full h-full inset-0 hover:cursor-pointer absolute z-10"
             />
+            <div v-if="props.product?.images?.length > 1" class="min-h-[40px] absolute z-20 bottom-[1rem] right-[1rem] flex flex-row">
+              <div 
+                v-for="image in props.product?.images" :key="image.id" 
+                class="w-[110px] h-[140px] bg-zinc-400 bg-cover bg-center rounded-lg me-2 shadow-xl cursor-pointer transition-all duration-300 opacity-70 hover:opacity-100"
+                @click="state.main_img = image.imageData.url"
+                :style="{ backgroundImage: `url(${image.imageData.url})` }"
+              ></div>
+            </div>  
           </div>
           <div
-            class="w-full md:w-[33%] flex flex-col justify-start items-start"
+            class="w-full md:w-[33%] h-[80vh] flex flex-col justify-start items-start"
           >
             <!-- Close button -->
             <div
@@ -111,11 +119,18 @@
             <div
               class="ctr-item_data w-full flex flex-col items-start justify-start mt-10 px-8"
             >
-              <h2
-                class="text-2xl font-bold text-neutral-900 dark:text-white mb-5"
-              >
-                {{ props.product.itemData?.name }}
-              </h2>
+              <div class="w-full">
+                <h2 class="text-2xl font-bold text-neutral-900 dark:text-white mb-5">
+                  {{ props.product.itemData?.name }}
+                </h2>
+                <!-- <button
+                  type="button"
+                  class="bg-white rounded-full p-2 absolute right-0 top-0 m-3 dark:bg-zinc-600 uk-modal-close h-[30px] w-[30px] flex flex-col justify-center items-center"
+                  @click="close_modal"
+                >
+                  <font-awesome-icon :icon="['fas', 'times']" class="text-white" />
+                </button> -->
+              </div>
               <p
                 class="text-lg font-thin text-neutral-900 dark:text-white mb-10"
                 v-html="props.product.itemData?.description"
