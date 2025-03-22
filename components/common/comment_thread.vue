@@ -50,7 +50,7 @@
                       </a>
                       <div class="flex-1 flex flex-col justify-start items-start align-start">
                         <p class="text-xs">{{ reply.createdAt }}</p>
-                        <p class="text-md text-neutral-800 m-0" v-html="reply.body"></p>
+                        <p class="text-md text-neutral-800 dark:text-zinc-200 m-0" v-html="reply.body"></p>
                       </div>
                     </div>
                   </div>
