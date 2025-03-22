@@ -1,16 +1,22 @@
 <template>
-  <div class="mb-4 shadow-xl bg-zinc-900 rounded-md px-4 lg:px-10 py-6 lg:py-8 flex flex-col fade-in">
-    <div class="w-full flex flex-row">
+  <div class="mb-4 shadow-xl bg-zinc-900 rounded-md px-4 lg:px-6 py-6 lg:py-8 flex flex-col fade-in me-4">
+    <div class="w-full flex flex-col">
       <a :href="`/members/${user?.nsight_id?.nsight_id}`">
-        <div class="rounded-full lg:w-16 lg:h-16 w-10 h-10 overflow-hidden flex flex-col justify-center items-center">
-          <img :src="user?.profile_picture?.url" :alt="user?.first_name" class="w-[110%]" />
+        <div class="flex flex-row">
+          <div class="rounded-full lg:w-16 lg:h-16 w-10 h-10 overflow-hidden flex flex-col justify-center items-center">
+            <img :src="user?.profile_picture?.url" :alt="user?.first_name" class="w-[110%]" />
+          </div>
+          <div class="flex flex-col p-4 flex-1 justify-start align-end items-start">
+            <p class="text-sm text-white m-0">{{ user?.first_name }} {{ user?.last_name }}</p>
+            <p class="text-sm text-gray-400 m-0">{{ formatDate(post.createdAt) }}</p>
+          </div>
         </div>
       </a>
       <div class="flex flex-col flex-1 h-full ms-6">
         <div class="flex flex-row items-center">
           <a :href="`/members/${post.user?.nsight_id?.nsight_id}`" class="text-sm font-bold text-white hover:text-amber-400 mb-2">{{ post.user?.first_name }} {{ post.user?.last_name }}</a>
         </div>
-        <p class="text-2xl text-gray-400 mt-2 mb-4">{{ post.title }}</p>
+        <p class="text-lg text-gray-400 mt-2 mb-4">{{ post.title }}</p>
         <!-- Pictures -->
         <div v-if="post.type === 'picture-post'" class="w-full flex flex-col justify-center align-center items-center mb-4">
           <div v-if="post.data && post?.data?.images && post?.data?.images?.length">
@@ -90,7 +96,7 @@
         </div>
 
 
-        <div class="text-lg text-gray-400" v-html="post.body"></div>
+        <div class="text-md text-gray-400" v-html="post.body"></div>
         <Reactions :post="post" :post-type="'posts'" :user="user" :profilePage="profilePage" />
         
         <div v-if="post.tags?.length" class="w-full flex flex-wrap">
@@ -106,6 +112,8 @@
 </template>
 
 <script setup>
+
+  import { format } from 'date-fns';
 
   // props
   const props = defineProps({
@@ -126,6 +134,10 @@
   // components
 import CommentThread from '~/components/common/comment_thread.vue'
 import Reactions from '~/components/common/reactions.vue'
+
+const formatDate = (dateString) => {
+  return format(new Date(dateString), "PPpp");
+}
 
 </script>
 

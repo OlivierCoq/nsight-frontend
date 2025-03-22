@@ -1,11 +1,11 @@
 <template>
-  <div class="w-1/6 flex flex-row justify-between">
-    <div class="w-1/2 px-2 flex flex-col justify-center items-center">
-      <font-awesome-icon :icon="[in_favorites(postType) ? 'fas' : 'far', 'heart']" class="cursor-pointer" @click="toggle_favorite(postType)" />
+  <div class="w-1/6 flex flex-row justify-between text-zinc-800 dark:text-zinc-200">
+    <div class="w-1/2 px-2 flex flex-col justify-center items-center text-xl">
+      <font-awesome-icon :icon="[in_favorites(postType) ? 'fas' : 'far', 'heart']" class="cursor-pointer text-lg" @click="toggle_favorite(postType)" />
       <p class="text-xs m-0">{{ post.reactions.upvotes }}</p>
     </div>
-    <div class="w-1/2 px-2 flex flex-col justify-center items-center">
-      <font-awesome-icon :icon="['far', 'comment']" class="cursor-pointer" />
+    <div class="w-1/2 px-2 flex flex-col justify-center items-center text-xl">
+      <font-awesome-icon :icon="['far', 'comment']" class="cursor-pointer text-lg" />
       <p class="text-xs m-0">{{ post.comments?.comments?.length }}</p>
     </div>
   </div>

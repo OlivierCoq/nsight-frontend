@@ -34,11 +34,11 @@
 
          <div class="max-w-[90%] mx-auto flex flex-col lg:flex-row w-full h-[90vh]">
           <!-- feed -->
-          <div class="w-full lg:w-1/2 flex flex-col h-full m-2 overflow-y-scroll">
+          <div class="w-full lg:w-2/3 flex flex-col h-full m-2 ">
 
               <!-- New posts -->
             <div class="w-full backdrop-blux-xl bg-black/20 rounded-lg shadow-xl p-4 flex flex-row mb-4 align-center justify-center items-center">
-              <p class="text-xl text-zinc-200 font-thin flex-1">what's new today?</p>
+              <p class="text-md text-zinc-200 font-thin flex-1">what's new today?</p>
               <div class="ctr-new_posts">
                 <button 
                   class="bg-amber-400 hover:bg-amber-500 text-center text-neutral-100 dark:text-white px-4 py-2 rounded-lg shadow-md mx-1"
@@ -87,14 +87,14 @@
               <FeedCard v-for="(post, a) in state.feed" :key="a" :post="post" :profile-page="false" :user="post?.users_permissions_user" />
             </div>
           </div>
-          <div class="w-full lg:w-1/2 flex flex-col h-full m-2">
+          <div class="w-full lg:w-1/3 flex flex-col h-full m-2">
             <!-- Friends -->
             <div class="flex flex-col items-start align-start justify-start h-1/3 w-full backdrop-blur-xl bg-black/20 rounded-lg px-6 pt-8 pb-8">
               <h3 class="text-white text-xl">friends 
                 <span class="text-xs text-gray-500 dark:text-white/80">({{ state.friends.length }})</span>
               </h3>
-              <div class="flex flex-1 flex-col w-full" :class="state.friends?.length > 6 ? 'overflow-y-scroll' : ''">
-                <div class="grid sm:grid-cols-2 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+              <div class="flex flex-1 flex-col w-full" :class="state.friends?.length > 4 ? 'overflow-y-scroll' : ''">
+                <div class="grid gap-2 pe-4 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                   <FriendCard v-for="(friend, a) in state.friends" :key="a" :member="friend" />
                 </div>
               </div>
@@ -105,8 +105,8 @@
                 text-xl">people you may know 
                 <span class="text-xs text-gray-500 dark:text-white/80">({{ state.potential_friends.length }})</span>
               </h3>
-              <div class="flex flex-1 flex-col w-full" :class="state.potential_friends?.length > 6 ? 'overflow-y-scroll' : ''">
-                <div v-if="state.potential_friends.length" class="grid sm:grid-cols-2 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
+              <div class="flex flex-1 flex-col w-full" :class="state.potential_friends?.length > 2 ? 'overflow-y-scroll' : ''">
+                <div v-if="state.potential_friends.length" class="grid pe-4 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                   <FriendCard v-for="(friend, a) in state.potential_friends" :key="a" :member="friend" />
                 </div>
                 <p v-else class=""></p>
@@ -117,7 +117,7 @@
             <div class="flex flex-col items-start align-start justify-start min-h-[10rem] w-full mt-4 backdrop-blur-xl bg-black/20 rounded-lg px-6 pt-8 pb-8">
               <h3 class="text-white text-xl">popular tags</h3>
               <div class="flex flex-wrap" :class="state.popular_tags?.length > 16 ? 'overflow-y-scroll h-[10rem]' : ''">
-                <div v-for="(tag, b) in state.popular_tags" :key="b" class="tag_pill rounded-full flex flex-row items-center bg-amber-500 px-4 min-w-[100px] m-1 h-[40px] shadow-lg">
+                <div v-for="(tag, b) in state.popular_tags" :key="b" class="tag_pill rounded-full flex flex-row items-center bg-amber-500 px-4 min-w-[60px] m-1 h-[28px] shadow-lg">
                   <a :href="`/home?tag=${tag.tag_name}`" class="text-white hover:text-zinc-800 m-0">#{{ tag?.tag_name }}</a>
                 </div>
               </div>

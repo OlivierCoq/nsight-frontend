@@ -25,7 +25,7 @@
             id="logo__text"
             src="https://res.cloudinary.com/nsight/image/upload/v1721087388/logo_neutral_6e6fab0ffd.png"
             alt=""
-            class="w-[28px] h-[28px] h-6 ml-1 "
+            class="w-[26px] h-[26px] h-6 ml-1 "
           />
           <!-- <img
             id="logo__text"

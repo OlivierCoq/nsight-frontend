@@ -132,7 +132,7 @@
                 </button> -->
               </div>
               <p
-                class="text-lg font-thin text-neutral-900 dark:text-white mb-10"
+                class="text-md font-thin text-neutral-900 dark:text-white mb-10"
                 v-html="props.product.itemData?.description"
               ></p>
               <div class="ctr-price">

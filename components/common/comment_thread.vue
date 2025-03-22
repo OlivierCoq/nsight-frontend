@@ -14,30 +14,30 @@
         <li :id="`comments_list-${target.id}`" >
           <a 
             :id="`accordion-handler-${target.id}`" 
-            class="flex items-center justify-between p-3 text-base bg-white shadow rounded-md text-black dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#"
+            class="flex items-center justify-between p-3 bg-white shadow rounded-md text-md text-zinc-800 dark:text-white dark:bg-zinc-900 group uk-accordion-title" href="#"
 
           >
               comment threads ({{ state.comment_thread?.comments?.length }})
               <!-- <svg class="duration-200 group-aria-expanded:rotate-180 w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg> -->
           </a>
           <div class="p-2 dark:text-white/80 uk-accordion-content h-[20vh] overflow-y-auto pb-10">
-            <ul class="space-y-3 mb-10"> 
-              <li v-for="comment in state.comment_thread?.comments" :key="comment.id" class="flex flex-row px-4 pt-4 pb-6 shadow-md bg-zinc-100 rounded-md">
+            <ul class="p-0 mb-10"> 
+              <li v-for="comment in state.comment_thread?.comments" :key="comment.id" class="flex flex-row px-4 pt-4 pb-6 shadow-md bg-zinc-100 dark:bg-zinc-800 rounded-md">
                 <a v-if="comment.visible" :href="`/members/${comment.commenter?.nsight_id?.nsight_id}`" class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
-                  <img 
-                    class="rounded-full w-12 h-12"
-                    :src="comment?.commenter?.profile_picture ? comment?.commenter?.profile_picture?.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" alt="profile picture"
+                  <div class="w-[50px] h-[50px] overflow-hidden flex flex-col justify-center items-center bg-cover bg-center rounded-full"
+                    :style="{ backgroundImage: `url(${comment?.commenter?.profile_picture ? comment?.commenter?.profile_picture?.url : '/assets/images/mock_data/placeholder_pfp.jpeg' })` }"
                   >
-                  <p class="text-xs m-0 text-neutral-800">{{ comment?.commenter?.first_name }}</p>
+                  </div>
+                  <p class="text-xs m-0 text-neutral-800 dark:text-zinc-200">{{ comment?.commenter?.first_name }}</p>
                 </a>
                 <div v-if="comment?.visible" class="flex-1 flex flex-col justify-start items-start align-start ps-4">
                   <p class="text-xs">{{ comment?.createdAt }}</p>
-                  <p class="text-md text-neutral-800 m-0" v-html="comment.body"></p>
+                  <p class="text-md text-neutral-800 dark:text-zinc-200 m-0" v-html="comment.body"></p>
                   <!-- thin divider: -->
                   <div class="w-3/5 h-[1px] bg-zinc-800 opacity-[0.2] mt-5"></div>
                   <!-- Replies -->
                    <div class="w-full flex flex-row">
-                    <p class="text-xs mx-0 my-1 text-neutral-800">replies ({{ comment.replies?.length }})</p>
+                    <p class="text-xs mx-0 my-1 text-neutral-800 dark:text-zinc-200">replies ({{ comment.replies?.length }})</p>
                   </div>
                   <div class="w-full flex flex-col">
                     <div v-for="reply in comment.replies" :key="`${reply.id}-${comment.id}`" class="flex flex-row my-4">
