@@ -46,7 +46,7 @@
                           class="rounded-full w-8 h-8"
                           :src="reply?.user?.profile_picture ? reply?.user?.profile_picture.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" alt="profile picture"
                         >
-                        <p class="text-xs m-0 text-neutral-800">{{ reply?.user?.first_name }}</p>
+                        <p class="text-xs m-0 text-neutral-800 dark:text-zinc-200">{{ reply?.user?.first_name }}</p>
                       </a>
                       <div class="flex-1 flex flex-col justify-start items-start align-start">
                         <p class="text-xs">{{ reply.createdAt }}</p>

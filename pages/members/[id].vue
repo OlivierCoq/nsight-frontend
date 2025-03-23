@@ -152,6 +152,7 @@
                 <!-- Posts -->
               <div v-if="state.active_tab.value === 'posts'" id="tab-posts" :class="[(state.active_tab.value === 'posts' ? 'uk-active' : '')]" class="w-full h-[60vh] fade-in flex flex-col gap-4">
                 
+                <!-- Editing -->
                 <div v-if="route.params.id === auth.user.nsight_id.nsight_id" class="mx-auto w-[130px] mt-2 mb-5 flex flex-col justify-center">
                     <button 
                       class="bg-amber-500 text-white rounded-md p-2 my-[1px] ms-1"
@@ -169,11 +170,10 @@
                       
                     </div>
                   
-                  </div>
-                <div class="w-full h-full overflow-y-scroll flex flex-col relative">
+                </div>
 
-                  
-
+                  <!-- All posts -->
+                <div class="w-full h-full flex flex-col relative overflow-y-scroll">
                   <div v-if="(profile_data.posts && state.friends) || (profile_data.posts && state.self)" class="mx-auto w-[90%] lg:w-[800px]">
                     <ProfilePost v-for="post in profile_data.posts" :key="post.id" :post="post" :user="user" :profile-page="true" />
                   </div>

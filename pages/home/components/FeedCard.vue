@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4 shadow-xl bg-zinc-900 rounded-md px-4 lg:px-6 py-6 lg:py-8 flex flex-col fade-in me-4">
+  <div class="mb-4 shadow-xl bg-zinc-300 dark:bg-zinc-900 rounded-md px-4 lg:px-6 py-6 lg:py-8 flex flex-col fade-in me-4">
     <div class="w-full flex flex-col">
       <a :href="`/members/${user?.nsight_id?.nsight_id}`">
         <div class="flex flex-row">
@@ -7,8 +7,8 @@
             <img :src="user?.profile_picture?.url" :alt="user?.first_name" class="w-[110%]" />
           </div>
           <div class="flex flex-col p-4 flex-1 justify-start align-end items-start">
-            <p class="text-sm text-white m-0">{{ user?.first_name }} {{ user?.last_name }}</p>
-            <p class="text-sm text-gray-400 m-0">{{ formatDate(post.createdAt) }}</p>
+            <p class="text-sm text-zinc-800 dark:text-white m-0">{{ user?.first_name }} {{ user?.last_name }}</p>
+            <p class="text-sm text-zinc-800 dark:text-gray-400 m-0">{{ formatDate(post.createdAt) }}</p>
           </div>
         </div>
       </a>
@@ -16,7 +16,7 @@
         <div class="flex flex-row items-center">
           <a :href="`/members/${post.user?.nsight_id?.nsight_id}`" class="text-sm font-bold text-white hover:text-amber-400 mb-2">{{ post.user?.first_name }} {{ post.user?.last_name }}</a>
         </div>
-        <p class="text-lg text-gray-400 mt-2 mb-4">{{ post.title }}</p>
+        <p class="text-lg text-neutral-800 dark:text-gray-400 mt-2 mb-4">{{ post.title }}</p>
         <!-- Pictures -->
         <div v-if="post.type === 'picture-post'" class="w-full flex flex-col justify-center align-center items-center mb-4">
           <div v-if="post.data && post?.data?.images && post?.data?.images?.length">
@@ -95,8 +95,8 @@
           </div>
         </div>
 
-
-        <div class="text-md text-gray-400" v-html="post.body"></div>
+        <!--  Body -->
+        <div class="text-md text-neutral-800 dark:text-gray-400" v-html="post.body"></div>
         <Reactions :post="post" :post-type="'posts'" :user="user" :profilePage="profilePage" />
         
         <div v-if="post.tags?.length" class="w-full flex flex-wrap">

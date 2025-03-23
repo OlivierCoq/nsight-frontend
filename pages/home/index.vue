@@ -32,13 +32,13 @@
           
         </div>
 
-         <div class="max-w-[90%] mx-auto flex flex-col lg:flex-row w-full h-[90vh]">
+         <div class="max-w-[85%] mx-auto flex flex-col lg:flex-row w-full h-[90vh]">
           <!-- feed -->
           <div class="w-full lg:w-2/3 flex flex-col h-full m-2 ">
 
               <!-- New posts -->
-            <div class="w-full backdrop-blux-xl bg-black/20 rounded-lg shadow-xl p-4 flex flex-row mb-4 align-center justify-center items-center">
-              <p class="text-md text-zinc-200 font-thin flex-1">what's new today?</p>
+            <div class="w-full backdrop-blux-xl bg-zinc-300 dark:bg-black/20 rounded-lg shadow-xl p-4 flex flex-row mb-4 align-center justify-center items-center">
+              <p class="text-md text-zinc-900 dark:text-zinc-200 dark:font-thin flex-1">what's new today?</p>
               <div class="ctr-new_posts">
                 <button 
                   class="bg-amber-400 hover:bg-amber-500 text-center text-neutral-100 dark:text-white px-4 py-2 rounded-lg shadow-md mx-1"
@@ -89,10 +89,11 @@
           </div>
           <div class="w-full lg:w-1/3 flex flex-col h-full m-2">
             <!-- Friends -->
-            <div class="flex flex-col items-start align-start justify-start h-1/3 w-full backdrop-blur-xl bg-black/20 rounded-lg px-6 pt-8 pb-8">
-              <h3 class="text-white text-xl">friends 
-                <span class="text-xs text-gray-500 dark:text-white/80">({{ state.friends.length }})</span>
+            <div class="flex flex-col items-start align-start justify-start h-1/3 w-full backdrop-blur-xl bg-zinc-300 dark:bg-black/20 rounded-lg px-6 pt-8 pb-8">
+              <h3 class="text-neutral-900 dark:text-white text-xl mb-0">friends 
+                <span class="text-xs text-gray-500 dark:text-white/80 mb-2">({{ state.friends.length }})</span>
               </h3>
+              <NuxtLink to="/friends" class="text-xs text-neutral-800 dark:text-amber-400 hover:text-amber-500 mb-2">view all</NuxtLink>
               <div class="flex flex-1 flex-col w-full" :class="state.friends?.length > 4 ? 'overflow-y-scroll' : ''">
                 <div class="grid gap-2 pe-4 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                   <FriendCard v-for="(friend, a) in state.friends" :key="a" :member="friend" />
@@ -100,9 +101,8 @@
               </div>
             </div>
             <!-- People you may know -->
-            <div class="flex flex-col items-start align-start justify-start h-1/3 w-full mt-4 backdrop-blur-xl bg-black/20 rounded-lg px-6 pt-8 pb-8">
-              <h3 class="text-white
-                text-xl">people you may know 
+            <div class="flex flex-col items-start align-start justify-start h-1/3 w-full mt-4 backdrop-blur-xl bg-zinc-300 dark:bg-black/20 rounded-lg px-6 pt-8 pb-8">
+              <h3 class="text-neutral-900 dark:text-white text-xl">people you may know 
                 <span class="text-xs text-gray-500 dark:text-white/80">({{ state.potential_friends.length }})</span>
               </h3>
               <div class="flex flex-1 flex-col w-full" :class="state.potential_friends?.length > 2 ? 'overflow-y-scroll' : ''">
@@ -114,8 +114,8 @@
             </div>
 
             <!-- Popular tags: -->
-            <div class="flex flex-col items-start align-start justify-start min-h-[10rem] w-full mt-4 backdrop-blur-xl bg-black/20 rounded-lg px-6 pt-8 pb-8">
-              <h3 class="text-white text-xl">popular tags</h3>
+            <div class="flex flex-col items-start align-start justify-start min-h-[10rem] w-full mt-4 backdrop-blur-xl bg-zinc-300 dark:bg-black/20 rounded-lg px-6 pt-8 pb-8">
+              <h3 class="text-neutral-900 dark:text-white text-xl">popular tags</h3>
               <div class="flex flex-wrap" :class="state.popular_tags?.length > 16 ? 'overflow-y-scroll h-[10rem]' : ''">
                 <div v-for="(tag, b) in state.popular_tags" :key="b" class="tag_pill rounded-full flex flex-row items-center bg-amber-500 px-4 min-w-[60px] m-1 h-[28px] shadow-lg">
                   <a :href="`/home?tag=${tag.tag_name}`" class="text-white hover:text-zinc-800 m-0">#{{ tag?.tag_name }}</a>

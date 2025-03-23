@@ -211,9 +211,9 @@
           </div>
         </div> 
 
-        <div class="w-[80%] ms-2 min-h-[40px] bg-black/20 rounded-lg shadow-xl fade-in p-4 absolute bottom-[6rem] hidden xl:block flex flex-col  flex-wrap">
-          <p class="font-thin text-sm text-zinc-200 text-start">{{ state.quote?.body }}</p>
-          <a class="text-amber-200 hover:text-amber-300 text-xs text-end ms-10" :href="state.quote?.link ? state.quote?.link : '#'">- {{ state.quote?.author }}</a>
+        <div class="w-[80%] ms-2 min-h-[40px] bg-zinc-200 dark:bg-zinc-800 rounded-lg shadow-xl fade-in p-4 absolute bottom-[6rem] hidden xl:block flex flex-col  flex-wrap">
+          <p class="font-thin text-sm text-neutral-800 dark:text-zinc-200 text-start">{{ state.quote?.body }}</p>
+          <a class="text-neutral-800 hover:text-black dark:text-amber-200 hover:dark:text-amber-300 text-xs text-end ms-10" :href="state.quote?.link ? state.quote?.link : '#'">- {{ state.quote?.author }}</a>
         </div>
 
       </nav>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-1/6 flex flex-row justify-between text-zinc-800 dark:text-zinc-200">
+  <div class="w-1/3 flex flex-row justify-between text-zinc-800 dark:text-zinc-200">
     <div class="w-1/2 px-2 flex flex-col justify-center items-center text-xl">
       <font-awesome-icon :icon="[in_favorites(postType) ? 'fas' : 'far', 'heart']" class="cursor-pointer text-lg" @click="toggle_favorite(postType)" />
       <p class="text-xs m-0">{{ post.reactions.upvotes }}</p>
