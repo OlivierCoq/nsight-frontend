@@ -97,7 +97,9 @@
 
         <!--  Body -->
         <div class="text-md text-neutral-800 dark:text-gray-400" v-html="post.body"></div>
-        <Reactions :post="post" :post-type="'posts'" :user="user" :profilePage="profilePage" />
+        <div class="w-1/2">
+          <Reactions :post="post" :post-type="'posts'" :user="user" :profilePage="profilePage" />
+        </div>
         
         <div v-if="post.tags?.length" class="w-full flex flex-wrap">
           <a v-for="tag in post.tags" :key="tag.id" class="m-2" :href="`/home?tag=${tag.tag_name}`">
