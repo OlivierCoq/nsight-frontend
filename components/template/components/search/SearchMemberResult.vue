@@ -1,14 +1,10 @@
 <template>
-  <div class="flex gap-4 items-center flex-wrap justify-between p-5 rounded-lg shadow-xl border1 bg-zinc-100 dark:bg-zinc-900">
-    <NuxtLink :to="`/members/${props.member.nsight_id?.nsight_id}`">
+  <div class="flex gap-4 items-center flex-wrap justify-between p-5 rounded-lg shadow-xl border1 bg-zinc-100 dark:bg-zinc-900 cursor-pointer" @click="go_to_profile">
       <div class="rounded-full lg:w-16 lg:h-16 w-10 h-10 overflow-hidden flex flex-col justify-center items-center">
         <img :src="props.member.profile_picture?.url ? props.member.profile_picture.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" :alt="props.member.first_name" class="w-[110%]">
       </div>
-    </NuxtLink>
     <div class="flex-1 flex flex-col gap-1 justify-start items-start">
-      <NuxtLink :to="`/members/${props.member?.nsight_id?.nsight_id}`">
         <h4 class="font-semibold text-sm text-neutral-900 dark:text-white">{{ props.member.first_name }} {{ props.member.last_name }}</h4>
-      </NuxtLink>
       <div class="w-full flex flex-row justify-between items-center align-center">
         <font-awesome-icon v-if="state.friends" :icon="['fas', 'user-check']" class="text-green-300 text-md me-2" />
         <font-awesome-icon v-else-if="!state.friends && !state.self && !state.pending_request" :icon="['fas', 'user-plus']" class="text-amber-300 text-md cursor-pointer me-2" @click="send_friend_request" />
@@ -23,6 +19,7 @@
 
  // setup
  const config = useRuntimeConfig()
+ const router = useRouter()
 
   // props
   const props = defineProps({
@@ -45,6 +42,10 @@
   const settings = settingsStore()
 
   // methods
+
+    // emits
+  const emit = defineEmits(["close"])
+
   const friend_check = () => {
     return auth.user?.friends?.find(friend => friend === props?.member?.nsight_id?.nsight_id)
   }
@@ -136,6 +137,15 @@
       }).catch((error) => {
         console.error('Error cancelling friend request', error)
       })
+    })
+  }
+
+  const go_to_profile = () => {
+    // console.log('going to profile')
+    // change route to ``/profile/${props.member.id}``:
+    router.push(`/members/${props.member.nsight_id?.nsight_id}`)
+    nextTick(() => {
+      emit('close')
     })
   }
 

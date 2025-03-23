@@ -45,7 +45,7 @@
         <h3 class="text-3xl text-white font-thin mb-4">People</h3>
         <div class="full lg:w-1/2 fade-in">
           <div class="grid sm:grid-cols-2 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
-            <FriendCard v-for="(friend, c) in state.search.results.people" :key="c" :member="friend" />
+            <FriendCard v-for="(friend, c) in state.search.results.people" :key="c" :member="friend" @close="close_modal" />
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
 
   // Components
   import ProductCard from '../../../../pages/shop/components/ProductCard.vue'
-  import FriendCard from '../../../common/FriendCard.vue'
+  import FriendCard from './SearchMemberResult.vue'
 
 
   // State:
@@ -91,6 +91,10 @@
 
 
   // Methods:
+
+  // emits
+  const emit = defineEmits(["close"])
+
   const doSearch = async () => {
 
     // Products:
@@ -190,6 +194,10 @@
     if(state.search.query.length > 4) { await search_posts() } 
     else { state.search.results.posts = [] }
     
+  }
+
+  const close_modal = () => {
+    emit("close")
   }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="mb-4 shadow-xl bg-zinc-300 dark:bg-zinc-900 rounded-md px-4 lg:px-6 py-6 lg:py-8 flex flex-col fade-in me-4">
     <div class="w-full flex flex-col">
-      <a :href="`/members/${user?.nsight_id?.nsight_id}`">
+      <NuxtLink :to="`/members/${user?.nsight_id?.nsight_id}`">
         <div class="flex flex-row">
           <div class="rounded-full lg:w-16 lg:h-16 w-10 h-10 overflow-hidden flex flex-col justify-center items-center">
             <img :src="user?.profile_picture?.url" :alt="user?.first_name" class="w-[110%]" />
@@ -11,10 +11,10 @@
             <p class="text-sm text-zinc-800 dark:text-gray-400 m-0">{{ formatDate(post.createdAt) }}</p>
           </div>
         </div>
-      </a>
+      </NuxtLink>
       <div class="flex flex-col flex-1 h-full ms-6">
         <div class="flex flex-row items-center">
-          <a :href="`/members/${post.user?.nsight_id?.nsight_id}`" class="text-sm font-bold text-white hover:text-amber-400 mb-2">{{ post.user?.first_name }} {{ post.user?.last_name }}</a>
+          <NuxtLink :href="`/members/${post.user?.nsight_id?.nsight_id}`" class="text-sm font-bold text-white hover:text-amber-400 mb-2">{{ post.user?.first_name }} {{ post.user?.last_name }}</NuxtLink>
         </div>
         <p class="text-lg text-neutral-800 dark:text-gray-400 mt-2 mb-4">{{ post.title }}</p>
         <!-- Pictures -->

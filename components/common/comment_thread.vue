@@ -10,7 +10,7 @@
       >Post</button>
     </div>
     <div v-show="state.show_comments" class="ctr-comments flex flex-col mt-5 fade-in">
-      <ul class="relative space-y-3 " uk-accordion>
+      <ul class="relative" uk-accordion>
         <li :id="`comments_list-${target.id}`" >
           <a 
             :id="`accordion-handler-${target.id}`" 
@@ -23,13 +23,13 @@
           <div class="p-2 dark:text-white/80 uk-accordion-content h-[20vh] overflow-y-auto pb-10">
             <ul class="p-0 mb-10"> 
               <li v-for="comment in state.comment_thread?.comments" :key="comment.id" class="flex flex-row px-4 pt-4 pb-6 shadow-md bg-zinc-100 dark:bg-zinc-800 rounded-md">
-                <a v-if="comment.visible" :href="`/members/${comment.commenter?.nsight_id?.nsight_id}`" class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
+                <NuxtLink v-if="comment.visible" :to="`/members/${comment.commenter?.nsight_id?.nsight_id}`" class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
                   <div class="w-[50px] h-[50px] overflow-hidden flex flex-col justify-center items-center bg-cover bg-center rounded-full"
                     :style="{ backgroundImage: `url(${comment?.commenter?.profile_picture ? comment?.commenter?.profile_picture?.url : '/assets/images/mock_data/placeholder_pfp.jpeg' })` }"
                   >
                   </div>
                   <p class="text-xs m-0 text-neutral-800 dark:text-zinc-200">{{ comment?.commenter?.first_name }}</p>
-                </a>
+                </NuxtLink>
                 <div v-if="comment?.visible" class="flex-1 flex flex-col justify-start items-start align-start ps-4">
                   <p class="text-xs">{{ comment?.createdAt }}</p>
                   <p class="text-md text-neutral-800 dark:text-zinc-200 m-0" v-html="comment.body"></p>
@@ -41,13 +41,13 @@
                   </div>
                   <div class="w-full flex flex-col">
                     <div v-for="reply in comment.replies" :key="`${reply.id}-${comment.id}`" class="flex flex-row my-4">
-                      <a :href="`/members/${reply.user?.nsight_id?.nsight_id}`" class="flex flex-col w-[40px] items-center justify-start cursor-arrow me-3">
+                      <NuxtLink :to="`/members/${reply.user?.nsight_id?.nsight_id}`" class="flex flex-col w-[40px] items-center justify-start cursor-arrow me-3">
                         <img 
                           class="rounded-full w-8 h-8"
                           :src="reply?.user?.profile_picture ? reply?.user?.profile_picture.url : '/assets/images/mock_data/placeholder_pfp.jpeg'" alt="profile picture"
                         >
                         <p class="text-xs m-0 text-neutral-800 dark:text-zinc-200">{{ reply?.user?.first_name }}</p>
-                      </a>
+                      </NuxtLink>
                       <div class="flex-1 flex flex-col justify-start items-start align-start">
                         <p class="text-xs">{{ reply.createdAt }}</p>
                         <p class="text-md text-neutral-800 dark:text-zinc-200 m-0" v-html="reply.body"></p>

@@ -11,7 +11,7 @@
       <div
         class="flex h-20 px-2 hidden md:block mt-5 max-md:fixed max-md:top-0 max-md:w-[28px]  max-md:bg-white/80 max-md:left-0 max-md:px-4 max-md:h-14 max-md:shadow-sm max-md:dark:bg-zinc-900/80 backdrop-blur-xl"
       >
-        <a href="/home" id="logo" class="flex items-center gap-3">
+        <NuxtLink to="/home" id="logo" class="flex items-center gap-3">
           <!-- logo icon -->
           <!-- <img
             id="logo__icon"
@@ -33,13 +33,13 @@
             alt=""
             class="w-[28px] h-[28px] h-6 ml-1 !hidden max-xl:!hidden max-md:block dark:max-md:!block dark:!block"
           /> -->
-        </a>
+        </NuxtLink>
       </div>
 
       <!-- nav -->
       <nav class="flex-1 max-md:flex max-md:justify-around md:space-y-2">
         <!-- Home -->
-        <a href="/home">
+        <NuxtLink to="/home">
           <svg
             id="icon__outline"
             xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,7 @@
             />
           </svg>
           <span class="max-xl:hidden"> Home </span>
-        </a>
+        </NuxtLink>
 
         <!-- Search -->
         <a  
@@ -96,11 +96,11 @@
  
           <div id="ctr-search_modal_body" class=" uk-modal-dialog tt relative mx-auto  rounded-lg shadow-xl w-[80vw]">
 
-            <SearchModal />
+            <SearchModal @close="close_search_modal" />
 
 
             <!-- Close -->
-             <button type="button" class="rounded-full absolute right-0 top-0 m-3 bg-zinc-600 uk-modal-close h-[30px] w-[30px]">
+             <button type="button" id="close_search_modal" class="rounded-full absolute right-0 top-0 m-3 bg-zinc-600 uk-modal-close h-[30px] w-[30px]">
               <font-awesome-icon :icon="['fas', 'times']" class="text-black text-white" />
             </button>
           </div>
@@ -109,7 +109,7 @@
 
 
         <!-- shop -->
-        <a href="/shop">
+        <NuxtLink to="/shop">
           <svg
             id="icon__outline"
             xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +138,7 @@
             />
           </svg>
           <span class="max-xl:hidden"> Shop </span>
-        </a>
+        </NuxtLink>
 
         <!-- Notifications -->
          <a href="#!" class="max-md:!fixed max-md:top-2 right-[1px] relative"> 
@@ -249,8 +249,8 @@
           ></div>
 
           <div class="p-4 text-xs font-medium">
-            <a
-              :href="`/members/${auth.user?.nsight_id?.nsight_id}`"
+            <NuxtLink
+              :to="`/members/${auth.user?.nsight_id?.nsight_id}`"
               class="text-neutral-800 dark:text-white"
             >
               <div
@@ -272,7 +272,7 @@
                 </div>
                 <!-- <div class="text-gray-400 dark:text-white/80"> @monroe </div> -->
               </div>
-            </a>
+            </NuxtLink>
             <!-- <font-awesome-icon 
               class="text-neutral-900 dark:text-white text-sm me-2 hover:cursor-pointer mb-[-1rem]" 
               :icon="[ 'fas', `${settings.dark_mode ? 'sun' : 'moon'}` ]"
@@ -287,20 +287,20 @@
           <hr class="opacity-60" />
           <ul class="text-sm font-semibold p-2">
             <li>
-              <a :href="`/members/${auth?.user?.nsight_id?.nsight_id}`"
+              <NuxtLink :to="`/members/${auth?.user?.nsight_id?.nsight_id}`"
                 class="flex gap-3 rounded-md p-2 text-neutral-800 dark:text-white hover:dark:text-zinc-100 hover:bg-zinc-300/30"
               >
                 Profile
-              </a>
+              </NuxtLink>
             </li>
             <!-- <li> <a href="upgrade.html" class="flex gap-3 rounded-md p-2 text-neutral-800 dark:text-white hover:dark:text-zinc-100 hover:bg-zinc-300/30"> Upgrade </a></li>  -->
             <li>
-              <a
+              <NuxtLink
                 href="/account"
                 class="flex gap-3 rounded-md p-2 text-neutral-800 dark:text-white hover:dark:text-zinc-100 hover:bg-zinc-300/30"
               >
                 Account Settings
-              </a>
+              </NuxtLink>
             </li>
             <li>
               <a
@@ -359,7 +359,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import logo from "~/assets/images/logo/nsight_clear.png";
+
 
   // Setup
 const config = useRuntimeConfig();
@@ -407,6 +407,11 @@ const toggle_theme = () => {
   nextTick(() => {
     settings.dark_mode = auth.user.preferences[0].dark_mode
   })
+}
+
+const close_search_modal = () => {
+  let close_element = document.getElementById('close_search_modal')
+  close_element?.click()
 }
 
 // Notifications
@@ -505,6 +510,7 @@ onMounted(() => {
   quotes()
   getNotifications(false)
 })
+
 
 
 </script>
