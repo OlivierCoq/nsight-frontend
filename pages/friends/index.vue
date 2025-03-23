@@ -109,9 +109,9 @@
 
   // Page meta
   definePageMeta({
-    title: "Dashboard",
-    description: "Dashboard",
-    url: "/dashboard",
+    title: "Friends",
+    description: "Friends",
+    url: "/friends",
     middleware: ["auth"],
     layout: "inner",
   });

@@ -4,7 +4,7 @@
     <!-- Tablet & larger -->
     <div class="w-full h-[50px] bg-zinc-400 dark:bg-zinc-800 flex flex-row justify-between fixed z-50">
       <div class="flex flex-row h-full justify-start align-center items-center w-1/6" >
-        <a href="/dashboard" class="w-[50px] p-2">
+        <a href="/home" class="w-[50px] p-2">
           <img :src="logo" alt="nSight Logo" class="w-full h-full" />
         </a>
         <NuxtLink to="/shop/products" class="text-decoration-none ms-5">
