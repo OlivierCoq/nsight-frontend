@@ -6,7 +6,7 @@
       @dragleave.prevent="dragging = false"
       @drop.prevent="handleDrop"
     >
-      <p v-if="!dragging" class="text-neutral-800 font-thin text-center my-20">
+      <p v-if="!dragging" class="text-neutral-800 dark:text-zinc-200 font-thin text-center my-20">
         Drag and drop images here, or <span class="text-amber-500 font-semibold cursor-pointer" @click="selectFiles">browse</span>
       </p>
       <p v-else class="text-amber-500 font-semibold">Drop images now</p>

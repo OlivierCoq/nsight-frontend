@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4 shadow-xl bg-zinc-300 dark:bg-zinc-900 rounded-md px-4 lg:px-6 py-6 lg:py-8 flex flex-col fade-in me-4">
+  <div class="mb-4 shadow-xl bg-white dark:bg-zinc-900 rounded-md px-4 lg:px-6 py-6 lg:py-8 flex flex-col fade-in me-4">
     <div class="w-full flex flex-col">
       <NuxtLink :to="`/members/${user?.nsight_id?.nsight_id}`">
         <div class="flex flex-row">

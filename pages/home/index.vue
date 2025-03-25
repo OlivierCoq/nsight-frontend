@@ -37,7 +37,7 @@
           <div class="w-full lg:w-2/3 flex flex-col h-full m-2 ">
 
               <!-- New posts -->
-            <div class="w-full backdrop-blux-xl bg-zinc-300 dark:bg-black/20 rounded-lg shadow-xl p-4 flex flex-row mb-4 align-center justify-center items-center">
+            <div class="w-full backdrop-blux-xl bg-white dark:bg-black/20 rounded-lg shadow-xl p-4 flex flex-row mb-4 align-center justify-center items-center">
               <p class="text-md text-zinc-900 dark:text-zinc-200 dark:font-thin flex-1">what's new today?</p>
               <div class="ctr-new_posts">
                 <button 
@@ -94,7 +94,7 @@
                 <span class="text-xs text-gray-500 dark:text-white/80 mb-2">({{ state.friends.length }})</span>
               </h3>
               <NuxtLink to="/friends" class="text-xs text-neutral-800 dark:text-amber-400 hover:text-amber-500 mb-2">view all</NuxtLink>
-              <div class="flex flex-1 flex-col w-full" :class="state.friends?.length > 4 ? 'overflow-y-scroll' : ''">
+              <div class="flex flex-1 flex-col w-full" :class="state.friends?.length > 2 ? 'overflow-y-scroll' : ''">
                 <div class="grid gap-2 pe-4 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                   <FriendCard v-for="(friend, a) in state.friends" :key="a" :member="friend" />
                 </div>

@@ -18,7 +18,7 @@
       </div>
 
       <div :id="`picture-post-${post.id}`" class="flex flex-col" :class="settings.dark_mode ? 'dark' : ''" uk-modal="">
-        <div class="uk-modal-body uk-padding-remove post-modal-body bg-zinc-200 dark:bg-zinc-800 rounded-lg min-h-[40rem]">
+        <div class="uk-modal-body uk-padding-remove post-modal-body bg-white dark:bg-zinc-800 rounded-lg min-h-[40rem]">
           
           <div class="w-full h-full flex flex-col lg:flex-row ">
             <div 

@@ -1,6 +1,6 @@
 <template>
-  <div class="flex flex-col justify-between rounded-md shadow-xl  bg-zinc-100  py-10 px-5">
-    <h3 class="text-xl text-neutral-800 px-4">Create a new post</h3>
+  <div class="flex flex-col justify-between rounded-md shadow-xl dark:bg-zinc-800 py-10 px-5">
+    <h3 class="text-xl text-neutral-800 dark:text-white px-4">Create a new post</h3>
     <div class="w-full flex flex-col justify-between">
       <input v-model="state.new_post.title" class="w-full p-2 mb-2 rounded-md border border-neutral-300" placeholder="Title" />
       <div class="mb-2">

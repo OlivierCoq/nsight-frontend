@@ -1,11 +1,11 @@
 <template>
-  <div class="flex flex-col lg:flex-row justify-between rounded-md shadow-xl bg-zinc-100 py-2 px-5 min-h-[700px]">
+  <div class="flex flex-col lg:flex-row justify-between rounded-md shadow-xl bg-zinc-100 dark:bg-zinc-800 py-2 px-5 min-h-[700px]">
     <!--  -->
     <div class="w-full lg:w-2/3 h-full flex flex-col">
       <ImageDropZone :post="state.new_post" @pictureUploaded="receive_pictures_upload" :expand="true" />
     </div>
     <div class="w-full lg:w-1/3 h-full flex flex-col p-4 justify-between">
-      <h3 class="text-xl text-neutral-800 mb-4">New pictures post</h3>
+      <h3 class="text-xl text-neutral-800 dark:text-zinc-200 mb-4">New pictures post</h3>
       <div class="w-full flex flex-col">
         <input v-model="state.new_post.title" class="w-full p-2 mb-2 rounded-md border border-neutral-300" @change="validate()" placeholder="Title" />
         <!-- <small class="text-red-500">Required</small> -->

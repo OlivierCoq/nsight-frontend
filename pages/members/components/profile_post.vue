@@ -1,5 +1,5 @@
 <template>
-  <div v-if="post.visible" class="flex flex-row rounded-lg bg-zinc-300 dark:bg-zinc-900 shadow-xl  w-full p-10 my-2 fade-in justify-center">
+  <div v-if="post.visible" class="flex flex-row rounded-lg bg-white dark:bg-zinc-900 shadow-xl  w-full p-10 my-2 fade-in justify-center">
     <a v-if="!profilePage" :href="`/members/${user.nsight_id.nsight_id}` " class="flex flex-col w-1/6 items-center justify-start cursor-arrow">
       <img class="rounded-full w-16 h-16" :src="user.profile_picture.url" alt="profile picture">
       <p class="text-xs m-0 text-neutral-800">{{ user.first_name }}</p>

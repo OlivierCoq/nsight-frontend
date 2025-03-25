@@ -9,7 +9,7 @@
           class="search_input w-full bg-transparent rounded-lg text-lg me-4" 
           placeholder="Search"
         />
-        <font-awesome-icon :icon="['fa', 'magnifying-glass']" class="text-lg lg:text-4xl cursor-pointer hover:text-white" @click="doSearch" />
+        <font-awesome-icon :icon="['fa', 'magnifying-glass']" class="text-lg lg:text-4xl cursor-pointer text-zinc-300 hover:text-white" @click="doSearch" />
       </div>
     </div>
     <div class="w-full flex-1 flex flex-row">

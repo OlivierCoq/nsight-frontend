@@ -37,7 +37,7 @@
                 <div
                   class="relative"
                 >
-                  <p v-if="profile_data?.intro" class="text-sm lg:text-md mt-2 md:font-normal text-white" v-html="profile_data?.intro"></p>
+                  <p v-if="profile_data?.intro" class="text-sm lg:text-md mt-2 md:font-normal text-zinc-800 dark:text-white" v-html="profile_data?.intro"></p>
                   <div v-if="state.self" class="absolute top-0 right-0 bg-zinc-900/60 rounded-full p-2 hover:bg-amber-500/80 cursor-pointer h-[40px] w-[40px] flex justify-center items-center"  uk-toggle="target: #edit_intro_modal">
                     <font-awesome-icon :icon="['fas', 'pen']" class="text-md text-white" />
                   </div>
@@ -59,15 +59,15 @@
                 <div class="flex md:items-end justify-between md:mt-8 mt-4 max-md:flex-col gap-4">
                   <div class="flex sm:gap-10 gap-6 sm:text-sm text-xs max-sm:absolute max-sm:top-10 max-sm:left-36">
                     <div>
-                      <p class="text-zinc-100">Posts</p>
+                      <p class="text-zinc-800 dark:text-zinc-100">Posts</p>
                       <h3 v-if="profile_data?.posts" class="sm:text-xl sm:font-bold mt-1 text-neutral-800 dark:text-zinc-100 text-base font-normal">{{ profile_data?.posts?.length }}</h3>
                     </div>
                     <div>
-                      <p class="text-zinc-100">Friends</p>
+                      <p class="text-zinc-800 dark:text-zinc-100">Friends</p>
                       <h3 class="sm:text-xl sm:font-bold mt-1 text-black dark:text-white text-base font-normal">{{ user?.friends?.length }}</h3>
                     </div>
                     <div v-if="profile_data && (profile_data?.picture_posts?.length)">
-                      <p class="text-zinc-100">Pictures</p>
+                      <p class="text-zinc-800 dark:text-zinc-100">Pictures</p>
                       <h3 class="sm:text-xl sm:font-bold mt-1 text-black dark:text-white text-base font-normal">{{ profile_data?.picture_posts?.length }}</h3>
                     </div>
                     <!-- <div>
@@ -136,8 +136,8 @@
                   <ul class="flex gap-2 justify-center border-t dark:border-slate-700" uk-switcher="connect: #story_tab ; animation: uk-animation-fade, uk-animation-slide-left-medium">
                     <li v-for="(tab, a) in state.tabs" :key="a" :class="tab.active ? 'uk-active active-tab' : ''"> 
                       <a href="#" @click="toggle_active_tab(tab)" class="flex items-center p-4 py-2.5 -mb-px border-t-2 border-transparent aria-expanded:text-black aria-expanded:border-black aria-expanded:dark:text-white aria-expanded:dark:border-white" > 
-                        <font-awesome-icon :icon="['fa', tab.icon]" class="text-lg me-2 text-white" />
-                        <span class="text-white">{{ tab.label }}  </span>
+                        <font-awesome-icon :icon="['fa', tab.icon]" class="text-lg me-2 text-zinc-800 dark:text-white" />
+                        <span class="text-zinc-800 dark:text-white">{{ tab.label }}  </span>
                       </a> 
                     </li>
                   </ul>
@@ -163,7 +163,7 @@
 
                     <div id="new_post_modal" class="flex flex-col" uk-modal="">
                       <!-- close button uk  large modal-->
-                      <div class="uk-modal-dialog uk-modal-body uk-padding-remove new-post-modal">
+                      <div class="uk-modal-dialog uk-modal-body uk-padding-remove new-post-modal rounded-lg" :class="settings.dark_mode ? 'dark' : ''">
                         <button id="close_new_post" class="uk-modal-close-default" type="button" uk-close></button>
                         <NewPostInterface :profile="profile_data" @newpost="add_new_post" />
                       </div>
@@ -216,7 +216,7 @@
 
                     <div id="new_picture_post_modal" class="flex flex-col" uk-modal="">
                       <!-- close button uk  large modal-->
-                      <div class="uk-modal-dialog uk-modal-body uk-padding-remove new-post-modal">
+                      <div class="uk-modal-dialog uk-modal-body uk-padding-remove new-post-modal rounded-lg" :class="settings.dark_mode ? 'dark' : ''">
                         <button id="close_new_picture_post" class="uk-modal-close-default" type="button" uk-close></button>
                         <NewPicturePostInterface :key="state.comp" :user="auth.user" @newpost="update_picture_posts" /> 
                       </div>
@@ -256,6 +256,7 @@
 
   // stores
   const auth = authStore()  
+  const settings = settingsStore()
 
   // components
   import ProfilePost from './components/profile_post.vue'

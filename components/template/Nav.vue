@@ -284,6 +284,19 @@
                   </div> -->
                 
           </div>
+          <div class="w-full px-4 flex flex-row justify-start items-start ">
+            <!-- Toggle dark mode toggle_dark_mode -->
+            <div class="flex flex-row justify-start items-center">
+              <font-awesome-icon
+                class="text-neutral-800 dark:text-white text-sm me-2 hover:cursor-pointer"
+                :icon="['fas', `${auth?.user?.preferences[0].dark_mode ? 'moon' : 'sun'}`]"
+                @click="toggle_theme()"
+              />
+              <!-- <span class="text-neutral-800 dark:text-white text-sm">
+                {{ auth?.user?.preferences[0].dark_mode ? 'Light Mode' : 'Dark Mode' }}
+              </span> -->
+            </div>
+          </div>  
           <hr class="opacity-60" />
           <ul class="text-sm font-semibold p-2">
             <li>
@@ -504,6 +517,11 @@ const quotes = async () => {
       console.log(err);
     });
 };
+
+// Preferences
+const toggle_dark_mode = () => {
+
+}
 
 // Mounted
 onMounted(() => {
