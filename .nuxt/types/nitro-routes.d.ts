@@ -45,6 +45,9 @@ declare module 'nitropack' {
     '/api/square/customers/create-card': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/customers/create-card.post').default>>>>
     }
+    '/api/square/customers/create-customer': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/customers/create-customer.post').default>>>>
+    }
     '/api/square/list-catalog': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/square/list-catalog.post').default>>>>
     }

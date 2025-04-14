@@ -64,7 +64,7 @@
                 class="bg-white rounded-full p-2 absolute right-0 top-0 m-3 dark:bg-zinc-600 uk-modal-close h-[30px] w-[30px] flex flex-col justify-center items-center"
                 @click="close_modal"
               >
-                <font-awesome-icon :icon="['fas', 'times']" class="text-white" />
+                <font-awesome-icon :icon="['fas', 'times']" class="text-zinc-800 dark:text-white" />
               </button>
             </div>
 

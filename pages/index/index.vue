@@ -13,8 +13,8 @@
           <!-- form -->
            <form method="#" action="#" class="space-y-3 uk-animation-scale-up delay-100 repeat repeat-true" :class="settings?.dark_mode ? 'dark' : ''">
 
-              <input v-model="state.input.email" class="!w-full" id="email" name="email" type="email" autofocus  placeholder="Email" required> 
-              <input v-model="state.input.password" class="!w-full" id="password" name="password" type="password" autofocus  placeholder="Password" required>
+              <input v-model="state.input.email" class="!w-full" id="email" name="email" type="email" autofocus  placeholder="Email" required @keydown="state.errors = []"> 
+              <input v-model="state.input.password" class="!w-full" id="password" name="password" type="password" autofocus  placeholder="Password" required @keydown="state.errors = []">
             
               <button type="submit" 
                   class="font-medium w-full rounded-lg nsight-btn-primary py-1 px-4 text-neutral-800 h-[34px] active:scale-[0.97] transition-all duration-150"
@@ -33,6 +33,13 @@
               Forgot Password? Let's fix that.
             </NuxtLink>
           </div>
+
+          <!-- Errors: -->
+            <p v-if="state.errors?.length" class="text-red-500 fade-in">
+              <span v-for="(error, i) in state.errors" :key="i">
+                {{ error }}<br>
+              </span>
+            </p>
 
           <!-- quotes -->
           <div class="w-full mt-20 mx-auto my-5">

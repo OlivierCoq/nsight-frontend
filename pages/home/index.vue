@@ -94,7 +94,7 @@
                 <span class="text-xs text-gray-500 dark:text-white/80 mb-2">({{ state.friends.length }})</span>
               </h3>
               <NuxtLink to="/friends" class="text-xs text-neutral-800 dark:text-amber-400 hover:text-amber-500 mb-2">view all</NuxtLink>
-              <div class="flex flex-1 flex-col w-full" :class="state.friends?.length > 2 ? 'overflow-y-scroll' : ''">
+              <div class="flex flex-1 flex-col w-full" :class="state.friends?.length ? 'overflow-y-scroll' : ''">
                 <div class="grid gap-2 pe-4 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                   <FriendCard v-for="(friend, a) in state.friends" :key="a" :member="friend" />
                 </div>
@@ -105,7 +105,7 @@
               <h3 class="text-neutral-900 dark:text-white text-xl">people you may know 
                 <span class="text-xs text-gray-500 dark:text-white/80">({{ state.potential_friends.length }})</span>
               </h3>
-              <div class="flex flex-1 flex-col w-full" :class="state.potential_friends?.length > 2 ? 'overflow-y-scroll' : ''">
+              <div class="flex flex-1 flex-col w-full" :class="state.potential_friends?.length ? 'overflow-y-scroll' : ''">
                 <div v-if="state.potential_friends.length" class="grid pe-4 gap-2 mt-5 mb-2 text-xs font-normal text-gray-500 dark:text-white/80 uk-animation-scale-up delay-100">
                   <FriendCard v-for="(friend, a) in state.potential_friends" :key="a" :member="friend" />
                 </div>
@@ -116,7 +116,7 @@
             <!-- Popular tags: -->
             <div class="flex flex-col items-start align-start justify-start min-h-[10rem] w-full mt-4 backdrop-blur-xl bg-zinc-300 dark:bg-black/20 rounded-lg px-6 pt-8 pb-8">
               <h3 class="text-neutral-900 dark:text-white text-xl">popular tags</h3>
-              <div class="flex flex-wrap" :class="state.popular_tags?.length > 16 ? 'overflow-y-scroll h-[10rem]' : ''">
+              <div class="flex flex-wrap" :class="state.popular_tags?.length > 8 ? 'overflow-y-scroll h-[10rem]' : ''">
                 <div v-for="(tag, b) in state.popular_tags" :key="b" class="tag_pill rounded-full flex flex-row items-center bg-amber-500 px-4 min-w-[60px] m-1 h-[28px] shadow-lg">
                   <a :href="`/home?tag=${tag.tag_name}`" class="text-white hover:text-zinc-800 m-0">#{{ tag?.tag_name }}</a>
                 </div>

@@ -3255,8 +3255,9 @@ const _lazy_5BBo0f = () => Promise.resolve().then(function () { return fetch_pos
 const _lazy_SlEdZ0 = () => Promise.resolve().then(function () { return boilerplate_post$1; });
 const _lazy_xsVbzw = () => Promise.resolve().then(function () { return createCard_post$3; });
 const _lazy_xPwnBM = () => Promise.resolve().then(function () { return createCheckout_post; });
-const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post; });
+const _lazy_rxlSVu = () => Promise.resolve().then(function () { return createCustomer_post$2; });
 const _lazy_0w5yvC = () => Promise.resolve().then(function () { return createCard_post$1; });
+const _lazy_3qn4CK = () => Promise.resolve().then(function () { return createCustomer_post$1; });
 const _lazy_ocOO4q = () => Promise.resolve().then(function () { return listCatalog_post; });
 const _lazy_WI6bJW = () => Promise.resolve().then(function () { return payOrder_post$2; });
 const _lazy_zs2xcI = () => Promise.resolve().then(function () { return placeOrder_post$2; });
@@ -3290,6 +3291,7 @@ const handlers = [
   { route: '/api/square/create-checkout', handler: _lazy_xPwnBM, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/create-customer', handler: _lazy_rxlSVu, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/customers/create-card', handler: _lazy_0w5yvC, lazy: true, middleware: false, method: "post" },
+  { route: '/api/square/customers/create-customer', handler: _lazy_3qn4CK, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/list-catalog', handler: _lazy_ocOO4q, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/orders/pay-order', handler: _lazy_WI6bJW, lazy: true, middleware: false, method: "post" },
   { route: '/api/square/orders/place-order', handler: _lazy_zs2xcI, lazy: true, middleware: false, method: "post" },
@@ -3563,7 +3565,7 @@ const updateUser_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const config$1 = useRuntimeConfig();
-const client$3 = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
+const client$4 = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
 const forgotPassword_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("post_data", post_data);
@@ -3676,7 +3678,7 @@ const forgotPassword_post = defineEventHandler(async (event) => {
             MessageStream: "outbound"
           };
           try {
-            client$3.sendEmail(msg);
+            client$4.sendEmail(msg);
             return { status: "success", message: "Email sent successfully" };
           } catch (error) {
             console.error(error);
@@ -3700,7 +3702,7 @@ const forgotPassword_post$1 = /*#__PURE__*/Object.freeze({
   default: forgotPassword_post
 });
 
-const client$2 = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
+const client$3 = new postmark.ServerClient(process.env.POSTMARK_SERVER_TOKEN);
 const newUserConfirmation_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("post_data", post_data);
@@ -3762,7 +3764,7 @@ const newUserConfirmation_post = defineEventHandler(async (event) => {
       MessageStream: "outbound"
     };
     try {
-      client$2.sendEmail(msg).then((response) => {
+      client$3.sendEmail(msg).then((response) => {
         console.log("Email sent successfully:", response);
         return {
           statusCode: 200,
@@ -4135,7 +4137,7 @@ const boilerplate_post$1 = /*#__PURE__*/Object.freeze({
   default: boilerplate_post
 });
 
-const client$1 = new SquareClient({
+const client$2 = new SquareClient({
   environment: process.env.SQUARE_ENVIRONMENT == "production" ? SquareEnvironment.Production : SquareEnvironment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   token: process.env.SQUARE_ACCESS_TOKEN
@@ -4143,7 +4145,7 @@ const client$1 = new SquareClient({
 const createCard_post$2 = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
   console.log("body", post_data);
-  const new_card = await client$1.cards.create(post_data);
+  const new_card = await client$2.cards.create(post_data);
   return {
     statusCode: 200,
     body: JSONBig.stringify(new_card)
@@ -4159,18 +4161,18 @@ const createCheckout_post = /*#__PURE__*/Object.freeze({
   __proto__: null
 });
 
-const createCustomer_post = /*#__PURE__*/Object.freeze({
+const createCustomer_post$2 = /*#__PURE__*/Object.freeze({
   __proto__: null
 });
 
-const client = new SquareClient({
+const client$1 = new SquareClient({
   environment: process.env.SQUARE_ENVIRONMENT == "production" ? SquareEnvironment.Production : SquareEnvironment.Sandbox,
   // Environment.Production or Environment.Sandbox for testing
   token: process.env.SQUARE_ACCESS_TOKEN
 });
 const createCard_post = defineEventHandler(async (event) => {
   const post_data = await readBody(event);
-  const card = await client.cards.create(post_data);
+  const card = await client$1.cards.create(post_data);
   if (!card.errors) {
     return {
       status: 200,
@@ -4191,6 +4193,40 @@ const createCard_post = defineEventHandler(async (event) => {
 const createCard_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: createCard_post
+});
+
+const client = new SquareClient({
+  environment: process.env.SQUARE_ENVIRONMENT == "production" ? SquareEnvironment.Production : SquareEnvironment.Sandbox,
+  // Environment.Production or Environment.Sandbox for testing
+  token: process.env.SQUARE_ACCESS_TOKEN
+});
+const createCustomer_post = defineEventHandler(async (event) => {
+  const post_data = await readBody(event);
+  const customer = await client.customers.create(post_data);
+  console.log("Customer Data front end", post_data);
+  console.log("Customer Data back end", customer);
+  console.log("Customer Data back end", JSONBig.stringify(customer));
+  console.log("Customer Data back end", customer.errors);
+  if (!customer.errors) {
+    return {
+      status: 200,
+      body: {
+        customer: JSONBig.stringify(customer)
+      }
+    };
+  } else {
+    return {
+      status: 400,
+      body: {
+        message: "An error occurred while creating customer."
+      }
+    };
+  }
+});
+
+const createCustomer_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: createCustomer_post
 });
 
 const listCatalog_post = /*#__PURE__*/Object.freeze({
